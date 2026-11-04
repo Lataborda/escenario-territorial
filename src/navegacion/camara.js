@@ -36,10 +36,16 @@ export function vistaDesde(posicion, objetivo) {
   };
 }
 
-// Bloque de cámara (paradas.json o botonera) a vista; lo que falta se toma de la vista actual.
+// Bloque de cámara (paradas.json, botonera o doble clic del modo libre) a vista; lo que falta se toma
+// de la vista actual. El objetivo es un ancla o un punto { x, y, z } de la escena.
 export function resolver(bloque, actual) {
+  const { punto } = bloque;
   return {
-    objetivo: (bloque.ancla && ancla(bloque.ancla)) || actual?.objetivo.clone() || new THREE.Vector3(),
+    objetivo:
+      (bloque.ancla && ancla(bloque.ancla)) ||
+      (punto && new THREE.Vector3(punto.x, punto.y, punto.z)) ||
+      actual?.objetivo.clone() ||
+      new THREE.Vector3(),
     distancia: bloque.distancia ?? actual.distancia,
     azimut: bloque.azimut ?? actual.azimut,
     elevacion: bloque.elevacion ?? actual.elevacion,

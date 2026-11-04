@@ -2,6 +2,7 @@
 // inalámbricos (Av Pág y Re Pág) equivalen a las flechas.
 import { obtener, cambiar } from '../estado.js';
 import { siguiente, anterior, irAMomento, alternarLibre } from './recorrido.js';
+import { esTeclaDeMovimiento } from './libre.js';
 
 const alternar = (clave) => () => cambiar({ [clave]: !obtener()[clave] });
 
@@ -44,6 +45,8 @@ export function crearTeclado({ bloqueCamara }) {
   window.addEventListener('keydown', (evento) => {
     if (evento.ctrlKey || evento.metaKey || evento.altKey || evento.repeat) return;
     if (evento.target.closest?.('input, textarea, select')) return;
+    // En modo libre, flechas y WASD mueven la cámara (src/navegacion/libre.js).
+    if (obtener().modo === 'libre' && esTeclaDeMovimiento(evento)) return;
     const tecla = evento.key.length === 1 ? evento.key.toLowerCase() : evento.key;
     const accion = acciones[tecla];
     if (!accion) return;

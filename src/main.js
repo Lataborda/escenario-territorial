@@ -2,7 +2,8 @@
 import './estilos.css';
 import { crearEscena } from './escena/escena.js';
 import { crearMaqueta } from './escena/maqueta.js';
-import { generarTerreno, ancla, altura, datosTerreno, revisarAnclasTerreno } from './terreno/terreno.js';
+import * as THREE from 'three';
+import { generarTerreno, ancla, altura, superficie, datosTerreno, revisarAnclasTerreno } from './terreno/terreno.js';
 import { crearCoberturas } from './coberturas/coberturas.js';
 import { crearVias } from './vias/vias.js';
 import { crearAsentamientos } from './asentamientos/asentamientos.js';
@@ -14,6 +15,7 @@ import { irAEscala, enfocar } from './navegacion/foco.js';
 import { crearTeclado } from './navegacion/teclado.js';
 import { crearHash } from './navegacion/hash.js';
 import { crearSeleccion } from './navegacion/seleccion.js';
+import { crearLibre } from './navegacion/libre.js';
 import { revisarTrayectorias, desvioBloque } from './navegacion/pruebas.js';
 import { crearInterfaz } from './ui/interfaz.js';
 import { crearSincronia } from './presentador/sincronia.js';
@@ -56,6 +58,15 @@ function montar(nombre, crear) {
   }
 }
 
+// Posición en pantalla (píxeles) de un punto de la escena, o null.
+function proyectar(escena, punto) {
+  if (!punto) return null;
+  escena.camara.updateMatrixWorld();
+  const p = punto.clone().project(escena.camara);
+  const r = escena.renderizador.domElement.getBoundingClientRect();
+  return { x: r.left + ((p.x + 1) / 2) * r.width, y: r.top + ((1 - p.y) / 2) * r.height };
+}
+
 // Atributos de la parada actual en <html>, para la verificación automática.
 function marcarParada({ parada, paso }) {
   document.documentElement.dataset.parada = parada ?? '';
@@ -82,6 +93,7 @@ async function iniciar() {
   montar('teclado', () => crearTeclado({ bloqueCamara: camara.bloqueActual }));
   montar('hash', crearHash);
   montar('selección', () => crearSeleccion({ camara: escena.camara, lienzo: escena.renderizador.domElement }));
+  const libre = montar('modo libre', () => crearLibre(escena));
 
   // Primera parada sin vuelo: la del hash o P01.
   suscribir(['parada', 'paso'], marcarParada);
@@ -120,15 +132,20 @@ async function iniciar() {
     enfocar,
     controles: () => ({ habilitados: escena.controles.enabled, desplazamiento: escena.controles.enablePan }),
     ultimaTransicion: () => camara?.ultimaTransicion(),
+    // Modo libre: un cuadro de marcha con dt fijo y lectura de cámara y objetivo.
+    libre: libre && {
+      paso: (dt) => libre.paso(dt),
+      leer: libre.leer,
+      puntoBajo: (x, y) => libre.puntoBajo(x, y)?.toArray() ?? null,
+    },
+    colocar: (posicion, objetivo) => escena.colocar(new THREE.Vector3(...posicion), new THREE.Vector3(...objetivo)),
+    superficie: (x, z) => superficie(x, z),
+    ancla: (id) => ancla(id)?.toArray() ?? null,
     revisarTrayectorias: () => revisarTrayectorias(PARADAS.map((p) => p.camara)),
     desvioBloque: (bloque) => desvioBloque(bloque, escena.camara.position),
-    // Posición en pantalla (píxeles) del ancla de una entidad.
-    proyectar: (id) => {
-      escena.camara.updateMatrixWorld();
-      const p = ancla(id)?.project(escena.camara);
-      const r = escena.renderizador.domElement.getBoundingClientRect();
-      return p && { x: r.left + ((p.x + 1) / 2) * r.width, y: r.top + ((1 - p.y) / 2) * r.height };
-    },
+    // Posición en pantalla (píxeles) del ancla de una entidad o de un punto [x, y, z].
+    proyectar: (id) => proyectar(escena, ancla(id)),
+    proyectarPunto: (p) => proyectar(escena, new THREE.Vector3(...p)),
   };
   marcarListo();
 }

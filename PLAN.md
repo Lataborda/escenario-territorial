@@ -151,15 +151,17 @@ Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y 
 
 | Tecla | Acción |
 |---|---|
-| → , espacio o Av Pág | parada o paso siguiente |
-| ← o Re Pág | parada o paso anterior |
+| → , espacio o Av Pág | parada o paso siguiente (en modo libre, → mueve la cámara) |
+| ← o Re Pág | parada o paso anterior (en modo libre, ← mueve la cámara) |
 | 0 a 6 | primera parada del momento M0 a M6 |
-| O | modo libre (órbita y zoom); otra vez O vuelve al recorrido |
+| O | modo libre; otra vez O vuelve al recorrido con la cámara de la parada |
 | F | pantalla completa |
 | H | ocultar o mostrar la interfaz |
 | V | modo liviano |
 | C | modo autor: copia la cámara actual en formato de parada |
-| A | modo autor: muestra las anclas |
+| A | modo autor: muestra las anclas (en modo libre, A mueve la cámara) |
+
+Modo libre (etapa 3.b): órbita y zoom con el ratón; doble clic en un punto del relieve para volar hasta él (la distancia se reduce a la mitad, hasta 90); flechas o WASD para avanzar sobre el paisaje, con Mayús para ir más rápido. La cámara no baja del relieve y el objetivo no sale de la maqueta. Av Pág, Re Pág y espacio siguen avanzando el recorrido, de modo que el presentador inalámbrico funciona igual. La botonera, en modo libre, toma como punto de interés el objetivo actual de la cámara.
 
 El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar.
 
@@ -169,7 +171,7 @@ El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recarga
 
 ### 3.6 Verificación automática
 
-`npm run verificar` compila, levanta el servidor de vista previa y recorre con Playwright cada parada en `#p=ID&captura=1` (transiciones instantáneas). Espera el evento `escenario:listo`, guarda una captura JPEG de 1600×900 por parada en `verificacion/capturas/paradas/` (con el ciclo de dibujo en pausa y un cuadro manual por captura, porque el render por software tarda 0,4 s por cuadro), registra errores de consola y solicitudes de red, mide cuadros por segundo en la vista general y escribe `verificacion/informe.md`. Falla si hay errores de consola, alguna solicitud externa o paradas que no cargan. El informe lista además las fichas en `borrador` y las fuentes en `falta` o `verificar`. Desde la etapa 4 abre también la vista principal y la del presentador en dos pestañas del mismo navegador (sincronía en ida y vuelta, cronómetro con reloj simulado, captura `presentador.png`) y el respaldo por `file://` sin red; avisa si el contenido cambió desde la última generación del respaldo.
+`npm run verificar` compila, levanta el servidor de vista previa y recorre con Playwright cada parada en `#p=ID&captura=1` (transiciones instantáneas). Espera el evento `escenario:listo`, guarda una captura JPEG de 1600×900 por parada en `verificacion/capturas/paradas/` (con el ciclo de dibujo en pausa y un cuadro manual por captura, porque el render por software tarda 0,4 s por cuadro), registra errores de consola y solicitudes de red, mide cuadros por segundo en la vista general y escribe `verificacion/informe.md`. Falla si hay errores de consola, alguna solicitud externa o paradas que no cargan. El informe lista además las fichas en `borrador` y las fuentes en `falta` o `verificar`. Desde la etapa 4 abre también la vista principal y la del presentador en dos pestañas del mismo navegador (sincronía en ida y vuelta, cronómetro con reloj simulado, captura `presentador.png`) y el respaldo por `file://` sin red; avisa si el contenido cambió desde la última generación del respaldo. Desde la etapa 3.b revisa también el modo libre: doble clic, marcha con WASD y flechas en cuadros de duración fija, cámara sobre el relieve, objetivo dentro de la maqueta, botonera y salida, con la captura `libre.jpg`.
 
 ## 4. Principios técnicos
 
@@ -277,6 +279,26 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [ ] Cada ficha muestra su fuente.
   - [ ] La tecla C produce un bloque de cámara válido para `paradas.json`.
 - Prompt de arranque: `Etapa 3 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 3.b. Modo libre ampliado
+
+- Tamaño: pequeña. Fuentes: no. Origen: pedido de Alejandro del 2026-11-04, intercalada entre la 5.b y la 5.c (la 5.c sigue como etapa siguiente).
+- Lecturas: sección 3.4 de este plan; `src/navegacion/camara.js`, `teclado.js`, `foco.js`; `src/escena/escena.js`.
+- Objetivo: explorar la maqueta con libertad ante una pregunta del jurado, sin perder el recorrido.
+- Trabajo:
+  - Doble clic en cualquier punto del relieve (o del agua): vuelo con GSAP hasta ese punto; conserva el azimut, reduce la distancia a la mitad (mínimo 90) y limita la elevación entre 20 y 70 grados. El vuelo se pide al estado con un bloque de cámara que lleva `punto` en lugar de `ancla`. Sin efecto en el recorrido ni fuera de la maqueta.
+  - Flechas o WASD: marcha horizontal en la dirección de la vista, con aceleración y frenado suaves; rapidez proporcional a la distancia al objetivo; Mayús la triplica. El objetivo sigue la altura del relieve.
+  - Límites: el objetivo queda dentro de la maqueta, con frenado progresivo junto al borde; la cámara queda sobre el relieve vecino con un margen (subida suave) y un piso que nunca cruza, también durante la órbita y el vuelo.
+  - Botonera en modo libre: la vista tipo de la escala se toma desde el objetivo actual.
+  - Módulos `src/navegacion/libre.js` y `limites.js`; funciones por cuadro en `escena.js`; revisión `scripts/lib/revisar-libre.mjs` en `npm run verificar`.
+- Fuera de alcance: arrastre lateral con el ratón, gestos táctiles, marcador del punto de destino.
+- Criterios de aceptación:
+  - [ ] El doble clic vuela al punto señalado en 1,5 a 2,5 s; en el recorrido y fuera de la maqueta no hace nada.
+  - [ ] Flechas y WASD mueven la cámara en modo libre sin cambiar de parada; en el recorrido, las flechas siguen avanzando y retrocediendo.
+  - [ ] La cámara nunca queda bajo el relieve y el objetivo nunca sale de la maqueta.
+  - [ ] Movimientos sin saltos: aceleración, frenado y llegada al borde graduales.
+  - [ ] La tecla O devuelve la cámara de la parada.
+- Prompt de arranque: `Etapa 3.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 4. Vista del presentador y respaldo
 

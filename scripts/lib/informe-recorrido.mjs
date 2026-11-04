@@ -17,6 +17,23 @@ function resumenTrayectorias(t = []) {
   };
 }
 
+// Modo libre (scripts/lib/revisar-libre.mjs).
+function lineasLibre(l) {
+  if (!l) return ['- Modo libre: sin resultados'];
+  const marcha = (x) =>
+    `${x.recorrido} unidades, dirección ${x.direccion}, salto ${x.salto}, detenida ${si(x.detenida)}, cámara a ${x.sobre} o más sobre el relieve, dentro ${si(x.dentro)}`;
+  const v = l.vuelo;
+  return [
+    `- Modo libre: correcto ${si(l.correcto)}; captura \`capturas/${l.captura}\``,
+    `  - Doble clic: en el recorrido sin efecto ${si(l.recorridoQuieto)}; fuera de la maqueta sin efecto ${si(l.fueraQuieto)}; vuelo al punto ${si(v.correcto)} (error ${v.error}, distancias ${v.distancias.join(' → ')}, duración ${v.duracion} s)`,
+    `  - Marcha con W: ${marcha(l.adelante)}`,
+    `  - Marcha con flecha derecha: ${marcha(l.derecha)}; sin cambio de parada ${si(l.flechaSinParada)}`,
+    `  - Borde (Mayús + A, 30 s): dentro ${si(l.borde.dentro)}; holgura final ${l.borde.holgura}; salto ${l.borde.salto}; cámara a ${l.borde.sobre} o más sobre el relieve`,
+    `  - Cámara bajo el relieve: ${l.relieve.inicial} → ${l.relieve.primerCuadro} en el primer cuadro → ${l.relieve.final} (${si(l.relieve.correcto)})`,
+    `  - Botonera desde el objetivo actual ${si(l.botonera)}; tecla O de vuelta a la parada ${si(l.salida)}`,
+  ];
+}
+
 export function fallasRecorrido({ recorrido: r, transiciones: t, legibilidad: l }) {
   const f = [];
   if (!r) return ['Recorrido: sin resultados'];
@@ -33,6 +50,7 @@ export function fallasRecorrido({ recorrido: r, transiciones: t, legibilidad: l 
   const tr = resumenTrayectorias(r.trayectorias);
   if (!tr.extremos || !tr.finitos || tr.razon > RAZON_MAXIMA) f.push('Recorrido: trayectorias de cámara con saltos');
   if (!t?.correcto) f.push('Recorrido: transiciones fuera de 1,5 a 3 s');
+  if (!r.modoLibre?.correcto) f.push('Recorrido: el modo libre no cumple (doble clic, marcha, relieve, borde o salida)');
   if (!l?.hashDirecto) f.push('Recorrido: el hash #p=P14&paso=2 no abre la parada y el paso');
   if (l?.fallidas?.length) f.push(`Recorrido: fichas no legibles a 1280×720 en ${l.fallidas.join(', ')}`);
   return f;
@@ -52,7 +70,8 @@ export function seccionRecorrido({ recorrido: r, transiciones: t, legibilidad: l
     `- Teclas: 0 a 6 ${si(r.teclas?.momentos)}; O ${si(r.teclas?.libre)}; H ${si(r.teclas?.interfaz)}; V ${si(r.teclas?.liviano)}`,
     `- Tecla C: ${si(r.teclaC?.valido)}, \`${r.teclaC?.texto}\`; desvío al aplicarlo ${r.teclaC?.desvio}`,
     `- Botonera: ${si(r.botonera)}; clic en una finca: ${si(r.clic)}`,
-    `- Transiciones en modo liviano: entre paradas ${m(t?.parada)}; botonera ${m(t?.botonera)}; correctas ${si(t?.correcto)}`,
+    `- Transiciones en modo liviano: entre paradas ${m(t?.parada)}; botonera ${m(t?.botonera)}; doble clic en modo libre ${m(t?.libre)}; correctas ${si(t?.correcto)}`,
+    ...lineasLibre(r.modoLibre),
     `- Trayectorias muestreadas: ${tr.tramos} tramos (${tr.moviles} con movimiento); razón máxima entre paso mayor y paso medio ${tr.razon} (límite ${RAZON_MAXIMA}); extremos exactos ${si(tr.extremos)}`,
     `- Hash directo \`#p=P14&paso=2\`: ${si(l?.hashDirecto)}`,
     `- Fichas a 1280×720: legibles ${l?.legibles} de ${l?.total} (sin desborde, dentro de la ventana, sin superposición, letra ≥ 16 px); letra mínima ${l?.letra} px; ficha más alta ${l?.mayor?.id} (${l?.mayor?.alto} px de 720); captura \`capturas/${l?.captura}\``,

@@ -32,19 +32,26 @@ async function medir(pagina, accion) {
   });
   return {
     empezo: t.inicio != null && t.inicio !== antes,
-    declarada: t.duracion ?? null,
+    declarada: t.duracion != null ? Number(t.duracion.toFixed(2)) : null,
     medida: t.fin ? Number(((t.fin - t.inicio) / 1000).toFixed(2)) : null,
     intervalo: Number((t.intervalo / 1000).toFixed(2)),
   };
 }
 
-// Página sin #captura=1: vuelo entre dos paradas y desde la botonera. Se mide en modo liviano (tecla V): la
+// Página sin #captura=1: vuelo entre dos paradas, desde la botonera y por doble clic en modo libre. Se mide en modo liviano (tecla V): la
 // prueba revisa la duración del vuelo; los cuadros por segundo se miden en el equipo de la prueba.
 export async function revisarTransiciones(pagina) {
   await pagina.keyboard.press('v');
   const parada = await medir(pagina, () => pagina.keyboard.press('ArrowRight'));
   parada.destino = (await estado(pagina)).parada;
   const botonera = await medir(pagina, () => pagina.click('.escala[data-escala="cuenca"]'));
+  // Modo libre: doble clic a 80 unidades al oriente del objetivo actual.
+  await pagina.keyboard.press('o');
+  const { objetivo } = await pagina.evaluate(() => window.escenario.libre.leer());
+  const blanco = await pagina.evaluate((p) => window.escenario.proyectarPunto(p), [objetivo[0] + 80, objetivo[1], objetivo[2]]);
+  const libre = await medir(pagina, () => pagina.mouse.dblclick(blanco.x, blanco.y));
+  await pagina.keyboard.press('o');
+  await esperarFin(pagina);
   await pagina.keyboard.press('v');
   const ok = (m) =>
     m.empezo &&
@@ -52,7 +59,7 @@ export async function revisarTransiciones(pagina) {
     m.declarada <= 3 &&
     m.medida >= m.declarada - 0.05 &&
     m.medida <= m.declarada + Math.max(HOLGURA_S, m.intervalo * 1.1);
-  return { parada, botonera, correcto: ok(parada) && ok(botonera) };
+  return { parada, botonera, libre, correcto: ok(parada) && ok(botonera) && ok(libre) };
 }
 
 // Página de 1280×720 abierta en #p=P14&paso=2: hash directo y fichas de todas las paradas.

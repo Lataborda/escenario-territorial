@@ -8,6 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { revisarPagina, VENTANA } from './lib/revisar-pagina.mjs';
 import { revisarTerreno, huellaDe, fallasTerreno, seccionTerreno } from './lib/revisar-terreno.mjs';
 import { revisarRecorrido, CARPETA_PARADAS } from './lib/revisar-paradas.mjs';
+import { revisarLibre } from './lib/revisar-libre.mjs';
 import { revisarTransiciones, revisarLegibilidad, VENTANA_PEQUENA } from './lib/revisar-legibilidad.mjs';
 import { fallasRecorrido, seccionRecorrido } from './lib/informe-recorrido.mjs';
 import { revisarPresentador } from './lib/revisar-presentador.mjs';
@@ -156,8 +157,11 @@ async function revisarNavegacion(navegador, url, origen, contenido) {
   avisar('Recorriendo las paradas ...');
   const recorrido = await revisarPagina(navegador, `${url}#p=${paradas[0].id}&captura=1`, {
     origen,
-    extra: (pagina) =>
-      revisarRecorrido(pagina, { paradas, momentos: datos.paradas.momentos, entidades, dirCapturas: DIR_CAPTURAS }),
+    extra: async (pagina) => {
+      const r = await revisarRecorrido(pagina, { paradas, momentos: datos.paradas.momentos, entidades, dirCapturas: DIR_CAPTURAS });
+      r.modoLibre = await revisarLibre(pagina, { dirCapturas: DIR_CAPTURAS });
+      return r;
+    },
   });
   avisar('Midiendo transiciones ...');
   const transiciones = await revisarPagina(navegador, `${url}#p=P05`, { origen, extra: revisarTransiciones });

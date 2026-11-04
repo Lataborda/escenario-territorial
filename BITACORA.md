@@ -3,17 +3,17 @@
 ## Estado actual
 
 - Etapa siguiente: Etapa 5.c. Dirección de arte (registrada en `PLAN.md` al cerrar la 5.b, a pedido de Alejandro; incluye la caña desde el ajuste del 2026-11-04).
-- Última etapa cerrada: Etapa 5.b (2026-11-04). `npm run validar` y `npm run verificar` correctos (unos 6 min en la nube).
+- Última etapa cerrada: Etapa 3.b, modo libre ampliado (2026-11-04, intercalada a pedido de Alejandro después de la 5.b). `npm run validar` y `npm run verificar` correctos (unos 6 min en la nube).
 - Estilo visual: decisión D5 cambiada a «realismo de maqueta» (2026-11-04, observación de Alejandro en el MacBook Air). La vegetación nueva de la 5.b ya la sigue; la de la 5.a sigue facetada hasta la 5.c.
 - Terreno: relieve de la cuenca en bloque recortado, ríos, límite departamental y 32 anclas sobre la superficie (`src/terreno/`). Exageración vertical con `#ex=` (1,5 a 3; 2 por defecto).
 - Coberturas (`src/coberturas/`): parcelas del plano y del piedemonte (caña en bloque, pastura, silvopastoreo, relictos de bosque seco, humedal), orillas (bosque ripario y guadual), bosque altoandino, páramo y, desde la 5.b, el mosaico campesino de la ladera en parcelas pequeñas (café con sombrío, plátano, frutales, huerta y pastura) con teselas paralelas al relieve. Especies del mosaico con racimos de hojas y dos niveles de detalle por distancia a la cámara (`instancias.js`, `detalle.js`, `especies.js`, `formas.js`, `mosaico.js`). Proporciones por escenario en `escenarios.json` (borrador); S2 diversifica la ladera y conserva la matriz del plano. Transición de 2 s y leyenda arriba a la derecha.
 - Vías y asentamientos (`src/vias/`, `src/asentamientos/`): 23 tramos trazados sobre el relieve (troncales, secundarias y veredales) con 7 puentes y corredor sin parcelas; ciudad de 45 manzanas y nueve cabeceras de 9 manzanas, con tejados y plaza. No cambian con el escenario.
-- Navegación: almacén `src/estado.js`; recorrido de 26 paradas con flechas, espacio y Av Pág/Re Pág, pasos, teclas 0 a 6, O, F, H, V, C y A; hash `#p=ID&paso=N`; botonera de siete escalas, ficha con fuente abreviada e indicador de momento (`src/navegacion/`, `src/ui/`).
+- Navegación: almacén `src/estado.js`; recorrido de 26 paradas con flechas, espacio y Av Pág/Re Pág, pasos, teclas 0 a 6, O, F, H, V, C y A; hash `#p=ID&paso=N`; botonera de siete escalas, ficha con fuente abreviada e indicador de momento (`src/navegacion/`, `src/ui/`). Modo libre (tecla O, etapa 3.b): órbita y zoom, doble clic para volar a un punto del relieve, flechas o WASD para avanzar (Mayús acelera), cámara siempre sobre el relieve y objetivo dentro de la maqueta (`libre.js`, `limites.js`).
 - Presentación: `npm run presentar` sirve la versión compilada en el puerto 4320 y abre la vista principal y `presentador.html` (notas, siguiente, cronómetro por momento con desvío, fuentes completas, controles e índice; sincronía por BroadcastChannel). `npm run respaldo` genera `respaldo/index.html` (34 imágenes de 1920×1080, abre sin servidor) y `respaldo/notas.md`.
 - Contenido: 26 paradas en borrador; 68 localizadores y 20 datos por verificar en `verificacion/pendientes-de-fuente.md`, para cerrar en una sesión local (etapa 14 a más tardar).
 - Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26, vínculos de resultados de la teoría de cambio, proporciones de coberturas por escenario (plano y ladera), rótulos y colores de la leyenda, red vial y trama de la ciudad y las cabeceras.
 - Rendimiento: Alejandro informó fluidez en el MacBook Air con la escena de la 5.a (0,9 millones de triángulos). Tras la 5.b: 1,5 millones en la vista general, 2,2 a escala de finca en la ladera y 2,7 a escala de planta (S0); hasta 4,2 en S3 a escala de planta; 0,65 en modo liviano de cerca. Menos de 50 llamadas de dibujo. Falta medir en el equipo.
-- Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor) y respaldo en imágenes (`respaldo/`), regenerados al cerrar la 5.b.
+- Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor) y respaldo en imágenes (`respaldo/`), regenerados al cerrar la 5.b; la vista previa, de nuevo al cerrar la 3.b (incluye el modo libre ampliado).
 - Hito A (recorrido mínimo): completo en lo técnico; falta la prueba manual de Alejandro en videoconferencia (criterio de la etapa 4).
 - Hito B (biofísica, etapas 5 a 8): en curso.
 - Fecha de la prueba oral: por confirmar. La notificación llega por correo con una antelación no inferior a tres días (Guía del Aspirante, literal E); el tema se informa dentro de los tres días siguientes (Res. 356 de 2026, art. 11).
@@ -309,6 +309,36 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
 
 - Observación de Alejandro sobre la vista general: la caña se ve como bloques planos escalonados.
 - Hecho: `PLAN.md`, etapa 5.c. La caña pasa a tener tallos instanciados con hojas cerca de la cámara (generados por celda), superficie con surcos y altura irregular a distancia, lotes de tres edades (recién cortado, en crecimiento, maduro) fijos por lote, y bordes de lote con tallos visibles. Dos criterios de aceptación nuevos y el modo liviano retira también los tallos cercanos. Tamaño de la etapa: grande, con división prevista (vegetación y caña; luz y posproceso).
+- Siguiente: Etapa 5.c. Dirección de arte.
+
+### 2026-11-04 · Etapa 3.b. Modo libre ampliado
+
+- Modo continuo. Pedido de Alejandro al abrir la sesión: doble clic para volar a un punto del relieve, flechas o WASD para avanzar sobre el paisaje, la cámara nunca bajo el relieve ni fuera de la maqueta, movimientos suaves. Se registró como etapa 3.b en `PLAN.md` (amplía la navegación de la etapa 3) y se ejecutó antes de la 5.c, que sigue como etapa siguiente. Sesión en la nube, sin fuentes.
+- Verificación inicial (`npm run verificar`): correcta.
+- Hecho:
+  - `src/navegacion/libre.js`: doble clic sobre el lienzo (solo en modo libre) que pide al estado un vuelo con `punto` en lugar de `ancla`; marcha con flechas y WASD (Mayús triplica la rapidez) con aceleración y frenado exponenciales, rapidez proporcional a la distancia al objetivo, objetivo que sigue la altura del relieve y frenado progresivo junto al borde; altura mínima de la cámara en cada cuadro del modo libre.
+  - `src/navegacion/limites.js`: punto del relieve o del agua bajo un rayo (marcha y bisección sobre `superficie`, recortada a la caja de la maqueta), relieve vecino (máximo en un círculo de 12 unidades), corrección de altura y límite del objetivo.
+  - `camara.js`: el bloque de cámara admite `punto { x, y, z }`. `escena.js`: funciones por cuadro, después de los controles y antes del dibujo (una que falla se registra y sale). `teclado.js`: en modo libre deja flechas y WASD a `libre.js`. `foco.js`: en modo libre la botonera toma el objetivo actual. `main.js`: monta el modo libre y amplía `window.escenario` para la verificación.
+  - Verificación: `scripts/lib/revisar-libre.mjs` (en la página del recorrido) y vuelo por doble clic en la medición de transiciones; sección «Modo libre» en el informe y captura `libre.jpg`.
+  - `PLAN.md`: tabla de teclas y párrafo del modo libre (sección 3.4), mención en la 3.6 y etapa 3.b.
+- Decisiones:
+  - Doble clic: conserva el azimut, reduce la distancia a la mitad (mínimo 90), limita la elevación entre 20 y 70 grados y dura de 1,5 a 2,5 s según el desplazamiento. Un tercer clic seguido cuenta como clic triple y no vuela: para acercar otra vez basta un doble clic nuevo tras una pausa breve.
+  - Marcha: 0,35 de la distancia al objetivo por segundo, entre 25 y 400 unidades por segundo; respuesta de 6 por segundo. Junto al borde, la componente hacia afuera frena en la distancia de medio segundo de marcha.
+  - Cámara sobre el relieve vecino: margen de 14 unidades o 4 % de la distancia (mayor que el plano cercano de 10), alcanzado con suavidad; piso de 6 que nunca se cruza. Se aplica en cada cuadro del modo libre, también durante la órbita y el vuelo; el recorrido conserva su regla propia y las paradas no cambian.
+  - Teclas: en modo libre, ← y → mueven la cámara (Av Pág, Re Pág y espacio siguen avanzando el recorrido, igual que el presentador inalámbrico); A mueve a la izquierda, y la tecla A muestra las anclas solo fuera del modo libre. Sin arrastre lateral con el ratón: el criterio «sin desplazamiento» de la verificación se refiere al arrastre.
+- Criterios de aceptación:
+  - Doble clic: cumplido. Vuela al punto señalado (error de 1,1 unidades; distancias 2500 → 1250 → 625 con dos dobles clics); vuelo medido de 1,64 s para 1,6 declarados; sin efecto en el recorrido ni sobre el fondo fuera de la maqueta.
+  - Flechas y WASD: cumplido. W avanza 328 unidades en la dirección de la vista y → 219 a la derecha, sin cambiar de parada; las flechas del recorrido siguen correctas en ambos sentidos.
+  - Cámara sobre el relieve y objetivo dentro de la maqueta: cumplido. Con Mayús + A durante 30 s el objetivo llega al borde (holgura 0) sin salir; una cámara hundida 43 unidades sube al piso en el primer cuadro y al margen de 14 en un segundo.
+  - Movimientos sin saltos: cumplido. El primer cuadro de la marcha es el 26 % del paso mayor y ningún cuadro cambia más que eso; la llegada al borde también (27 %); la marcha se detiene al soltar. A distancia 225 sobre la ladera, la altura de la cámara cambia como máximo 0,2 unidades de un cuadro al siguiente.
+  - Tecla O: cumplido (vuelve a la cámara de la parada con desvío menor de 0,5).
+  - Pendiente: prueba manual de Alejandro en el MacBook Air.
+- Verificación: correcta. Cero errores de consola y cero solicitudes externas; unos 6 min. La primera corrida falló por la prueba nueva: el hash ya era `#p=P01` y reescribirlo no dispara `hashchange`, de modo que la cámara seguía en F1 y no había fondo para el doble clic fuera de la maqueta. Corrección: la revisión vuelve a P01 con `irA`. Vista previa regenerada (`vista-previa/escenario.html`, 933 kB); el respaldo en imágenes no cambia, porque las paradas son las mismas.
+- Pendientes:
+  - Prueba de Alejandro en el MacBook Air: rapidez de la marcha, sensación del doble clic y altura mínima de la cámara. Los valores están en `MARCHA`, `VUELO` (`libre.js`) y `MARGEN` (`limites.js`).
+  - Posibles mejoras fuera de alcance: arrastre lateral con el ratón, gestos táctiles y un marcador breve en el punto de destino.
+  - Pendientes heredados de la 5.b.
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 5.c. Dirección de arte.
 
 ## Plantilla de entrada

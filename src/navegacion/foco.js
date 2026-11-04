@@ -19,14 +19,17 @@ function anclaPara(s, foco) {
 }
 
 // Botonera: vista tipo de la escala desde el punto de interés actual; conserva el azimut.
+// En modo libre el punto de interés es el objetivo actual de la cámara (bloque sin ancla).
 export function irAEscala(id) {
   const s = escala(id);
   if (!s) return false;
-  const foco = anclaPara(s, obtener().foco);
+  const { foco: actual, modo } = obtener();
+  const foco = anclaPara(s, actual);
+  const destino = modo === 'libre' ? {} : { ancla: foco };
   cambiar({
     escala: s.id,
     foco,
-    camara: { ancla: foco, distancia: s.vista.distancia, elevacion: s.vista.elevacion, duracion: DURACION },
+    camara: { ...destino, distancia: s.vista.distancia, elevacion: s.vista.elevacion, duracion: DURACION },
   });
   return true;
 }

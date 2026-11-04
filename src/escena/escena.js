@@ -63,8 +63,8 @@ export function crearEscena(contenedor) {
   camara.position.copy(posicionEsferica(VISTA_GENERAL));
   camara.lookAt(0, 0, 0);
 
-  // Modo libre: órbita y zoom sin pasar bajo la mesa. Sin desplazamiento lateral: el objetivo
-  // queda en el ancla, y la tecla C da un bloque de parada exacto. Inactivos en el recorrido.
+  // Modo libre: órbita y zoom sin pasar bajo la mesa. Sin arrastre lateral: el objetivo se mueve con
+  // el doble clic y el teclado (src/navegacion/libre.js), que también limita la cámara. Inactivos en el recorrido.
   const controles = new OrbitControls(camara, renderizador.domElement);
   controles.enableDamping = true;
   controles.dampingFactor = 0.08;
@@ -107,8 +107,27 @@ export function crearEscena(contenedor) {
     avisarPrimerCuadro = resolver;
   });
 
+  // Funciones por cuadro (dt en segundos), después de los controles y antes del dibujo.
+  // Una que falla se registra una vez y sale de la lista.
+  const porCuadro = [];
+  let ultimo = null;
+  function cadaCuadro() {
+    const ahora = performance.now();
+    const dt = ultimo == null ? 0 : (ahora - ultimo) / 1000;
+    ultimo = ahora;
+    for (const fn of [...porCuadro]) {
+      try {
+        fn(dt);
+      } catch (error) {
+        console.error('Función por cuadro:', error);
+        porCuadro.splice(porCuadro.indexOf(fn), 1);
+      }
+    }
+  }
+
   function cuadro() {
     if (controles.enabled) controles.update();
+    cadaCuadro();
     renderizador.render(escena, camara);
     if (avisarPrimerCuadro) {
       avisarPrimerCuadro();
@@ -137,6 +156,7 @@ export function crearEscena(contenedor) {
     colocar,
     mirar,
     agregar: (objeto) => escena.add(objeto),
+    alCuadro: (fn) => porCuadro.push(fn),
     iniciar: () => renderizador.setAnimationLoop(cuadro),
     // Verificación: sin ciclo de dibujo el navegador responde de inmediato; un cuadro antes de cada captura.
     pausar: () => renderizador.setAnimationLoop(null),

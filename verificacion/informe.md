@@ -1,31 +1,31 @@
 # Informe de verificación
 
-- Fecha: 2026-11-04T21:00:38.159Z
+- Fecha: 2026-11-04T21:53:54.070Z
 - Navegador: Chromium 153.0.8010.12
 - Resultado: correcto
 
 ## Vista compilada (servidor de vista previa)
 
 - Dirección: `http://localhost:4317/`
-- Carga: sí, 8497 ms hasta `escenario:listo`
+- Carga: sí, 7886 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
-- Cuadros por segundo en la vista general: 0.9 (navegador sin pantalla; referencia, no equivale al equipo de la prueba)
+- Cuadros por segundo en la vista general: 1 (navegador sin pantalla; referencia, no equivale al equipo de la prueba)
 - Llamadas de dibujo: 36; triángulos: 1540358; relación de píxeles: 1
 - Renderizador WebGL: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Captura: `capturas/general.png` (1600×900)
 - Avisos de consola (no bloquean):
-  - [.WebGL-0x4b4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x4b4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x4b4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x4b4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+  - [.WebGL-0x144c001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x144c001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x144c001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x144c001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
 
 ## Archivo único (file://, sin servidor y sin red)
 
 - Dirección: `file:///home/user/escenario-territorial/dist-unico/index.html`
-- Carga: sí, 9238 ms hasta `escenario:listo`
-- Tamaño: 928 kB
+- Carga: sí, 9017 ms hasta `escenario:listo`
+- Tamaño: 933 kB
 - Errores de consola: ninguno
 - Solicitudes: 1 en total; externas: ninguna
 - Llamadas de dibujo: 36; triángulos: 1540358; relación de píxeles: 1
@@ -48,7 +48,7 @@
 
 ## Coberturas
 
-- Unidades: parcelas 887, orillas 181, celdas 290, reservas 13; teselas dibujadas: 1060 unidades, 205959 vértices; generación en 453 ms (unidades y vías 215, asignación 15, teselas 87, vegetación 32, mosaico 61)
+- Unidades: parcelas 887, orillas 181, celdas 290, reservas 13; teselas dibujadas: 1060 unidades, 205959 vértices; generación en 456 ms (unidades y vías 201, asignación 12, teselas 80, vegetación 37, mosaico 70)
 - Instancias: arbol 8712 (3787 en S0); guadua 567 (137 en S0); junco 1066 (250 en S0); frailejon 1308 (1308 en S0); guamo 351 (281 en S0); cafeto 8475 (6714 en S0); platano 2492 (1431 en S0); citrico 586 (173 en S0); mango 590 (176 en S0); era 1782 (519 en S0); maiz 2501 (739 en S0)
 - S0: caña en el 84 % del plano (mínimo 60 %); relictos 8, aislados 6 (separación de 60 unidades o más), contiguos 0; separación mínima 24.6, mediana 90.2
 - Plano en S0: cana 0.838, bosque_seco 0.043, pastura 0.083, ripario 0.018, humedal 0.019
@@ -57,9 +57,9 @@
 - Plano en S3: cana_organica 0.32, ripario 0.101, bosque_seco 0.139, cana 0.106, silvopastoril 0.212, pastura 0.041, ninguna 0, humedal 0.08
 - S1 conserva la extensión de la caña de S0: sí
 - Salto máximo de un elemento por cuadro a 60 cuadros por segundo: 0.0227 (máximo 0.05)
-- Transición a S1 (modo liviano): 76 elementos; en curso sí; 4 cuadros (intervalo máximo 0.8 s); máximo de elementos a medio camino en un cuadro: 68; 2.37 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
-- Transición a S3 (modo liviano): 15357 elementos; en curso sí; 4 cuadros (intervalo máximo 1.1 s); máximo de elementos a medio camino en un cuadro: 15357; 3.09 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
-- Transición a S2 (modo liviano): 10339 elementos; en curso sí; 3 cuadros (intervalo máximo 1.12 s); máximo de elementos a medio camino en un cuadro: 10339; 2.15 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 12 tipos
+- Transición a S1 (modo liviano): 76 elementos; en curso sí; 3 cuadros (intervalo máximo 0.75 s); máximo de elementos a medio camino en un cuadro: 63; 2.19 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
+- Transición a S3 (modo liviano): 15357 elementos; en curso sí; 4 cuadros (intervalo máximo 0.97 s); máximo de elementos a medio camino en un cuadro: 15357; 2.89 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
+- Transición a S2 (modo liviano): 10339 elementos; en curso sí; 4 cuadros (intervalo máximo 1 s); máximo de elementos a medio camino en un cuadro: 10339; 2.93 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 12 tipos
 - Leyenda en S0: cana, pastura, silvopastoril, bosque_seco, humedal, ripario, bosque_altoandino, paramo, cafe, platano, frutales, huerta
 - Modo liviano: 19821 instancias dibujadas, 9915 en liviano; restaurado sí
 - Llamadas de dibujo en la vista general: 36 (máximo 200); triángulos 1540358
@@ -80,7 +80,7 @@
 ## Recorrido de paradas (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P01&captura=1`
-- Carga: sí, 10426 ms hasta `escenario:listo`
+- Carga: sí, 9007 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 36; triángulos: 1540358; relación de píxeles: 1
@@ -91,7 +91,7 @@
 ## Transiciones (vista compilada, sin #captura)
 
 - Dirección: `http://localhost:4317/#p=P05`
-- Carga: sí, 7085 ms hasta `escenario:listo`
+- Carga: sí, 6843 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 44; triángulos: 1958294; relación de píxeles: 1
@@ -102,7 +102,7 @@
 ## Ventana de 1280×720 (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P14&paso=2&captura=1`
-- Carga: sí, 9229 ms hasta `escenario:listo`
+- Carga: sí, 8640 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 36; triángulos: 1540358; relación de píxeles: 1
@@ -118,7 +118,14 @@
 - Teclas: 0 a 6 sí; O sí; H sí; V sí
 - Tecla C: sí, `"camara": { "ancla": "F2", "distancia": 640, "azimut": -47, "elevacion": 33, "duracion": 2.5 }`; desvío al aplicarlo 0
 - Botonera: sí; clic en una finca: sí
-- Transiciones en modo liviano: entre paradas declarada 2.5 s, medida 2.8 s (intervalo máximo entre cuadros 0.62 s); botonera declarada 2 s, medida 2.43 s (intervalo máximo entre cuadros 0.78 s); correctas sí
+- Transiciones en modo liviano: entre paradas declarada 2.5 s, medida 2.71 s (intervalo máximo entre cuadros 0.55 s); botonera declarada 2 s, medida 2.51 s (intervalo máximo entre cuadros 0.8 s); doble clic en modo libre declarada 1.6 s, medida 1.64 s (intervalo máximo entre cuadros 0.83 s); correctas sí
+- Modo libre: correcto sí; captura `capturas/libre.jpg`
+  - Doble clic: en el recorrido sin efecto sí; fuera de la maqueta sin efecto sí; vuelo al punto sí (error 1.1, distancias 2500 → 1250 → 625, duración 1.5 s)
+  - Marcha con W: 328.1 unidades, dirección 1, salto 0.26, detenida sí, cámara a 389.1 o más sobre el relieve, dentro sí
+  - Marcha con flecha derecha: 218.7 unidades, dirección 1, salto 0.26, detenida sí, cámara a 437.9 o más sobre el relieve, dentro sí; sin cambio de parada sí
+  - Borde (Mayús + A, 30 s): dentro sí; holgura final 0; salto 0.27; cámara a 382.3 o más sobre el relieve
+  - Cámara bajo el relieve: -42.9 → 6 en el primer cuadro → 14 (sí)
+  - Botonera desde el objetivo actual sí; tecla O de vuelta a la parada sí
 - Trayectorias muestreadas: 25 tramos (21 con movimiento); razón máxima entre paso mayor y paso medio 2.1 (límite 4); extremos exactos sí
 - Hash directo `#p=P14&paso=2`: sí
 - Fichas a 1280×720: legibles 26 de 26 (sin desborde, dentro de la ventana, sin superposición, letra ≥ 16 px); letra mínima 16 px; ficha más alta P14 (488 px de 720); captura `capturas/ficha-1280.png`
@@ -126,7 +133,7 @@
 ## Vista del presentador (dos pestañas del mismo navegador)
 
 - Dirección: `http://localhost:4317/presentador.html`
-- Conexión con la vista principal: sí, 1462 ms
+- Conexión con la vista principal: sí, 63 ms
 - Pruebas de sincronía y cronómetro: 19 de 19 correctas
   - sí: estado inicial P01 en las dos vistas
   - sí: botón Siguiente del presentador mueve la principal a P02
@@ -156,7 +163,7 @@
 ## Respaldo en imágenes (file://, sin servidor y sin red)
 
 - Dirección: `respaldo/index.html`
-- Carga: sí, 44 ms
+- Carga: sí, 42 ms
 - Imágenes: 34 de 34 cargan (1920×1080); estados del recorrido: 34
 - Teclado (flechas, Fin, tecla 3, hash): sí
 - Contenido igual al de la generación: sí
