@@ -12,7 +12,9 @@
     "build:unico": "vite build --mode unico",
     "vista-previa": "npm run build:unico && node scripts/vista-previa.mjs",
     "validar": "node scripts/validar-contenido.mjs",
-    "verificar": "node scripts/verificar.mjs"
+    "verificar": "node scripts/verificar.mjs",
+    "presentar": "node scripts/presentar.mjs",
+    "respaldo": "node scripts/respaldo.mjs"
   },
   "dependencies": {
     "gsap": "3.15.1",

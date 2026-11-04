@@ -12,6 +12,26 @@ function esLocal(url, origen) {
   return origen ? url.startsWith(origen) : false;
 }
 
+// Sin `origen`, toda solicitud http(s) se bloquea: simula equipo sin red y sin servidor.
+export const bloquearExternas = (contexto, origen = null) =>
+  contexto.route(
+    (u) => u.protocol.startsWith('http'),
+    (ruta) => (esLocal(ruta.request().url(), origen) ? ruta.continue() : ruta.abort()),
+  );
+
+// Registra en r los errores y avisos de consola y las solicitudes (externas aparte).
+export function vigilar(pagina, origen, r) {
+  pagina.on('console', (m) => {
+    if (m.type() === 'error') r.errores.push(m.text());
+    else if (m.type() === 'warning') r.avisos.push(m.text());
+  });
+  pagina.on('pageerror', (e) => r.errores.push(`Excepción: ${e.message}`));
+  pagina.on('request', (s) => {
+    r.solicitudes += 1;
+    if (!esLocal(s.url(), origen)) r.externas.push(s.url());
+  });
+}
+
 async function medirFps(pagina, duracion) {
   return pagina.evaluate(
     (ms) =>
@@ -50,20 +70,8 @@ export async function revisarPagina(navegador, url, { origen = null, captura = n
   const contexto = await navegador.newContext({ viewport: ventana, deviceScaleFactor: 1 });
   const pagina = await contexto.newPage();
   const r = { url, cargo: false, ms: null, errores: [], avisos: [], solicitudes: 0, externas: [] };
-
-  pagina.on('console', (m) => {
-    if (m.type() === 'error') r.errores.push(m.text());
-    else if (m.type() === 'warning') r.avisos.push(m.text());
-  });
-  pagina.on('pageerror', (e) => r.errores.push(`Excepción: ${e.message}`));
-  pagina.on('request', (s) => {
-    r.solicitudes += 1;
-    if (!esLocal(s.url(), origen)) r.externas.push(s.url());
-  });
-  await contexto.route(
-    (u) => u.protocol.startsWith('http'),
-    (ruta) => (esLocal(ruta.request().url(), origen) ? ruta.continue() : ruta.abort()),
-  );
+  await bloquearExternas(contexto, origen);
+  vigilar(pagina, origen, r);
 
   const inicio = Date.now();
   try {

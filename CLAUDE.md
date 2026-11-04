@@ -81,4 +81,5 @@ Las fuentes están fuera de esta carpeta. En las etapas que las requieren, ejecu
 - `npm run validar`: valida `contenido/` (desde la etapa 1).
 - `npm run verificar`: compila, recorre las paradas con Playwright, guarda capturas e informe en `verificacion/`.
 - `npm run presentar`: versión compilada con vista principal y vista del presentador (desde la etapa 4).
+- `npm run respaldo`: capturas de cada parada y paso en `respaldo/index.html` (abre sin servidor) y notas en `respaldo/notas.md` (desde la etapa 4).
 - `npm run build:unico`: archivo HTML único de respaldo, abre sin servidor.

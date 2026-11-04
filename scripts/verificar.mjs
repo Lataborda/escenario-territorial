@@ -10,6 +10,9 @@ import { revisarTerreno, huellaDe, fallasTerreno, seccionTerreno } from './lib/r
 import { revisarRecorrido, CARPETA_PARADAS } from './lib/revisar-paradas.mjs';
 import { revisarTransiciones, revisarLegibilidad, VENTANA_PEQUENA } from './lib/revisar-legibilidad.mjs';
 import { fallasRecorrido, seccionRecorrido } from './lib/informe-recorrido.mjs';
+import { revisarPresentador } from './lib/revisar-presentador.mjs';
+import { revisarRespaldo } from './lib/revisar-respaldo.mjs';
+import { fallasPresentador, seccionPresentador } from './lib/informe-presentador.mjs';
 import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -89,7 +92,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, recorrido, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación',
     '',
@@ -107,6 +110,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, recorrido,
     ...seccionVista('Transiciones (vista compilada, sin #captura)', recorrido.vistas.transiciones),
     ...seccionVista('Ventana de 1280×720 (vista compilada)', recorrido.vistas.legibilidad),
     ...seccionRecorrido(recorrido),
+    ...seccionPresentador(presentador, respaldo),
     '## Contenido',
     '',
     `- JSON válidos: ${contenido.validos} de ${CONTENIDO.length}`,
@@ -205,7 +209,11 @@ async function principal() {
     };
     await rm(repeticion, { force: true });
     const recorrido = await revisarNavegacion(navegador, url, origen, contenido);
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, recorrido, version: navegador.version() };
+    avisar('Revisando la vista del presentador ...');
+    const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
+    avisar('Revisando el respaldo en imágenes ...');
+    const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -217,6 +225,7 @@ async function principal() {
     ...fallasTerreno(resultado.terreno),
     ...Object.entries(resultado.recorrido.vistas).flatMap(([nombre, v]) => fallasDe(`Vista ${nombre}`, v)),
     ...fallasRecorrido(resultado.recorrido),
+    ...fallasPresentador(resultado.presentador, resultado.respaldo),
     ...contenido.errores.map((e) => `Contenido: ${e}`),
   ];
   const informe = escribirInforme({

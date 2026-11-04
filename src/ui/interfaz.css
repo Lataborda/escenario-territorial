@@ -1,17 +1,6 @@
 /* Interfaz sobre la escena. Unidades en rem: 1 rem = 24 px a 1920×1080 (src/estilos.css).
    Columna izquierda de 8 rem y ficha de 24 rem: src/escena/escena.js corre la vista 8 rem. */
 
-:root {
-  --panel: rgba(251, 249, 244, 0.94);
-  --borde: rgba(43, 42, 39, 0.14);
-  --texto-suave: #55524c;
-  --acento: #2f5d50;
-  --acento-suave: #dfe8e3;
-  --pendiente: #8a5a12;
-  --sombra: 0 0.15rem 0.6rem rgba(43, 42, 39, 0.12);
-  --margen: 0.75rem;
-}
-
 .interfaz {
   position: fixed;
   inset: 0;

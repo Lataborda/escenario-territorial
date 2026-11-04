@@ -1,0 +1,194 @@
+/* Paneles de la columna derecha del presentador: cronómetro, siguiente, controles e índice. */
+
+/* Cronómetro */
+.crono-total {
+  font-family: var(--tipo-titulo);
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.crono-estado,
+.crono-metas {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.crono-botones {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.4rem 0;
+}
+
+.crono-tabla {
+  width: 100%;
+  margin-top: 0.4rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.crono-tabla th,
+.crono-tabla td {
+  padding: 0.1rem 0.3rem;
+  text-align: right;
+}
+
+.crono-tabla th:first-child {
+  text-align: left;
+}
+
+.crono-tabla thead th {
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  font-weight: 500;
+}
+
+.crono-tabla tbody tr.actual {
+  background: var(--acento-suave);
+  font-weight: 600;
+}
+
+.crono-tabla tfoot th,
+.crono-tabla tfoot td {
+  border-top: 1px solid var(--borde);
+  padding-top: 0.25rem;
+}
+
+[data-desvio='atrasado'] td:last-child,
+td[data-desvio='atrasado'] {
+  color: var(--pendiente);
+}
+
+[data-desvio='excedido'] td:last-child,
+td[data-desvio='excedido'] {
+  color: var(--excedido);
+  font-weight: 600;
+}
+
+/* Siguiente */
+.siguiente-titulo {
+  margin: 0;
+  font-weight: 600;
+}
+
+.siguiente-datos {
+  margin: 0.1rem 0 0;
+  color: var(--texto-suave);
+}
+
+.presentador[data-retraso='si'] .siguiente.saltable {
+  border-color: var(--excedido);
+}
+
+.omitir {
+  margin-top: 0.4rem;
+}
+
+/* Controles */
+.boton {
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.3rem;
+  background: #fff;
+  color: var(--texto);
+  font: inherit;
+  cursor: pointer;
+}
+
+.boton:hover:not(:disabled) {
+  border-color: var(--acento);
+}
+
+.boton:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.boton[aria-pressed='true'],
+.boton.actual,
+.crono-marcha {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #fff;
+}
+
+.cronometro[data-marcha='si'] .crono-marcha {
+  background: #fff;
+  color: var(--texto);
+  border-color: var(--borde);
+}
+
+.controles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.controles-avance,
+.controles-momentos,
+.controles-modos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.controles-avance .boton {
+  flex: 1;
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+/* Índice */
+.indice-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.indice-momento {
+  margin: 0.5rem 0 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.indice-parada button {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr auto;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.15rem 0.3rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.indice-parada button:hover {
+  background: var(--acento-suave);
+}
+
+.indice-parada.actual button {
+  background: var(--acento);
+  color: #fff;
+}
+
+.indice-id,
+.indice-min {
+  font-variant-numeric: tabular-nums;
+}
+
+.indice-parada.saltable .indice-titulo::after {
+  content: ' · saltable';
+  color: var(--texto-suave);
+  font-size: 0.85em;
+}
+
+.presentador[data-retraso='si'] .indice-parada.saltable:not(.actual) .indice-titulo::after {
+  color: var(--excedido);
+  font-weight: 600;
+}

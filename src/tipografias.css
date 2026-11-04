@@ -1,0 +1,53 @@
+/* Tipografías locales y colores base, compartidos por la vista principal y la del presentador.
+   Tipografías (licencia SIL OFL 1.1, ver src/fuentes/). Subconjunto latino: cubre el español. */
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fuentes/ibm-plex-sans-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fuentes/ibm-plex-sans-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./fuentes/ibm-plex-sans-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fuentes/fraunces-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./fuentes/fraunces-latin-600-normal.woff2') format('woff2');
+}
+
+:root {
+  --fondo: #e8e4dc;
+  --texto: #2b2a27;
+  --tipo-texto: 'IBM Plex Sans', system-ui, sans-serif;
+  --tipo-titulo: 'Fraunces', Georgia, serif;
+
+  --panel: rgba(251, 249, 244, 0.94);
+  --borde: rgba(43, 42, 39, 0.14);
+  --texto-suave: #55524c;
+  --acento: #2f5d50;
+  --acento-suave: #dfe8e3;
+  --pendiente: #8a5a12;
+  --sombra: 0 0.15rem 0.6rem rgba(43, 42, 39, 0.12);
+  --margen: 0.75rem;
+}

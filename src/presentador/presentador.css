@@ -1,0 +1,190 @@
+/* Vista del presentador: pantalla del portátil, no se comparte. Colores base en src/tipografias.css. */
+
+:root {
+  --excedido: #a3341f;
+}
+
+html {
+  font-size: clamp(15px, 1.2vw, 20px);
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--tipo-texto);
+}
+
+.presentador {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 0.6rem;
+  gap: 0.6rem;
+}
+
+.barra {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0.8rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  color: var(--texto-suave);
+}
+
+.conexion::before {
+  content: '';
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: var(--excedido);
+}
+
+.presentador[data-conexion='si'] .conexion::before {
+  background: var(--acento);
+}
+
+.presentador[data-conexion='no'] .conexion {
+  color: var(--excedido);
+  font-weight: 600;
+}
+
+.rejilla {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 0.6rem;
+}
+
+.columna {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 0;
+}
+
+.panel {
+  padding: 0.7rem 0.9rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-sizing: border-box;
+}
+
+.actual {
+  overflow: auto;
+}
+
+.indice {
+  flex: 1;
+  min-height: 6rem;
+  overflow: auto;
+}
+
+.rotulo {
+  margin: 0.9rem 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.panel > .rotulo:first-child {
+  margin-top: 0;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 0 0.35rem;
+  border: 1px solid var(--pendiente);
+  border-radius: 0.2rem;
+  color: var(--pendiente);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Parada actual */
+.actual-cabeza {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.actual-titulo {
+  margin: 0;
+  font-family: var(--tipo-titulo);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.actual-datos {
+  margin: 0.3rem 0 0;
+  color: var(--texto-suave);
+}
+
+.actual-pasos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.actual-pasos li {
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.3rem;
+}
+
+.actual-pasos li.actual {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #fff;
+}
+
+.actual-notas {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.45;
+}
+
+.actual-ficha {
+  margin: 0;
+  color: var(--texto-suave);
+  line-height: 1.4;
+}
+
+.actual-fuentes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.actual-fuentes li {
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+}
+
+.actual-fuentes .referencia {
+  display: block;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.actual-fuentes li:not(.pendiente) .etiqueta {
+  border-color: var(--acento);
+  color: var(--acento);
+}

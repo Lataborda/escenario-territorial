@@ -13,6 +13,7 @@ import { crearHash } from './navegacion/hash.js';
 import { crearSeleccion } from './navegacion/seleccion.js';
 import { revisarTrayectorias, desvioBloque } from './navegacion/pruebas.js';
 import { crearInterfaz } from './ui/interfaz.js';
+import { crearSincronia } from './presentador/sincronia.js';
 
 const TIPOGRAFIAS = [
   '400 24px "IBM Plex Sans"',
@@ -84,6 +85,8 @@ async function iniciar() {
   if (!irA(parametros.parada ?? PARADAS[0].id, { paso: parametros.paso, instantanea: true })) {
     irA(PARADAS[0].id, { instantanea: true });
   }
+  // Vista del presentador (npm run presentar): publica el estado y recibe órdenes.
+  montar('presentador', crearSincronia);
 
   escena.iniciar();
   await escena.primerCuadro();
