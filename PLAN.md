@@ -357,20 +357,30 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
   - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
 - Prompt de arranque: `Etapa 5.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
-- División (2026-11-04): 5.c.a, vegetación y caña (las dos primeras tareas y los tres primeros criterios; del cuarto, los tallos cercanos y las instancias) y 5.c.b, luz y posproceso (viento, sombras suaves, oclusión ambiental, desenfoque de miniatura, legibilidad y medición en el MacBook Air).
+- División (2026-11-04): 5.c.a, vegetación y caña (las dos primeras tareas y los tres primeros criterios; del cuarto, los tallos cercanos y las instancias) y 5.c.b, caña con hojas (observación de Alejandro sobre la 5.c.a) y luz y posproceso (viento, sombras suaves, oclusión ambiental, desenfoque de miniatura, legibilidad y medición en el MacBook Air).
 
-## Etapa 5.c.b. Luz y posproceso
+## Etapa 5.c.b. Caña con hojas y luz de diorama
 
-- Tamaño: mediano. Fuentes: no. Origen: división de la 5.c (ver arriba).
-- Lecturas: `src/escena/escena.js` (luces, sombras y ciclo de dibujo); `src/coberturas/instancias.js`, `arboles.js` y `especies.js` (materiales y sombra por nivel); `src/coberturas/superficie.js` (sombreador de las teselas, para sumar el viento con el mismo método).
-- Objetivo: luz de diorama sobre la vegetación de la 5.c.a.
-- Trabajo:
+- Tamaño: grande. Fuentes: no. Origen: división de la 5.c y observación de Alejandro del 2026-11-04 sobre la caña de la 5.c.a (las espigas parecen mazorcas y el lote parece un monocultivo de maíz; la tapa del bloque sigue viéndose como una mesa verde lisa con un borde lineal). Si la sesión no alcanza, se divide: primero la caña (5.c.b) y después la luz y el posproceso (5.c.c).
+- Referencia: `referencias/cana-mata.webp` (esquema de una mata de caña aportado por Alejandro): seis a diez tallos rectos y algo inclinados, con nudos marcados y tonos de verde amarillento a morado; hojas largas, angostas y en arco desde el tercio superior de cada tallo, con las puntas caídas; hojas secas sueltas en la base; sin flores.
+- Lecturas: `src/coberturas/cana.js`, `superficie.js`, `teselas.js` y `arboles.js` (`matasCana`) de la 5.c.a; `src/escena/escena.js` (luces, sombras y ciclo de dibujo); `instancias.js`, `arboles.js` y `especies.js` (materiales y sombra por nivel).
+- Objetivo: un lote de caña que se lea como caña a toda escala, solo con hojas, y luz de diorama sobre la vegetación.
+- Trabajo, caña (primero):
+  - Sin espigas, flores ni formas de mazorca: retirar la malla `espiga` de `cana.js` y las manchas de espiga del sombreador de la tapa. La caña madura se distingue por su altura y su verde más profundo.
+  - Mata de caña según la referencia, en el nivel cercano y en la franja de borde: varios tallos con nudos (tramos de `arco`) y hojas largas en arco con puntas caídas, verde claro arriba y más oscuro abajo, puntas algo amarillas; sin espiga ni mazorca, para diferenciarla del maíz de la huerta.
+  - Ninguna superficie plana a la vista: la tapa del bloque baja bajo el dosel y queda oscura (sombra entre los tallos), y lo que se ve arriba es una masa de hojas con silueta irregular. En el borde del lote las hojas sobresalen y caen sobre la cara de tallos: sin línea recta verde. A distancia, la tapa muestra textura de hojas en hileras (sin manchas claras) y altura irregular.
+  - Edades: se conservan por altura y color, sin espigas. Si en la revisión no aportan, quedan dos (en crecimiento y madura) o una sola; las fracciones siguen en `escenarios.json` (`edades_cana`).
+  - Rendimiento: Alejandro informó que el archivo HTML de la 5.c.a corre con fluidez en su computadora. Hay margen para más matas cercanas (cupo de `cana.js`) y para la mata de la referencia, con el modo liviano como respaldo.
+- Trabajo, luz y posproceso (después, o en la 5.c.c):
   - Viento leve en las copas, las hojas y las matas de caña (sombreador de vértices, amplitud pequeña, sin costo de CPU).
   - Sombras suaves (PCF suave o VSM) y oclusión ambiental (SSAO o GTAO), con la relación de píxeles y el modo liviano como límites. Revisar la sombra por nivel de detalle de los rodales densos (`sombra: 'cerca'` en `arboles.js`).
   - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
-  - Rendimiento: medir en el MacBook Air la vista general (1,87 millones de triángulos en S0 al cerrar la 5.c.a) y las escalas de finca, planta y suelo; si no alcanza, bajar los umbrales de detalle (`arboles.js`, `especies.js`) o el cupo de la caña cercana (`cana.js`).
+  - Rendimiento: medir los cuadros por segundo en el MacBook Air en la vista general (1,87 millones de triángulos en S0 al cerrar la 5.c.a) y a escala de finca, planta y suelo; si no alcanza, bajar los umbrales de detalle (`arboles.js`, `especies.js`) o el cupo de la caña cercana (`cana.js`).
 - Criterios de aceptación:
-  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento y las sombras.
+  - [ ] La caña se reconoce como caña a escala de suelo, planta y finca: matas de tallos con nudos y hojas largas en arco, como en la referencia; ninguna espiga, flor o forma de mazorca; distinta del maíz de la huerta.
+  - [ ] Ningún plano verde liso a la vista en los lotes de caña, ni la línea recta del borde: el lote se ve como una masa de hojas de silueta irregular, también en la vista general (hileras y altura irregular sin manchas claras).
+  - [ ] S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa.
+  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y las matas cercanas de la caña.
   - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
   - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
 - Prompt de arranque: `Etapa 5.c.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`

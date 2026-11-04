@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-- Etapa siguiente: Etapa 5.c.b. Luz y posproceso (viento, sombras suaves, oclusión ambiental, desenfoque de miniatura, legibilidad y medición en el MacBook Air). La 5.c se dividió en 5.c.a y 5.c.b el 2026-11-04 (`PLAN.md`).
+- Etapa siguiente: Etapa 5.c.b. Caña con hojas y luz de diorama: primero la caña según la observación de Alejandro (solo hojas, sin espigas ni tapa plana, mata de la referencia `referencias/cana-mata.webp`), después viento, sombras suaves, oclusión ambiental, desenfoque de miniatura y legibilidad (5.c.c si no alcanza). La 5.c se dividió el 2026-11-04 (`PLAN.md`).
 - Última etapa cerrada: Etapa 5.c.a, vegetación y caña (2026-11-04). `npm run validar` y `npm run verificar` correctos.
 - Estilo visual: decisión D5 «realismo de maqueta» aplicada a toda la vegetación desde la 5.c.a (ningún material facetado en la vegetación; las teselas conservan caras planas). Falta la luz de diorama (5.c.b).
 - Caña (5.c.a): lotes de tres edades fijas por lote (recién cortado, en crecimiento, maduro; fracciones ilustrativas en `escenarios.json`, `edades_cana`), tapa irregular, hileras con el rumbo de cada lote, espigas en la caña madura y caras de tallos en los bordes (`superficie.js`); matas instanciadas cerca de la cámara (dosel, tallos de borde y espigas) por celda, con cupo (`cana.js`).
@@ -13,7 +13,7 @@
 - Presentación: `npm run presentar` sirve la versión compilada en el puerto 4320 y abre la vista principal y `presentador.html` (notas, siguiente, cronómetro por momento con desvío, fuentes completas, controles e índice; sincronía por BroadcastChannel). `npm run respaldo` genera `respaldo/index.html` (34 imágenes de 1920×1080, abre sin servidor) y `respaldo/notas.md`.
 - Contenido: 26 paradas en borrador; 68 localizadores y 20 datos por verificar en `verificacion/pendientes-de-fuente.md`, para cerrar en una sesión local (etapa 14 a más tardar).
 - Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26, vínculos de resultados de la teoría de cambio, proporciones de coberturas por escenario (plano y ladera), fracciones de edad de la caña, rótulos y colores de la leyenda, red vial y trama de la ciudad y las cabeceras, especies de la vegetación (5.c.a).
-- Rendimiento: Alejandro informó fluidez en el MacBook Air con la escena de la 5.a (0,9 millones de triángulos). Tras la 5.c.a (S0): 1,87 millones en la vista general, 2,6 a escala de finca, 3,7 a escala de planta y 4,5 en la caña a 70 unidades; 0,87 en modo liviano de cerca. Menos de 70 llamadas de dibujo. Falta medir en el equipo (tarea de la 5.c.b).
+- Rendimiento: Alejandro informó fluidez en el MacBook Air con la escena de la 5.a (0,9 millones de triángulos). Tras la 5.c.a (S0): 1,87 millones en la vista general, 2,6 a escala de finca, 3,7 a escala de planta y 4,5 en la caña a 70 unidades; 0,87 en modo liviano de cerca. Menos de 70 llamadas de dibujo. Alejandro informó que el archivo HTML de la 5.c.a corre con fluidez en su computadora (2026-11-04); falta la cifra de cuadros por segundo (tarea de la 5.c.b).
 - Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor) y respaldo en imágenes (`respaldo/`), regenerados al cerrar la 5.c.a.
 - Hito A (recorrido mínimo): completo en lo técnico; falta la prueba manual de Alejandro en videoconferencia (criterio de la etapa 4).
 - Hito B (biofísica, etapas 5 a 8): en curso.
@@ -373,6 +373,14 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Pendientes heredados de la 5.b y la 3.b.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 5.c.b. Luz y posproceso.
+
+### 2026-11-04 · Ajuste del plan: caña solo con hojas
+
+- Observación de Alejandro sobre la 5.c.a, con dos capturas y un esquema de referencia: las espigas de la caña madura parecen mazorcas y el lote se lee como un monocultivo de maíz; la tapa del bloque sigue viéndose como una mesa verde lisa con un borde lineal. Pide que la caña se vea solo con sus hojas, fácil de reconocer como caña y distinta del maíz (sin mazorca ni flores). Las edades quedan a criterio: se conservan por altura y color, sin espigas, hasta su revisión.
+- Rendimiento: el archivo HTML descargado corre con fluidez en su computadora, sin trabas.
+- Hecho: `PLAN.md`, etapa 5.c.b reescrita («Caña con hojas y luz de diorama»): la caña va primero (sin espigas, mata de tallos con nudos y hojas en arco según la referencia, tapa bajo el dosel, bordes con hojas que caen sobre la cara de tallos, textura de hojas a distancia) y la luz y el posproceso después, con división en 5.c.c si no alcanza. Dos criterios nuevos de aceptación. Esquema de referencia guardado en `referencias/cana-mata.webp`.
+- Nota: una de las capturas muestra árboles facetados; parece de una versión anterior a la 5.c.a (la vista previa actual ya no los tiene).
+- Siguiente: Etapa 5.c.b. Caña con hojas y luz de diorama.
 
 ## Plantilla de entrada
 
