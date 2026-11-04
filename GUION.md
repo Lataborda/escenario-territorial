@@ -327,6 +327,6 @@ Responder antes de la etapa 1. Sin respuesta, Claude Code aplica la opción reco
 | D2 | Nombres reales en pantalla (El Hatico, REDMAC, MercUN, Ayacucho) | sí, como referencias rotuladas «esquema sin escala» |
 | D3 | Territorios étnicos | figuras genéricas hasta contar con fuente |
 | D4 | Curso hipotético y resultado de aprendizaje de la ficha de sesión | redactar con Alejandro en la etapa 1 |
-| D5 | Estilo visual | maqueta estilizada en bloque recortado |
+| D5 | Estilo visual | realismo de maqueta en bloque recortado (cambio del 2026-11-04, etapa 5.b; antes «maqueta estilizada») |
 | D6 | Número de paradas | 26; recortar las saltables si el ensayo excede 36 minutos |
 | D7 | Fecha y plataforma de la prueba | registrar en la bitácora al recibir la notificación |

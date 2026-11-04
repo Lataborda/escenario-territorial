@@ -20,6 +20,28 @@ function dibujables(unidades, asignaciones) {
   return unidades.filter((u) => u.teselado && [...asignaciones.values()].some((a) => alturaDe(a[u.indice]) !== OCULTA));
 }
 
+// Tesela de ladera: 3 × 3 vértices sobre los de la rejilla del terreno (paso 3) y la misma diagonal que su malla,
+// sin retiro: la lámina queda paralela al relieve a la distancia BASE. Paredes en dos tramos por lado.
+function construirRelieve(cx, cz, lados, vertice, pared, salida) {
+  const m = LADO / 2;
+  const v = [];
+  for (let b = 0; b < 3; b++) for (let a = 0; a < 3; a++) v.push(vertice(cx + (a - 1) * m, cz + (b - 1) * m, true));
+  for (let b = 0; b < 2; b++) {
+    for (let a = 0; a < 2; a++) {
+      const p00 = v[b * 3 + a];
+      const p10 = v[b * 3 + a + 1];
+      const p01 = v[(b + 1) * 3 + a];
+      const p11 = v[(b + 1) * 3 + a + 1];
+      salida.ind.push(p00, p01, p10, p10, p01, p11);
+    }
+  }
+  const [x0, x1, z0, z1] = [cx - m, cx + m, cz - m, cz + m];
+  if (lados.oeste) pared(x0, z0, x0, cz), pared(x0, cz, x0, z1);
+  if (lados.sur) pared(x0, z1, cx, z1), pared(cx, z1, x1, z1);
+  if (lados.este) pared(x1, z1, x1, cz), pared(x1, cz, x1, z0);
+  if (lados.norte) pared(x1, z0, cx, z0), pared(cx, z0, x0, z0);
+}
+
 // Vértices de una unidad: lámina superior por tesela y paredes en el borde de la unidad.
 function construirUnidad(u, { centros, unidadDe }, altura, salida) {
   const { columnas, filas } = centros;
@@ -47,6 +69,10 @@ function construirUnidad(u, { centros, unidadDe }, altura, salida) {
     const este = !misma(i + 1, j);
     const norte = !misma(i, j - 1);
     const sur = !misma(i, j + 1);
+    if (u.relieve) {
+      construirRelieve(cx, cz, { oeste, este, norte, sur }, vertice, pared, salida);
+      continue;
+    }
     const x0 = cx - LADO / 2 + (oeste ? RETIRO : 0);
     const x1 = cx + LADO / 2 - (este ? RETIRO : 0);
     const z0 = cz - LADO / 2 + (norte ? RETIRO : 0);

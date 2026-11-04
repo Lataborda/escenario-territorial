@@ -1,30 +1,24 @@
-// Unidades de cobertura sobre una rejilla de teselas de 6 unidades de escena: parcelas del plano y del
-// piedemonte, orillas de los cauces, celdas de montaña y reservas para módulos posteriores.
+// Unidades de cobertura sobre una rejilla de teselas de 6 unidades de escena: parcelas del plano, del piedemonte
+// y de la ladera campesina, orillas de los cauces, celdas de montaña y reservas para módulos posteriores.
 import { crearAzar, crearRuidos } from '../util/azar.js';
-import { ENTIDADES, ZONAS, aPlanoU, aPlanoV, aMundoX, aMundoZ, BORDE } from '../terreno/plano.js';
-import { trazarRios, medirDistancias, enPosicion } from '../terreno/hidrografia.js';
+import { ENTIDADES, ZONAS, aPlanoU, aPlanoV, aMundoX, aMundoZ } from '../terreno/plano.js';
+import { enPosicion } from '../terreno/hidrografia.js';
 import { SEMILLA } from '../terreno/relieve.js';
+import { obtenerVias } from '../vias/trazado.js';
 import { CLASES_POR_ZONA, ZONAS_CON_TESELAS, RESERVAS } from './tipos.js';
+import { LADO, rejillaTeselas } from './rejilla.js';
 
-export const LADO = 6; // lado de la tesela; múltiplo del paso del terreno (3)
-const MARGEN_CAUCE = 3; // el centro de una tesela queda al menos a esta distancia del borde del cauce
+export { LADO };
+
 const BANDA = { rio_cauca: 18, rio_tributario: 15 }; // ancho de la orilla desde el borde del cauce
 const BANDA_QUEBRADA = 11;
+const MARGEN_CAUCE = 3; // el centro de una tesela queda al menos a esta distancia del borde del cauce
 const LARGO_ORILLA = 36; // largo de cada unidad de orilla a lo largo del cauce
-const ALTO_PARCELA = [7, 8, 9]; // filas de teselas por banda de parcelas
-const ANCHO_PARCELA = [5, 10]; // columnas de teselas por parcela (mínimo y máximo)
+// Filas y columnas de teselas por parcela: grandes en el plano y el piedemonte, pequeñas en la ladera campesina.
+const CATASTROS = { grande: { alto: [7, 8, 9], ancho: [5, 10] }, pequeno: { alto: [2, 3, 3, 4], ancho: [2, 4] } };
+const CATASTRO_DE = { ladera: 'pequeno' };
 const CELDA = 5; // teselas por lado de una celda de montaña
 const MINIMO = 3; // teselas mínimas de una parcela
-const ALCANCE = 80; // distancia a los cauces que se mide
-
-// Rejilla de centros de teselas (misma interfaz que crearRejilla, para medirDistancias).
-function crearCentros() {
-  const columnas = Math.round((2 * BORDE.x) / LADO);
-  const filas = Math.round((2 * BORDE.z) / LADO);
-  const x0 = -BORDE.x + LADO / 2;
-  const z0 = -BORDE.z + LADO / 2;
-  return { paso: LADO, columnas, filas, total: columnas * filas, x0, z0, x: (i) => x0 + i * LADO, z: (j) => z0 + j * LADO };
-}
 
 // Zona con el mismo límite irregular que el color del terreno (src/terreno/colores.js).
 function crearZonificador() {
@@ -33,28 +27,6 @@ function crearZonificador() {
     const uz = u + 0.016 * detalle(v * 7.1, u * 3.3 + 11);
     return (ZONAS.find((z) => uz < z.hasta) ?? ZONAS[ZONAS.length - 1]).id;
   };
-}
-
-// Distancia de cada tesela al borde del cauce más cercano, con el río, el lado y la distancia a lo largo.
-function medirCauces(centros) {
-  const { total } = centros;
-  const borde = new Float32Array(total).fill(Infinity);
-  const rio = new Int16Array(total).fill(-1);
-  const posicion = new Float32Array(total);
-  const rios = trazarRios();
-  rios.forEach((r, k) => {
-    const { distancia, posicion: pos } = medirDistancias(centros, r, ALCANCE);
-    for (let t = 0; t < total; t++) {
-      if (distancia[t] === Infinity) continue;
-      const d = distancia[t] - enPosicion(r.muestras, pos[t], 'ancho') * 0.5;
-      if (d < borde[t]) {
-        borde[t] = d;
-        rio[t] = k;
-        posicion[t] = pos[t];
-      }
-    }
-  });
-  return { rios, borde, rio, posicion };
 }
 
 function claveOrilla(rios, cauces, t, x, z) {
@@ -80,16 +52,16 @@ function crearReservas() {
 }
 
 // Bandas de parcelas: filas de alto variable y columnas de ancho variable por banda.
-function crearCatastro(centros, azar) {
+function crearCatastro(centros, azar, { alto: ALTO, ancho: ANCHO }) {
   const fila = new Int16Array(centros.filas);
   const columnas = [];
   let j = 0;
   for (let b = 0; j < centros.filas; b++) {
-    const alto = ALTO_PARCELA[Math.floor(azar() * ALTO_PARCELA.length)];
+    const alto = ALTO[Math.floor(azar() * ALTO.length)];
     const col = new Int16Array(centros.columnas);
-    let i = Math.floor(azar() * ANCHO_PARCELA[1]) - ANCHO_PARCELA[1];
+    let i = Math.floor(azar() * ANCHO[1]) - ANCHO[1];
     for (let c = 0; i < centros.columnas; c++) {
-      const ancho = ANCHO_PARCELA[0] + Math.floor(azar() * (ANCHO_PARCELA[1] - ANCHO_PARCELA[0] + 1));
+      const ancho = ANCHO[0] + Math.floor(azar() * (ANCHO[1] - ANCHO[0] + 1));
       for (let k = Math.max(i, 0); k < Math.min(i + ancho, centros.columnas); k++) col[k] = c;
       i += ancho;
     }
@@ -101,13 +73,14 @@ function crearCatastro(centros, azar) {
 }
 
 // Clasifica cada tesela y agrupa por clave. Devuelve la rejilla, la unidad de cada tesela y las unidades.
-export function crearUnidades() {
-  const centros = crearCentros();
+// Las vías abren un corredor sin parcelas (src/vias/trazado.js).
+export function crearUnidades(altura) {
+  const { centros, cauces } = rejillaTeselas();
+  const vias = obtenerVias(altura).mascara;
   const zonaDe = crearZonificador();
-  const cauces = medirCauces(centros);
   const reservas = crearReservas();
   const azar = crearAzar(SEMILLA + 51);
-  const catastro = crearCatastro(centros, azar);
+  const catastros = Object.fromEntries(Object.entries(CATASTROS).map(([k, medidas]) => [k, crearCatastro(centros, azar, medidas)]));
   const grupos = new Map();
 
   for (let j = 0; j < centros.filas; j++) {
@@ -118,13 +91,14 @@ export function crearUnidades() {
       const zona = zonaDe(aPlanoU(x), aPlanoV(z));
       const clases = CLASES_POR_ZONA[zona] ?? [];
       const borde = cauces.borde[t];
-      if (borde < MARGEN_CAUCE) continue;
+      if (borde < MARGEN_CAUCE || vias[t]) continue;
       let g = null;
       const banda = cauces.rio[t] >= 0 ? BANDA[cauces.rios[cauces.rio[t]].id] ?? BANDA_QUEBRADA : 0;
       const reserva = reservas.find((r) => Math.hypot(x - r.x, z - r.z) < r.radio);
       if (clases.includes('orillas') && borde < banda) g = { clase: 'orillas', ...claveOrilla(cauces.rios, cauces, t, x, z) };
       else if (reserva) g = { clase: 'reservas', clave: `reserva:${reserva.entidad}`, reserva };
       else if (clases.includes('parcelas')) {
+        const catastro = catastros[CATASTRO_DE[zona] ?? 'grande'];
         const b = catastro.fila[j];
         g = { clase: 'parcelas', clave: `parcela:${zona}:${b}:${catastro.columnas[b][i]}` };
       } else if (clases.includes('celdas')) {
@@ -162,6 +136,7 @@ export function crearUnidades() {
       z: sz / g.teselas.length,
       area: g.teselas.length * LADO * LADO,
       teselado: g.clase === 'reservas' || ZONAS_CON_TESELAS.includes(zona),
+      relieve: zona === 'ladera', // teselas que siguen la rejilla del terreno
       cauce: g.cauce,
       rio: g.rio ?? null,
       entidad: g.reserva?.entidad ?? null,

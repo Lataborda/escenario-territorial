@@ -5,7 +5,7 @@
     "fuentes": ["lopez2025:verificar", "gliessman:cap. 20"]
   },
   "proporciones_coberturas": {
-    "nota": "Fracción del área de cada zona y clase de unidad (parcelas, orillas de cauces, celdas de montaña) que ocupa cada tipo de cobertura. Valores ilustrativos para el dibujo, sin calibración empírica. La suma no supera 1; el resto queda sin cobertura. En S1 la caña conserva la extensión de S0 y cerca de una cuarta parte pasa a manejo orgánico (P17: más del 20 % en la cuenca baja del Amaime). S2 repite S0 en esta etapa; el mosaico campesino de la ladera llega en la etapa 5.b.",
+    "nota": "Fracción del área de cada zona y clase de unidad (parcelas, orillas de cauces, celdas de montaña) que ocupa cada tipo de cobertura. Valores ilustrativos para el dibujo, sin calibración empírica. La suma no supera 1; el resto queda sin cobertura. En S1 la caña conserva la extensión de S0 y cerca de una cuarta parte pasa a manejo orgánico (P17: más del 20 % en la cuenca baja del Amaime). En la ladera, el mosaico campesino (café con sombrío, plátano, frutales, huertas y pastura) ocupa parcelas pequeñas; el café y el plátano prefieren la franja baja. S1 repite la ladera de S0. S2 conserva la matriz del plano de S0 y diversifica la ladera: las familias en red suman huertas y frutales y reducen la pastura. S3 lleva la diversificación más lejos, con silvopastoreo en la ladera y orillas con bosque.",
     "estado_texto": "borrador"
   },
   "escenarios": [
@@ -27,7 +27,10 @@
           "parcelas": { "cana": 0.45, "pastura": 0.47, "bosque_seco": 0.08 },
           "orillas": { "ripario": 0.3, "pastura": 0.7 }
         },
-        "ladera": { "orillas": { "ripario": 0.45 } },
+        "ladera": {
+          "parcelas": { "pastura": 0.4, "cafe": 0.3, "platano": 0.1, "frutales": 0.06, "huerta": 0.04 },
+          "orillas": { "ripario": 0.45, "pastura": 0.35, "cafe": 0.1, "platano": 0.05 }
+        },
         "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
         "paramo": { "celdas": { "paramo": 1 } }
       }
@@ -50,7 +53,10 @@
           "parcelas": { "cana": 0.34, "cana_organica": 0.11, "pastura": 0.47, "bosque_seco": 0.08 },
           "orillas": { "ripario": 0.3, "pastura": 0.7 }
         },
-        "ladera": { "orillas": { "ripario": 0.45 } },
+        "ladera": {
+          "parcelas": { "pastura": 0.4, "cafe": 0.3, "platano": 0.1, "frutales": 0.06, "huerta": 0.04 },
+          "orillas": { "ripario": 0.45, "pastura": 0.35, "cafe": 0.1, "platano": 0.05 }
+        },
         "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
         "paramo": { "celdas": { "paramo": 1 } }
       }
@@ -73,7 +79,10 @@
           "parcelas": { "cana": 0.45, "pastura": 0.47, "bosque_seco": 0.08 },
           "orillas": { "ripario": 0.3, "pastura": 0.7 }
         },
-        "ladera": { "orillas": { "ripario": 0.45 } },
+        "ladera": {
+          "parcelas": { "pastura": 0.24, "cafe": 0.3, "platano": 0.12, "frutales": 0.12, "huerta": 0.12 },
+          "orillas": { "ripario": 0.45, "pastura": 0.3, "cafe": 0.1, "platano": 0.1 }
+        },
         "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
         "paramo": { "celdas": { "paramo": 1 } }
       }
@@ -96,7 +105,10 @@
           "parcelas": { "cana_organica": 0.2, "silvopastoril": 0.35, "pastura": 0.1, "bosque_seco": 0.35 },
           "orillas": { "ripario": 0.95, "pastura": 0.05 }
         },
-        "ladera": { "orillas": { "ripario": 0.95 } },
+        "ladera": {
+          "parcelas": { "pastura": 0.06, "silvopastoril": 0.1, "cafe": 0.34, "platano": 0.12, "frutales": 0.18, "huerta": 0.14 },
+          "orillas": { "ripario": 0.95 }
+        },
         "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
         "paramo": { "celdas": { "paramo": 1 } }
       }

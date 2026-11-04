@@ -4,6 +4,8 @@ import { crearEscena } from './escena/escena.js';
 import { crearMaqueta } from './escena/maqueta.js';
 import { generarTerreno, ancla, altura, datosTerreno, revisarAnclasTerreno } from './terreno/terreno.js';
 import { crearCoberturas } from './coberturas/coberturas.js';
+import { crearVias } from './vias/vias.js';
+import { crearAsentamientos } from './asentamientos/asentamientos.js';
 import { leerParametros } from './parametros.js';
 import { obtener, cambiar, suscribir } from './estado.js';
 import { crearCamaraNavegacion } from './navegacion/camara.js';
@@ -89,6 +91,10 @@ async function iniciar() {
   // Coberturas después de la primera parada: su escenario se aplica sin transición.
   const coberturas = montar('coberturas', () => crearCoberturas({ altura, instantanea: parametros.captura }));
   if (coberturas) escena.agregar(coberturas.grupo);
+  const vias = montar('vías', () => crearVias({ altura }));
+  if (vias) escena.agregar(vias.malla);
+  const asentamientos = montar('asentamientos', () => crearAsentamientos({ altura }));
+  if (asentamientos) escena.agregar(asentamientos.grupo);
   // Vista del presentador (npm run presentar): publica el estado y recibe órdenes.
   montar('presentador', crearSincronia);
 
@@ -99,6 +105,8 @@ async function iniciar() {
     estadisticas: escena.estadisticas,
     terreno: datosTerreno,
     coberturas: () => coberturas,
+    vias: () => vias,
+    asentamientos: () => asentamientos,
     cambiarEscenario: (id) => cambiar({ escenario: id }),
     revisarAnclas: revisarAnclasTerreno,
     vista: (id, vista) => escena.mirar(ancla(id), vista),

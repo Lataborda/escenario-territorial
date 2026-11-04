@@ -2,20 +2,23 @@
 
 ## Estado actual
 
-- Etapa siguiente: Etapa 5.b. Mosaico campesino, ciudad y vías (segunda parte de la etapa 5).
-- Última etapa cerrada: Etapa 5.a (2026-11-04). `npm run validar` y `npm run verificar` correctos (unos 3 min 15 s en la nube).
+- Etapa siguiente: Etapa 5.c. Dirección de arte (registrada en `PLAN.md` al cerrar la 5.b, a pedido de Alejandro).
+- Última etapa cerrada: Etapa 5.b (2026-11-04). `npm run validar` y `npm run verificar` correctos (unos 6 min en la nube).
+- Estilo visual: decisión D5 cambiada a «realismo de maqueta» (2026-11-04, observación de Alejandro en el MacBook Air). La vegetación nueva de la 5.b ya la sigue; la de la 5.a sigue facetada hasta la 5.c.
 - Terreno: relieve de la cuenca en bloque recortado, ríos, límite departamental y 32 anclas sobre la superficie (`src/terreno/`). Exageración vertical con `#ex=` (1,5 a 3; 2 por defecto).
-- Coberturas (`src/coberturas/`): parcelas del plano y del piedemonte (caña en bloque, pastura, silvopastoreo, relictos de bosque seco, humedal), orillas de los cauces (bosque ripario y guadual), bosque altoandino y páramo con frailejones. Proporciones por escenario en `escenarios.json` (borrador), transición de 2 s al cambiar de escenario y leyenda arriba a la derecha. La ladera, la ciudad y las cabeceras esperan la etapa 5.b.
+- Coberturas (`src/coberturas/`): parcelas del plano y del piedemonte (caña en bloque, pastura, silvopastoreo, relictos de bosque seco, humedal), orillas (bosque ripario y guadual), bosque altoandino, páramo y, desde la 5.b, el mosaico campesino de la ladera en parcelas pequeñas (café con sombrío, plátano, frutales, huerta y pastura) con teselas paralelas al relieve. Especies del mosaico con racimos de hojas y dos niveles de detalle por distancia a la cámara (`instancias.js`, `detalle.js`, `especies.js`, `formas.js`, `mosaico.js`). Proporciones por escenario en `escenarios.json` (borrador); S2 diversifica la ladera y conserva la matriz del plano. Transición de 2 s y leyenda arriba a la derecha.
+- Vías y asentamientos (`src/vias/`, `src/asentamientos/`): 23 tramos trazados sobre el relieve (troncales, secundarias y veredales) con 7 puentes y corredor sin parcelas; ciudad de 45 manzanas y nueve cabeceras de 9 manzanas, con tejados y plaza. No cambian con el escenario.
 - Navegación: almacén `src/estado.js`; recorrido de 26 paradas con flechas, espacio y Av Pág/Re Pág, pasos, teclas 0 a 6, O, F, H, V, C y A; hash `#p=ID&paso=N`; botonera de siete escalas, ficha con fuente abreviada e indicador de momento (`src/navegacion/`, `src/ui/`).
 - Presentación: `npm run presentar` sirve la versión compilada en el puerto 4320 y abre la vista principal y `presentador.html` (notas, siguiente, cronómetro por momento con desvío, fuentes completas, controles e índice; sincronía por BroadcastChannel). `npm run respaldo` genera `respaldo/index.html` (34 imágenes de 1920×1080, abre sin servidor) y `respaldo/notas.md`.
 - Contenido: 26 paradas en borrador; 68 localizadores y 20 datos por verificar en `verificacion/pendientes-de-fuente.md`, para cerrar en una sesión local (etapa 14 a más tardar).
-- Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26, vínculos de resultados de la teoría de cambio, proporciones de coberturas por escenario y rótulos de la leyenda.
-- Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor), actualizada en la etapa 5.a. El respaldo en imágenes (`respaldo/`) es todavía el de la etapa 4: se regenera al cerrar la 5.b.
+- Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26, vínculos de resultados de la teoría de cambio, proporciones de coberturas por escenario (plano y ladera), rótulos y colores de la leyenda, red vial y trama de la ciudad y las cabeceras.
+- Rendimiento: Alejandro informó fluidez en el MacBook Air con la escena de la 5.a (0,9 millones de triángulos). Tras la 5.b: 1,5 millones en la vista general, 2,2 a escala de finca en la ladera y 2,7 a escala de planta (S0); hasta 4,2 en S3 a escala de planta; 0,65 en modo liviano de cerca. Menos de 50 llamadas de dibujo. Falta medir en el equipo.
+- Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor) y respaldo en imágenes (`respaldo/`), regenerados al cerrar la 5.b.
 - Hito A (recorrido mínimo): completo en lo técnico; falta la prueba manual de Alejandro en videoconferencia (criterio de la etapa 4).
 - Hito B (biofísica, etapas 5 a 8): en curso.
 - Fecha de la prueba oral: por confirmar. La notificación llega por correo con una antelación no inferior a tres días (Guía del Aspirante, literal E); el tema se informa dentro de los tres días siguientes (Res. 356 de 2026, art. 11).
 - Plataforma de videoconferencia: por confirmar.
-- Decisiones D1 a D7 (`GUION.md`, sección 12): resueltas el 2026-11-04. Alejandro aceptó las opciones recomendadas. D4 se redacta con Alejandro en la etapa 1; D7 se registra aquí al recibir la notificación.
+- Decisiones D1 a D7 (`GUION.md`, sección 12): resueltas el 2026-11-04 con las opciones recomendadas; D5 revisada el mismo día («realismo de maqueta»). D4 se redacta con Alejandro en la etapa 1; D7 se registra aquí al recibir la notificación.
 - Bloqueos: ninguno.
 
 ## Prompt de sesión
@@ -268,6 +271,39 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Pendientes heredados: prueba manual del presentador en videoconferencia, fuente `resumenes` en pantalla, encuadre de P17 y P21, lil-gui en modo autor.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 5.b. Mosaico campesino, ciudad y vías.
+
+### 2026-11-04 · Etapa 5.b. Mosaico campesino, ciudad y vías
+
+- Modo continuo: propuesta sin espera de aprobación. Sesión en la nube, sin fuentes.
+- Observación de Alejandro durante la sesión (MacBook Air): la escena se mueve con fluidez; pide más realismo en la vegetación porque los árboles se ven demasiado facetados. Decisión D5 cambiada de «maqueta estilizada» a «realismo de maqueta» (`GUION.md`, sección 12; `PLAN.md`, sección 2.2). La vegetación nueva de la 5.b se construye con especies reconocibles, copas con racimos de hojas, variación de color y niveles de detalle. La etapa 5.c (dirección de arte) queda registrada en `PLAN.md`: el mismo estilo en la vegetación de la 5.a (bosque ripario, guadua, caña, frailejón), viento leve, sombras suaves, oclusión ambiental y desenfoque de miniatura, con el modo liviano y la legibilidad en videoconferencia como límites.
+- Hecho:
+  - Vías (`src/vias/`): `red.js` (tres categorías y doce tramos de red entre entidades de `territorio.json` y puntos del borde), `trazado.js` (camino de menor costo sobre la rejilla de teselas, vecindad de 16, costo por pendiente al cuadrado, cruce de cauces y áreas que se rodean, reutilización de tramos; suavizado de Chaikin, recorte en la ciudad y las cabeceras, tramos de puente) y `vias.js` (cinta sobre el relieve, línea central discontinua en las troncales, tablero en arco leve con baranda; una malla). Las teselas bajo la calzada quedan fuera de las parcelas.
+  - Asentamientos (`src/asentamientos/`): `trama.js` (cuadrícula girada, plaza central con árboles, lotes en el perímetro de cada manzana, torres en el centro de la ciudad) y `asentamientos.js` (placas de calle y andén, edificaciones, tejados a dos aguas y árboles urbanos; tres mallas instanciadas).
+  - Mosaico campesino: la ladera tiene parcelas pequeñas (2 a 4 por 2 a 4 teselas) y cuatro tipos nuevos en `tipos.js` (café con sombrío, plátano, frutales, huerta). Teselas de ladera sobre los vértices de la rejilla del terreno y con su misma diagonal, paralelas al relieve. Criterios nuevos de asignación: `cota` (de abajo hacia arriba con ruido) y parámetros de escala y desfase en `manchas`.
+  - Especies (`formas.js`, `especies.js`): racimo de hojas (icosaedro con relieve, normales suaves y color por vértice), tallo, hoja plegada en arco que se seca en el borde, fruto, cono, caja y unión con oclusión simulada. Guamo de sombrío, cafeto con cerezas, plátano con racimo y bellota, cítrico con frutos, mango con brotes, era de hortalizas con seis tonos y maíz con espiga, cada uno en nivel «cerca» y «lejos».
+  - `instancias.js`: clase genérica de elementos instanciados (transición, modo liviano y dos niveles de detalle por celdas de 60 unidades). La vegetación de la 5.a (`vegetacion.js`) usa el mismo módulo. `detalle.js` mide la distancia de cada celda a la cámara antes de dibujar las teselas (primeras en el orden de dibujo). `mosaico.js` genera los puestos: hileras en curva de nivel, tresbolillo, eras alineadas y maíz por ciclos de hileras, guamo y plátano dispersos en el café. `rejilla.js` comparte la rejilla de teselas y las distancias a los cauces entre coberturas y vías.
+  - Contenido: proporciones de la ladera por escenario y nota de `proporciones_coberturas` (`escenarios.json`); nombres y rótulos de los cuatro tipos (`territorio.json`). Leyenda con forma propia para cada tipo nuevo.
+  - Verificación: `scripts/lib/revisar-paisaje.mjs` (ladera por escenario, diversificación de S2 y S3, niveles de detalle en la vista general, a escala de finca y de planta, modo liviano de cerca, llamadas de dibujo por vista, vías y asentamientos, capturas `mosaico-cerca.jpg` y `ciudad.jpg`); tiempos de generación por parte; la huella de determinismo incluye vías y asentamientos.
+  - `PLAN.md`: etapa 5.c.
+- Decisiones:
+  - Ladera (valores ilustrativos, borrador): S0 y S1 con pastura 0,40, café 0,30, plátano 0,10, frutales 0,06 y huerta 0,04 en las parcelas; S2 con pastura 0,24, café 0,30, plátano 0,12, frutales 0,12 y huerta 0,12 (las familias en red diversifican); S3 con pastura 0,06, silvopastoreo 0,10, café 0,34, plátano 0,12, frutales 0,18 y huerta 0,14. Orillas de ladera con ripario 0,45 en S0 a S2 y 0,95 en S3. El café y el plátano ocupan la franja baja de la ladera; las huertas, puntos dispersos; los frutales, manchas.
+  - S2 conserva la matriz del plano de S0: la territorialización en red se ve en la ladera y, en etapas posteriores, en mercados y vínculos.
+  - Umbrales de detalle (distancia de la cámara a la celda): guamo 480; cítrico y mango 420; plátano 400; eras y maíz 220; cafeto 200. A escala de finca (cámara a 450) solo la parte cercana del encuadre pasa a detalle; a escala de cuenca, territorio y región todo queda simple. El modo liviano fuerza el nivel simple.
+  - Las nueve cabeceras se dibujan en todos los escenarios; CAB8 y CAB9 existen como pueblos y lo que se suma en S2 es su mercado. Las vías y los asentamientos no cambian con el escenario.
+  - Árboles urbanos en el nivel simple del guamo (pequeños en pantalla). La vegetación de la 5.a conserva su estilo hasta la 5.c.
+- Criterios de aceptación (etapa 5 completa):
+  - En S0 la matriz de caña domina el plano y los relictos se ven aislados: cumplido (caña en el 84 % del plano; 6 de 8 relictos aislados, ninguno contiguo).
+  - El cambio de escenario modifica las coberturas sin cortes: cumplido (transiciones a S1, S3 y S2 con 76, 15.357 y 10.339 elementos, todos a medio camino en algún cuadro; estado final igual a la carga directa; salto máximo de 0,023 por cuadro a 60 cuadros por segundo). La fluidez se juzga en el equipo.
+  - Menos de 200 llamadas de dibujo: cumplido (36 en la vista general, 44 a 48 de cerca, 23 en liviano). 50 cuadros por segundo: pendiente de medir en el MacBook Air con la escena de la 5.b.
+- Verificación: correcto. Cero errores de consola y cero solicitudes externas en todas las cargas; generación de coberturas y vías en unos 500 ms; archivo único de 928 kB; unos 6 min en total. Con la escena de la 5.b, SwiftShader tarda hasta 2 s por cuadro con sombras: una transición de coberturas alcanzó a pasar sin cuadro intermedio y un vuelo midió más de 3 s. Corrección: las transiciones de escenario y los vuelos de cámara se miden en modo liviano (la prueba revisa la animación, no el rendimiento), y la holgura de los vuelos es el intervalo máximo entre cuadros medido durante el vuelo, como ya se hacía con las coberturas.
+- Pendientes:
+  - Etapa 5.c: dirección de arte (ver `PLAN.md`).
+  - MacBook Air: cuadros por segundo en la vista general, a escala de finca en la ladera (P04, P23) y a escala de planta, con y sin modo liviano. Si no alcanza, bajar los umbrales de detalle en `especies.js`.
+  - Revisión de Alejandro: proporciones de la ladera, rótulos y colores nuevos de la leyenda, red vial (`src/vias/red.js`), trama de la ciudad y las cabeceras.
+  - Etapa 6: reemplazar el silvopastoreo provisional de F1 por la finca; las vías veredales ya llegan a F2 y F3.
+  - Pendientes heredados: prueba manual del presentador en videoconferencia, fuente `resumenes` en pantalla, encuadre de P17 y P21, lil-gui en modo autor.
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 5.c. Dirección de arte.
 
 ## Plantilla de entrada
 

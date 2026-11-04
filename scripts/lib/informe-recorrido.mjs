@@ -42,7 +42,7 @@ export function seccionRecorrido({ recorrido: r, transiciones: t, legibilidad: l
   if (!r) return ['## Recorrido', '', '- Sin resultados', ''];
   const p = r.paradas;
   const tr = resumenTrayectorias(r.trayectorias);
-  const m = (x) => (x ? `declarada ${x.declarada} s, medida ${x.medida} s` : 'sin datos');
+  const m = (x) => (x ? `declarada ${x.declarada} s, medida ${x.medida} s (intervalo máximo entre cuadros ${x.intervalo} s)` : 'sin datos');
   return [
     '## Recorrido',
     '',
@@ -52,7 +52,7 @@ export function seccionRecorrido({ recorrido: r, transiciones: t, legibilidad: l
     `- Teclas: 0 a 6 ${si(r.teclas?.momentos)}; O ${si(r.teclas?.libre)}; H ${si(r.teclas?.interfaz)}; V ${si(r.teclas?.liviano)}`,
     `- Tecla C: ${si(r.teclaC?.valido)}, \`${r.teclaC?.texto}\`; desvío al aplicarlo ${r.teclaC?.desvio}`,
     `- Botonera: ${si(r.botonera)}; clic en una finca: ${si(r.clic)}`,
-    `- Transiciones: entre paradas ${m(t?.parada)}; botonera ${m(t?.botonera)}; correctas ${si(t?.correcto)}`,
+    `- Transiciones en modo liviano: entre paradas ${m(t?.parada)}; botonera ${m(t?.botonera)}; correctas ${si(t?.correcto)}`,
     `- Trayectorias muestreadas: ${tr.tramos} tramos (${tr.moviles} con movimiento); razón máxima entre paso mayor y paso medio ${tr.razon} (límite ${RAZON_MAXIMA}); extremos exactos ${si(tr.extremos)}`,
     `- Hash directo \`#p=P14&paso=2\`: ${si(l?.hashDirecto)}`,
     `- Fichas a 1280×720: legibles ${l?.legibles} de ${l?.total} (sin desborde, dentro de la ventana, sin superposición, letra ≥ 16 px); letra mínima ${l?.letra} px; ficha más alta ${l?.mayor?.id} (${l?.mayor?.alto} px de 720); captura \`capturas/${l?.captura}\``,

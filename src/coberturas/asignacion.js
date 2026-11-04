@@ -8,7 +8,7 @@ import { ASIGNACION, TIPOS } from './tipos.js';
 
 export const LISTA_TIPOS = Object.keys(TIPOS);
 export const NINGUNA = 255;
-const INDICE = new Map(LISTA_TIPOS.map((t, i) => [t, i]));
+export const INDICE = new Map(LISTA_TIPOS.map((t, i) => [t, i]));
 
 // Semilla numérica estable a partir de un texto.
 function semillaDe(texto) {
@@ -60,7 +60,8 @@ function crearCriterios(altura) {
     altitud: (lista) => porClave(lista, (u) => -altura(u.x, u.z)),
     // La caña prefiere el plano abierto, lejos del piedemonte.
     occidente: (lista) => porClave(lista, (u) => u.x + 70 * ruidos.occidente(u.x / 160, u.z / 160)),
-    manchas: (lista) => porClave(lista, (u) => ruidos.manchas(u.x / 230, u.z / 230)),
+    manchas: (lista, { escala = 230, desfase = 0 }) => porClave(lista, (u) => ruidos.manchas(u.x / escala + desfase, u.z / escala)),
+    cota: (lista, { ruido = 0, desfase = 0 }) => porClave(lista, (u) => altura(u.x, u.z) + ruido * ruidos.manchas(u.x / 120 + desfase, u.z / 120)),
     azar: (lista, regla, azar) => barajar(lista, azar),
   };
 }

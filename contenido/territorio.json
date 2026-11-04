@@ -63,7 +63,11 @@
       { "id": "humedal", "nombre": "Humedal", "rotulo": "Humedal" },
       { "id": "ripario", "nombre": "Bosque ripario y guadual", "rotulo": "Ripario y guadual" },
       { "id": "bosque_altoandino", "nombre": "Bosque altoandino", "rotulo": "Bosque altoandino" },
-      { "id": "paramo", "nombre": "Páramo", "rotulo": "Páramo" }
+      { "id": "paramo", "nombre": "Páramo", "rotulo": "Páramo" },
+      { "id": "cafe", "nombre": "Café con sombrío", "rotulo": "Café con sombrío" },
+      { "id": "platano", "nombre": "Plátano", "rotulo": "Plátano" },
+      { "id": "frutales", "nombre": "Frutales", "rotulo": "Frutales" },
+      { "id": "huerta", "nombre": "Huerta", "rotulo": "Huerta" }
     ]
   },
   "entidades": [

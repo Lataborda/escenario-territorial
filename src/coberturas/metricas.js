@@ -1,4 +1,5 @@
-// Métricas de una asignación, para la verificación: proporción de cada tipo en el plano y aislamiento de relictos.
+// Métricas de una asignación, para la verificación: proporción de cada tipo en el plano y en la ladera, y
+// aislamiento de relictos.
 import { LADO } from './unidades.js';
 import { tipoDe } from './asignacion.js';
 
@@ -7,12 +8,12 @@ const BOSQUE = ['bosque_seco', 'ripario'];
 
 const redondear = (x, d = 3) => Number(x.toFixed(d));
 
-// Área de cada tipo en las parcelas y orillas del plano.
-function proporcionesPlano(unidades, asignacion) {
+// Área de cada tipo en las parcelas y orillas de una zona.
+function proporciones(unidades, asignacion, zona) {
   const area = {};
   let total = 0;
   for (const u of unidades) {
-    if (u.zona !== 'plano' || u.clase === 'celdas' || u.clase === 'reservas') continue;
+    if (u.zona !== zona || u.clase === 'celdas' || u.clase === 'reservas') continue;
     const t = tipoDe(asignacion[u.indice]) ?? 'ninguna';
     area[t] = (area[t] ?? 0) + u.area;
     total += u.area;
@@ -53,10 +54,11 @@ export function extensionCana(unidades, asignacion) {
 }
 
 export function medirAsignacion(datos, asignacion) {
-  const proporciones = proporcionesPlano(datos.unidades, asignacion);
+  const plano = proporciones(datos.unidades, asignacion, 'plano');
   return {
-    proporciones,
-    cana: redondear((proporciones.cana ?? 0) + (proporciones.cana_organica ?? 0)),
+    proporciones: plano,
+    ladera: proporciones(datos.unidades, asignacion, 'ladera'),
+    cana: redondear((plano.cana ?? 0) + (plano.cana_organica ?? 0)),
     aislamiento: aislamiento(datos, asignacion),
   };
 }

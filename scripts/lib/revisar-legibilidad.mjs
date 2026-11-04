@@ -4,32 +4,54 @@ import { irPorHash, leerFicha, estado, pausarDibujo, dibujarCuadro } from './rev
 
 export const VENTANA_PEQUENA = { width: 1280, height: 720 };
 const LETRA_MINIMA = 16; // 24 px a 1920×1080 equivalen a 16 px a 1280×720
-const HOLGURA_S = 0.6; // el vuelo termina en el primer cuadro tras su duración
+const HOLGURA_S = 0.6; // el vuelo termina en el primer cuadro tras su duración: holgura de un intervalo entre cuadros
 
 const esperarFin = (pagina) =>
   pagina.waitForFunction(() => !document.documentElement.dataset.transicion, null, { timeout: 15000 });
 
 // El vuelo empieza al procesar la tecla o el clic; con render por software puede terminar antes de la
 // consulta siguiente, por eso se compara el registro del último vuelo antes y después de la acción.
+// También registra el intervalo máximo entre cuadros durante el vuelo (requestAnimationFrame).
 async function medir(pagina, accion) {
-  const antes = await pagina.evaluate(() => window.escenario.ultimaTransicion()?.inicio ?? null);
+  const antes = await pagina.evaluate(() => {
+    const r = { ultimo: performance.now(), maximo: 0, activo: true };
+    window.intervalosVuelo = r;
+    const paso = (t) => {
+      r.maximo = Math.max(r.maximo, t - r.ultimo);
+      r.ultimo = t;
+      if (r.activo) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+    return window.escenario.ultimaTransicion()?.inicio ?? null;
+  });
   await accion();
   await esperarFin(pagina);
-  const t = await pagina.evaluate(() => window.escenario.ultimaTransicion());
+  const t = await pagina.evaluate(() => {
+    window.intervalosVuelo.activo = false;
+    return { ...window.escenario.ultimaTransicion(), intervalo: window.intervalosVuelo.maximo };
+  });
   return {
-    empezo: t != null && t.inicio !== antes,
-    declarada: t?.duracion ?? null,
-    medida: t?.fin ? Number(((t.fin - t.inicio) / 1000).toFixed(2)) : null,
+    empezo: t.inicio != null && t.inicio !== antes,
+    declarada: t.duracion ?? null,
+    medida: t.fin ? Number(((t.fin - t.inicio) / 1000).toFixed(2)) : null,
+    intervalo: Number((t.intervalo / 1000).toFixed(2)),
   };
 }
 
-// Página sin #captura=1: vuelo entre dos paradas y desde la botonera.
+// Página sin #captura=1: vuelo entre dos paradas y desde la botonera. Se mide en modo liviano (tecla V): la
+// prueba revisa la duración del vuelo; los cuadros por segundo se miden en el equipo de la prueba.
 export async function revisarTransiciones(pagina) {
+  await pagina.keyboard.press('v');
   const parada = await medir(pagina, () => pagina.keyboard.press('ArrowRight'));
   parada.destino = (await estado(pagina)).parada;
   const botonera = await medir(pagina, () => pagina.click('.escala[data-escala="cuenca"]'));
+  await pagina.keyboard.press('v');
   const ok = (m) =>
-    m.empezo && m.declarada >= 1.5 && m.declarada <= 3 && m.medida >= m.declarada - 0.05 && m.medida <= m.declarada + HOLGURA_S;
+    m.empezo &&
+    m.declarada >= 1.5 &&
+    m.declarada <= 3 &&
+    m.medida >= m.declarada - 0.05 &&
+    m.medida <= m.declarada + Math.max(HOLGURA_S, m.intervalo * 1.1);
   return { parada, botonera, correcto: ok(parada) && ok(botonera) };
 }
 

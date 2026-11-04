@@ -1,5 +1,6 @@
-// Coberturas del paisaje (etapa 5.a): teselas y vegetación según el escenario del estado, con transición suave.
-// Reacciona a «escenario» y «liviano». Ningún temporizador cambia el escenario: solo anima el cambio pedido.
+// Coberturas del paisaje (etapas 5.a y 5.b): teselas, vegetación y mosaico campesino según el escenario del
+// estado, con transición suave. Reacciona a «escenario» y «liviano»; el nivel de detalle sigue a la cámara.
+// Ningún temporizador cambia el escenario: solo anima el cambio pedido.
 import * as THREE from 'three';
 import gsap from 'gsap';
 import contenido from '../../contenido/escenarios.json';
@@ -10,6 +11,8 @@ import { crearUnidades } from './unidades.js';
 import { asignarEscenarios } from './asignacion.js';
 import { crearTeselas } from './teselas.js';
 import { crearVegetacion } from './vegetacion.js';
+import { crearMosaico } from './mosaico.js';
+import { crearDetalle } from './detalle.js';
 import { medirAsignacion, extensionCana } from './metricas.js';
 
 export const DURACION = 2; // s
@@ -20,14 +23,33 @@ export const progreso = (t, r) => suave(0, 1, (t - r * ESCALON) / (1 - ESCALON))
 
 export function crearCoberturas({ altura, instantanea = false }) {
   const comienzo = performance.now();
-  const datos = crearUnidades();
-  const asignaciones = asignarEscenarios(datos, contenido.escenarios, altura);
-  const teselas = crearTeselas(datos, asignaciones, altura);
-  const vegetacion = crearVegetacion(datos, asignaciones, altura);
+  // Tiempo de generación de cada parte (ms), para el informe de verificación.
+  const tiempos = {};
+  const medir = (nombre, fn) => {
+    const t = performance.now();
+    const r = fn();
+    tiempos[nombre] = Math.round(performance.now() - t);
+    return r;
+  };
+  const datos = medir('unidades y vías', () => crearUnidades(altura));
+  const asignaciones = medir('asignación', () => asignarEscenarios(datos, contenido.escenarios, altura));
+  const teselas = medir('teselas', () => crearTeselas(datos, asignaciones, altura));
+  const vegetacion = medir('vegetación', () => crearVegetacion(datos, asignaciones, altura));
+  const mosaico = medir('mosaico', () => crearMosaico(datos, asignaciones, altura));
+  const capas = [vegetacion, mosaico];
+  const clases = capas.flatMap((c) => c.clases);
   const retardos = { get: (u) => datos.unidades[u].retardo };
   const grupo = new THREE.Group();
   grupo.name = 'coberturas';
-  grupo.add(teselas.malla, ...vegetacion.mallas);
+  grupo.add(teselas.malla, ...vegetacion.mallas, ...mosaico.mallas);
+
+  // Nivel de detalle: antes de dibujar las teselas (primeras en el orden de dibujo) se mide la cámara principal.
+  const detalle = crearDetalle(altura);
+  teselas.malla.renderOrder = -1;
+  teselas.malla.frustumCulled = false;
+  teselas.malla.onBeforeRender = (renderizador, escena, camara) => {
+    if (camara.isPerspectiveCamera && detalle.medir(camara)) mosaico.detalle(detalle.cercana);
+  };
 
   let actual = null;
   let animacion = null;
@@ -35,7 +57,7 @@ export function crearCoberturas({ altura, instantanea = false }) {
 
   // Avanza la transición y registra cuadros y elementos a medio camino (verificación).
   const avanzar = (t) => {
-    const intermedias = teselas.avanzar(t, progreso, retardos) + vegetacion.avanzar(t, progreso);
+    const intermedias = capas.reduce((suma, c) => suma + c.avanzar(t, progreso), teselas.avanzar(t, progreso, retardos));
     if (registro) {
       const ahora = performance.now();
       registro.cuadros += 1;
@@ -49,7 +71,7 @@ export function crearCoberturas({ altura, instantanea = false }) {
     const id = asignaciones.has(escenario) ? escenario : 'S0';
     if (id === actual) return;
     const asignacion = asignaciones.get(id);
-    const cambios = teselas.preparar(asignacion) + vegetacion.preparar(asignacion);
+    const cambios = capas.reduce((suma, c) => suma + c.preparar(asignacion), teselas.preparar(asignacion));
     animacion?.kill();
     actual = id;
     registro = { escenario: id, cambios, inicio: performance.now(), fin: null, duracion: inmediata ? 0 : DURACION, cuadros: 0, intermedias: 0, intervalo: 0, ultimo: performance.now() };
@@ -79,10 +101,12 @@ export function crearCoberturas({ altura, instantanea = false }) {
   }
 
   aplicar(obtener().escenario, true);
-  vegetacion.liviano(obtener().liviano);
+  const liviano = (activo) => capas.forEach((c) => c.liviano(activo));
+  liviano(obtener().liviano);
   const ms = Math.round(performance.now() - comienzo);
   suscribir('escenario', ({ escenario }) => aplicar(escenario, instantanea));
-  suscribir('liviano', ({ liviano }) => vegetacion.liviano(liviano));
+  suscribir('liviano', ({ liviano: activo }) => liviano(activo));
+  const arreglos = () => [...teselas.arreglos(), ...capas.flatMap((c) => c.arreglos())];
 
   // Interfaz para la verificación automática.
   const cuenta = (clase) => datos.unidades.filter((u) => u.clase === clase).length;
@@ -91,14 +115,16 @@ export function crearCoberturas({ altura, instantanea = false }) {
     datos: () => ({
       escenario: actual,
       ms,
+      tiempos,
       unidades: { parcelas: cuenta('parcelas'), orillas: cuenta('orillas'), celdas: cuenta('celdas'), reservas: cuenta('reservas') },
       teselas: { unidades: teselas.unidades, vertices: teselas.vertices },
-      instancias: Object.fromEntries(vegetacion.clases.map((c) => [c.id, c.total])),
-      visibles: Object.fromEntries(vegetacion.clases.map((c) => [c.id, c.visiblesAhora()])),
-      dibujadas: vegetacion.mallas.reduce((suma, m) => suma + m.count, 0),
+      instancias: Object.fromEntries(clases.map((c) => [c.id, c.total])),
+      visibles: Object.fromEntries(clases.map((c) => [c.id, c.visiblesAhora()])),
+      cerca: Object.fromEntries(mosaico.clases.map((c) => [c.id, c.cercaAhora()])),
+      dibujadas: capas.flatMap((c) => c.mallas).reduce((suma, m) => suma + m.count, 0),
       transicion: registro && { ...registro },
     }),
-    huella: () => huella([...teselas.arreglos(), ...vegetacion.arreglos()]),
+    huella: () => huella(arreglos()),
     medir: (id) => asignaciones.has(id) && medirAsignacion(datos, asignaciones.get(id)),
     // Extensión de la caña igual en dos escenarios (misma geometría de la matriz).
     mismaCana: (a, b) => {
@@ -121,7 +147,7 @@ export function crearCoberturas({ altura, instantanea = false }) {
     // Aplica un escenario sin transición (verificación) y devuelve la huella resultante.
     aplicarAhora: (id) => {
       aplicar(id, true);
-      return huella([...teselas.arreglos(), ...vegetacion.arreglos()]);
+      return huella(arreglos());
     },
   };
 }

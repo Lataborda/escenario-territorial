@@ -1,6 +1,7 @@
 // Revisión de coberturas (etapa 5): proporciones y aislamiento de relictos por escenario, transiciones
 // sin cortes, modo liviano, leyenda y una captura por escenario. Página sin #captura (vuelos y transiciones reales).
 import path from 'node:path';
+import { revisarPaisaje, fallasPaisaje, seccionPaisaje } from './revisar-paisaje.mjs';
 
 export const ESCENARIOS = ['S0', 'S1', 'S2', 'S3'];
 const SECUENCIA = ['S1', 'S3', 'S2']; // transiciones animadas desde S0
@@ -51,10 +52,14 @@ export async function revisarCoberturas(pagina, dirCapturas) {
 
   // Huella de cada escenario aplicado sin transición (equivale a cargarlo directamente).
   r.huellas = await coberturas(pagina, (ids) => Object.fromEntries([...ids, 'S0'].map((id) => [id, window.escenario.coberturas().aplicarAhora(id)])), SECUENCIA);
+  // Transiciones en modo liviano (tecla V): la prueba revisa la animación; la fluidez se mide en el equipo.
+  // En la vista general ninguna especie está en el nivel «cerca»: las huellas no cambian con el modo.
+  await pagina.keyboard.press('v');
   r.transiciones = [];
   for (const id of SECUENCIA) r.transiciones.push(await transicion(pagina, id, r.huellas[id]));
   await pagina.evaluate(() => window.escenario.cambiarEscenario('S0'));
   await pagina.waitForFunction(() => !document.documentElement.dataset.coberturas, null, { timeout: 20000 });
+  await pagina.keyboard.press('v');
 
   // Modo liviano (tecla V): la mitad de las instancias.
   const dibujadas = () => coberturas(pagina, () => window.escenario.coberturas().datos().dibujadas);
@@ -80,6 +85,7 @@ export async function revisarCoberturas(pagina, dirCapturas) {
     window.escenario.coberturas().aplicarAhora('S0');
     window.escenario.dibujo(true);
   });
+  r.paisaje = await revisarPaisaje(pagina, dirCapturas);
   return r;
 }
 
@@ -103,7 +109,7 @@ export function fallasCoberturas(c, estadisticas) {
   }
   if (!(c.liviano.liviano < c.liviano.completo * 0.6) || !c.liviano.restaurado) f.push('Coberturas: el modo liviano no reduce las instancias');
   if (!estadisticas || estadisticas.llamadas >= LLAMADAS_MAXIMO) f.push(`Coberturas: ${estadisticas?.llamadas} llamadas de dibujo`);
-  return f;
+  return [...f, ...fallasPaisaje(c.paisaje, c.medidas)];
 }
 
 const porcentaje = (x) => `${Math.round(x * 100)} %`;
@@ -117,7 +123,7 @@ export function seccionCoberturas(c, estadisticas) {
   return [
     '## Coberturas',
     '',
-    `- Unidades: ${Object.entries(d.unidades).map(([k, n]) => `${k} ${n}`).join(', ')}; teselas dibujadas: ${d.teselas.unidades} unidades, ${d.teselas.vertices} vértices; generación en ${d.ms} ms`,
+    `- Unidades: ${Object.entries(d.unidades).map(([k, n]) => `${k} ${n}`).join(', ')}; teselas dibujadas: ${d.teselas.unidades} unidades, ${d.teselas.vertices} vértices; generación en ${d.ms} ms (${Object.entries(d.tiempos ?? {}).map(([k, n]) => `${k} ${n}`).join(', ')})`,
     `- Instancias: ${instancias}`,
     `- S0: caña en el ${porcentaje(c.medidas.S0.cana)} del plano (mínimo ${porcentaje(DOMINIO_MINIMO)}); relictos ${a.relictos}, aislados ${a.aislados} (separación de ${a.umbral} unidades o más), contiguos ${a.contiguos}; separación mínima ${a.separacionMinima}, mediana ${a.separacionMediana}`,
     ...ESCENARIOS.map((id) => `- Plano en ${id}: ${Object.entries(c.medidas[id].proporciones).map(([k, v]) => `${k} ${v}`).join(', ')}`),
@@ -125,12 +131,13 @@ export function seccionCoberturas(c, estadisticas) {
     `- Salto máximo de un elemento por cuadro a 60 cuadros por segundo: ${c.salto} (máximo ${SALTO_MAXIMO})`,
     ...c.transiciones.map(
       (t) =>
-        `- Transición a ${t.escenario}: ${t.cambios} elementos; en curso ${si(t.empezo)}; ${t.cuadros} cuadros (intervalo máximo ${t.intervalo} s); máximo de elementos a medio camino en un cuadro: ${t.intermedias}; ${t.duracion} s (declarada ${DURACION_S} s); final igual a la carga directa: ${si(t.igual)}; leyenda: ${t.leyenda.length} tipos`,
+        `- Transición a ${t.escenario} (modo liviano): ${t.cambios} elementos; en curso ${si(t.empezo)}; ${t.cuadros} cuadros (intervalo máximo ${t.intervalo} s); máximo de elementos a medio camino en un cuadro: ${t.intermedias}; ${t.duracion} s (declarada ${DURACION_S} s); final igual a la carga directa: ${si(t.igual)}; leyenda: ${t.leyenda.length} tipos`,
     ),
     `- Leyenda en S0: ${c.leyendaS0.join(', ')}`,
     `- Modo liviano: ${c.liviano.completo} instancias dibujadas, ${c.liviano.liviano} en liviano; restaurado ${si(c.liviano.restaurado)}`,
     `- Llamadas de dibujo en la vista general: ${estadisticas?.llamadas} (máximo ${LLAMADAS_MAXIMO}); triángulos ${estadisticas?.triangulos}`,
     `- Capturas: ${c.capturas.map((x) => `\`capturas/${x}\``).join(', ')}`,
     '',
+    ...seccionPaisaje(c.paisaje, c.medidas),
   ];
 }

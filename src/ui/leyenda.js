@@ -3,7 +3,7 @@
 import territorio from '../../contenido/territorio.json';
 import contenido from '../../contenido/escenarios.json';
 import { obtener, suscribir } from '../estado.js';
-import { TIPOS, VEGETACION, tiposPresentes } from '../coberturas/tipos.js';
+import { TIPOS, VEGETACION, HORTALIZAS, tiposPresentes } from '../coberturas/tipos.js';
 
 const { leyenda, tipos } = territorio.coberturas;
 const AGUA = '#4a83b4';
@@ -13,6 +13,7 @@ const SVG = 'http://www.w3.org/2000/svg';
 // Iconos de 32 × 22: cada tipo con una forma propia, además del color.
 const fondo = (t) => `<rect x="1" y="3" width="30" height="16" rx="2" fill="${css(t.color)}" stroke="rgba(43,42,39,.35)"/>`;
 const copa = (t, x, y, r = 4.2) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${css(t.copa)}" stroke="rgba(43,42,39,.4)"/>`;
+const punto = (x, y, r, hex) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${css(hex)}" stroke="rgba(43,42,39,.3)" stroke-width=".6"/>`;
 const FORMAS = {
   surcos: (t) => fondo(t) + [9, 16, 23].map((x) => `<line x1="${x}" y1="5" x2="${x}" y2="17" stroke="rgba(43,42,39,.35)" stroke-width="1.6"/>`).join(''),
   surcos_puntos: (t) =>
@@ -27,6 +28,17 @@ const FORMAS = {
     `<path d="M1 11 q8 -3 15 0 t15 0" fill="none" stroke="${AGUA}" stroke-width="3"/>` + copa(t, 7, 5, 3.4) + copa(t, 20, 5, 3.4) +
     copa(t, 13, 17, 3.4) + `<line x1="27" y1="20" x2="29" y2="13" stroke="${css(VEGETACION.guadua)}" stroke-width="1.6"/>`,
   bosque: (t) => copa(t, 8, 13, 5) + copa(t, 16, 8, 5) + copa(t, 24, 13, 5),
+  // Mosaico campesino: hileras de cafetos bajo un guamo; abanico de hojas; copas con frutos; eras.
+  cafe: (t) =>
+    fondo(t) + [6, 11, 16].flatMap((x) => [8, 15].map((y) => punto(x, y, 2, VEGETACION.cafeto))).join('') +
+    `<ellipse cx="24" cy="9" rx="6" ry="4" fill="${css(VEGETACION.guamo)}" stroke="rgba(43,42,39,.4)"/>`,
+  platano: (t) =>
+    fondo(t) +
+    [-60, -20, 20, 60].map((a) => `<path d="M16 17 q-2 -8 0 -12 q3 4 0 12" fill="${css(VEGETACION.platano)}" stroke="rgba(43,42,39,.4)" transform="rotate(${a} 16 17)"/>`).join(''),
+  frutales: (t) =>
+    fondo(t) + [9, 23].map((x) => punto(x, 11, 5, VEGETACION.citrico) + punto(x - 2, 9, 1.4, VEGETACION.naranja) + punto(x + 2, 13, 1.4, VEGETACION.naranja)).join(''),
+  huerta: (t) =>
+    fondo(t) + [7, 11, 15].map((y, k) => `<rect x="4" y="${y - 1.4}" width="24" height="2.8" rx="1.4" fill="${css(HORTALIZAS[k * 2])}"/>`).join(''),
   roseta: () =>
     [9, 22].map((x) =>
       `<line x1="${x}" y1="20" x2="${x}" y2="11" stroke="${css(VEGETACION.frailejonTallo)}" stroke-width="2"/>` +

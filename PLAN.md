@@ -27,7 +27,7 @@ Restricciones de la prueba que fijan el diseño (Res. 356 de 2026, art. 11):
 
 ### 2.2 Estilo visual
 
-- Maqueta estilizada de baja poligonización, en bloque recortado cuyas caras laterales muestran los estratos del suelo. Retoma el formato de diorama del video de referencia (bloque en sección, rótulos con punto y línea guía), con geometría generada por código.
+- Realismo de maqueta (decisión D5, revisada en la etapa 5.b): bloque recortado cuyas caras laterales muestran los estratos del suelo, con vegetación de especies reconocibles, copas formadas por racimos de hojas, variación de color y niveles de detalle (alto cerca de la cámara, simple a escala de territorio). Retoma el formato de diorama del video de referencia (bloque en sección, rótulos con punto y línea guía), con geometría generada por código. La etapa 5.c lleva el mismo estilo al resto de la vegetación.
 - Fondo neutro, luz cenital suave, una sola sombra direccional.
 - Rótulos HTML nítidos (CSS2DRenderer). Tipografías del prototipo Hyperframes (IBM Plex Sans y Fraunces), en archivos locales.
 - Semántica fija de flujos: agua azul, sedimentos pardo, nutrientes naranja, semillas violeta, conocimiento amarillo, alimento y mercado verde, gobernanza gris. Cada flujo lleva además forma o trazo propio y rótulo, para no depender del color.
@@ -311,6 +311,23 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [ ] El cambio de escenario modifica las coberturas sin cortes.
   - [ ] 50 cuadros por segundo o más; menos de 200 llamadas de dibujo.
 - Prompt de arranque: `Etapa 5.a de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 5.c. Dirección de arte
+
+- Tamaño: mediano. Fuentes: no. Origen: observación de Alejandro en el MacBook Air al cerrar la 5.b (decisión D5, «realismo de maqueta»).
+- Lecturas: `src/coberturas/especies.js`, `formas.js` e `instancias.js` (estilo y niveles de detalle de la 5.b).
+- Objetivo: el mismo realismo de maqueta en toda la vegetación y una luz de diorama.
+- Trabajo:
+  - Vegetación de la 5.a con el estilo de la 5.b: bosque ripario, guadua, caña (bloque con textura de surcos o hileras de tallos), frailejón, bosque seco, bosque altoandino y árboles de la pastura y del silvopastoreo. Especies reconocibles, copas con racimos de hojas, variación de color y dos niveles de detalle con `instancias.js`.
+  - Viento leve en las copas y las hojas (sombreador de vértices, amplitud pequeña, sin costo de CPU).
+  - Sombras suaves (filtro PCF suave o VSM) y oclusión ambiental (SSAO o GTAO), con la relación de píxeles y el modo liviano como límites.
+  - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
+- Criterios de aceptación:
+  - [ ] Ningún árbol facetado a la escala de finca o vereda.
+  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento y las sombras, y reduce instancias.
+  - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
+  - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
+- Prompt de arranque: `Etapa 5.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 6. Fincas y Estructura Agroecológica Principal
 

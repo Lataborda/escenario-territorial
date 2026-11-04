@@ -14,7 +14,7 @@ const dosCuadros = (pagina) =>
 const datosTerreno = (pagina) =>
   pagina.evaluate(() => {
     const t = window.escenario?.terreno?.();
-    return t ? { ...t, huellaCoberturas: window.escenario.coberturas?.()?.huella() ?? null } : null;
+    return t ? { ...t, huellaCoberturas: [window.escenario.coberturas, window.escenario.vias, window.escenario.asentamientos].map((f) => f?.()?.huella() ?? null).join('-') } : null;
   });
 
 // Se ejecuta con la página lista, después de la captura de la vista general.
