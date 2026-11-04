@@ -23,6 +23,8 @@ Cada sesión ejecuta una sola etapa.
 9. Actualizar `BITACORA.md`: sección «Estado actual» y una entrada nueva con la plantilla.
 10. Detenerse. La etapa siguiente empieza en otra sesión, salvo indicación expresa.
 
+Cuando Alejandro escriba «modo continuo», se omite la espera de aprobación del paso 5: la propuesta se anota en la respuesta y la ejecución sigue sin pausa.
+
 Si una etapa resulta grande, dividirla en N.a y N.b, registrar la división en la bitácora y cerrar la sesión al terminar N.a.
 
 ## Economía de tokens
@@ -71,6 +73,7 @@ Las fuentes están fuera de esta carpeta. En las etapas que las requieren, ejecu
 - Generación procedimental con semilla fija. La escena es idéntica en cada carga.
 - Nombres de archivos y variables en español sin tildes. Comentarios breves en español.
 - Cada módulo visual se suscribe al almacén de estado (`src/estado.js`) y reacciona a él. Ningún módulo modifica a otro directamente.
+- Si el entorno ya trae Chromium y Playwright (por ejemplo, la sesión en la nube), usarlos y no instalar otro navegador (`npx playwright install` no se ejecuta).
 
 ## Comandos
 

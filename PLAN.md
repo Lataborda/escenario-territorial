@@ -87,6 +87,7 @@ Escenario_Territorial/
   scripts/                 validar-contenido.mjs, verificar.mjs, respaldo.mjs
   verificacion/            capturas e informe de la última verificación
   respaldo/                presentación de imágenes generada
+  vista-previa/            escenario.html: copia versionada del archivo único
 ```
 
 ### 3.3 Modelo de datos
@@ -136,7 +137,11 @@ Almacén único en `src/estado.js` con suscripción:
 modo: recorrido | libre | actividad | autor
 ```
 
-Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y cada módulo visual reacciona a los cambios que le competen.
+Interfaz principal: la botonera de siete escalas (suelo, planta, finca, vereda, cuenca, territorio, región), siempre visible. Cada botón lleva a la vista tipo de su escala desde el punto de interés actual. Un clic en una finca o en un mercado acerca la cámara a ese elemento y lo fija como punto de interés.
+
+Paradas: guion de clase que el presentador recorre con las flechas (o con los controles de la vista del presentador). Nada avanza solo. Ningún temporizador cambia la parada, la escala ni la cámara; cada cambio responde a una acción del presentador.
+
+Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y cada módulo visual reacciona a los cambios que le competen. La botonera y el clic sobre fincas y mercados modifican `escala` y la cámara sin cambiar de parada.
 
 | Tecla | Acción |
 |---|---|
@@ -150,7 +155,7 @@ Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y 
 | C | modo autor: copia la cámara actual en formato de parada |
 | A | modo autor: muestra las anclas |
 
-La botonera de escalas (siete botones) lleva a la vista tipo de cada escala desde el punto de interés actual. El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar.
+El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar.
 
 ### 3.5 Vista del presentador
 
@@ -188,39 +193,42 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - Objetivo: proyecto Vite con Three.js funcionando, versionado y con verificación automática.
 - Trabajo:
   - `git init`, `.gitignore` (node_modules, dist).
-  - `package.json` con versiones exactas de three, gsap, simplex-noise, lil-gui, vite, vite-plugin-singlefile y playwright (desarrollo). Navegador de Playwright instalado.
+  - `package.json` con versiones exactas de three, gsap, simplex-noise, lil-gui, vite, vite-plugin-singlefile y playwright (desarrollo). Navegador de Playwright instalado, o el Chromium que ya traiga el entorno (ver reglas de código de `CLAUDE.md`).
   - `index.html` y `src/main.js` con escena mínima: base de la maqueta, luz, cámara, OrbitControls.
   - Tipografías locales en `public/fuentes/`.
   - Scripts `dev`, `build`, `preview`, `build:unico`, `verificar`. En esta etapa, `verificar` carga la página, guarda `verificacion/capturas/inicio.png` y escribe el informe.
   - `contenido/` con los siete JSON vacíos y válidos.
+  - Al cerrar la etapa, copia del archivo único en `vista-previa/escenario.html`, versionada en el repositorio.
 - Fuera de alcance: relieve y contenido.
 - Criterios de aceptación:
   - [ ] `npm run dev` muestra la escena mínima.
   - [ ] `npm run build` y `npm run build:unico` terminan sin errores.
   - [ ] El archivo único abre con doble clic, sin servidor y sin internet.
   - [ ] `npm run verificar` produce la captura y un informe sin errores ni solicitudes externas.
+  - [ ] `vista-previa/escenario.html` actualizado y en el commit.
   - [ ] Commit `Etapa 0`.
 - Prompt de arranque: `Etapa 0 de PLAN.md. Sigue el protocolo de CLAUDE.md. Aún no hay código.`
 
 ## Etapa 1. Modelo de contenido
 
-- Tamaño: mediana. Fuentes: sí (`/add-dir ../..`).
+- Tamaño: mediana. Fuentes: sí (`/add-dir ../..`) en el equipo local; no en la nube.
 - Lecturas: `GUION.md` completo; pasajes puntuales de las fuentes para localizar páginas y secciones.
+- Sesión en la nube: sin acceso a las fuentes. Se trabaja solo con `GUION.md`. Los localizadores que el guion no trae quedan con estado `verificar` en `fuentes.json` y en `verificacion/pendientes-de-fuente.md`, para cerrarlos en una sesión local (etapa 14 a más tardar).
 - Requisito: respuestas de Alejandro a las decisiones D1 a D7 de `GUION.md`. Sin respuesta, se aplican las opciones recomendadas y se registra.
 - Objetivo: convertir el guion en datos que el motor leerá.
 - Trabajo:
   - Redactar los siete JSON de `contenido/` a partir de `GUION.md`: entidades y anclas, escalas, 26 paradas, escenarios S0 a S3, condiciones C1 a C10 con efectos y dependencias, actores, fuentes.
   - Fichas y notas en estado `borrador`, con las reglas de redacción de `CLAUDE.md`.
-  - Completar localizadores de fuente (página o sección) buscando con `rg` o `pdftotext`.
+  - Completar localizadores de fuente (página o sección) buscando con `rg` o `pdftotext`. En la nube, tomar solo los localizadores de `GUION.md` y marcar el resto `verificar`.
   - `scripts/validar-contenido.mjs` y script `validar`: campos obligatorios, referencias cruzadas (anclas, escalas, escenarios, condiciones, fuentes), 60 palabras por ficha, minutos por momento frente a la meta (M0 3, M1 6, M2 7, M3 8, M4 8, M5 5, M6 3, tolerancia de un minuto), términos vetados («—», «cadena de valor», «stakeholder», «APPA» junto a «1406»).
   - Generar `verificacion/pendientes-de-fuente.md`.
 - Fuera de alcance: código 3D.
 - Criterios de aceptación:
   - [ ] `npm run validar` sin errores.
-  - [ ] Cada parada tiene al menos una fuente con localizador.
+  - [ ] Cada parada tiene al menos una fuente con localizador (o con estado `verificar` si la sesión corre en la nube).
   - [ ] Lista de pendientes de fuente generada y resumida en la bitácora.
   - [ ] `GUION.md` sin cambios de fondo; si algo del guion resultó inviable, queda anotado en la bitácora.
-- Prompt de arranque: `Etapa 1 de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
+- Prompt de arranque: `Etapa 1 de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.` En la nube: `Etapa 1 de PLAN.md. Sigue el protocolo de CLAUDE.md. Sin fuentes: trabaja solo con GUION.md.`
 
 ## Etapa 2. Terreno de la cuenca
 
@@ -252,7 +260,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - Trabajo:
   - `src/estado.js` con suscripción.
   - Navegación: `irA`, siguiente y anterior, saltos por momento, cámara relativa a ancla con GSAP.
-  - Botonera de siete escalas, panel de ficha (título, texto, fuente abreviada), indicador de momento.
+  - Botonera de siete escalas siempre visible (interfaz principal, sección 3.4), panel de ficha (título, texto, fuente abreviada), indicador de momento.
   - Hash `#p=ID`, modo libre, modo autor (teclas C y A), teclado de la sección 3.4.
   - Ampliar `verificar` para recorrer todas las paradas.
 - Fuera de alcance: vista del presentador, capas visuales nuevas.
@@ -273,8 +281,9 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - `presentador.html` con notas, parada siguiente, cronómetro total y por momento, fuentes y controles, sincronizada por BroadcastChannel.
   - Script `presentar`: compila, sirve y abre las dos vistas.
   - Script `respaldo`: genera `respaldo/index.html` con las capturas de todas las paradas, navegable con flechas, y `respaldo/notas.md` con las notas.
-  - Actualizar el archivo único.
+  - Actualizar el archivo único y, al cerrar la etapa, su copia versionada en `vista-previa/escenario.html`.
 - Criterios de aceptación:
+  - [ ] `vista-previa/escenario.html` actualizado y en el commit.
   - [ ] Las dos ventanas permanecen sincronizadas en ida y vuelta.
   - [ ] El cronómetro marca el desvío frente a la meta de cada momento.
   - [ ] El respaldo abre sin servidor.
@@ -308,7 +317,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Resaltado de agroecosistema menor (lote) y mayor (lindero, con la familia dentro).
   - Capa de conectores EAP y conexión con la estructura ecológica principal.
   - Panel EAP con los diez criterios (cinco ecosistémicos, cinco culturales) y valores rotulados como ilustrativos.
-  - Clic en una finca lleva a su parada.
+  - Clic en una finca acerca la cámara a ella (sección 3.4).
 - Criterios de aceptación:
   - [ ] Las cuatro fincas se distinguen a escala de finca y de matriz.
   - [ ] Los conectores se leen en la vista de matriz.
@@ -464,6 +473,7 @@ El prototipo Hyperframes cubre M1 y el respaldo de imágenes cubre cualquier fal
 | O2 | Insertos de video generativo | clips cortos tipo diorama en paradas puntuales (campo `video` de la parada). Herramientas de pago |
 | O3 | Grafo de conocimiento | requiere construir el grafo de `../Agroecologia_Grafo/` con una clave de API; enlaza paradas con conceptos |
 | O4 | Versión para docencia | exploración libre por estudiantes, preguntas y publicación web gratuita (por ejemplo, GitHub Pages) |
+| O5 | Modo exploración | vuelo de un ave o una abeja sobre la cuenca; puntos de interés que abren fichas de `contenido/`; misiones cortas. Nuevo valor `exploracion` en el campo `modo` del estado |
 
 ## Riesgos y respaldo
 
