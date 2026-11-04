@@ -17,7 +17,7 @@ const OCULTA = Math.fround(-(BASE + PIE + 1));
 
 // Tapa irregular de la caña: factor de la altura del bloque en cada punto (ondas amplias y grumos).
 const ruidos = crearRuidos(SEMILLA + 79, ['ondas', 'grumos']);
-export const factorCana = (x, z) => 1 + 0.1 * ruidos.ondas(x / 26, z / 26) + 0.05 * ruidos.grumos(x / 7, z / 7);
+export const factorCana = (x, z) => 1 + 0.12 * ruidos.ondas(x / 26, z / 26) + 0.07 * ruidos.grumos(x / 7, z / 7);
 
 const esCana = (indice) => indice !== NINGUNA && TIPOS[LISTA_TIPOS[indice]].familia === 'cana';
 function alturaDe(u, indice) {
@@ -137,6 +137,7 @@ export function crearTeselas(datos, asignaciones, altura) {
   geometria.setAttribute('color', new THREE.BufferAttribute(colores, 3));
   geometria.setAttribute('marca', new THREE.BufferAttribute(new Float32Array(salida.marca), 4));
   geometria.setAttribute('cana', new THREE.BufferAttribute(pesoCana, 1));
+  geometria.setAttribute('bajo', new THREE.BufferAttribute(base, 1)); // altura sin bloque, para hundir la tapa (superficie.js)
   geometria.setIndex(new THREE.BufferAttribute(n > 65535 ? new Uint32Array(salida.ind) : new Uint16Array(salida.ind), 1));
   geometria.computeVertexNormals();
   geometria.computeBoundingSphere();
@@ -186,6 +187,8 @@ export function crearTeselas(datos, asignaciones, altura) {
     vertices: n,
     // Lectura del estado por unidad para la caña cercana (cana.js): k de cada unidad con caña en algún escenario.
     lectura: { indice: new Map(indices.map((u, k) => [u, k])), conCana: [...conCana], h: estado.h, w: estado.w, c: estado.c },
+    // Radio alrededor de la cámara con matas de caña cercanas: dentro, la tapa baja y queda en sombra (superficie.js).
+    cercania: (radio) => (malla.material.userData.cercaCana.value = radio),
     // Fija la llegada para una asignación y devuelve cuántas unidades cambian.
     preparar(asignacion) {
       estado.h0.set(estado.h);

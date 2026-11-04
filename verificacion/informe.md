@@ -1,13 +1,13 @@
 # Informe de verificación
 
-- Fecha: 2026-11-04T22:36:02.878Z
+- Fecha: 2026-11-04T23:32:05.370Z
 - Navegador: Chromium 153.0.8010.12
 - Resultado: correcto
 
 ## Vista compilada (servidor de vista previa)
 
 - Dirección: `http://localhost:4317/`
-- Carga: sí, 9093 ms hasta `escenario:listo`
+- Carga: sí, 9527 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Cuadros por segundo en la vista general: 0.9 (navegador sin pantalla; referencia, no equivale al equipo de la prueba)
@@ -16,16 +16,16 @@
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Captura: `capturas/general.png` (1600×900)
 - Avisos de consola (no bloquean):
-  - [.WebGL-0x2f2c00198800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x2f2c00198800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x2f2c00198800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x2f2c00198800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+  - [.WebGL-0xbdc001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0xbdc001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0xbdc001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0xbdc001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
 
 ## Archivo único (file://, sin servidor y sin red)
 
 - Dirección: `file:///home/user/escenario-territorial/dist-unico/index.html`
-- Carga: sí, 10287 ms hasta `escenario:listo`
-- Tamaño: 950 kB
+- Carga: sí, 10058 ms hasta `escenario:listo`
+- Tamaño: 952 kB
 - Errores de consola: ninguno
 - Solicitudes: 1 en total; externas: ninguna
 - Llamadas de dibujo: 40; triángulos: 1872004; relación de píxeles: 1
@@ -41,14 +41,14 @@
 - Huella del terreno: `fee3fa59`
 - Idéntico en dos cargas: huella sí; captura de la vista general sí
 - Archivo único con la misma huella: sí
-- Coberturas idénticas en la segunda carga y en el archivo único: sí (huella `4a7cdad6-d81d8648-771bf183`)
+- Coberturas idénticas en la segunda carga y en el archivo único: sí (huella `781b085e-d81d8648-771bf183`)
 - Anclas sobre la superficie (rayo vertical): 32 de 32; desvío máximo 0.0003
 - Tecla A muestra los marcadores: sí
 - Capturas: `capturas/general.png`, `capturas/anclas.png`, `capturas/ladera.png`, `capturas/plano.png`
 
 ## Coberturas
 
-- Unidades: parcelas 887, orillas 181, celdas 290, reservas 13; teselas dibujadas: 1060 unidades, 297711 vértices; generación en 603 ms (unidades y vías 193, asignación 18, teselas 180, vegetación 69, mosaico 85, caña cercana 6)
+- Unidades: parcelas 887, orillas 181, celdas 290, reservas 13; teselas dibujadas: 1060 unidades, 297711 vértices; generación en 625 ms (unidades y vías 218, asignación 18, teselas 172, vegetación 69, mosaico 80, caña cercana 14)
 - Instancias: saman 915 (171 en S0); seco 2874 (844 en S0); ceiba 275 (80 en S0); ribereno 1915 (466 en S0); guadua 567 (137 en S0); andino 1879 (1879 en S0); helecho 420 (420 en S0); frailejon 1308 (1308 en S0); junco 1066 (250 en S0); guamo 365 (291 en S0); cafeto 8507 (6734 en S0); platano 2479 (1398 en S0); citrico 580 (172 en S0); mango 600 (170 en S0); era 1782 (518 en S0); maiz 2507 (743 en S0); leucaena 10353 (373 en S0)
 - S0: caña en el 84 % del plano (mínimo 60 %); relictos 8, aislados 6 (separación de 60 unidades o más), contiguos 0; separación mínima 24.6, mediana 90.2
 - Plano en S0: cana 0.838, bosque_seco 0.043, pastura 0.083, ripario 0.018, humedal 0.019
@@ -57,9 +57,9 @@
 - Plano en S3: cana_organica 0.32, ripario 0.101, bosque_seco 0.139, cana 0.106, silvopastoril 0.212, pastura 0.041, ninguna 0, humedal 0.08
 - S1 conserva la extensión de la caña de S0: sí
 - Salto máximo de un elemento por cuadro a 60 cuadros por segundo: 0.0227 (máximo 0.05)
-- Transición a S1 (modo liviano): 76 elementos; en curso sí; 3 cuadros (intervalo máximo 1.03 s); máximo de elementos a medio camino en un cuadro: 76; 2.98 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
-- Transición a S3 (modo liviano): 24866 elementos; en curso sí; 3 cuadros (intervalo máximo 1.58 s); máximo de elementos a medio camino en un cuadro: 12453; 3.09 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
-- Transición a S2 (modo liviano): 19832 elementos; en curso sí; 2 cuadros (intervalo máximo 1.43 s); máximo de elementos a medio camino en un cuadro: 14906; 2.86 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 12 tipos
+- Transición a S1 (modo liviano): 76 elementos; en curso sí; 4 cuadros (intervalo máximo 0.95 s); máximo de elementos a medio camino en un cuadro: 73; 2.76 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
+- Transición a S3 (modo liviano): 24866 elementos; en curso sí; 3 cuadros (intervalo máximo 1.38 s); máximo de elementos a medio camino en un cuadro: 22852; 2.67 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
+- Transición a S2 (modo liviano): 19832 elementos; en curso sí; 3 cuadros (intervalo máximo 1.37 s); máximo de elementos a medio camino en un cuadro: 16096; 2.73 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 12 tipos
 - Leyenda en S0: cana, pastura, silvopastoril, bosque_seco, humedal, ripario, bosque_altoandino, paramo, cafe, platano, frutales, huerta
 - Modo liviano: 16472 instancias dibujadas, 8239 en liviano; restaurado sí
 - Llamadas de dibujo en la vista general: 40 (máximo 200); triángulos 1872004
@@ -71,7 +71,7 @@
 - Ladera en S1: pastura 0.413, frutales 0.061, cafe 0.26, platano 0.089, huerta 0.037, ninguna 0.105, ripario 0.034
 - Ladera en S2: huerta 0.105, pastura 0.257, cafe 0.264, platano 0.113, ninguna 0.109, frutales 0.118, ripario 0.034
 - Ladera en S3: huerta 0.125, pastura 0.056, cafe 0.292, platano 0.106, ninguna 0.063, frutales 0.183, silvopastoril 0.097, ripario 0.078
-- Niveles de detalle por vista (general, finca, cerca, liviano, ciudad): general: 40 llamadas, 1872004 triángulos, 0 instancias cerca; finca: 51 llamadas, 2527722 triángulos, 1347 instancias cerca; cerca: 65 llamadas, 3985178 triángulos, 5968 instancias cerca; liviano: 28 llamadas, 866430 triángulos, 0 instancias cerca; ciudad: 51 llamadas, 2688722 triángulos, 95 instancias cerca
+- Niveles de detalle por vista (general, finca, cerca, liviano, ciudad): general: 40 llamadas, 1872004 triángulos, 0 instancias cerca; finca: 49 llamadas, 2553840 triángulos, 1347 instancias cerca; cerca: 65 llamadas, 3985178 triángulos, 5968 instancias cerca; liviano: 28 llamadas, 866430 triángulos, 0 instancias cerca; ciudad: 49 llamadas, 3379900 triángulos, 95 instancias cerca
 - Instancias cerca a escala de planta: saman 77, seco 91, ceiba 26, ribereno 161, guadua 50, andino 417, helecho 62, frailejon 0, junco 0, guamo 258, cafeto 3074, platano 964, citrico 156, mango 155, era 200, maiz 277, leucaena 0
 - Vías: 23 tramos (troncal 10, secundaria 5, veredal 8); 5202 unidades de largo; 7 puentes; 1524 teselas de corredor sin parcela; 10090 vértices
 - Asentamientos: ciudad 45 manzanas y 481 edificaciones; CAB1 9 manzanas y 69 edificaciones; CAB2 9 manzanas y 68 edificaciones; CAB3 9 manzanas y 66 edificaciones; CAB4 9 manzanas y 67 edificaciones; CAB5 9 manzanas y 66 edificaciones; CAB6 9 manzanas y 69 edificaciones; CAB7 9 manzanas y 67 edificaciones; CAB8 9 manzanas y 66 edificaciones; CAB9 9 manzanas y 68 edificaciones; instancias cajas 1339, tejados 1040, arboles 136
@@ -80,22 +80,24 @@
 ## Vegetación y caña
 
 - Materiales facetados en la vegetación: ninguno
+- Formas de la caña cercana: cana-cerca-cerca, cana-cerca-lejos (ninguna espiga)
 - Lotes con caña por edad en S0: cortado 59, crecimiento 107, maduro 149; alturas del bloque 0.3, 1.55, 2.7
 - Lotes con caña por edad en S1: cortado 59, crecimiento 107, maduro 149; alturas del bloque 0.3, 1.55, 2.7
 - Lotes con caña por edad en S3: cortado 32, crecimiento 47, maduro 66; alturas del bloque 0.3, 1.55, 2.7
-- Vista general: 40 llamadas, 1872004 triángulos; matas de caña 0 de dosel, 0 de borde y 0 espigas en 0 celdas
-- Vista finca: 45 llamadas, 2600670 triángulos; matas de caña 7646 de dosel, 6000 de borde y 1457 espigas en 31 celdas
-- Vista planta: 66 llamadas, 3715656 triángulos; matas de caña 3172 de dosel, 2151 de borde y 422 espigas en 17 celdas
-- Vista liviano: 28 llamadas, 866430 triángulos; matas de caña 0 de dosel, 0 de borde y 0 espigas en 0 celdas
-- Vista cana: 66 llamadas, 4494720 triángulos; matas de caña 7868 de dosel, 5288 de borde y 1154 espigas en 37 celdas
-- Vista ribera: 63 llamadas, 3899868 triángulos; matas de caña 0 de dosel, 0 de borde y 0 espigas en 0 celdas
+- Vista general: 40 llamadas, 1872004 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
+- Vista finca: 43 llamadas, 3090054 triángulos; matas de caña 13898 de dosel y 4543 de borde (0 detalladas) en 31 celdas; tapa hundida hasta 460 unidades
+- Vista planta: 65 llamadas, 4647524 triángulos; matas de caña 5525 de dosel y 1595 de borde (2026 detalladas) en 17 celdas; tapa hundida hasta 460 unidades
+- Vista liviano: 28 llamadas, 866430 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
+- Vista cana: 65 llamadas, 5942792 triángulos; matas de caña 13697 de dosel y 3913 de borde (2662 detalladas) en 37 celdas; tapa hundida hasta 460 unidades
+- Vista suelo: 63 llamadas, 4783686 triángulos; matas de caña 3304 de dosel y 915 de borde (2068 detalladas) en 12 celdas; tapa hundida hasta 460 unidades
+- Vista ribera: 63 llamadas, 3899868 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
 - Especies en nivel «cerca» a escala de finca: ceiba 1; a escala de planta: saman 97, seco 154, ceiba 25, ribereno 119, guadua 35, guamo 273, cafeto 1887, platano 1261, citrico 111, mango 115, era 67, maiz 102, leucaena 265
-- Capturas: `capturas/cana-cerca.jpg`, `capturas/vegetacion-ribera.jpg`
+- Capturas: `capturas/cana-cerca.jpg`, `capturas/cana-suelo.jpg`, `capturas/vegetacion-ribera.jpg`
 
 ## Recorrido de paradas (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P01&captura=1`
-- Carga: sí, 10087 ms hasta `escenario:listo`
+- Carga: sí, 11306 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 40; triángulos: 1872004; relación de píxeles: 1
@@ -106,10 +108,10 @@
 ## Transiciones (vista compilada, sin #captura)
 
 - Dirección: `http://localhost:4317/#p=P05`
-- Carga: sí, 7366 ms hasta `escenario:listo`
+- Carga: sí, 9188 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
-- Llamadas de dibujo: 51; triángulos: 2339618; relación de píxeles: 1
+- Llamadas de dibujo: 49; triángulos: 2382868; relación de píxeles: 1
 - Renderizador WebGL: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Avisos de consola (no bloquean): ninguno
@@ -117,7 +119,7 @@
 ## Ventana de 1280×720 (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P14&paso=2&captura=1`
-- Carga: sí, 10356 ms hasta `escenario:listo`
+- Carga: sí, 10606 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 40; triángulos: 1872004; relación de píxeles: 1
@@ -133,7 +135,7 @@
 - Teclas: 0 a 6 sí; O sí; H sí; V sí
 - Tecla C: sí, `"camara": { "ancla": "F2", "distancia": 640, "azimut": -47, "elevacion": 33, "duracion": 2.5 }`; desvío al aplicarlo 0
 - Botonera: sí; clic en una finca: sí
-- Transiciones en modo liviano: entre paradas declarada 2.5 s, medida 2.85 s (intervalo máximo entre cuadros 0.8 s); botonera declarada 2 s, medida 2.32 s (intervalo máximo entre cuadros 1.03 s); doble clic en modo libre declarada 1.6 s, medida 2.18 s (intervalo máximo entre cuadros 1.12 s); correctas sí
+- Transiciones en modo liviano: entre paradas declarada 2.5 s, medida 2.7 s (intervalo máximo entre cuadros 0.78 s); botonera declarada 2 s, medida 2.09 s (intervalo máximo entre cuadros 0.98 s); doble clic en modo libre declarada 1.6 s, medida 2.07 s (intervalo máximo entre cuadros 1.08 s); correctas sí
 - Modo libre: correcto sí; captura `capturas/libre.jpg`
   - Doble clic: en el recorrido sin efecto sí; fuera de la maqueta sin efecto sí; vuelo al punto sí (error 1.1, distancias 2500 → 1250 → 625, duración 1.5 s)
   - Marcha con W: 328.1 unidades, dirección 1, salto 0.26, detenida sí, cámara a 389.1 o más sobre el relieve, dentro sí
@@ -148,7 +150,7 @@
 ## Vista del presentador (dos pestañas del mismo navegador)
 
 - Dirección: `http://localhost:4317/presentador.html`
-- Conexión con la vista principal: sí, 103 ms
+- Conexión con la vista principal: sí, 1696 ms
 - Pruebas de sincronía y cronómetro: 19 de 19 correctas
   - sí: estado inicial P01 en las dos vistas
   - sí: botón Siguiente del presentador mueve la principal a P02
@@ -178,7 +180,7 @@
 ## Respaldo en imágenes (file://, sin servidor y sin red)
 
 - Dirección: `respaldo/index.html`
-- Carga: sí, 45 ms
+- Carga: sí, 57 ms
 - Imágenes: 34 de 34 cargan (1920×1080); estados del recorrido: 34
 - Teclado (flechas, Fin, tecla 3, hash): sí
 - Contenido igual al de la generación: sí

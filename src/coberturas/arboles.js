@@ -1,7 +1,7 @@
 // Especies de la vegetación natural, de la pastura y del silvopastoreo (etapa 5.c), con el realismo de maqueta de
 // especies.js: nivel «cerca» con ramas y racimos de hojas; «lejos» con una copa suave y pocas caras. Base en y = 0.
 // Cada especie trae su escala, la proporción de la copa [ancho, alto], los tintes por instancia y la distancia de
-// detalle (umbral). Sombra 'cerca': en los rodales densos solo proyecta sombra el nivel cercano. Al final, las matas de caña del nivel cercano (cana.js).
+// detalle (umbral). Sombra 'cerca': en los rodales densos solo proyecta sombra el nivel cercano. La mata de caña está en mata.js.
 import { DoubleSide } from 'three';
 import { VEGETACION as V } from './tipos.js';
 import { racimo, tallo, hoja, fruto, cono, unir, arco } from './formas.js';
@@ -154,22 +154,3 @@ export const ARBOLES = {
   frailejon: { umbral: 200, escala: [1.1, 1.6], ancho: [1, 1], alto: [0.85, 1.2], tintes: VERDES, mallas: una(frailejon, DOBLE, { sombra: false }) },
   junco: { umbral: 150, escala: [0.8, 1.3], ancho: [1, 1], alto: [0.85, 1.15], tintes: VERDES, mallas: una(junco, DOBLE, { sombra: false }) },
 };
-
-// Matas de caña del nivel cercano. copa: hojas en arco sobre el dosel del lote; borde: tallos con nudos y hojas
-// desde el suelo (bordes de lote); espiga: inflorescencia de la caña madura. Color neutro: el tinte es el del lote.
-export function matasCana() {
-  const hojas = (n, altura, largo, semilla) => {
-    const azar = crearAzar(semilla);
-    return [...Array(n)].map((_, k) =>
-      hoja({ largo: largo * (0.8 + 0.4 * azar()), ancho: 0.17, segmentos: 2, inclinacion: 0.9 + 0.4 * azar(), caida: 1.6, pliegue: 0.25, giro: k * 2.4 + azar(), altura: altura + 0.3 * azar(), color: V.canaHoja, nervio: 0xf4f8e8 }),
-    );
-  };
-  const dosel = unir(hojas(5, 0, 1.6, 201));
-  const tallos = [0, 1].flatMap((k) => arco({ desde: [k ? 0.12 : -0.1, 0, k ? -0.05 : 0.08], alto: 2.5, inclinacion: 0.12 + 0.1 * k, rumbo: k * 2.6, tramos: 2, radio: [0.06, 0.05], caras: 4, color: V.canaTallo }).partes);
-  const borde = unir([...tallos, ...hojas(4, 1.5, 1.5, 202)]);
-  const espiga = unir([
-    tallo({ hacia: [0, 1.1, 0], radio: [0.025, 0.02], caras: 3, color: V.canaTallo }),
-    racimo({ radio: 1, detalle: 0, relieve: 0.25, escala: [0.18, 0.6, 0.18], en: [0, 1.6, 0], color: V.canaEspiga, semilla: 203 }),
-  ]);
-  return { copa: dosel, borde, espiga, material: DOBLE };
-}

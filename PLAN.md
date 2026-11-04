@@ -377,13 +377,31 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
   - Rendimiento: medir los cuadros por segundo en el MacBook Air en la vista general (1,87 millones de triángulos en S0 al cerrar la 5.c.a) y a escala de finca, planta y suelo; si no alcanza, bajar los umbrales de detalle (`arboles.js`, `especies.js`) o el cupo de la caña cercana (`cana.js`).
 - Criterios de aceptación:
-  - [ ] La caña se reconoce como caña a escala de suelo, planta y finca: matas de tallos con nudos y hojas largas en arco, como en la referencia; ninguna espiga, flor o forma de mazorca; distinta del maíz de la huerta.
-  - [ ] Ningún plano verde liso a la vista en los lotes de caña, ni la línea recta del borde: el lote se ve como una masa de hojas de silueta irregular, también en la vista general (hileras y altura irregular sin manchas claras).
-  - [ ] S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa.
+  - [x] La caña se reconoce como caña a escala de suelo, planta y finca: matas de tallos con nudos y hojas largas en arco, como en la referencia; ninguna espiga, flor o forma de mazorca; distinta del maíz de la huerta.
+  - [x] Ningún plano verde liso a la vista en los lotes de caña, ni la línea recta del borde: el lote se ve como una masa de hojas de silueta irregular, también en la vista general (hileras y altura irregular sin manchas claras). Dentro del radio con matas la tapa baja hasta la lámina y queda en sombra; más allá (460 unidades o más) el bloque conserva hileras, textura de hojas y altura irregular.
+  - [x] S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa.
+  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y las matas cercanas de la caña (5.c.b: matas cercanas y tapa hundida; el resto en la 5.c.c).
+  - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz (5.c.c).
+  - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo (5.c.c).
+- Prompt de arranque: `Etapa 5.c.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+- División (2026-11-04): la 5.c.b quedó en la caña (primer bloque de trabajo y tres primeros criterios); la luz y el posproceso pasan a la 5.c.c.
+
+## Etapa 5.c.c. Luz de diorama y posproceso
+
+- Tamaño: mediano a grande. Fuentes: no. Origen: división de la 5.c.b.
+- Lecturas: `src/escena/escena.js` (luces, sombras y ciclo de dibujo); `instancias.js`, `arboles.js` y `especies.js` (materiales y sombra por nivel); `cana.js` (material de la mata, con nudos en el sombreador) y `superficie.js` (tapa hundida bajo las matas).
+- Objetivo: luz de diorama sobre la vegetación y la caña, legible en videoconferencia y fluida en el MacBook Air.
+- Trabajo:
+  - Viento leve en las copas, las hojas y las matas de caña (sombreador de vértices, amplitud pequeña, sin costo de CPU). Las matas de caña ya tienen material propio (`crearMaterial` en `cana.js`).
+  - Sombras suaves (PCF suave o VSM) y oclusión ambiental (SSAO o GTAO), con la relación de píxeles y el modo liviano como límites. Revisar la sombra por nivel de detalle de los rodales densos (`sombra: 'cerca'` en `arboles.js`) y la sombra de las teselas de caña: el material de profundidad no hunde la tapa (la tapa hundida queda bajo la sombra del bloque; hoy favorece la lectura de «sombra entre los tallos»).
+  - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
+  - Rendimiento: medir los cuadros por segundo en el MacBook Air en la vista general (1,87 millones de triángulos en S0) y a escala de finca, planta y suelo (3,1 a 5,9 millones con las matas de caña de la 5.c.b); si no alcanza, bajar los umbrales de detalle (`arboles.js`, `especies.js`), el umbral del nivel detallado o los cupos de la caña cercana (`cana.js`).
+- Criterios de aceptación:
   - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y las matas cercanas de la caña.
   - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
   - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
-- Prompt de arranque: `Etapa 5.c.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+  - [ ] Las capturas de la verificación y del respaldo conservan la escena idéntica en cada carga (sin ruido temporal del posproceso).
+- Prompt de arranque: `Etapa 5.c.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 6. Fincas y Estructura Agroecológica Principal
 

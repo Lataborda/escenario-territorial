@@ -41,7 +41,7 @@ export function crearCoberturas({ altura, instantanea = false }) {
   const teselas = medir('teselas', () => crearTeselas(datos, asignaciones, altura));
   const vegetacion = medir('vegetación', () => crearVegetacion(datos, asignaciones, altura));
   const mosaico = medir('mosaico', () => crearMosaico(datos, asignaciones, altura));
-  const cana = medir('caña cercana', () => crearCanaCerca(datos, teselas.lectura, altura));
+  const cana = medir('caña cercana', () => crearCanaCerca(datos, teselas.lectura, altura, teselas.cercania));
   const capas = [vegetacion, mosaico];
   const clases = capas.flatMap((c) => c.clases);
   const retardos = { get: (u) => datos.unidades[u].retardo };

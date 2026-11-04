@@ -49,9 +49,9 @@ export const VEGETACION = {
   frailejonFalda: 0x8e8068,
   frailejonFlor: 0xe0c040,
   frailejonTallo: 0x5d4e3d,
-  canaTallo: 0xc0b468,
-  canaHoja: 0xe2edc8,
-  canaEspiga: 0xd8d0c4,
+  // Tallos de la caña, de verde amarillento a morado (referencias/cana-mata.webp), y hojas secas de la base.
+  canaTallos: [0xb9b46c, 0xa6ae62, 0xc4b97c, 0x93707a, 0x9c8c6a],
+  canaSeca: 0xb3a06c,
   cafeto: 0x2f5a2c,
   cereza: 0xb3262a,
   guamo: 0x557f3e,
