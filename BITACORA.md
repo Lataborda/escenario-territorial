@@ -2,7 +2,9 @@
 
 ## Estado actual
 
-- Etapa siguiente: Etapa 0. Entorno y repositorio.
+- Etapa siguiente: Etapa 1. Modelo de contenido. En la nube, solo con `GUION.md` (PLAN.md, etapa 1).
+- Última etapa cerrada: Etapa 0 (2026-11-04). `npm run verificar` correcto.
+- Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor).
 - Hito alcanzado: ninguno.
 - Fecha de la prueba oral: por confirmar. La notificación llega por correo con una antelación no inferior a tres días (Guía del Aspirante, literal E); el tema se informa dentro de los tres días siguientes (Res. 356 de 2026, art. 11).
 - Plataforma de videoconferencia: por confirmar.
@@ -49,6 +51,36 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - `PLAN.md`, etapas 0 y 4: al cerrar, copia del archivo único en `vista-previa/escenario.html`.
   - `CLAUDE.md`: «modo continuo» omite la espera de aprobación del paso 5; uso del Chromium y el Playwright del entorno cuando existen.
 - Siguiente: Etapa 0.
+
+### 2026-11-04 · Etapa 0. Entorno y repositorio
+
+- Modo continuo: propuesta sin espera de aprobación. Sesión en la nube (Linux, Node 22).
+- Hecho:
+  - `package.json` con versiones exactas: three 0.186.1, gsap 3.15.1, simplex-noise 4.0.3; desarrollo: vite 8.3.5, vite-plugin-singlefile 2.3.4, lil-gui 0.21.0, playwright 1.63.0. `package-lock.json` versionado.
+  - `vite.config.js` con dos modos: `dist/` y archivo único en `dist-unico/` (modo `unico`).
+  - `index.html`, `src/main.js`, `src/estilos.css`, `src/escena/escena.js` (renderizador, cámara, luz hemisférica y una direccional con sombra, OrbitControls, relación de píxeles máxima 2) y `src/escena/maqueta.js` (bloque de 1200 × 900 × 90 sobre mesa con sombra; exporta `MEDIDAS`).
+  - Evento `escenario:listo` y atributo `data-listo` en `<html>` tras cargar tipografías y dibujar el primer cuadro. `window.escenario.estadisticas()` da llamadas de dibujo y triángulos.
+  - Tipografías IBM Plex Sans (400, 500, 600) y Fraunces (400, 600), subconjunto latino, con licencias OFL en `src/fuentes/`.
+  - `contenido/` con los siete JSON vacíos y válidos (`version` y colección vacía).
+  - `scripts/verificar.mjs` y `scripts/lib/revisar-pagina.mjs`: compila los dos modos, revisa la vista en el servidor de vista previa (captura `inicio.png`, cuadros por segundo, llamadas de dibujo, tipografías) y el archivo único por `file://` con toda solicitud http bloqueada (captura `unico.png`); lee `contenido/`; escribe `verificacion/informe.md`.
+  - `scripts/vista-previa.mjs` y script `vista-previa`: copia el archivo único en `vista-previa/escenario.html`.
+- Decisiones:
+  - Playwright 1.63.0 fijado para coincidir con el Chromium del entorno de la nube (revisión 1243); no se instaló navegador. En el MacBook: `npx playwright install chromium` una vez.
+  - Tipografías en `src/fuentes/` y no en `public/fuentes/`, para que Vite las incruste en el archivo único. `PLAN.md` actualizado.
+  - three 0.186.1 en lugar de 0.187.0 (publicada cinco días antes de la sesión).
+  - `verificacion/` (informe y capturas) se versiona, según la sección 3.2. Si el repositorio crece con las 26 capturas, se puede pasar `verificacion/capturas/` a `.gitignore`.
+  - La compilación es determinista: dos compilaciones seguidas dan el mismo archivo único (misma suma MD5).
+- Criterios de aceptación: cumplidos.
+  - `npm run dev` muestra la escena mínima; la órbita con el ratón cambia la vista (prueba con Playwright).
+  - `npm run build` y `npm run build:unico` sin errores.
+  - Archivo único (682 kB) abierto por `file://` sin servidor y con la red bloqueada: carga, cero errores, cero solicitudes externas, tipografías cargadas.
+  - `npm run verificar` correcto; `vista-previa/escenario.html` actualizado.
+- Verificación: correcto. Cero errores de consola, cero solicitudes externas en las dos vistas. 13 llamadas de dibujo. 13,5 cuadros por segundo con SwiftShader (render por software del contenedor); cifra de referencia, la medición válida es la del MacBook Air (etapas 2 y 13). Avisos no bloqueantes: «GPU stall due to ReadPixels», propios de la captura.
+- Pendientes:
+  - Comprobar en el MacBook Air el doble clic sobre `vista-previa/escenario.html` y los cuadros por segundo con GPU.
+  - Sin `src/estado.js` todavía (etapa 3); los módulos actuales no se suscriben a nada.
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 1. Modelo de contenido.
 
 ## Plantilla de entrada
 

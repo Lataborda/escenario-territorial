@@ -83,7 +83,7 @@ Escenario_Territorial/
     navegacion/    paradas, transiciones, teclado, hash
     ui/            botonera de escalas, ficha, leyenda, paneles
     presentador/   sincronización entre ventanas
-  public/fuentes/          tipografías locales
+  src/fuentes/             tipografías locales (Vite las incrusta en el archivo único)
   scripts/                 validar-contenido.mjs, verificar.mjs, respaldo.mjs
   verificacion/            capturas e informe de la última verificación
   respaldo/                presentación de imágenes generada
@@ -195,8 +195,8 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - `git init`, `.gitignore` (node_modules, dist).
   - `package.json` con versiones exactas de three, gsap, simplex-noise, lil-gui, vite, vite-plugin-singlefile y playwright (desarrollo). Navegador de Playwright instalado, o el Chromium que ya traiga el entorno (ver reglas de código de `CLAUDE.md`).
   - `index.html` y `src/main.js` con escena mínima: base de la maqueta, luz, cámara, OrbitControls.
-  - Tipografías locales en `public/fuentes/`.
-  - Scripts `dev`, `build`, `preview`, `build:unico`, `verificar`. En esta etapa, `verificar` carga la página, guarda `verificacion/capturas/inicio.png` y escribe el informe.
+  - Tipografías locales en `src/fuentes/` (en `public/` no se incrustarían en el archivo único).
+  - Scripts `dev`, `build`, `preview`, `build:unico`, `vista-previa`, `verificar`. En esta etapa, `verificar` carga la página, guarda `verificacion/capturas/inicio.png` y escribe el informe.
   - `contenido/` con los siete JSON vacíos y válidos.
   - Al cerrar la etapa, copia del archivo único en `vista-previa/escenario.html`, versionada en el repositorio.
 - Fuera de alcance: relieve y contenido.
