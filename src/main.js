@@ -2,6 +2,8 @@
 import './estilos.css';
 import { crearEscena } from './escena/escena.js';
 import { crearMaqueta } from './escena/maqueta.js';
+import { generarTerreno, ancla, datosTerreno, revisarAnclasTerreno } from './terreno/terreno.js';
+import { leerParametros } from './parametros.js';
 
 const TIPOGRAFIAS = [
   '400 24px "IBM Plex Sans"',
@@ -50,10 +52,19 @@ async function iniciar() {
     mostrarAviso('WebGL no disponible en este navegador.');
     return;
   }
+  const parametros = leerParametros();
   montar('maqueta', crearMaqueta, escena);
+  montar('terreno', () => generarTerreno({ exageracion: parametros.exageracion, mostrarAnclas: parametros.anclas }), escena);
+  escena.mirar(ancla('general'));
   escena.iniciar();
   await escena.primerCuadro();
-  window.escenario = { estadisticas: escena.estadisticas };
+  // Interfaz para la verificación automática y el modo autor.
+  window.escenario = {
+    estadisticas: escena.estadisticas,
+    terreno: datosTerreno,
+    revisarAnclas: revisarAnclasTerreno,
+    vista: (id, vista) => escena.mirar(ancla(id), vista),
+  };
   marcarListo();
 }
 

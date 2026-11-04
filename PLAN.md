@@ -83,6 +83,7 @@ Escenario_Territorial/
     navegacion/    paradas, transiciones, teclado, hash
     ui/            botonera de escalas, ficha, leyenda, paneles
     presentador/   sincronización entre ventanas
+    util/          azar con semilla, ruido, interpolación
   src/fuentes/             tipografías locales (Vite las incrusta en el archivo único)
   scripts/                 validar-contenido.mjs, verificar.mjs, respaldo.mjs
   verificacion/            capturas e informe de la última verificación

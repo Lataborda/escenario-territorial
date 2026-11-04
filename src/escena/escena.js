@@ -6,7 +6,8 @@ const COLOR_FONDO = 0xe8e4dc;
 const RELACION_PIXELES_MAX = 2;
 
 // Vista general inicial: ángulos en grados respecto del centro de la maqueta.
-const VISTA_GENERAL = { distancia: 2500, azimut: 35, elevacion: 38 };
+// Desde el suroccidente: la ladera, orientada al occidente, mira a la cámara.
+const VISTA_GENERAL = { distancia: 2300, azimut: -30, elevacion: 38 };
 
 function posicionEsferica({ distancia, azimut, elevacion }) {
   const az = THREE.MathUtils.degToRad(azimut);
@@ -89,11 +90,21 @@ export function crearEscena(contenedor) {
     }
   }
 
+  // Coloca la cámara al instante respecto de un punto (ángulos en grados).
+  function mirar(objetivo, vista = VISTA_GENERAL) {
+    const destino = objetivo ?? new THREE.Vector3();
+    camara.position.copy(destino).add(posicionEsferica({ ...VISTA_GENERAL, ...vista }));
+    controles.target.copy(destino);
+    camara.lookAt(destino);
+    controles.update();
+  }
+
   return {
     escena,
     camara,
     renderizador,
     controles,
+    mirar,
     agregar: (objeto) => escena.add(objeto),
     iniciar: () => renderizador.setAnimationLoop(cuadro),
     primerCuadro: () => primerCuadro,

@@ -2,10 +2,11 @@
 // Uso: npm run verificar. Sale con código 1 si hay errores de consola, solicitudes externas o vistas que no cargan.
 import { build, preview } from 'vite';
 import { chromium } from 'playwright';
-import { mkdir, writeFile, stat, readdir, rm } from 'node:fs/promises';
+import { mkdir, writeFile, stat, readdir, rm, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { revisarPagina, VENTANA } from './lib/revisar-pagina.mjs';
+import { revisarTerreno, huellaDe, fallasTerreno, seccionTerreno } from './lib/revisar-terreno.mjs';
 import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -81,7 +82,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación',
     '',
@@ -94,6 +95,7 @@ function escribirInforme({ fecha, version, principal, unico, tamanoUnico, conten
     ...seccionVista('Archivo único (file://, sin servidor y sin red)', unico, [
       `- Tamaño: ${(tamanoUnico / 1024).toFixed(0)} kB`,
     ]),
+    ...seccionTerreno(terreno),
     '## Contenido',
     '',
     `- JSON válidos: ${contenido.validos} de ${CONTENIDO.length}`,
@@ -138,16 +140,30 @@ async function principal() {
   let resultado;
   try {
     console.log(`Revisando ${url} ...`);
+    const general = path.join(DIR_CAPTURAS, 'general.png');
     const vistaPrincipal = await revisarPagina(navegador, url, {
       origen,
-      captura: path.join(DIR_CAPTURAS, 'inicio.png'),
+      captura: general,
       medir: true,
+      extra: (pagina) => revisarTerreno(pagina, DIR_CAPTURAS),
     });
+    console.log('Repitiendo la carga para comparar ...');
+    const repeticion = path.join(DIR_CAPTURAS, 'repeticion.png');
+    const segunda = await revisarPagina(navegador, url, { origen, captura: repeticion, extra: huellaDe });
     console.log('Revisando el archivo único sin servidor ...');
     const vistaUnica = await revisarPagina(navegador, pathToFileURL(ARCHIVO_UNICO).href, {
       captura: path.join(DIR_CAPTURAS, 'unico.png'),
+      extra: huellaDe,
     });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, version: navegador.version() };
+    const terreno = vistaPrincipal.extra ?? { capturas: [] };
+    const huella = terreno.datos?.huella;
+    terreno.repeticion = {
+      huellaIgual: Boolean(huella) && segunda.extra?.huella === huella,
+      capturaIgual: segunda.cargo && (await readFile(general)).equals(await readFile(repeticion)),
+      unicoIgual: Boolean(huella) && vistaUnica.extra?.huella === huella,
+    };
+    await rm(repeticion, { force: true });
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -156,6 +172,7 @@ async function principal() {
   const fallas = [
     ...fallasDe('Vista compilada', resultado.principal),
     ...fallasDe('Archivo único', resultado.unico),
+    ...fallasTerreno(resultado.terreno),
     ...contenido.errores.map((e) => `Contenido: ${e}`),
   ];
   const informe = escribirInforme({

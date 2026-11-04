@@ -43,10 +43,10 @@ function leerTipografias(pagina, familias) {
 
 /**
  * Abre `url` y devuelve el resultado de la revisión.
- * opciones: { origen, captura (ruta del PNG o null), medir (bool) }
+ * opciones: { origen, captura (ruta del PNG o null), medir (bool), extra (función async que recibe la página) }
  * Sin `origen`, toda solicitud http(s) se bloquea: simula equipo sin red y sin servidor.
  */
-export async function revisarPagina(navegador, url, { origen = null, captura = null, medir = false }) {
+export async function revisarPagina(navegador, url, { origen = null, captura = null, medir = false, extra = null }) {
   const contexto = await navegador.newContext({ viewport: VENTANA, deviceScaleFactor: 1 });
   const pagina = await contexto.newPage();
   const r = { url, cargo: false, ms: null, errores: [], avisos: [], solicitudes: 0, externas: [] };
@@ -90,6 +90,13 @@ export async function revisarPagina(navegador, url, { origen = null, captura = n
       const ext = gl?.getExtension('WEBGL_debug_renderer_info');
       return ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : null;
     });
+    if (extra) {
+      try {
+        r.extra = await extra(pagina);
+      } catch (error) {
+        r.errores.push(`Revisión adicional: ${error.message.split('\n')[0]}`);
+      }
+    }
   }
   await contexto.close();
   return r;
