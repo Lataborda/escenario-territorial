@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-- Etapa siguiente: Etapa 5.c. Dirección de arte (registrada en `PLAN.md` al cerrar la 5.b, a pedido de Alejandro).
+- Etapa siguiente: Etapa 5.c. Dirección de arte (registrada en `PLAN.md` al cerrar la 5.b, a pedido de Alejandro; incluye la caña desde el ajuste del 2026-11-04).
 - Última etapa cerrada: Etapa 5.b (2026-11-04). `npm run validar` y `npm run verificar` correctos (unos 6 min en la nube).
 - Estilo visual: decisión D5 cambiada a «realismo de maqueta» (2026-11-04, observación de Alejandro en el MacBook Air). La vegetación nueva de la 5.b ya la sigue; la de la 5.a sigue facetada hasta la 5.c.
 - Terreno: relieve de la cuenca en bloque recortado, ríos, límite departamental y 32 anclas sobre la superficie (`src/terreno/`). Exageración vertical con `#ex=` (1,5 a 3; 2 por defecto).
@@ -303,6 +303,12 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Etapa 6: reemplazar el silvopastoreo provisional de F1 por la finca; las vías veredales ya llegan a F2 y F3.
   - Pendientes heredados: prueba manual del presentador en videoconferencia, fuente `resumenes` en pantalla, encuadre de P17 y P21, lil-gui en modo autor.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 5.c. Dirección de arte.
+
+### 2026-11-04 · Ajuste del plan: caña en la etapa 5.c
+
+- Observación de Alejandro sobre la vista general: la caña se ve como bloques planos escalonados.
+- Hecho: `PLAN.md`, etapa 5.c. La caña pasa a tener tallos instanciados con hojas cerca de la cámara (generados por celda), superficie con surcos y altura irregular a distancia, lotes de tres edades (recién cortado, en crecimiento, maduro) fijos por lote, y bordes de lote con tallos visibles. Dos criterios de aceptación nuevos y el modo liviano retira también los tallos cercanos. Tamaño de la etapa: grande, con división prevista (vegetación y caña; luz y posproceso).
 - Siguiente: Etapa 5.c. Dirección de arte.
 
 ## Plantilla de entrada

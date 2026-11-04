@@ -314,17 +314,24 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 
 ## Etapa 5.c. Dirección de arte
 
-- Tamaño: mediano. Fuentes: no. Origen: observación de Alejandro en el MacBook Air al cerrar la 5.b (decisión D5, «realismo de maqueta»).
-- Lecturas: `src/coberturas/especies.js`, `formas.js` e `instancias.js` (estilo y niveles de detalle de la 5.b).
-- Objetivo: el mismo realismo de maqueta en toda la vegetación y una luz de diorama.
+- Tamaño: grande. Fuentes: no. Origen: observaciones de Alejandro al cerrar la 5.b (decisión D5, «realismo de maqueta»; árboles facetados; caña en bloques planos escalonados en la vista general). Si la sesión no alcanza, se divide según el protocolo: primero la vegetación y la caña, después la luz y el posproceso (viento, sombras, oclusión y desenfoque).
+- Lecturas: `src/coberturas/especies.js`, `formas.js` e `instancias.js` (estilo y niveles de detalle de la 5.b); `teselas.js` y `vegetacion.js` (bloque de caña y vegetación de la 5.a).
+- Objetivo: el mismo realismo de maqueta en toda la vegetación, la caña incluida, y una luz de diorama.
 - Trabajo:
-  - Vegetación de la 5.a con el estilo de la 5.b: bosque ripario, guadua, caña (bloque con textura de surcos o hileras de tallos), frailejón, bosque seco, bosque altoandino y árboles de la pastura y del silvopastoreo. Especies reconocibles, copas con racimos de hojas, variación de color y dos niveles de detalle con `instancias.js`.
+  - Vegetación de la 5.a con el estilo de la 5.b: bosque ripario, guadua, frailejón, bosque seco, bosque altoandino y árboles de la pastura y del silvopastoreo. Especies reconocibles, copas con racimos de hojas, variación de color y dos niveles de detalle con `instancias.js`.
+  - Caña (convencional y orgánica) en lugar de los bloques planos:
+    - Cerca de la cámara: tallos instanciados con hojas, generados por celda al acercarse (semilla por celda) para no cargar el plano entero.
+    - A distancia: superficie con surcos (orientación propia de cada lote) y altura irregular, en lugar de la tapa plana.
+    - Lotes de tres edades: recién cortado (rastrojo bajo y pajizo), en crecimiento (altura media, verde claro) y maduro (altura plena, con espigas). Edad fija por lote con semilla e igual en todos los escenarios; fracciones de edad en `contenido/escenarios.json` como valores ilustrativos.
+    - Bordes de lote donde se ven los tallos: franja de tallos en el borde de cada lote en crecimiento o maduro, también en el nivel simple. Un lote recién cortado deja ver la cara de tallos del lote vecino.
   - Viento leve en las copas y las hojas (sombreador de vértices, amplitud pequeña, sin costo de CPU).
   - Sombras suaves (filtro PCF suave o VSM) y oclusión ambiental (SSAO o GTAO), con la relación de píxeles y el modo liviano como límites.
   - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
 - Criterios de aceptación:
   - [ ] Ningún árbol facetado a la escala de finca o vereda.
-  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento y las sombras, y reduce instancias.
+  - [ ] Caña sin bloques planos escalonados: surcos y altura irregular en la vista general; tallos con hojas a escala de finca y de planta; tallos visibles en los bordes de lote.
+  - [ ] Tres edades de caña distinguibles en la vista general, fijas por lote en todos los escenarios. S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa.
+  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y los tallos cercanos de la caña, y reduce instancias.
   - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
   - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
 - Prompt de arranque: `Etapa 5.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
