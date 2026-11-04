@@ -1,0 +1,491 @@
+# Plan de construcción del escenario territorial
+
+Versión 1, 1 de noviembre de 2026. Plan para Claude Code, ejecutado por etapas en sesiones separadas. Cada etapa deja el proyecto funcionando, verificado y registrado. El contenido conceptual está en `GUION.md`; el protocolo de cada sesión, en `CLAUDE.md`.
+
+## 1. Propósito
+
+Construir una maqueta 3D navegable de un territorio esquemático (cuenca de ladera, valle y ciudad) que sirva como herramienta pedagógica de la clase «Transición hacia sistemas alimentarios agroecológicos: del agroecosistema al territorio». La maqueta permite acercarse del territorio a la finca, al lote y al suelo, y alejarse hasta la región y la política, y muestra bajo una teoría de cambio qué condiciones llevan la agroecología de fincas aisladas (faros) a territorios.
+
+Restricciones de la prueba que fijan el diseño (Res. 356 de 2026, art. 11):
+
+- Exposición de 40 minutos por videoconferencia, ante tres jurados y un veedor.
+- Se evalúan expresión oral, manejo de herramientas pedagógicas y propuesta didáctica. El escenario sirve a una clase; cada parada corresponde a un momento didáctico.
+- La fecha se notifica por correo con una antelación no inferior a tres días (Guía del Aspirante, literal E). Por eso el plan alcanza una versión presentable en la etapa 4.
+
+## 2. Decisiones de diseño
+
+### 2.1 Herramienta
+
+| Opción | Decisión | Motivo |
+|---|---|---|
+| Three.js con Vite y GSAP | elegida | corre en el navegador; gratuita; se construye por etapas desde texto; GSAP ya se usó en el prototipo; admite un archivo HTML único de respaldo |
+| Babylon.js | descartada | capacidades equivalentes; Three.js tiene más ejemplos y documentación, lo que reduce iteraciones |
+| Godot o Unity | descartadas | motores con edición visual; exportación web pesada; poco aptos para construir por etapas desde texto |
+| CesiumJS | descartada | pensada para terreno real del planeta; el territorio es esquemático |
+| Hyperframes | se conserva aparte | diapositivas animadas en 2D, sin navegación 3D |
+| Video generativo | etapa opcional O2 | alto realismo, sin interactividad, con costo |
+
+### 2.2 Estilo visual
+
+- Maqueta estilizada de baja poligonización, en bloque recortado cuyas caras laterales muestran los estratos del suelo. Retoma el formato de diorama del video de referencia (bloque en sección, rótulos con punto y línea guía), con geometría generada por código.
+- Fondo neutro, luz cenital suave, una sola sombra direccional.
+- Rótulos HTML nítidos (CSS2DRenderer). Tipografías del prototipo Hyperframes (IBM Plex Sans y Fraunces), en archivos locales.
+- Semántica fija de flujos: agua azul, sedimentos pardo, nutrientes naranja, semillas violeta, conocimiento amarillo, alimento y mercado verde, gobernanza gris. Cada flujo lleva además forma o trazo propio y rótulo, para no depender del color.
+- Transiciones de cámara lentas (1,5 a 3 s) y sin giros bruscos, porque la videoconferencia comprime el movimiento rápido.
+
+### 2.3 Territorio
+
+Territorio esquemático inspirado en el valle geográfico del río Cauca, una cuenca tributaria de la cordillera Central y el norte del Cauca (decisión D1 de `GUION.md`). Orientación: oriente con cordillera y páramo, occidente con el río Cauca, norte en el Valle del Cauca, sur en el Cauca, separados por un límite departamental. El plano esquemático y las posiciones iniciales están en `GUION.md`, sección 2.
+
+### 2.4 Relación con el prototipo Hyperframes
+
+`../Prototipo_Hyperframes/` queda como respaldo y como fuente de contenido de M1 (niveles de organización, funcionamiento del agroecosistema, EAP). No se integra al código de este proyecto ni se modifica.
+
+## 3. Arquitectura técnica
+
+### 3.1 Componentes
+
+| Componente | Función |
+|---|---|
+| Vite | servidor de desarrollo y compilación con dos entradas (vista principal y vista del presentador) |
+| Three.js | escena, terreno, vegetación instanciada, líneas gruesas de red (Line2) |
+| CSS2DRenderer (Three.js) | rótulos HTML |
+| OrbitControls (Three.js) | modo libre |
+| GSAP | transiciones de cámara y de estado |
+| simplex-noise | ruido con semilla para el relieve |
+| lil-gui | ajustes en modo autor, solo en desarrollo |
+| vite-plugin-singlefile | archivo HTML único de respaldo |
+| Playwright | recorrido automático, capturas y control de errores |
+
+Todas son gratuitas. Three.js, Vite, simplex-noise, lil-gui y vite-plugin-singlefile usan licencia MIT; Playwright, Apache 2.0; GSAP es de uso gratuito según su fabricante.
+
+### 3.2 Estructura de carpetas
+
+```
+Escenario_Territorial/
+  CLAUDE.md  PLAN.md  GUION.md  BITACORA.md
+  package.json  package-lock.json  vite.config.js
+  index.html               vista principal (la que se comparte)
+  presentador.html         vista del presentador
+  contenido/               datos editables (JSON)
+    territorio.json  escalas.json  paradas.json  escenarios.json
+    condiciones.json  actores.json  fuentes.json
+  src/
+    main.js  estado.js
+    escena/        renderizador, luces, cámara, bloque de la maqueta
+    terreno/       relieve, zonas, ríos, anclas, altura(x, z)
+    coberturas/    vegetación y usos del suelo por zona
+    fincas/        generador de fincas y conectores EAP
+    suelo/         lote e interacciones, corte de suelo
+    procesos/      flujos (agua, sedimentos, nutrientes, semillas, polinizadores)
+    redes/         actores, enlaces, polígonos, figuras territoriales
+    reglas/        teoría de cambio: condiciones a efectos
+    navegacion/    paradas, transiciones, teclado, hash
+    ui/            botonera de escalas, ficha, leyenda, paneles
+    presentador/   sincronización entre ventanas
+  public/fuentes/          tipografías locales
+  scripts/                 validar-contenido.mjs, verificar.mjs, respaldo.mjs
+  verificacion/            capturas e informe de la última verificación
+  respaldo/                presentación de imágenes generada
+```
+
+### 3.3 Modelo de datos
+
+Coordenadas del plano normalizadas entre 0 y 1 (x de occidente a oriente, z de norte a sur). Cada entidad de `territorio.json` tiene un `id` que funciona como ancla de cámara. Las paradas definen la cámara respecto de un ancla, de modo que un cambio del relieve no rompe el recorrido.
+
+Ejemplo de parada:
+
+```json
+{
+  "id": "P06",
+  "momento": "M1",
+  "minutos": 1.5,
+  "saltable": false,
+  "titulo": "Finca faro en el plano",
+  "escala": "finca",
+  "camara": { "ancla": "F1", "distancia": 420, "azimut": 35, "elevacion": 40, "duracion": 2.5 },
+  "estado": { "escenario": "S0", "capas": ["conectores", "rotulos_finca"], "lente": null, "anio": "hoy" },
+  "ficha": "Texto de pantalla, 60 palabras como máximo.",
+  "notas": "Notas del presentador.",
+  "fuentes": ["calle:§11.1"],
+  "estado_texto": "borrador"
+}
+```
+
+Ejemplo de condición:
+
+```json
+{
+  "id": "C7",
+  "nombre": "Mercados favorables y circuitos cortos",
+  "fuentes": ["zollet:§4(3)", "levidow:§2.2"],
+  "efectos": ["mercados_activos"],
+  "efecto_territorial_requiere": ["C5"],
+  "mensaje_si_falta": "Mercados activos sin organización social que los articule"
+}
+```
+
+`fuentes.json` asocia cada clave con referencia, archivo y estado (`en carpeta`, `falta`, `verificar`). El localizador va después de los dos puntos de la clave (`clave:página o sección`).
+
+### 3.4 Estado y navegación
+
+Almacén único en `src/estado.js` con suscripción:
+
+```
+{ parada, escala, escenario, condiciones[], lente, anio, capas[], modo }
+modo: recorrido | libre | actividad | autor
+```
+
+Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y cada módulo visual reacciona a los cambios que le competen.
+
+| Tecla | Acción |
+|---|---|
+| → o espacio | parada siguiente |
+| ← | parada anterior |
+| 0 a 6 | primera parada del momento M0 a M6 |
+| O | modo libre (órbita y zoom); otra vez O vuelve al recorrido |
+| F | pantalla completa |
+| H | ocultar o mostrar la interfaz |
+| V | modo liviano |
+| C | modo autor: copia la cámara actual en formato de parada |
+| A | modo autor: muestra las anclas |
+
+La botonera de escalas (siete botones) lleva a la vista tipo de cada escala desde el punto de interés actual. El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar.
+
+### 3.5 Vista del presentador
+
+`presentador.html` se sincroniza con la vista principal mediante BroadcastChannel. Muestra la parada actual con sus notas, la siguiente, el cronómetro total y por momento frente a la meta, y las fuentes. Sus botones controlan la vista principal. En la videoconferencia se comparte solo la pestaña o ventana principal. La sincronización requiere `npm run presentar` (servidor local). El archivo único de respaldo funciona sin la vista del presentador; para ese caso existe `respaldo/notas.md`.
+
+### 3.6 Verificación automática
+
+`npm run verificar` compila, levanta el servidor de vista previa y recorre con Playwright cada parada en `#p=ID&captura=1` (transiciones instantáneas). Espera el evento `escenario:listo`, guarda una captura de 1600×900 en `verificacion/capturas/`, registra errores de consola y solicitudes de red, mide cuadros por segundo en la vista general y escribe `verificacion/informe.md`. Falla si hay errores de consola, alguna solicitud externa o paradas que no cargan. El informe lista además las fichas en `borrador` y las fuentes en `falta` o `verificar`.
+
+## 4. Principios técnicos
+
+- Rendimiento: 50 cuadros por segundo o más en el MacBook Air en la vista general. Vegetación con InstancedMesh; menos de 200 llamadas de dibujo; relación de píxeles máxima de 2. El modo liviano retira sombras y reduce instancias.
+- Legibilidad en videoconferencia: texto de 24 px o más a 1920×1080; contraste AA; fichas de 60 palabras como máximo; siete rótulos simultáneos como máximo.
+- Determinismo: semilla fija; la escena es idéntica en cada carga.
+- Sin red: bibliotecas, tipografías y datos locales.
+- Accesibilidad: color, forma y rótulo para cada categoría.
+- Modularidad: un módulo por capa visual, menos de 300 líneas por archivo, comunicación solo a través del estado.
+- Robustez: un error en un módulo se registra y deja seguir al resto; el hash permite recargar en la parada actual.
+
+## 5. Hitos
+
+| Hito | Etapas | Resultado |
+|---|---|---|
+| A. Recorrido mínimo | 0 a 4 | relieve, paradas con fichas, vista del presentador, respaldo; presentable con el prototipo Hyperframes como complemento |
+| B. Biofísica | 5 a 8 | M1 y M2 completos |
+| C. Territorio | 9 a 11 | M3 a M6 completos |
+| D. Clase completa | 12 a 14 | ensayo cronometrado, prueba en videoconferencia, versión congelada |
+
+Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar dos (N.a y N.b). Estimación total entre 15 y 20 sesiones.
+
+## Etapa 0. Entorno y repositorio
+
+- Tamaño: pequeña. Fuentes: no.
+- Lecturas: secciones 3 y 4 de este plan.
+- Objetivo: proyecto Vite con Three.js funcionando, versionado y con verificación automática.
+- Trabajo:
+  - `git init`, `.gitignore` (node_modules, dist).
+  - `package.json` con versiones exactas de three, gsap, simplex-noise, lil-gui, vite, vite-plugin-singlefile y playwright (desarrollo). Navegador de Playwright instalado.
+  - `index.html` y `src/main.js` con escena mínima: base de la maqueta, luz, cámara, OrbitControls.
+  - Tipografías locales en `public/fuentes/`.
+  - Scripts `dev`, `build`, `preview`, `build:unico`, `verificar`. En esta etapa, `verificar` carga la página, guarda `verificacion/capturas/inicio.png` y escribe el informe.
+  - `contenido/` con los siete JSON vacíos y válidos.
+- Fuera de alcance: relieve y contenido.
+- Criterios de aceptación:
+  - [ ] `npm run dev` muestra la escena mínima.
+  - [ ] `npm run build` y `npm run build:unico` terminan sin errores.
+  - [ ] El archivo único abre con doble clic, sin servidor y sin internet.
+  - [ ] `npm run verificar` produce la captura y un informe sin errores ni solicitudes externas.
+  - [ ] Commit `Etapa 0`.
+- Prompt de arranque: `Etapa 0 de PLAN.md. Sigue el protocolo de CLAUDE.md. Aún no hay código.`
+
+## Etapa 1. Modelo de contenido
+
+- Tamaño: mediana. Fuentes: sí (`/add-dir ../..`).
+- Lecturas: `GUION.md` completo; pasajes puntuales de las fuentes para localizar páginas y secciones.
+- Requisito: respuestas de Alejandro a las decisiones D1 a D7 de `GUION.md`. Sin respuesta, se aplican las opciones recomendadas y se registra.
+- Objetivo: convertir el guion en datos que el motor leerá.
+- Trabajo:
+  - Redactar los siete JSON de `contenido/` a partir de `GUION.md`: entidades y anclas, escalas, 26 paradas, escenarios S0 a S3, condiciones C1 a C10 con efectos y dependencias, actores, fuentes.
+  - Fichas y notas en estado `borrador`, con las reglas de redacción de `CLAUDE.md`.
+  - Completar localizadores de fuente (página o sección) buscando con `rg` o `pdftotext`.
+  - `scripts/validar-contenido.mjs` y script `validar`: campos obligatorios, referencias cruzadas (anclas, escalas, escenarios, condiciones, fuentes), 60 palabras por ficha, minutos por momento frente a la meta (M0 3, M1 6, M2 7, M3 8, M4 8, M5 5, M6 3, tolerancia de un minuto), términos vetados («—», «cadena de valor», «stakeholder», «APPA» junto a «1406»).
+  - Generar `verificacion/pendientes-de-fuente.md`.
+- Fuera de alcance: código 3D.
+- Criterios de aceptación:
+  - [ ] `npm run validar` sin errores.
+  - [ ] Cada parada tiene al menos una fuente con localizador.
+  - [ ] Lista de pendientes de fuente generada y resumida en la bitácora.
+  - [ ] `GUION.md` sin cambios de fondo; si algo del guion resultó inviable, queda anotado en la bitácora.
+- Prompt de arranque: `Etapa 1 de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
+
+## Etapa 2. Terreno de la cuenca
+
+- Tamaño: mediana a grande. Fuentes: no.
+- Lecturas: `contenido/territorio.json`; sección 2.2 de este plan.
+- Objetivo: relieve legible de la cuenca en un bloque tipo maqueta.
+- Trabajo:
+  - Malla de terreno guiada por el plano: cordillera al oriente, páramo, bosque andino, ladera, piedemonte, plano del valle, río Cauca al occidente. Ruido con semilla para el detalle.
+  - Río tributario y quebradas tallados en el relieve; superficie de agua simple.
+  - Límite departamental como línea sobre el terreno.
+  - Exageración vertical configurable (entre 1,5 y 3).
+  - Bloque recortado: caras laterales con estratos del suelo.
+  - Color por zona, altitud y pendiente.
+  - Función `altura(x, z)` y cálculo de anclas sobre la superficie, exportados para los demás módulos.
+- Fuera de alcance: vegetación, fincas, interfaz.
+- Criterios de aceptación:
+  - [ ] En la captura aérea se distinguen cordillera, ladera, valle y ríos.
+  - [ ] La escena es idéntica en dos cargas seguidas.
+  - [ ] 50 cuadros por segundo o más en la vista general.
+  - [ ] Las anclas quedan sobre la superficie (verificable con la tecla A).
+  - [ ] Capturas de vista general, ladera y plano.
+- Prompt de arranque: `Etapa 2 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 3. Navegación por paradas y escalas
+
+- Tamaño: mediana. Fuentes: no.
+- Lecturas: sección 3.4 de este plan; `contenido/paradas.json`, `escalas.json`.
+- Objetivo: recorrido guiado completo con fichas en pantalla, aunque las capas visuales aún falten.
+- Trabajo:
+  - `src/estado.js` con suscripción.
+  - Navegación: `irA`, siguiente y anterior, saltos por momento, cámara relativa a ancla con GSAP.
+  - Botonera de siete escalas, panel de ficha (título, texto, fuente abreviada), indicador de momento.
+  - Hash `#p=ID`, modo libre, modo autor (teclas C y A), teclado de la sección 3.4.
+  - Ampliar `verificar` para recorrer todas las paradas.
+- Fuera de alcance: vista del presentador, capas visuales nuevas.
+- Criterios de aceptación:
+  - [ ] Recorre las 26 paradas sin errores.
+  - [ ] Transiciones de 1,5 a 3 s, sin saltos.
+  - [ ] Fichas legibles en una ventana de 1280×720.
+  - [ ] Cada ficha muestra su fuente.
+  - [ ] La tecla C produce un bloque de cámara válido para `paradas.json`.
+- Prompt de arranque: `Etapa 3 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 4. Vista del presentador y respaldo
+
+- Tamaño: pequeña a mediana. Fuentes: no.
+- Lecturas: sección 3.5 de este plan.
+- Objetivo: poder dar la clase con lo construido hasta aquí (hito A).
+- Trabajo:
+  - `presentador.html` con notas, parada siguiente, cronómetro total y por momento, fuentes y controles, sincronizada por BroadcastChannel.
+  - Script `presentar`: compila, sirve y abre las dos vistas.
+  - Script `respaldo`: genera `respaldo/index.html` con las capturas de todas las paradas, navegable con flechas, y `respaldo/notas.md` con las notas.
+  - Actualizar el archivo único.
+- Criterios de aceptación:
+  - [ ] Las dos ventanas permanecen sincronizadas en ida y vuelta.
+  - [ ] El cronómetro marca el desvío frente a la meta de cada momento.
+  - [ ] El respaldo abre sin servidor.
+  - [ ] Prueba manual de Alejandro: compartir la pestaña principal en una videoconferencia y mirarla desde un segundo dispositivo. Resultado anotado en la bitácora.
+- Prompt de arranque: `Etapa 4 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 5. Coberturas y matriz del paisaje
+
+- Tamaño: grande (5.a vegetación natural y matriz cañera; 5.b mosaico campesino, ciudad y vías). Fuentes: no.
+- Lecturas: `contenido/territorio.json`, `escenarios.json`.
+- Objetivo: el paisaje de S0 (matriz de monocultivo con relictos) y la capacidad de cambiar coberturas por escenario.
+- Trabajo:
+  - Vegetación instanciada por zona: páramo, bosque altoandino, bosque ripario y guadual, relictos de bosque seco y humedal en el plano, caña, pasturas, mosaico campesino (café con sombrío, plátano, frutales, huertas).
+  - Ciudad con manzanas simples, cabeceras, vías.
+  - Coberturas parametrizadas por escenario (fracciones por zona) con transición suave.
+  - Leyenda de coberturas.
+- Criterios de aceptación:
+  - [ ] En S0 la matriz de caña domina el plano y los relictos se ven aislados.
+  - [ ] El cambio de escenario modifica las coberturas sin cortes.
+  - [ ] 50 cuadros por segundo o más; menos de 200 llamadas de dibujo.
+- Prompt de arranque: `Etapa 5.a de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 6. Fincas y Estructura Agroecológica Principal
+
+- Tamaño: grande. Fuentes: sí, puntuales (León-Sicard 2021; Calle et al. 2022, §11.1).
+- Lecturas: `GUION.md`, secciones 2 y 3 (escala 3).
+- Objetivo: el agroecosistema mayor visible y comparable.
+- Trabajo:
+  - Generador de finca a partir de una receta: lotes, casa, lindero, conectores internos y externos.
+  - Cuatro fincas tipo: F1 finca faro con las proporciones de El Hatico; F2 ladera en sustitución de insumos; F3 ladera diversificada en red; F4 predio cañero convencional.
+  - Resaltado de agroecosistema menor (lote) y mayor (lindero, con la familia dentro).
+  - Capa de conectores EAP y conexión con la estructura ecológica principal.
+  - Panel EAP con los diez criterios (cinco ecosistémicos, cinco culturales) y valores rotulados como ilustrativos.
+  - Clic en una finca lleva a su parada.
+- Criterios de aceptación:
+  - [ ] Las cuatro fincas se distinguen a escala de finca y de matriz.
+  - [ ] Los conectores se leen en la vista de matriz.
+  - [ ] El panel EAP toma sus datos de `contenido/`.
+- Prompt de arranque: `Etapa 6 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 7. Lote, interacciones de especies y suelo
+
+- Tamaño: mediana a grande. Fuentes: sí (Gliessman caps. 3, 7, 8 y 12; Calle et al. 2022, cap. 11).
+- Objetivo: el descenso continuo de la finca al lote y al suelo.
+- Trabajo:
+  - Lote de policultivo de ladera junto a un lote de caña en monocultivo.
+  - Rótulos de interacciones según Gliessman caps. 7 y 12 (competencia, complementariedad, facilitación, mutualismo, fijación de nitrógeno, sombrío).
+  - Secuencia de niveles de organización en cuatro pasos (fig. 3.1).
+  - Corte de suelo: horizontes, raíces, hifas, macrofauna, materia orgánica; rótulo «cierra en la finca».
+  - Contraste de materia orgánica con los datos de El Hatico.
+  - Transición de cámara sin cortes de finca a lote y a suelo.
+- Criterios de aceptación:
+  - [ ] Descenso continuo en las paradas P03, P04 y P07.
+  - [ ] Cada rótulo conceptual tiene fuente en `contenido/`.
+- Prompt de arranque: `Etapa 7 de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
+
+## Etapa 8. Procesos supraprediales
+
+- Tamaño: mediana a grande. Fuentes: sí, puntuales.
+- Lecturas: `GUION.md`, sección 4.
+- Objetivo: cada proceso visible en su escala mínima (hito B).
+- Trabajo:
+  - Sistema reutilizable de flujos (partículas sobre curvas).
+  - Agua y sedimentos según la cobertura de la ladera; prácticas de conservación en la vista de ladera (curvas a nivel, barreras vivas, terrazas).
+  - Polinización y control biológico: radios desde parches de hábitat y su superposición entre fincas.
+  - Nutrientes de las fincas a la ciudad, sin retorno en S0 y con retorno en S3.
+  - Semillas entre custodios.
+  - Parada de síntesis con la tabla de escala mínima. Leyenda de flujos.
+- Criterios de aceptación:
+  - [ ] Paradas P07 a P12 completas.
+  - [ ] La biota del suelo aparece como proceso que cierra en la finca.
+  - [ ] 50 cuadros por segundo o más con los flujos activos.
+- Prompt de arranque: `Etapa 8 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 9. Actores, redes y figuras territoriales
+
+- Tamaño: grande. Fuentes: no, salvo verificaciones.
+- Lecturas: `contenido/actores.json`; `GUION.md`, secciones 2 y 10.
+- Objetivo: el territorio como espacio de actores.
+- Trabajo:
+  - Marcadores simbólicos de actores con rótulo. Sin figuras humanas estereotipadas.
+  - Figuras territoriales: resguardo, consejo comunitario, reserva natural de la sociedad civil, límites departamental y municipal.
+  - Siete mercados en cabeceras, aislados en S0.
+  - Enlaces gruesos por tipo de relación: comercio, conocimiento, garantía (SPG), semillas, gobernanza.
+  - Polígono del territorio de la red, trazado por sus actores, que cruza el límite departamental.
+  - Actores institucionales: alcaldía (recursos y capacitaciones), autoridad ambiental, MADR y ADR, universidad, ONG, colegios con compras públicas, ingenio.
+- Criterios de aceptación:
+  - [ ] Siete mercados aislados en S0 y en red en S2.
+  - [ ] El polígono de la red cruza el límite departamental.
+  - [ ] Rótulos legibles con siete visibles como máximo.
+- Prompt de arranque: `Etapa 9 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 10. Escenarios y teoría de cambio
+
+- Tamaño: grande. Fuentes: no.
+- Lecturas: `GUION.md`, secciones 5 y 6; `contenido/condiciones.json`, `escenarios.json`.
+- Objetivo: la teoría de cambio operable desde la vista lejana.
+- Trabajo:
+  - Motor de reglas en `src/reglas/`: lee condiciones, efectos y dependencias, y deriva el estado del territorio.
+  - Panel de condiciones (interruptores C1 a C10) y preajustes S0 a S3.
+  - Transición animada entre estados.
+  - Diagrama 2D de la teoría de cambio (condiciones, supuestos, resultados) sincronizado con los interruptores.
+  - Aviso cuando una condición activa carece de efecto territorial por falta de otra.
+- Criterios de aceptación:
+  - [ ] Los cuatro preajustes producen paisajes distinguibles en captura.
+  - [ ] Ninguna condición sola produce S2.
+  - [ ] Todas las reglas están en `contenido/`, sin reglas escritas en el código.
+- Prompt de arranque: `Etapa 10 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 11. Lentes, capa histórica y cierre
+
+- Tamaño: mediana. Fuentes: sí, puntuales (Calle et al. 2022, §11.2 y §11.7; Res. 331).
+- Objetivo: M3 a M6 recorribles (hito C).
+- Trabajo:
+  - Lentes ① a ④ sobre la misma maqueta (resaltados, rótulos y polígonos propios), según `GUION.md`, sección 7.
+  - Línea de tiempo 1957, 1986, hoy y escenario, con coberturas según Calle et al. (2022, §11.2) y la fuente en pantalla.
+  - Vista S1 de El Hatico: flujos que salen del territorio y caña en manejo orgánico sin cambio de la geometría de la matriz.
+  - Cierre «objetivo territorial, instrumento predial»: horizonte S3 y, sobre él, el IPPTA en una sola finca.
+- Criterios de aceptación:
+  - [ ] Cambio de lente en un segundo o menos.
+  - [ ] Paradas P13 a P26 completas.
+- Prompt de arranque: `Etapa 11 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 12. Ficha de sesión, actividad y tarea
+
+- Tamaño: pequeña a mediana. Fuentes: no.
+- Objetivo: la propuesta didáctica visible en pantalla.
+- Trabajo:
+  - Panel de ficha de sesión (M0).
+  - Modo actividad para P19: pregunta en pantalla, activación progresiva de condiciones desde la vista del presentador, respuesta esperada en las notas.
+  - Panel de tarea auténtica (M6).
+  - Paradas saltables y alertas del cronómetro por momento.
+- Criterios de aceptación:
+  - [ ] Recorrido M0 a M6 completo en un ensayo de 36 a 40 minutos.
+  - [ ] La actividad funciona solo desde la vista del presentador, sin tocar la vista compartida.
+- Prompt de arranque: `Etapa 12 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 13. Rendimiento y prueba en videoconferencia
+
+- Tamaño: mediana. Fuentes: no.
+- Objetivo: funcionamiento estable en las condiciones reales de la prueba.
+- Trabajo:
+  - Medición de cuadros por segundo, llamadas de dibujo y memoria en el MacBook Air mientras se comparte pantalla.
+  - Modo liviano automático si el rendimiento cae.
+  - Revisión de contraste y tamaño de texto.
+  - Prueba con la plataforma de la notificación (o Meet si aún no se conoce) y un segundo dispositivo como receptor.
+  - Video del recorrido completo como respaldo adicional; respaldo de imágenes actualizado.
+- Criterios de aceptación:
+  - [ ] 45 cuadros por segundo o más compartiendo pantalla.
+  - [ ] Texto legible en el receptor a 720p.
+  - [ ] Cero solicitudes de red en el informe.
+- Prompt de arranque: `Etapa 13 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 14. Ensayo general y versión congelada
+
+- Tamaño: pequeña. Fuentes: sí, para cerrar pendientes.
+- Objetivo: versión final de la prueba (hito D).
+- Trabajo:
+  - Ensayo cronometrado completo y ajuste de tiempos y textos.
+  - Cierre de pendientes de fuente: cada dato en `verificar` o `falta` se resuelve o se retira de la pantalla.
+  - Fichas en estado `revisado`.
+  - Etiqueta git `version-prueba-oral` y copia del archivo único y del respaldo fuera del proyecto.
+  - Lista de chequeo del día de la prueba en la bitácora: equipo cargado, notificaciones apagadas, pestañas cerradas, `npm run presentar` probado, respaldo abierto en segundo plano, prototipo Hyperframes disponible.
+- Criterios de aceptación:
+  - [ ] Cero fuentes `verificar` o `falta` en pantalla.
+  - [ ] Cero fichas en `borrador`.
+  - [ ] Ensayo entre 36 y 40 minutos.
+- Prompt de arranque: `Etapa 14 de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
+
+## Ruta corta
+
+Si la notificación llega antes del hito D, se reordena así:
+
+1. Etapas 0 a 4 completas (hito A).
+2. Etapa 6 reducida a F1, F2 y F4.
+3. Etapa 9 reducida a los siete mercados, sus enlaces y el polígono de la red.
+4. Etapa 11 reducida al cierre del IPPTA.
+5. Etapa 13 reducida a la prueba en videoconferencia.
+
+El prototipo Hyperframes cubre M1 y el respaldo de imágenes cubre cualquier falla del 3D.
+
+## Etapas opcionales
+
+| Clave | Etapa | Nota |
+|---|---|---|
+| O1 | Relieve real | Alejandro descarga un modelo digital de elevación (SRTM o ALOS) de la cuenca de referencia; Claude Code lo convierte en mapa de alturas y reemplaza el relieve procedimental. Las capas esquemáticas se conservan |
+| O2 | Insertos de video generativo | clips cortos tipo diorama en paradas puntuales (campo `video` de la parada). Herramientas de pago |
+| O3 | Grafo de conocimiento | requiere construir el grafo de `../Agroecologia_Grafo/` con una clave de API; enlaza paradas con conceptos |
+| O4 | Versión para docencia | exploración libre por estudiantes, preguntas y publicación web gratuita (por ejemplo, GitHub Pages) |
+
+## Riesgos y respaldo
+
+| Riesgo | Medida |
+|---|---|
+| WebGL falla o el equipo se bloquea | respaldo de imágenes con notas; archivo único; prototipo Hyperframes |
+| Rendimiento bajo al compartir pantalla | modo liviano; prueba de la etapa 13 |
+| Texto ilegible por compresión | tipografía grande, siete rótulos como máximo, transiciones lentas |
+| Error de contenido ante el jurado | fuentes con localizador, validación automática, precauciones de la sección 10 del guion |
+| Exceso de tiempo | cronómetro por momento y paradas saltables |
+| Pregunta del jurado fuera del guion | modo libre y salto por hash a cualquier parada |
+| Crecimiento del alcance | una etapa por sesión, lista de fuera de alcance, pendientes en la bitácora |
+| Agotamiento del cupo de uso | etapas pequeñas, `/clear` entre etapas, ruta corta |
+
+## Uso de Claude Code
+
+- Abrir Claude Code dentro de `Escenario_Territorial/`. Así se carga este `CLAUDE.md` y no el del prototipo Hyperframes.
+- `/add-dir ../..`: da acceso a la carpeta `TC` durante la sesión, en las etapas con fuentes.
+- Modo plan (`/plan` o Shift+Tab): para la propuesta inicial de cada sesión.
+- `/clear` entre etapas; `/compact` si el contexto crece dentro de una etapa; `/context` para ver qué ocupa el contexto.
+- `/cost` y `/usage`: consumo de la sesión y estado del cupo. Anotar el consumo aproximado en la bitácora ayuda a planear las siguientes etapas.
+- `/rewind` (o Esc dos veces) y git: para deshacer.
+- `/model`: las etapas grandes de código (5, 6, 9 y 10) se benefician del modelo más capaz; las de ajuste (4, 12 y 14) admiten uno más económico.
+
+Referencias sobre Claude Code: guía de memoria y `CLAUDE.md` (https://code.claude.com/docs/en/memory), que recomienda mantener cada `CLAUDE.md` por debajo de 200 líneas; hoja de comandos (https://support.claude.com/en/articles/14553413-claude-code-cheatsheet).
