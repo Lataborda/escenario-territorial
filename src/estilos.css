@@ -42,6 +42,11 @@
   --tipo-titulo: 'Fraunces', Georgia, serif;
 }
 
+/* 1 rem = 24 px a 1920×1080 y 16 px a 1280×720: la interfaz conserva su proporción en pantalla. */
+html {
+  font-size: clamp(14px, min(100vh / 45, 100vw / 80), 32px);
+}
+
 html,
 body {
   margin: 0;
@@ -50,7 +55,10 @@ body {
   background: var(--fondo);
   color: var(--texto);
   font-family: var(--tipo-texto);
-  font-size: 24px;
+}
+
+body {
+  font-size: 1rem;
 }
 
 #escena {

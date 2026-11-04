@@ -58,9 +58,11 @@ function revisarEscalas(e, c, errores) {
     const donde = `escalas.json · ${s.id}`;
     requeridos(s, ['id', 'numero', 'nombre', 'rotulo', 'unidad', 'vista', 'fuentes'], donde, errores);
     if (!(s.vista?.distancia > 0) || typeof s.vista?.elevacion !== 'number') errores.push(`${donde}: vista incompleta`);
+    if (s.vista?.ancla != null) existen(s.vista.ancla, c.entidades, donde, 'ancla', errores);
     existen(s.principios, numeros, donde, 'principio', errores);
   }
   for (const p of e.procesos ?? []) existen(p.escala_minima, c.escalas, `escalas.json · ${p.id}`, 'escala', errores);
+  for (const r of e.seleccion?.reglas ?? []) existen(r.escala, c.escalas, `escalas.json · selección ${r.tipo}`, 'escala', errores);
 }
 
 function revisarEscenarios(e, c, errores) {
@@ -98,6 +100,15 @@ function revisarActores(a, c, errores) {
   }
 }
 
+// Rangos de la cámara de una parada (PLAN, etapa 3: transiciones de 1,5 a 3 s).
+function revisarCamara(k, donde, errores) {
+  if (!k) return;
+  if (!(k.distancia > 0)) errores.push(`${donde}: distancia de cámara no positiva`);
+  if (!(k.elevacion >= 5 && k.elevacion <= 85)) errores.push(`${donde}: elevación de cámara fuera de 5 a 85 grados`);
+  if (!(k.azimut >= -180 && k.azimut <= 180)) errores.push(`${donde}: azimut fuera de −180 a 180 grados`);
+  if (!(k.duracion >= 1.5 && k.duracion <= 3)) errores.push(`${donde}: duración de transición fuera de 1,5 a 3 s`);
+}
+
 // Estado de una parada o de un paso (en un paso, todos los campos son opcionales).
 function revisarEstado(estado, c, donde, errores) {
   if (!estado || typeof estado !== 'object') return errores.push(`${donde}: falta «estado»`);
@@ -123,6 +134,7 @@ function revisarParadas(p, c, errores, avisos) {
     for (const k of CAMPOS_CAMARA) {
       if (typeof x.camara?.[k] !== 'number') errores.push(`${donde}: cámara sin «${k}» numérico`);
     }
+    revisarCamara(x.camara, donde, errores);
     revisarEstado(x.estado, c, donde, errores);
     if (!x.fuentes?.length) errores.push(`${donde}: sin fuentes`);
     ids(x.pasos ?? [], `${donde} · pasos`, errores);

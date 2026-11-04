@@ -1,6 +1,7 @@
 // Anclas de cámara sobre la superficie, calculadas desde contenido/territorio.json.
-// Tecla A: marcadores de anclas (modo autor). Provisional hasta src/estado.js (etapa 3).
+// Marcadores de anclas (modo autor): visibles según «anclas» del estado (tecla A).
 import * as THREE from 'three';
+import { obtener, suscribir } from '../estado.js';
 import { aMundoX, aMundoZ } from './plano.js';
 
 const COLOR_MARCADOR = 0xd6336c;
@@ -31,7 +32,7 @@ export function calcularAnclas(entidades, { superficie, puntoDelRio }) {
 }
 
 // Conos con la punta en cada ancla, en una sola llamada de dibujo.
-export function crearMarcadores(anclas, visibles = false) {
+export function crearMarcadores(anclas) {
   const geometria = new THREE.ConeGeometry(5, 18, 10);
   geometria.rotateX(Math.PI);
   geometria.translate(0, 9, 0);
@@ -46,9 +47,9 @@ export function crearMarcadores(anclas, visibles = false) {
   marcadores.instanceMatrix.needsUpdate = true;
   marcadores.computeBoundingSphere();
   marcadores.name = 'anclas';
-  marcadores.visible = visibles;
-  window.addEventListener('keydown', (evento) => {
-    if (evento.key === 'a' || evento.key === 'A') marcadores.visible = !marcadores.visible;
+  marcadores.visible = obtener().anclas;
+  suscribir('anclas', (e) => {
+    marcadores.visible = e.anclas;
   });
   return marcadores;
 }

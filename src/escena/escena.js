@@ -1,13 +1,17 @@
 // Renderizador, cámara, luces, controles de órbita y ciclo de dibujo.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { obtener, suscribir } from '../estado.js';
 
 const COLOR_FONDO = 0xe8e4dc;
 const RELACION_PIXELES_MAX = 2;
+// Con la interfaz visible, el centro de la vista se corre a la izquierda para quedar
+// entre la botonera y la ficha (medidas de src/ui/interfaz.css, en rem).
+const DESPLAZAMIENTO_REM = 8;
 
 // Vista general inicial: ángulos en grados respecto del centro de la maqueta.
 // Desde el suroccidente: la ladera, orientada al occidente, mira a la cámara.
-const VISTA_GENERAL = { distancia: 2300, azimut: -30, elevacion: 38 };
+const VISTA_GENERAL = { distancia: 2500, azimut: -30, elevacion: 38 };
 
 function posicionEsferica({ distancia, azimut, elevacion }) {
   const az = THREE.MathUtils.degToRad(azimut);
@@ -38,7 +42,7 @@ function crearLuces() {
   s.far = 4000;
   sol.shadow.bias = -0.0005;
   grupo.add(sol, sol.target);
-  return grupo;
+  return { grupo, sol };
 }
 
 export function crearEscena(contenedor) {
@@ -51,30 +55,52 @@ export function crearEscena(contenedor) {
 
   const escena = new THREE.Scene();
   escena.background = new THREE.Color(COLOR_FONDO);
-  escena.add(crearLuces());
+  const luces = crearLuces();
+  escena.add(luces.grupo);
 
   const aspecto = contenedor.clientWidth / contenedor.clientHeight;
   const camara = new THREE.PerspectiveCamera(35, aspecto, 10, 20000);
   camara.position.copy(posicionEsferica(VISTA_GENERAL));
   camara.lookAt(0, 0, 0);
 
-  // Modo libre: órbita y zoom sin pasar bajo la mesa.
+  // Modo libre: órbita y zoom sin pasar bajo la mesa. Sin desplazamiento lateral: el objetivo
+  // queda en el ancla, y la tecla C da un bloque de parada exacto. Inactivos en el recorrido.
   const controles = new OrbitControls(camara, renderizador.domElement);
   controles.enableDamping = true;
   controles.dampingFactor = 0.08;
-  controles.minDistance = 300;
+  controles.enablePan = false;
+  controles.minDistance = 40;
   controles.maxDistance = 5000;
   controles.maxPolarAngle = THREE.MathUtils.degToRad(84);
   controles.target.set(0, 0, 0);
+  controles.enabled = false;
+
+  function desplazar() {
+    const ancho = contenedor.clientWidth;
+    const alto = contenedor.clientHeight;
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const dx = obtener().interfaz ? Math.round(DESPLAZAMIENTO_REM * rem) : 0;
+    if (dx) camara.setViewOffset(ancho, alto, dx, 0, ancho, alto);
+    else camara.clearViewOffset();
+  }
 
   function ajustarTamano() {
     const ancho = contenedor.clientWidth;
     const alto = contenedor.clientHeight;
     camara.aspect = ancho / alto;
+    desplazar();
     camara.updateProjectionMatrix();
     renderizador.setSize(ancho, alto);
   }
   window.addEventListener('resize', ajustarTamano);
+  suscribir('interfaz', desplazar);
+  desplazar();
+
+  // Modo liviano (tecla V): sin sombras y con relación de píxeles 1.
+  suscribir('liviano', ({ liviano }) => {
+    luces.sol.castShadow = !liviano;
+    renderizador.setPixelRatio(liviano ? 1 : Math.min(window.devicePixelRatio, RELACION_PIXELES_MAX));
+  });
 
   let avisarPrimerCuadro;
   const primerCuadro = new Promise((resolver) => {
@@ -82,7 +108,7 @@ export function crearEscena(contenedor) {
   });
 
   function cuadro() {
-    controles.update();
+    if (controles.enabled) controles.update();
     renderizador.render(escena, camara);
     if (avisarPrimerCuadro) {
       avisarPrimerCuadro();
@@ -90,13 +116,17 @@ export function crearEscena(contenedor) {
     }
   }
 
-  // Coloca la cámara al instante respecto de un punto (ángulos en grados).
+  // Coloca la cámara en una posición mirando a un objetivo.
+  function colocar(posicion, objetivo) {
+    camara.position.copy(posicion);
+    controles.target.copy(objetivo);
+    camara.lookAt(objetivo);
+  }
+
+  // Coloca la cámara al instante respecto de un punto (ángulos en grados). Uso de la verificación.
   function mirar(objetivo, vista = VISTA_GENERAL) {
     const destino = objetivo ?? new THREE.Vector3();
-    camara.position.copy(destino).add(posicionEsferica({ ...VISTA_GENERAL, ...vista }));
-    controles.target.copy(destino);
-    camara.lookAt(destino);
-    controles.update();
+    colocar(destino.clone().add(posicionEsferica({ ...VISTA_GENERAL, ...vista })), destino);
   }
 
   return {
@@ -104,9 +134,13 @@ export function crearEscena(contenedor) {
     camara,
     renderizador,
     controles,
+    colocar,
     mirar,
     agregar: (objeto) => escena.add(objeto),
     iniciar: () => renderizador.setAnimationLoop(cuadro),
+    // Verificación: sin ciclo de dibujo el navegador responde de inmediato; un cuadro antes de cada captura.
+    pausar: () => renderizador.setAnimationLoop(null),
+    dibujar: cuadro,
     primerCuadro: () => primerCuadro,
     // Cifras de rendimiento para la verificación automática.
     estadisticas: () => ({

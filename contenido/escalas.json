@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "nota": "Botonera de siete escalas, siempre visible. La vista tipo (distancia y elevación de la cámara) es provisional hasta la etapa 3.",
+  "nota": "Botonera de siete escalas, siempre visible. La vista tipo fija distancia y elevación de la cámara y conserva el azimut actual. «ancla» es el punto de interés de la escala cuando el actual es la vista general.",
   "frentes_literatura": {
     "texto": "La literatura sobre arraigo territorial se divide en tres frentes por escala: finca, comunidad y paisaje, y nivel regional y nacional. La botonera reproduce esa partición y la amplía hacia el suelo.",
     "fuentes": ["duarte:verificar"]
@@ -16,7 +16,7 @@
       "conceptos": ["suelo como ecosistema", "biota", "materia orgánica"],
       "principios": [3],
       "escala_wezel": ["FI"],
-      "vista": { "distancia": 70, "elevacion": 12 },
+      "vista": { "distancia": 70, "elevacion": 12, "ancla": "corte_suelo" },
       "fuentes": ["gliessman:cap. 8", "calle:§11.3", "calle:§11.4"]
     },
     {
@@ -29,7 +29,7 @@
       "conceptos": ["interacciones", "diversidad", "sinergia"],
       "principios": [1, 3, 5, 6],
       "escala_wezel": ["FI"],
-      "vista": { "distancia": 160, "elevacion": 30 },
+      "vista": { "distancia": 160, "elevacion": 30, "ancla": "lote" },
       "fuentes": ["gliessman:fig. 3.1", "gliessman:cap. 7", "gliessman:cap. 12", "gliessman:cap. 13"]
     },
     {
@@ -42,7 +42,7 @@
       "conceptos": ["Estructura Agroecológica Principal (EAP)", "frontera del agroecosistema", "funcionamiento"],
       "principios": [1, 2, 4, 5, 6, 7, 8],
       "escala_wezel": ["FA"],
-      "vista": { "distancia": 450, "elevacion": 45 },
+      "vista": { "distancia": 450, "elevacion": 45, "ancla": "F1" },
       "fuentes": ["leonsicard:verificar", "cleves:verificar", "gliessman:fig. 3.7", "gliessman:cap. 15", "gliessman:cap. 16"]
     },
     {
@@ -55,7 +55,7 @@
       "conceptos": ["conectividad", "matriz agroecológica", "control biológico", "polinización"],
       "principios": [5, 6],
       "escala_wezel": [],
-      "vista": { "distancia": 900, "elevacion": 40 },
+      "vista": { "distancia": 900, "elevacion": 40, "ancla": "F1" },
       "fuentes": ["leonsicard:verificar", "wezel2016:verificar", "gliessman:cap. 14", "gliessman:cap. 18", "calle:§11.2", "calle:§11.6"]
     },
     {
@@ -68,7 +68,7 @@
       "conceptos": ["agua y sedimentos", "conservación de suelos"],
       "principios": [12],
       "escala_wezel": [],
-      "vista": { "distancia": 1400, "elevacion": 35 },
+      "vista": { "distancia": 1400, "elevacion": 35, "ancla": "rio_tributario" },
       "fuentes": ["gliessman:cap. 8", "gliessman:cap. 18", "res331:línea 2.1"],
       "verificar": ["Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos."]
     },
@@ -82,7 +82,7 @@
       "conceptos": ["territorialización", "sujeto plural", "proximidades", "disputa"],
       "principios": [8, 9, 10, 11, 12, 13],
       "escala_wezel": ["FA", "FS"],
-      "vista": { "distancia": 2300, "elevacion": 38 },
+      "vista": { "distancia": 2500, "elevacion": 38, "ancla": "general" },
       "fuentes": ["wezel2016:verificar", "lopezgdm:verificar", "levidow:verificar", "zollet:§4", "lopez2025:verificar"]
     },
     {
@@ -95,10 +95,18 @@
       "conceptos": ["brecha metabólica", "régimen", "bloqueo", "política pública"],
       "principios": [9, 10, 11, 12, 13],
       "escala_wezel": ["FS"],
-      "vista": { "distancia": 2900, "elevacion": 42 },
+      "vista": { "distancia": 3100, "elevacion": 42, "ancla": "general" },
       "fuentes": ["magrini:verificar", "padro:verificar", "res331:verificar", "ley2046:verificar", "dec1406:verificar", "nehring:verificar"]
     }
   ],
+  "seleccion": {
+    "nota": "Un clic en una finca o en un mercado (cabeceras y ciudad) acerca la cámara a la vista tipo de la escala indicada y fija el punto de interés. Duración del vuelo en segundos.",
+    "duracion": 2,
+    "reglas": [
+      { "tipo": "finca", "escala": "finca" },
+      { "tipo": "asentamiento", "escala": "vereda" }
+    ]
+  },
   "principios": {
     "estado": "verificar",
     "nota": "Nombres en español redactados en la sesión en la nube sin acceso al texto. Contrastar con Wezel et al. (2020), tabla 1, antes de mostrarlos.",

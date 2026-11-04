@@ -15,7 +15,7 @@ const PASO_REJILLA = 3; // separación de vértices en unidades de escena
 
 let actual = null;
 
-export function generarTerreno({ exageracion = 2, mostrarAnclas = false } = {}) {
+export function generarTerreno({ exageracion = 2 } = {}) {
   const rejilla = crearRejilla(PASO_REJILLA);
   const rios = trazarRios();
   const relieve = calcularRelieve(rejilla, rios);
@@ -42,7 +42,7 @@ export function generarTerreno({ exageracion = 2, mostrarAnclas = false } = {}) 
     superficie,
     puntoDelRio: (id, x, z) => puntoDelRio(rios, id, x, z),
   });
-  const marcadores = crearMarcadores(anclas, mostrarAnclas);
+  const marcadores = crearMarcadores(anclas);
   grupo.add(marcadores);
 
   actual = {

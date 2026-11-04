@@ -7,16 +7,22 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { revisarPagina, VENTANA } from './lib/revisar-pagina.mjs';
 import { revisarTerreno, huellaDe, fallasTerreno, seccionTerreno } from './lib/revisar-terreno.mjs';
+import { revisarRecorrido, CARPETA_PARADAS } from './lib/revisar-paradas.mjs';
+import { revisarTransiciones, revisarLegibilidad, VENTANA_PEQUENA } from './lib/revisar-legibilidad.mjs';
+import { fallasRecorrido, seccionRecorrido } from './lib/informe-recorrido.mjs';
 import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIR_VERIFICACION = path.join(RAIZ, 'verificacion');
 const DIR_CAPTURAS = path.join(DIR_VERIFICACION, 'capturas');
 const ARCHIVO_UNICO = path.join(RAIZ, 'dist-unico', 'index.html');
+const INICIO = Date.now();
+// Avance en consola con los segundos transcurridos.
+const avisar = (texto) => console.log(`[${((Date.now() - INICIO) / 1000).toFixed(0)} s] ${texto}`);
 const CONTENIDO = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fuentes'];
 
 async function compilar() {
-  console.log('Compilando dist/ y dist-unico/ ...');
+  avisar('Compilando dist/ y dist-unico/ ...');
   await build({ root: RAIZ, logLevel: 'warn' });
   await build({ root: RAIZ, mode: 'unico', logLevel: 'warn' });
 }
@@ -27,6 +33,7 @@ async function revisarContenido() {
   await escribirPendientes(RAIZ, v);
   const datos = v.datos;
   const r = {
+    datos,
     validos: Object.keys(datos).length,
     errores: v.errores,
     avisos: v.avisos,
@@ -82,7 +89,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, recorrido, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación',
     '',
@@ -96,6 +103,10 @@ function escribirInforme({ fecha, version, principal, unico, terreno, tamanoUnic
       `- Tamaño: ${(tamanoUnico / 1024).toFixed(0)} kB`,
     ]),
     ...seccionTerreno(terreno),
+    ...seccionVista('Recorrido de paradas (vista compilada)', recorrido.vistas.recorrido),
+    ...seccionVista('Transiciones (vista compilada, sin #captura)', recorrido.vistas.transiciones),
+    ...seccionVista('Ventana de 1280×720 (vista compilada)', recorrido.vistas.legibilidad),
+    ...seccionRecorrido(recorrido),
     '## Contenido',
     '',
     `- JSON válidos: ${contenido.validos} de ${CONTENIDO.length}`,
@@ -122,10 +133,40 @@ function fallasDe(nombre, v) {
 }
 
 async function limpiarCapturas() {
-  await mkdir(DIR_CAPTURAS, { recursive: true });
-  for (const archivo of await readdir(DIR_CAPTURAS)) {
-    if (archivo.endsWith('.png')) await rm(path.join(DIR_CAPTURAS, archivo));
+  for (const dir of [DIR_CAPTURAS, path.join(DIR_CAPTURAS, CARPETA_PARADAS)]) {
+    await mkdir(dir, { recursive: true });
+    for (const archivo of await readdir(dir)) {
+      if (/\.(png|jpg)$/.test(archivo)) await rm(path.join(dir, archivo));
+    }
   }
+}
+
+// Recorrido de paradas, transiciones con vuelo y legibilidad a 1280×720, cada uno en su propia carga.
+async function revisarNavegacion(navegador, url, origen, contenido) {
+  const datos = contenido.datos;
+  const paradas = datos.paradas.paradas;
+  const entidades = new Set(datos.territorio.entidades.map((e) => e.id));
+  const abierta = { id: 'P14', paso: 2 };
+  avisar('Recorriendo las paradas ...');
+  const recorrido = await revisarPagina(navegador, `${url}#p=${paradas[0].id}&captura=1`, {
+    origen,
+    extra: (pagina) =>
+      revisarRecorrido(pagina, { paradas, momentos: datos.paradas.momentos, entidades, dirCapturas: DIR_CAPTURAS }),
+  });
+  avisar('Midiendo transiciones ...');
+  const transiciones = await revisarPagina(navegador, `${url}#p=P05`, { origen, extra: revisarTransiciones });
+  avisar('Revisando fichas a 1280×720 ...');
+  const legibilidad = await revisarPagina(navegador, `${url}#p=${abierta.id}&paso=${abierta.paso}&captura=1`, {
+    origen,
+    ventana: VENTANA_PEQUENA,
+    extra: (pagina) => revisarLegibilidad(pagina, { paradas, dirCapturas: DIR_CAPTURAS, abierta }),
+  });
+  return {
+    vistas: { recorrido, transiciones, legibilidad },
+    recorrido: recorrido.extra,
+    transiciones: transiciones.extra,
+    legibilidad: legibilidad.extra,
+  };
 }
 
 async function principal() {
@@ -139,7 +180,7 @@ async function principal() {
   const navegador = await lanzarNavegador();
   let resultado;
   try {
-    console.log(`Revisando ${url} ...`);
+    avisar(`Revisando ${url} ...`);
     const general = path.join(DIR_CAPTURAS, 'general.png');
     const vistaPrincipal = await revisarPagina(navegador, url, {
       origen,
@@ -147,10 +188,10 @@ async function principal() {
       medir: true,
       extra: (pagina) => revisarTerreno(pagina, DIR_CAPTURAS),
     });
-    console.log('Repitiendo la carga para comparar ...');
+    avisar('Repitiendo la carga para comparar ...');
     const repeticion = path.join(DIR_CAPTURAS, 'repeticion.png');
     const segunda = await revisarPagina(navegador, url, { origen, captura: repeticion, extra: huellaDe });
-    console.log('Revisando el archivo único sin servidor ...');
+    avisar('Revisando el archivo único sin servidor ...');
     const vistaUnica = await revisarPagina(navegador, pathToFileURL(ARCHIVO_UNICO).href, {
       captura: path.join(DIR_CAPTURAS, 'unico.png'),
       extra: huellaDe,
@@ -163,7 +204,8 @@ async function principal() {
       unicoIgual: Boolean(huella) && vistaUnica.extra?.huella === huella,
     };
     await rm(repeticion, { force: true });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, version: navegador.version() };
+    const recorrido = await revisarNavegacion(navegador, url, origen, contenido);
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, recorrido, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -173,6 +215,8 @@ async function principal() {
     ...fallasDe('Vista compilada', resultado.principal),
     ...fallasDe('Archivo único', resultado.unico),
     ...fallasTerreno(resultado.terreno),
+    ...Object.entries(resultado.recorrido.vistas).flatMap(([nombre, v]) => fallasDe(`Vista ${nombre}`, v)),
+    ...fallasRecorrido(resultado.recorrido),
     ...contenido.errores.map((e) => `Contenido: ${e}`),
   ];
   const informe = escribirInforme({

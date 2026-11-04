@@ -136,9 +136,12 @@ Las dependencias y las reglas visuales usan la misma expresión: `todas` (deben 
 Almacén único en `src/estado.js` con suscripción:
 
 ```
-{ parada, escala, escenario, condiciones[], lente, anio, capas[], modo }
+{ parada, paso, escala, foco, camara, escenario, condiciones[], lente, anio, capas[], modo,
+  interfaz, liviano, anclas, aviso }
 modo: recorrido | libre | actividad | autor
 ```
+
+`foco` es el ancla del punto de interés; `camara` es la vista pedida (ancla, distancia, azimut, elevación, duración) y el módulo de cámara la anima. Al llegar a una parada con pasos se muestra el primero; al retroceder desde la parada siguiente se llega al último.
 
 Interfaz principal: la botonera de siete escalas (suelo, planta, finca, vereda, cuenca, territorio, región), siempre visible. Cada botón lleva a la vista tipo de su escala desde el punto de interés actual. Un clic en una finca o en un mercado acerca la cámara a ese elemento y lo fija como punto de interés.
 
@@ -148,8 +151,8 @@ Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y 
 
 | Tecla | Acción |
 |---|---|
-| → o espacio | parada siguiente |
-| ← | parada anterior |
+| → , espacio o Av Pág | parada o paso siguiente |
+| ← o Re Pág | parada o paso anterior |
 | 0 a 6 | primera parada del momento M0 a M6 |
 | O | modo libre (órbita y zoom); otra vez O vuelve al recorrido |
 | F | pantalla completa |
@@ -166,7 +169,7 @@ El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recarga
 
 ### 3.6 Verificación automática
 
-`npm run verificar` compila, levanta el servidor de vista previa y recorre con Playwright cada parada en `#p=ID&captura=1` (transiciones instantáneas). Espera el evento `escenario:listo`, guarda una captura de 1600×900 en `verificacion/capturas/`, registra errores de consola y solicitudes de red, mide cuadros por segundo en la vista general y escribe `verificacion/informe.md`. Falla si hay errores de consola, alguna solicitud externa o paradas que no cargan. El informe lista además las fichas en `borrador` y las fuentes en `falta` o `verificar`.
+`npm run verificar` compila, levanta el servidor de vista previa y recorre con Playwright cada parada en `#p=ID&captura=1` (transiciones instantáneas). Espera el evento `escenario:listo`, guarda una captura JPEG de 1600×900 por parada en `verificacion/capturas/paradas/` (con el ciclo de dibujo en pausa y un cuadro manual por captura, porque el render por software tarda 0,4 s por cuadro), registra errores de consola y solicitudes de red, mide cuadros por segundo en la vista general y escribe `verificacion/informe.md`. Falla si hay errores de consola, alguna solicitud externa o paradas que no cargan. El informe lista además las fichas en `borrador` y las fuentes en `falta` o `verificar`.
 
 ## 4. Principios técnicos
 

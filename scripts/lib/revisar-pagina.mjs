@@ -43,11 +43,11 @@ function leerTipografias(pagina, familias) {
 
 /**
  * Abre `url` y devuelve el resultado de la revisión.
- * opciones: { origen, captura (ruta del PNG o null), medir (bool), extra (función async que recibe la página) }
+ * opciones: { origen, captura (ruta del PNG o null), medir (bool), extra (función async que recibe la página), ventana }
  * Sin `origen`, toda solicitud http(s) se bloquea: simula equipo sin red y sin servidor.
  */
-export async function revisarPagina(navegador, url, { origen = null, captura = null, medir = false, extra = null }) {
-  const contexto = await navegador.newContext({ viewport: VENTANA, deviceScaleFactor: 1 });
+export async function revisarPagina(navegador, url, { origen = null, captura = null, medir = false, extra = null, ventana = VENTANA }) {
+  const contexto = await navegador.newContext({ viewport: ventana, deviceScaleFactor: 1 });
   const pagina = await contexto.newPage();
   const r = { url, cargo: false, ms: null, errores: [], avisos: [], solicitudes: 0, externas: [] };
 

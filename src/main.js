@@ -1,9 +1,18 @@
-// Punto de entrada: carga tipografías, monta la escena y avisa cuando está lista.
+// Punto de entrada: carga tipografías, monta escena, navegación e interfaz, y avisa cuando está lista.
 import './estilos.css';
 import { crearEscena } from './escena/escena.js';
 import { crearMaqueta } from './escena/maqueta.js';
 import { generarTerreno, ancla, datosTerreno, revisarAnclasTerreno } from './terreno/terreno.js';
 import { leerParametros } from './parametros.js';
+import { obtener, cambiar, suscribir } from './estado.js';
+import { crearCamaraNavegacion } from './navegacion/camara.js';
+import { PARADAS, irA, siguiente, anterior } from './navegacion/recorrido.js';
+import { irAEscala, enfocar } from './navegacion/foco.js';
+import { crearTeclado } from './navegacion/teclado.js';
+import { crearHash } from './navegacion/hash.js';
+import { crearSeleccion } from './navegacion/seleccion.js';
+import { revisarTrayectorias, desvioBloque } from './navegacion/pruebas.js';
+import { crearInterfaz } from './ui/interfaz.js';
 
 const TIPOGRAFIAS = [
   '400 24px "IBM Plex Sans"',
@@ -34,12 +43,19 @@ function marcarListo() {
 }
 
 // Un módulo que falla se registra y deja seguir al resto.
-function montar(nombre, crear, escena) {
+function montar(nombre, crear) {
   try {
-    escena.agregar(crear());
+    return crear();
   } catch (error) {
     console.error(`Módulo ${nombre}:`, error);
+    return null;
   }
+}
+
+// Atributos de la parada actual en <html>, para la verificación automática.
+function marcarParada({ parada, paso }) {
+  document.documentElement.dataset.parada = parada ?? '';
+  document.documentElement.dataset.paso = String(paso);
 }
 
 async function iniciar() {
@@ -53,9 +69,22 @@ async function iniciar() {
     return;
   }
   const parametros = leerParametros();
-  montar('maqueta', crearMaqueta, escena);
-  montar('terreno', () => generarTerreno({ exageracion: parametros.exageracion, mostrarAnclas: parametros.anclas }), escena);
-  escena.mirar(ancla('general'));
+  cambiar({ anclas: parametros.anclas });
+  montar('maqueta', () => escena.agregar(crearMaqueta()));
+  montar('terreno', () => escena.agregar(generarTerreno({ exageracion: parametros.exageracion })));
+
+  const camara = montar('cámara', () => crearCamaraNavegacion(escena, { instantanea: parametros.captura }));
+  montar('interfaz', () => crearInterfaz(document.getElementById('interfaz')));
+  montar('teclado', () => crearTeclado({ bloqueCamara: camara.bloqueActual }));
+  montar('hash', crearHash);
+  montar('selección', () => crearSeleccion({ camara: escena.camara, lienzo: escena.renderizador.domElement }));
+
+  // Primera parada sin vuelo: la del hash o P01.
+  suscribir(['parada', 'paso'], marcarParada);
+  if (!irA(parametros.parada ?? PARADAS[0].id, { paso: parametros.paso, instantanea: true })) {
+    irA(PARADAS[0].id, { instantanea: true });
+  }
+
   escena.iniciar();
   await escena.primerCuadro();
   // Interfaz para la verificación automática y el modo autor.
@@ -64,6 +93,25 @@ async function iniciar() {
     terreno: datosTerreno,
     revisarAnclas: revisarAnclasTerreno,
     vista: (id, vista) => escena.mirar(ancla(id), vista),
+    estado: () => obtener(),
+    dibujo: (activo) => (activo ? escena.iniciar() : escena.pausar()),
+    dibujarCuadro: () => escena.dibujar(),
+    irA,
+    siguiente,
+    anterior,
+    irAEscala,
+    enfocar,
+    controles: () => ({ habilitados: escena.controles.enabled, desplazamiento: escena.controles.enablePan }),
+    ultimaTransicion: () => camara?.ultimaTransicion(),
+    revisarTrayectorias: () => revisarTrayectorias(PARADAS.map((p) => p.camara)),
+    desvioBloque: (bloque) => desvioBloque(bloque, escena.camara.position),
+    // Posición en pantalla (píxeles) del ancla de una entidad.
+    proyectar: (id) => {
+      escena.camara.updateMatrixWorld();
+      const p = ancla(id)?.project(escena.camara);
+      const r = escena.renderizador.domElement.getBoundingClientRect();
+      return p && { x: r.left + ((p.x + 1) / 2) * r.width, y: r.top + ((1 - p.y) / 2) * r.height };
+    },
   };
   marcarListo();
 }
