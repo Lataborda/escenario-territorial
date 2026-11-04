@@ -2,15 +2,17 @@
 
 ## Estado actual
 
-- Etapa siguiente: Etapa 5. Coberturas y matriz del paisaje.
-- Última etapa cerrada: Etapa 4 (2026-11-04). `npm run validar` y `npm run verificar` correctos (1 min 27 s en la nube).
+- Etapa siguiente: Etapa 5.b. Mosaico campesino, ciudad y vías (segunda parte de la etapa 5).
+- Última etapa cerrada: Etapa 5.a (2026-11-04). `npm run validar` y `npm run verificar` correctos (unos 3 min 15 s en la nube).
 - Terreno: relieve de la cuenca en bloque recortado, ríos, límite departamental y 32 anclas sobre la superficie (`src/terreno/`). Exageración vertical con `#ex=` (1,5 a 3; 2 por defecto).
+- Coberturas (`src/coberturas/`): parcelas del plano y del piedemonte (caña en bloque, pastura, silvopastoreo, relictos de bosque seco, humedal), orillas de los cauces (bosque ripario y guadual), bosque altoandino y páramo con frailejones. Proporciones por escenario en `escenarios.json` (borrador), transición de 2 s al cambiar de escenario y leyenda arriba a la derecha. La ladera, la ciudad y las cabeceras esperan la etapa 5.b.
 - Navegación: almacén `src/estado.js`; recorrido de 26 paradas con flechas, espacio y Av Pág/Re Pág, pasos, teclas 0 a 6, O, F, H, V, C y A; hash `#p=ID&paso=N`; botonera de siete escalas, ficha con fuente abreviada e indicador de momento (`src/navegacion/`, `src/ui/`).
 - Presentación: `npm run presentar` sirve la versión compilada en el puerto 4320 y abre la vista principal y `presentador.html` (notas, siguiente, cronómetro por momento con desvío, fuentes completas, controles e índice; sincronía por BroadcastChannel). `npm run respaldo` genera `respaldo/index.html` (34 imágenes de 1920×1080, abre sin servidor) y `respaldo/notas.md`.
 - Contenido: 26 paradas en borrador; 68 localizadores y 20 datos por verificar en `verificacion/pendientes-de-fuente.md`, para cerrar en una sesión local (etapa 14 a más tardar).
-- Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26 y vínculos de resultados de la teoría de cambio.
-- Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor), actualizada en la etapa 4.
+- Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26, vínculos de resultados de la teoría de cambio, proporciones de coberturas por escenario y rótulos de la leyenda.
+- Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor), actualizada en la etapa 5.a. El respaldo en imágenes (`respaldo/`) es todavía el de la etapa 4: se regenera al cerrar la 5.b.
 - Hito A (recorrido mínimo): completo en lo técnico; falta la prueba manual de Alejandro en videoconferencia (criterio de la etapa 4).
+- Hito B (biofísica, etapas 5 a 8): en curso.
 - Fecha de la prueba oral: por confirmar. La notificación llega por correo con una antelación no inferior a tres días (Guía del Aspirante, literal E); el tema se informa dentro de los tres días siguientes (Res. 356 de 2026, art. 11).
 - Plataforma de videoconferencia: por confirmar.
 - Decisiones D1 a D7 (`GUION.md`, sección 12): resueltas el 2026-11-04. Alejandro aceptó las opciones recomendadas. D4 se redacta con Alejandro en la etapa 1; D7 se registra aquí al recibir la notificación.
@@ -234,6 +236,38 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Pendientes heredados de la etapa 3: fuente `resumenes` en pantalla, encuadre de P17 y P21, fluidez y teclas en el MacBook Air, lil-gui en modo autor.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 5. Coberturas y matriz del paisaje.
+
+### 2026-11-04 · Etapa 5.a. Vegetación natural y matriz cañera
+
+- Modo continuo: propuesta sin espera de aprobación. Sesión en la nube, sin fuentes. La etapa 5 se divide como prevé `PLAN.md`: 5.a (vegetación natural, matriz cañera, coberturas por escenario con transición y leyenda) y 5.b (mosaico campesino, ciudad y vías).
+- Hecho:
+  - `src/coberturas/`: `tipos.js` (color, altura de la tesela, densidad de vegetación, forma de la leyenda, clases por zona, orden de asignación y reservas; sin Three.js, lo usa también el validador), `unidades.js`, `asignacion.js`, `teselas.js`, `vegetacion.js`, `geometrias.js`, `metricas.js` y `coberturas.js` (montaje, suscripción a `escenario` y `liviano`, transición e interfaz para la verificación).
+  - `contenido/territorio.json`: bloque `coberturas` con nombre y rótulo corto de nueve tipos y la leyenda (título, nota «Proporciones ilustrativas» y escalas en que se ve). `contenido/escenarios.json`: `coberturas` de cada escenario por zona y clase de unidad, y `proporciones_coberturas` (nota y estado borrador).
+  - `src/ui/leyenda.js`: leyenda arriba a la derecha, dos columnas en el ancho de la ficha, icono con forma y color propios por tipo; muestra solo los tipos presentes en el escenario y se ve en las escalas vereda, cuenca, territorio y región.
+  - Validador: `scripts/lib/revisar-proporciones.mjs` (cada tipo con definición, nombre y rótulo de 18 caracteres como máximo; zonas, clases y tipos admitidos; fracciones entre 0 y 1 con suma no mayor que 1).
+  - Verificación: `scripts/lib/revisar-coberturas.mjs` (proporciones y aislamiento por escenario, extensión de la caña en S1, transiciones animadas a S1, S3 y S2, modo liviano, leyenda, llamadas de dibujo y una captura por escenario en `capturas/coberturas-S0.jpg` a `S3.jpg`); huella de coberturas igual en la segunda carga y en el archivo único; la leyenda entra en la comprobación de superposición de las fichas.
+- Decisiones:
+  - Unidades sobre una rejilla de teselas de 6 unidades alineada con el terreno: parcelas de 5 a 10 por 7 a 9 teselas en el plano y el piedemonte (el retiro de 1,5 en su borde deja ver linderos y caminos), orillas de 36 unidades de largo a cada lado de los cauces (18 en el río Cauca, 15 en el tributario, 11 en las quebradas), celdas de 5 × 5 teselas en el bosque altoandino y el páramo. El límite entre zonas sigue al del color del terreno.
+  - Asignación por grupo (zona y clase): cada tipo toma su fracción en un orden fijo. Humedal por cercanía a su ancla; bosque seco por dispersión con distancia mínima decreciente y lejos de los cauces (fracción baja, relictos aislados); ripario por dispersión (orillas fragmentadas en S0, continuas en S3); caña de occidente a oriente con ruido; caña orgánica y silvopastoreo por manchas; pastura al azar. Entre escenarios cambian solo las unidades necesarias.
+  - S1: la caña orgánica ocupa parte de la misma extensión de caña de S0 (comprobado), cerca de una cuarta parte, en línea con la ficha de P17 («más del 20 %» en la cuenca baja del Amaime). S2 repite S0 hasta la 5.b. S3: en las parcelas del plano, caña convencional 14 %, caña orgánica 34 %, silvopastoreo 24 %, pastura 4 %, bosque seco 14 % y humedal 10 %; orillas con bosque del 90 al 95 %. Todos los valores son ilustrativos y quedan en borrador.
+  - Reservas: ciudad (radio 70), cabeceras (22), ingenio (20) y lote (16) quedan sin cobertura para las etapas 5.b, 7 y 9; F1 (46) muestra silvopastoreo provisional hasta la etapa 6.
+  - Transición de 2 s: cada unidad e instancia crece o se hunde con curva suave y retardo propio (inicios repartidos en el 45 % del tiempo); salto máximo de 0,023 por cuadro a 60 cuadros por segundo. Una transición interrumpida parte del estado intermedio. La carga inicial y `#captura=1` aplican el escenario sin transición; por eso las coberturas se montan después de la primera parada.
+  - Al terminar una transición, lo oculto queda con color cero y fuera del dibujo: el estado no depende del camino recorrido y coincide con la carga directa. Solo se dibujan las instancias visibles o en transición; el modo liviano dibuja la mitad de ellas, repartida en todo el territorio.
+  - Colores: caña convencional amarillo verdoso, caña orgánica verde esmeralda con la misma altura de bloque, pastura color paja, silvopastoreo verde claro con árboles dispersos, bosque seco oliva denso, humedal verde azulado con juncos, ripario verde con guadua, bosque altoandino de copas altas y oscuras, páramo con frailejones. Cada tipo tiene además forma propia en la leyenda.
+  - Verificación: el inicio de un vuelo de cámara se detecta por el registro del último vuelo antes y después de la acción (con la escena más pesada, el vuelo podía terminar antes de la consulta); la holgura de la transición de coberturas es el intervalo entre cuadros medido durante ella.
+- Criterios de aceptación:
+  - En S0 la matriz de caña domina el plano y los relictos se ven aislados: cumplido. Caña en el 84 % del plano; 8 relictos, 6 aislados (60 unidades o más de borde a borde de otro bosque) y ninguno contiguo.
+  - El cambio de escenario modifica las coberturas sin cortes: cumplido. Transiciones a S1 (76 elementos), S3 (6.708) y S2 (6.741) con elementos a medio camino en cada cuadro, 2 s declarados (2,4 a 2,5 s medidos con SwiftShader, dentro de un intervalo entre cuadros) y estado final igual a la carga directa.
+  - Menos de 200 llamadas de dibujo: cumplido (17). 50 cuadros por segundo: pendiente en el MacBook Air (1,5 con SwiftShader, antes 2,7; 0,9 millones de triángulos, antes 0,5).
+- Verificación: correcto. Cero errores de consola y cero solicitudes externas en todas las cargas; 17 llamadas de dibujo; generación de coberturas en 171 ms; archivo único de 900 kB; unos 3 min 15 s en total.
+- Pendientes:
+  - Etapa 5.b: mosaico campesino de la ladera (café con sombrío, plátano, frutales, huertas), ciudad, cabeceras y vías (los caminos pueden seguir los linderos entre parcelas); proporciones de S2 y S3 con el mosaico; regenerar `respaldo/`.
+  - Revisión de Alejandro: proporciones por escenario, rótulos y colores de la leyenda.
+  - Etapa 6: reemplazar el silvopastoreo provisional de F1 por la finca (P06: silvopastoril, caña agroecológica, guadual, bosque, frutales y corredores).
+  - MacBook Air: cuadros por segundo en la vista general con coberturas, con y sin modo liviano.
+  - Pendientes heredados: prueba manual del presentador en videoconferencia, fuente `resumenes` en pantalla, encuadre de P17 y P21, lil-gui en modo autor.
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 5.b. Mosaico campesino, ciudad y vías.
 
 ## Plantilla de entrada
 

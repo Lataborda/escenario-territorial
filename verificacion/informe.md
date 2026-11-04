@@ -1,34 +1,34 @@
 # Informe de verificación
 
-- Fecha: 2026-11-04T17:28:21.054Z
+- Fecha: 2026-11-04T18:44:23.912Z
 - Navegador: Chromium 153.0.8010.12
 - Resultado: correcto
 
 ## Vista compilada (servidor de vista previa)
 
 - Dirección: `http://localhost:4317/`
-- Carga: sí, 3046 ms hasta `escenario:listo`
+- Carga: sí, 5003 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
-- Cuadros por segundo en la vista general: 2.6 (navegador sin pantalla; referencia, no equivale al equipo de la prueba)
-- Llamadas de dibujo: 7; triángulos: 517422; relación de píxeles: 1
+- Cuadros por segundo en la vista general: 1.5 (navegador sin pantalla; referencia, no equivale al equipo de la prueba)
+- Llamadas de dibujo: 17; triángulos: 906774; relación de píxeles: 1
 - Renderizador WebGL: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Captura: `capturas/general.png` (1600×900)
 - Avisos de consola (no bloquean):
-  - [.WebGL-0x1dd4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x1dd4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x1dd4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x1dd4001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+  - [.WebGL-0x39ac001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x39ac001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x39ac001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x39ac001a4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
 
 ## Archivo único (file://, sin servidor y sin red)
 
 - Dirección: `file:///home/user/escenario-territorial/dist-unico/index.html`
-- Carga: sí, 2994 ms hasta `escenario:listo`
-- Tamaño: 866 kB
+- Carga: sí, 5788 ms hasta `escenario:listo`
+- Tamaño: 900 kB
 - Errores de consola: ninguno
 - Solicitudes: 1 en total; externas: ninguna
-- Llamadas de dibujo: 7; triángulos: 517422; relación de píxeles: 1
+- Llamadas de dibujo: 17; triángulos: 906774; relación de píxeles: 1
 - Renderizador WebGL: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Captura: `capturas/unico.png` (1600×900)
@@ -41,17 +41,37 @@
 - Huella del terreno: `fee3fa59`
 - Idéntico en dos cargas: huella sí; captura de la vista general sí
 - Archivo único con la misma huella: sí
+- Coberturas idénticas en la segunda carga y en el archivo único: sí (huella `1b5baecd`)
 - Anclas sobre la superficie (rayo vertical): 32 de 32; desvío máximo 0.0003
 - Tecla A muestra los marcadores: sí
 - Capturas: `capturas/general.png`, `capturas/anclas.png`, `capturas/ladera.png`, `capturas/plano.png`
 
+## Coberturas
+
+- Unidades: parcelas 319, orillas 181, celdas 290, reservas 13; teselas dibujadas: 449 unidades, 108884 vértices; generación en 171 ms
+- Instancias: arbol 8826 (3799 en S0); guadua 585 (148 en S0); junco 1130 (250 en S0); frailejon 1308 (1308 en S0)
+- S0: caña en el 84 % del plano (mínimo 60 %); relictos 8, aislados 6 (separación de 60 unidades o más), contiguos 0; separación mínima 24.6, mediana 90.2
+- Plano en S0: cana 0.838, bosque_seco 0.042, pastura 0.085, ripario 0.017, humedal 0.018
+- Plano en S1: cana 0.624, cana_organica 0.213, bosque_seco 0.042, pastura 0.085, ripario 0.017, humedal 0.018
+- Plano en S2: cana 0.838, bosque_seco 0.042, pastura 0.085, ripario 0.017, humedal 0.018
+- Plano en S3: cana_organica 0.323, ripario 0.098, bosque_seco 0.129, cana 0.109, silvopastoril 0.218, pastura 0.041, ninguna 0.001, humedal 0.081
+- S1 conserva la extensión de la caña de S0: sí
+- Salto máximo de un elemento por cuadro a 60 cuadros por segundo: 0.0227 (máximo 0.05)
+- Transición a S1: 76 elementos; en curso sí; 4 cuadros (intervalo máximo 0.87 s); máximo de elementos a medio camino en un cuadro: 69; 2.54 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 9 tipos
+- Transición a S3: 6708 elementos; en curso sí; 2 cuadros (intervalo máximo 1.29 s); máximo de elementos a medio camino en un cuadro: 6690; 2.43 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 9 tipos
+- Transición a S2: 6741 elementos; en curso sí; 2 cuadros (intervalo máximo 1.33 s); máximo de elementos a medio camino en un cuadro: 5571; 2.52 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 8 tipos
+- Leyenda en S0: cana, pastura, silvopastoril, bosque_seco, humedal, ripario, bosque_altoandino, paramo
+- Modo liviano: 9304 instancias dibujadas, 4653 en liviano; restaurado sí
+- Llamadas de dibujo en la vista general: 17 (máximo 200); triángulos 906774
+- Capturas: `capturas/coberturas-S0.jpg`, `capturas/coberturas-S1.jpg`, `capturas/coberturas-S2.jpg`, `capturas/coberturas-S3.jpg`
+
 ## Recorrido de paradas (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P01&captura=1`
-- Carga: sí, 2774 ms hasta `escenario:listo`
+- Carga: sí, 4916 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
-- Llamadas de dibujo: 7; triángulos: 517422; relación de píxeles: 1
+- Llamadas de dibujo: 17; triángulos: 906774; relación de píxeles: 1
 - Renderizador WebGL: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Avisos de consola (no bloquean): ninguno
@@ -59,10 +79,10 @@
 ## Transiciones (vista compilada, sin #captura)
 
 - Dirección: `http://localhost:4317/#p=P05`
-- Carga: sí, 2272 ms hasta `escenario:listo`
+- Carga: sí, 3851 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
-- Llamadas de dibujo: 7; triángulos: 517422; relación de píxeles: 1
+- Llamadas de dibujo: 17; triángulos: 906774; relación de píxeles: 1
 - Renderizador WebGL: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Avisos de consola (no bloquean): ninguno
@@ -70,10 +90,10 @@
 ## Ventana de 1280×720 (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P14&paso=2&captura=1`
-- Carga: sí, 3086 ms hasta `escenario:listo`
+- Carga: sí, 5460 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
-- Llamadas de dibujo: 7; triángulos: 517422; relación de píxeles: 1
+- Llamadas de dibujo: 17; triángulos: 906774; relación de píxeles: 1
 - Renderizador WebGL: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Avisos de consola (no bloquean): ninguno
@@ -86,7 +106,7 @@
 - Teclas: 0 a 6 sí; O sí; H sí; V sí
 - Tecla C: sí, `"camara": { "ancla": "F2", "distancia": 640, "azimut": -47, "elevacion": 33, "duracion": 2.5 }`; desvío al aplicarlo 0
 - Botonera: sí; clic en una finca: sí
-- Transiciones: entre paradas declarada 2.5 s, medida 2.69 s; botonera declarada 2 s, medida 2.53 s; correctas sí
+- Transiciones: entre paradas declarada 2.5 s, medida 2.78 s; botonera declarada 2 s, medida 2.17 s; correctas sí
 - Trayectorias muestreadas: 25 tramos (21 con movimiento); razón máxima entre paso mayor y paso medio 2.1 (límite 4); extremos exactos sí
 - Hash directo `#p=P14&paso=2`: sí
 - Fichas a 1280×720: legibles 26 de 26 (sin desborde, dentro de la ventana, sin superposición, letra ≥ 16 px); letra mínima 16 px; ficha más alta P14 (488 px de 720); captura `capturas/ficha-1280.png`
@@ -94,7 +114,7 @@
 ## Vista del presentador (dos pestañas del mismo navegador)
 
 - Dirección: `http://localhost:4317/presentador.html`
-- Conexión con la vista principal: sí, 77 ms
+- Conexión con la vista principal: sí, 846 ms
 - Pruebas de sincronía y cronómetro: 19 de 19 correctas
   - sí: estado inicial P01 en las dos vistas
   - sí: botón Siguiente del presentador mueve la principal a P02
@@ -124,7 +144,7 @@
 ## Respaldo en imágenes (file://, sin servidor y sin red)
 
 - Dirección: `respaldo/index.html`
-- Carga: sí, 50 ms
+- Carga: sí, 46 ms
 - Imágenes: 34 de 34 cargan (1920×1080); estados del recorrido: 34
 - Teclado (flechas, Fin, tecla 3, hash): sí
 - Contenido igual al de la generación: sí

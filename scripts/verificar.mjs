@@ -11,6 +11,7 @@ import { revisarRecorrido, CARPETA_PARADAS } from './lib/revisar-paradas.mjs';
 import { revisarTransiciones, revisarLegibilidad, VENTANA_PEQUENA } from './lib/revisar-legibilidad.mjs';
 import { fallasRecorrido, seccionRecorrido } from './lib/informe-recorrido.mjs';
 import { revisarPresentador } from './lib/revisar-presentador.mjs';
+import { revisarCoberturas, fallasCoberturas, seccionCoberturas } from './lib/revisar-coberturas.mjs';
 import { revisarRespaldo } from './lib/revisar-respaldo.mjs';
 import { fallasPresentador, seccionPresentador } from './lib/informe-presentador.mjs';
 import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
@@ -92,7 +93,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación',
     '',
@@ -106,6 +107,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, recorrido,
       `- Tamaño: ${(tamanoUnico / 1024).toFixed(0)} kB`,
     ]),
     ...seccionTerreno(terreno),
+    ...seccionCoberturas(coberturas.extra, principal.estadisticas),
     ...seccionVista('Recorrido de paradas (vista compilada)', recorrido.vistas.recorrido),
     ...seccionVista('Transiciones (vista compilada, sin #captura)', recorrido.vistas.transiciones),
     ...seccionVista('Ventana de 1280×720 (vista compilada)', recorrido.vistas.legibilidad),
@@ -206,14 +208,20 @@ async function principal() {
       huellaIgual: Boolean(huella) && segunda.extra?.huella === huella,
       capturaIgual: segunda.cargo && (await readFile(general)).equals(await readFile(repeticion)),
       unicoIgual: Boolean(huella) && vistaUnica.extra?.huella === huella,
+      coberturasIgual:
+        Boolean(terreno.datos?.huellaCoberturas) &&
+        segunda.extra?.huellaCoberturas === terreno.datos.huellaCoberturas &&
+        vistaUnica.extra?.huellaCoberturas === terreno.datos.huellaCoberturas,
     };
     await rm(repeticion, { force: true });
+    avisar('Revisando coberturas y transiciones de escenario ...');
+    const coberturas = await revisarPagina(navegador, `${url}#p=P13`, { origen, extra: (p) => revisarCoberturas(p, DIR_CAPTURAS) });
     const recorrido = await revisarNavegacion(navegador, url, origen, contenido);
     avisar('Revisando la vista del presentador ...');
     const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
     avisar('Revisando el respaldo en imágenes ...');
     const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, recorrido, presentador, respaldo, version: navegador.version() };
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -223,6 +231,8 @@ async function principal() {
     ...fallasDe('Vista compilada', resultado.principal),
     ...fallasDe('Archivo único', resultado.unico),
     ...fallasTerreno(resultado.terreno),
+    ...fallasDe('Vista coberturas', resultado.coberturas),
+    ...fallasCoberturas(resultado.coberturas.extra, resultado.principal.estadisticas),
     ...Object.entries(resultado.recorrido.vistas).flatMap(([nombre, v]) => fallasDe(`Vista ${nombre}`, v)),
     ...fallasRecorrido(resultado.recorrido),
     ...fallasPresentador(resultado.presentador, resultado.respaldo),

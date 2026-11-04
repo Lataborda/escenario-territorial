@@ -4,6 +4,10 @@
     "texto": "Configuraciones alternativas del mismo territorio, sin secuencia lineal obligatoria. Los enfoques lineales de cambio acumulativo reciben crítica en la literatura, y Gliessman advierte que no hay límites nítidos entre niveles de transición.",
     "fuentes": ["lopez2025:verificar", "gliessman:cap. 20"]
   },
+  "proporciones_coberturas": {
+    "nota": "Fracción del área de cada zona y clase de unidad (parcelas, orillas de cauces, celdas de montaña) que ocupa cada tipo de cobertura. Valores ilustrativos para el dibujo, sin calibración empírica. La suma no supera 1; el resto queda sin cobertura. En S1 la caña conserva la extensión de S0 y cerca de una cuarta parte pasa a manejo orgánico (P17: más del 20 % en la cuenca baja del Amaime). S2 repite S0 en esta etapa; el mosaico campesino de la ladera llega en la etapa 5.b.",
+    "estado_texto": "borrador"
+  },
   "escenarios": [
     {
       "id": "S0",
@@ -13,7 +17,20 @@
       "que_se_ve": "Plano dominado por caña, relictos aislados, finca faro, fincas de ladera en sustitución de insumos y siete mercados sin vínculos.",
       "ficha": "Matriz de monocultivo de caña en el plano, relictos de bosque aislados, una finca faro, fincas de ladera en sustitución de insumos y siete mercados sin vínculos. En Colombia, el 1,33 % del área agrícola está en producción alternativa.",
       "fuentes": ["res331:verificar"],
-      "estado_texto": "borrador"
+      "estado_texto": "borrador",
+      "coberturas": {
+        "plano": {
+          "parcelas": { "cana": 0.86, "pastura": 0.09, "bosque_seco": 0.03, "humedal": 0.02 },
+          "orillas": { "ripario": 0.15, "cana": 0.6, "pastura": 0.25 }
+        },
+        "piedemonte": {
+          "parcelas": { "cana": 0.45, "pastura": 0.47, "bosque_seco": 0.08 },
+          "orillas": { "ripario": 0.3, "pastura": 0.7 }
+        },
+        "ladera": { "orillas": { "ripario": 0.45 } },
+        "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
+        "paramo": { "celdas": { "paramo": 1 } }
+      }
     },
     {
       "id": "S1",
@@ -23,7 +40,20 @@
       "que_se_ve": "Flujos de conocimiento que salen del territorio desde la finca faro. Parte de la caña cambia a manejo orgánico sin cambio en la geometría de la matriz.",
       "ficha": "La finca faro difunde prácticas por canales verticales: visitas, protocolos sectoriales y política nacional. Parte de la caña cambia a manejo orgánico por sustitución de insumos. La geometría de la matriz permanece.",
       "fuentes": ["calle:§11.7", "calle:§11.8"],
-      "estado_texto": "borrador"
+      "estado_texto": "borrador",
+      "coberturas": {
+        "plano": {
+          "parcelas": { "cana": 0.65, "cana_organica": 0.21, "pastura": 0.09, "bosque_seco": 0.03, "humedal": 0.02 },
+          "orillas": { "ripario": 0.15, "cana": 0.46, "cana_organica": 0.14, "pastura": 0.25 }
+        },
+        "piedemonte": {
+          "parcelas": { "cana": 0.34, "cana_organica": 0.11, "pastura": 0.47, "bosque_seco": 0.08 },
+          "orillas": { "ripario": 0.3, "pastura": 0.7 }
+        },
+        "ladera": { "orillas": { "ripario": 0.45 } },
+        "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
+        "paramo": { "celdas": { "paramo": 1 } }
+      }
     },
     {
       "id": "S2",
@@ -33,7 +63,20 @@
       "que_se_ve": "Mercados articulados, SPG, escuelas, semillas en red y territorio de la red que cruza el límite departamental.",
       "ficha": "Mercados articulados, sistema participativo de garantías, escuelas agroecológicas y semillas en red. El territorio de la red cruza el límite departamental.",
       "fuentes": ["redmac:verificar", "zollet:§4"],
-      "estado_texto": "borrador"
+      "estado_texto": "borrador",
+      "coberturas": {
+        "plano": {
+          "parcelas": { "cana": 0.86, "pastura": 0.09, "bosque_seco": 0.03, "humedal": 0.02 },
+          "orillas": { "ripario": 0.15, "cana": 0.6, "pastura": 0.25 }
+        },
+        "piedemonte": {
+          "parcelas": { "cana": 0.45, "pastura": 0.47, "bosque_seco": 0.08 },
+          "orillas": { "ripario": 0.3, "pastura": 0.7 }
+        },
+        "ladera": { "orillas": { "ripario": 0.45 } },
+        "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
+        "paramo": { "celdas": { "paramo": 1 } }
+      }
     },
     {
       "id": "S3",
@@ -43,7 +86,20 @@
       "que_se_ve": "Tres dominios activos (prácticas adaptadas, biodiversidad y recursos conservados, sistema alimentario arraigado), gobernanza multiactor y políticas favorables.",
       "ficha": "Escenario de referencia construido para la clase. Tres dominios activos: prácticas adaptadas, biodiversidad y recursos conservados, sistema alimentario arraigado. Gobernanza multiactor y políticas favorables. Ningún caso empírico lo representa completo.",
       "fuentes": ["wezel2016:verificar", "padro:verificar", "lopez2025:verificar", "res331:objetivo general"],
-      "estado_texto": "borrador"
+      "estado_texto": "borrador",
+      "coberturas": {
+        "plano": {
+          "parcelas": { "cana": 0.14, "cana_organica": 0.34, "silvopastoril": 0.24, "pastura": 0.04, "bosque_seco": 0.14, "humedal": 0.1 },
+          "orillas": { "ripario": 0.9, "cana_organica": 0.1 }
+        },
+        "piedemonte": {
+          "parcelas": { "cana_organica": 0.2, "silvopastoril": 0.35, "pastura": 0.1, "bosque_seco": 0.35 },
+          "orillas": { "ripario": 0.95, "pastura": 0.05 }
+        },
+        "ladera": { "orillas": { "ripario": 0.95 } },
+        "bosque_altoandino": { "celdas": { "bosque_altoandino": 1 } },
+        "paramo": { "celdas": { "paramo": 1 } }
+      }
     }
   ],
   "capa_historica": {

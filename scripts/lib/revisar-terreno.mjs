@@ -10,7 +10,12 @@ export const VISTAS_TERRENO = [
 const dosCuadros = (pagina) =>
   pagina.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
 
-const datosTerreno = (pagina) => pagina.evaluate(() => window.escenario?.terreno?.() ?? null);
+// Datos del terreno con la huella de las coberturas (misma escena en cada carga).
+const datosTerreno = (pagina) =>
+  pagina.evaluate(() => {
+    const t = window.escenario?.terreno?.();
+    return t ? { ...t, huellaCoberturas: window.escenario.coberturas?.()?.huella() ?? null } : null;
+  });
 
 // Se ejecuta con la página lista, después de la captura de la vista general.
 export async function revisarTerreno(pagina, dirCapturas) {
@@ -48,6 +53,7 @@ export function fallasTerreno(t) {
   if (!t.repeticion.huellaIgual) f.push('Terreno: la huella cambia entre dos cargas');
   if (!t.repeticion.capturaIgual) f.push('Terreno: la captura de la vista general cambia entre dos cargas');
   if (!t.repeticion.unicoIgual) f.push('Terreno: el archivo único genera otro terreno');
+  if (!t.repeticion.coberturasIgual) f.push('Coberturas: cambian entre dos cargas o en el archivo único');
   return f;
 }
 
@@ -64,6 +70,7 @@ export function seccionTerreno(t) {
     `- Huella del terreno: \`${d.huella}\``,
     `- Idéntico en dos cargas: huella ${si(t.repeticion.huellaIgual)}; captura de la vista general ${si(t.repeticion.capturaIgual)}`,
     `- Archivo único con la misma huella: ${si(t.repeticion.unicoIgual)}`,
+    `- Coberturas idénticas en la segunda carga y en el archivo único: ${si(t.repeticion.coberturasIgual)} (huella \`${d.huellaCoberturas}\`)`,
     `- Anclas sobre la superficie (rayo vertical): ${sobre} de ${a.total}; desvío máximo ${a.maximo}`,
     a.fuera.length ? `- Anclas fuera: ${a.fuera.join(', ')}` : null,
     a.sinImpacto.length ? `- Anclas sin superficie debajo: ${a.sinImpacto.join(', ')}` : null,

@@ -217,6 +217,69 @@
   pointer-events: none;
 }
 
+/* Leyenda de coberturas: arriba a la derecha, dos columnas en el ancho de la ficha */
+.leyenda {
+  position: absolute;
+  top: var(--margen);
+  right: var(--margen);
+  width: 24rem;
+  box-sizing: border-box;
+  padding: 0.45rem 0.7rem 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.leyenda[hidden] {
+  display: none;
+}
+
+.leyenda-cabeza {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.leyenda-titulo {
+  font-weight: 600;
+}
+
+.leyenda-nota {
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.leyenda-lista {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2rem 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leyenda-entrada {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.leyenda-entrada[hidden] {
+  display: none;
+}
+
+.leyenda-icono {
+  flex: none;
+  width: 1.45rem;
+  height: 1rem;
+}
+
 /* Aviso del modo autor (tecla C) */
 .aviso-autor {
   position: absolute;

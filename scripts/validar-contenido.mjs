@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { leerContenido } from './lib/contenido.mjs';
 import { revisarTextos } from './lib/revisar-textos.mjs';
 import { revisarReferencias } from './lib/revisar-referencias.mjs';
+import { revisarProporciones } from './lib/revisar-proporciones.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ARCHIVO_PENDIENTES = path.join('verificacion', 'pendientes-de-fuente.md');
@@ -15,10 +16,11 @@ export async function validarContenido(raiz = RAIZ) {
   if (errores.length) return { datos, errores, avisos: [], pendientes: null, resumen: null };
   const textos = revisarTextos(datos);
   const referencias = revisarReferencias(datos);
+  const proporciones = revisarProporciones(datos);
   return {
     datos,
-    errores: [...referencias.errores, ...textos.errores],
-    avisos: [...referencias.avisos, ...textos.avisos],
+    errores: [...referencias.errores, ...proporciones.errores, ...textos.errores],
+    avisos: [...referencias.avisos, ...proporciones.avisos, ...textos.avisos],
     pendientes: textos.pendientes,
     resumen: referencias.resumen,
   };

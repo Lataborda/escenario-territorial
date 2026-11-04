@@ -9,13 +9,15 @@ const HOLGURA_S = 0.6; // el vuelo termina en el primer cuadro tras su duración
 const esperarFin = (pagina) =>
   pagina.waitForFunction(() => !document.documentElement.dataset.transicion, null, { timeout: 15000 });
 
+// El vuelo empieza al procesar la tecla o el clic; con render por software puede terminar antes de la
+// consulta siguiente, por eso se compara el registro del último vuelo antes y después de la acción.
 async function medir(pagina, accion) {
+  const antes = await pagina.evaluate(() => window.escenario.ultimaTransicion()?.inicio ?? null);
   await accion();
-  const empezo = await pagina.evaluate(() => Boolean(document.documentElement.dataset.transicion));
   await esperarFin(pagina);
   const t = await pagina.evaluate(() => window.escenario.ultimaTransicion());
   return {
-    empezo,
+    empezo: t != null && t.inicio !== antes,
     declarada: t?.duracion ?? null,
     medida: t?.fin ? Number(((t.fin - t.inicio) / 1000).toFixed(2)) : null,
   };
