@@ -4,7 +4,7 @@
 import { crearAzar, crearRuidos } from '../util/azar.js';
 import { ENTIDADES, aMundoX, aMundoZ } from '../terreno/plano.js';
 import { SEMILLA } from '../terreno/relieve.js';
-import { ASIGNACION, TIPOS } from './tipos.js';
+import { ASIGNACION, TIPOS, EDADES_CANA } from './tipos.js';
 
 export const LISTA_TIPOS = Object.keys(TIPOS);
 export const NINGUNA = 255;
@@ -124,3 +124,27 @@ export function asignarEscenarios({ unidades }, escenarios, altura) {
 }
 
 export const tipoDe = (indice) => (indice === NINGUNA ? null : LISTA_TIPOS[indice]);
+
+// Edad de la caña (índice en EDADES_CANA) y rumbo de las hileras (radianes) de cada parcela y orilla: fijos por
+// unidad e iguales en todos los escenarios. Las edades siguen un orden aleatorio estable con las fracciones de
+// contenido/escenarios.json (edades_cana). Las hileras van a lo largo del lado mayor del lote, salvo en algunos
+// lotes, con un desvío pequeño.
+export function asignarCana({ unidades, centros }, fracciones = {}) {
+  const lista = unidades.filter((u) => u.clase === 'parcelas' || u.clase === 'orillas');
+  const limites = [];
+  let suma = 0;
+  for (const id of EDADES_CANA.ids) limites.push((suma += fracciones[id] ?? 0));
+  barajar(lista, crearAzar(semillaDe('edades de la caña'))).forEach((u, k, orden) => {
+    const e = limites.findIndex((l) => (k + 0.5) / orden.length < l);
+    u.edad = e < 0 ? EDADES_CANA.ids.length - 1 : e;
+  });
+  for (const u of lista) {
+    const azar = crearAzar(semillaDe(`surcos ${u.clave}`));
+    const columnas = u.teselas.map((t) => t % centros.columnas);
+    const filas = u.teselas.map((t) => Math.floor(t / centros.columnas));
+    const ancho = Math.max(...columnas) - Math.min(...columnas);
+    const alto = Math.max(...filas) - Math.min(...filas);
+    const largo = ancho >= alto ? 0 : Math.PI / 2;
+    u.surco = largo + (azar() < 0.3 ? Math.PI / 2 : 0) + (azar() - 0.5) * 0.2;
+  }
+}

@@ -1,5 +1,6 @@
-// Coberturas del paisaje (etapas 5.a y 5.b): teselas, vegetación y mosaico campesino según el escenario del
-// estado, con transición suave. Reacciona a «escenario» y «liviano»; el nivel de detalle sigue a la cámara.
+// Coberturas del paisaje (etapas 5.a a 5.c): teselas, vegetación, mosaico campesino y caña cercana según el
+// escenario del estado, con transición suave. Reacciona a «escenario» y «liviano»; el nivel de detalle y las matas
+// de caña cercanas siguen a la cámara.
 // Ningún temporizador cambia el escenario: solo anima el cambio pedido.
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -8,10 +9,11 @@ import { obtener, suscribir } from '../estado.js';
 import { huella } from '../util/azar.js';
 import { suave } from '../util/interpolar.js';
 import { crearUnidades } from './unidades.js';
-import { asignarEscenarios } from './asignacion.js';
+import { asignarEscenarios, asignarCana } from './asignacion.js';
 import { crearTeselas } from './teselas.js';
 import { crearVegetacion } from './vegetacion.js';
 import { crearMosaico } from './mosaico.js';
+import { crearCanaCerca } from './cana.js';
 import { crearDetalle } from './detalle.js';
 import { medirAsignacion, extensionCana } from './metricas.js';
 
@@ -32,23 +34,29 @@ export function crearCoberturas({ altura, instantanea = false }) {
     return r;
   };
   const datos = medir('unidades y vías', () => crearUnidades(altura));
-  const asignaciones = medir('asignación', () => asignarEscenarios(datos, contenido.escenarios, altura));
+  const asignaciones = medir('asignación', () => {
+    asignarCana(datos, contenido.edades_cana?.fracciones);
+    return asignarEscenarios(datos, contenido.escenarios, altura);
+  });
   const teselas = medir('teselas', () => crearTeselas(datos, asignaciones, altura));
   const vegetacion = medir('vegetación', () => crearVegetacion(datos, asignaciones, altura));
   const mosaico = medir('mosaico', () => crearMosaico(datos, asignaciones, altura));
+  const cana = medir('caña cercana', () => crearCanaCerca(datos, teselas.lectura, altura));
   const capas = [vegetacion, mosaico];
   const clases = capas.flatMap((c) => c.clases);
   const retardos = { get: (u) => datos.unidades[u].retardo };
   const grupo = new THREE.Group();
   grupo.name = 'coberturas';
-  grupo.add(teselas.malla, ...vegetacion.mallas, ...mosaico.mallas);
+  grupo.add(teselas.malla, ...vegetacion.mallas, ...mosaico.mallas, ...cana.mallas);
 
   // Nivel de detalle: antes de dibujar las teselas (primeras en el orden de dibujo) se mide la cámara principal.
   const detalle = crearDetalle(altura);
   teselas.malla.renderOrder = -1;
   teselas.malla.frustumCulled = false;
   teselas.malla.onBeforeRender = (renderizador, escena, camara) => {
-    if (camara.isPerspectiveCamera && detalle.medir(camara)) mosaico.detalle(detalle.cercana);
+    if (!camara.isPerspectiveCamera || !detalle.medir(camara)) return;
+    capas.forEach((c) => c.detalle(detalle.cercana));
+    cana.medir(camara);
   };
 
   let actual = null;
@@ -58,6 +66,7 @@ export function crearCoberturas({ altura, instantanea = false }) {
   // Avanza la transición y registra cuadros y elementos a medio camino (verificación).
   const avanzar = (t) => {
     const intermedias = capas.reduce((suma, c) => suma + c.avanzar(t, progreso), teselas.avanzar(t, progreso, retardos));
+    cana.avanzar();
     if (registro) {
       const ahora = performance.now();
       registro.cuadros += 1;
@@ -101,12 +110,12 @@ export function crearCoberturas({ altura, instantanea = false }) {
   }
 
   aplicar(obtener().escenario, true);
-  const liviano = (activo) => capas.forEach((c) => c.liviano(activo));
+  const liviano = (activo) => [...capas, cana].forEach((c) => c.liviano(activo));
   liviano(obtener().liviano);
   const ms = Math.round(performance.now() - comienzo);
   suscribir('escenario', ({ escenario }) => aplicar(escenario, instantanea));
   suscribir('liviano', ({ liviano: activo }) => liviano(activo));
-  const arreglos = () => [...teselas.arreglos(), ...capas.flatMap((c) => c.arreglos())];
+  const arreglos = () => [...teselas.arreglos(), ...capas.flatMap((c) => c.arreglos()), ...cana.arreglos()];
 
   // Interfaz para la verificación automática.
   const cuenta = (clase) => datos.unidades.filter((u) => u.clase === clase).length;
@@ -120,7 +129,10 @@ export function crearCoberturas({ altura, instantanea = false }) {
       teselas: { unidades: teselas.unidades, vertices: teselas.vertices },
       instancias: Object.fromEntries(clases.map((c) => [c.id, c.total])),
       visibles: Object.fromEntries(clases.map((c) => [c.id, c.visiblesAhora()])),
-      cerca: Object.fromEntries(mosaico.clases.map((c) => [c.id, c.cercaAhora()])),
+      cerca: Object.fromEntries(clases.map((c) => [c.id, c.cercaAhora()])),
+      cana: { ...teselas.resumenCana(), cerca: cana.datos() },
+      // Ningún material facetado en la vegetación (las teselas conservan caras planas).
+      facetadas: capas.flatMap((c) => c.mallas).filter((m) => m.material.flatShading).map((m) => m.name),
       dibujadas: capas.flatMap((c) => c.mallas).reduce((suma, m) => suma + m.count, 0),
       transicion: registro && { ...registro },
     }),

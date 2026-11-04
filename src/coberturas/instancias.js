@@ -17,7 +17,7 @@ export function crearInstancias({ id, puestos, mallas, visible, colorDe, umbral 
     return geometrias.map((g, nivel) => {
       const malla = new THREE.InstancedMesh(g, material, Math.max(n, 1));
       malla.name = `vegetacion-${id}${niveles === 2 ? ['-lejos', '-cerca'][nivel] : ''}`;
-      malla.castShadow = Boolean(m.sombra);
+      malla.castShadow = m.sombra === true || (m.sombra === 'cerca' && nivel === 1); // 'cerca': solo el nivel cercano
       malla.receiveShadow = Boolean(m.recibe);
       malla.frustumCulled = false;
       if (m.colorInstancia) malla.setColorAt(0, new THREE.Color());

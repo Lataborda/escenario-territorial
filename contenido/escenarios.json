@@ -8,6 +8,11 @@
     "nota": "Fracción del área de cada zona y clase de unidad (parcelas, orillas de cauces, celdas de montaña) que ocupa cada tipo de cobertura. Valores ilustrativos para el dibujo, sin calibración empírica. La suma no supera 1; el resto queda sin cobertura. En S1 la caña conserva la extensión de S0 y cerca de una cuarta parte pasa a manejo orgánico (P17: más del 20 % en la cuenca baja del Amaime). En la ladera, el mosaico campesino (café con sombrío, plátano, frutales, huertas y pastura) ocupa parcelas pequeñas; el café y el plátano prefieren la franja baja. S1 repite la ladera de S0. S2 conserva la matriz del plano de S0 y diversifica la ladera: las familias en red suman huertas y frutales y reducen la pastura. S3 lleva la diversificación más lejos, con silvopastoreo en la ladera y orillas con bosque.",
     "estado_texto": "borrador"
   },
+  "edades_cana": {
+    "nota": "Fracción de los lotes con caña en cada edad: recién cortado (rastrojo bajo y pajizo), en crecimiento (altura media, verde claro) y maduro (altura plena, con espigas). Valores ilustrativos para el dibujo, sin calibración empírica. La edad es fija por lote e igual en todos los escenarios; la caña orgánica de S1 y S3 conserva la edad del lote.",
+    "fracciones": { "cortado": 0.2, "crecimiento": 0.35, "maduro": 0.45 },
+    "estado_texto": "borrador"
+  },
   "escenarios": [
     {
       "id": "S0",

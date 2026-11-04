@@ -56,6 +56,24 @@ export function tallo({ desde = [0, 0, 0], hacia, radio = [0.2, 0.14], caras = 6
   return g;
 }
 
+// Tallo curvo (guadua, caña): tramos que se inclinan hacia afuera con la altura. Cada tramo oscurece su base, lo
+// que marca los nudos. Devuelve las partes y los puntos del eje (para colgar follaje).
+export function arco({ desde = [0, 0, 0], alto, inclinacion = 0.3, rumbo = 0, tramos = 3, radio = [0.1, 0.06], caras = 5, color }) {
+  const partes = [];
+  const puntos = [desde];
+  let [x, y, z] = desde;
+  const paso = alto / tramos;
+  const r = (k) => radio[0] + ((radio[1] - radio[0]) * k) / tramos;
+  for (let k = 0; k < tramos; k++) {
+    const a = inclinacion * ((k + 0.5) / tramos) ** 1.5;
+    const siguiente = [x + Math.sin(a) * paso * Math.cos(rumbo), y + Math.cos(a) * paso, z + Math.sin(a) * paso * Math.sin(rumbo)];
+    partes.push(tallo({ desde: [x, y, z], hacia: siguiente, radio: [r(k), r(k + 1)], caras, color }));
+    [x, y, z] = siguiente;
+    puntos.push(siguiente);
+  }
+  return { partes, puntos };
+}
+
 // Hoja larga (plátano, maíz): nervio en arco que se curva hacia abajo, lámina plegada en V y borde más claro
 // o seco. Se extiende sobre +x y gira alrededor del eje vertical.
 export function hoja({ largo, ancho, segmentos = 5, inclinacion = 0.9, caida = 1.4, pliegue = 0.35, giro = 0, altura = 0, color, seca = 0, nervio = 0xd9e2a0 }) {

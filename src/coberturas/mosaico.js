@@ -1,5 +1,6 @@
-// Mosaico campesino de la ladera: puestos de cada especie según el patrón de su cobertura. Hileras en curva de
-// nivel para el café, el plátano y la huerta; tresbolillo para los frutales; sombrío y plátano dispersos en el café.
+// Mosaico campesino de la ladera y setos del silvopastoreo: puestos de cada especie según el patrón de su cobertura.
+// Hileras en curva de nivel para el café, el plátano, la huerta y la leucaena; tresbolillo para los frutales;
+// sombrío y plátano dispersos en el café.
 // Una unidad que cambia de cobertura entre escenarios tiene los puestos de cada patrón; se ve el de su tipo actual.
 import { crearAzar } from '../util/azar.js';
 import { SEMILLA } from '../terreno/relieve.js';
@@ -20,6 +21,8 @@ const PATRONES = {
   ],
   platano: [{ especie: 'platano', entre: 3.6, en: 3.2, holgura: 0.5, escala: [0.9, 1.3], prob: 0.92 }],
   frutales: [{ especie: ['citrico', 'mango'], entre: 5.6, en: 5.6, holgura: 0.3, escala: [0.9, 1.2], tresbolillo: true }],
+  // Silvopastoreo: setos de leucaena en hileras; los árboles dispersos salen de vegetacion.js.
+  silvopastoril: [{ especie: 'leucaena', entre: 6, en: 2.2, holgura: 0.2, escala: [0.85, 1.15], prob: 0.94 }],
   huerta: [
     { especie: 'era', entre: 1.9, en: 4.3, holgura: 0.05, escala: [1, 1], ciclo: 6, filas: [0, 1, 2, 3], alinear: true },
     { especie: 'maiz', entre: 1.9, en: 1.5, holgura: 0.2, escala: [0.85, 1.1], ciclo: 6, filas: [4, 5] },

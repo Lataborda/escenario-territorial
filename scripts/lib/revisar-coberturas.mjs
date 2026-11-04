@@ -2,6 +2,7 @@
 // sin cortes, modo liviano, leyenda y una captura por escenario. Página sin #captura (vuelos y transiciones reales).
 import path from 'node:path';
 import { revisarPaisaje, fallasPaisaje, seccionPaisaje } from './revisar-paisaje.mjs';
+import { revisarVegetacion, fallasVegetacion, seccionVegetacion } from './revisar-vegetacion.mjs';
 
 export const ESCENARIOS = ['S0', 'S1', 'S2', 'S3'];
 const SECUENCIA = ['S1', 'S3', 'S2']; // transiciones animadas desde S0
@@ -86,6 +87,7 @@ export async function revisarCoberturas(pagina, dirCapturas) {
     window.escenario.dibujo(true);
   });
   r.paisaje = await revisarPaisaje(pagina, dirCapturas);
+  r.vegetacion = await revisarVegetacion(pagina, dirCapturas);
   return r;
 }
 
@@ -109,7 +111,7 @@ export function fallasCoberturas(c, estadisticas) {
   }
   if (!(c.liviano.liviano < c.liviano.completo * 0.6) || !c.liviano.restaurado) f.push('Coberturas: el modo liviano no reduce las instancias');
   if (!estadisticas || estadisticas.llamadas >= LLAMADAS_MAXIMO) f.push(`Coberturas: ${estadisticas?.llamadas} llamadas de dibujo`);
-  return [...f, ...fallasPaisaje(c.paisaje, c.medidas)];
+  return [...f, ...fallasPaisaje(c.paisaje, c.medidas), ...fallasVegetacion(c.vegetacion)];
 }
 
 const porcentaje = (x) => `${Math.round(x * 100)} %`;
@@ -139,5 +141,6 @@ export function seccionCoberturas(c, estadisticas) {
     `- Capturas: ${c.capturas.map((x) => `\`capturas/${x}\``).join(', ')}`,
     '',
     ...seccionPaisaje(c.paisaje, c.medidas),
+    ...seccionVegetacion(c.vegetacion),
   ];
 }

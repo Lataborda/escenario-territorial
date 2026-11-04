@@ -1,5 +1,5 @@
 // Revisión de coberturas: tipos de la leyenda (territorio.json) y proporciones por escenario (escenarios.json).
-import { TIPOS, CLASES_POR_ZONA, TIPOS_POR_CLASE } from '../../src/coberturas/tipos.js';
+import { TIPOS, CLASES_POR_ZONA, TIPOS_POR_CLASE, EDADES_CANA } from '../../src/coberturas/tipos.js';
 
 const TOLERANCIA = 1e-6;
 const ROTULO_MAXIMO = 18; // caracteres: dos columnas de leyenda en el ancho de la ficha
@@ -57,6 +57,22 @@ function revisarEscenario(s, zonas, tipos, errores, avisos) {
   }
 }
 
+// Edades de la caña: una fracción entre 0 y 1 por edad de EDADES_CANA, con suma 1.
+function revisarEdades(e, errores) {
+  const donde = 'escenarios.json · edades_cana';
+  if (!e) return errores.push(`${donde}: falta el bloque`);
+  if (!e.nota?.trim()) errores.push(`${donde}: falta la nota`);
+  const fracciones = e.fracciones ?? {};
+  let suma = 0;
+  for (const id of EDADES_CANA.ids) {
+    const f = fracciones[id];
+    if (typeof f !== 'number' || f < 0 || f > 1) errores.push(`${donde}: fracción de «${id}» ausente o fuera de 0 a 1`);
+    else suma += f;
+  }
+  for (const id of Object.keys(fracciones)) if (!EDADES_CANA.ids.includes(id)) errores.push(`${donde}: edad desconocida «${id}»`);
+  if (Math.abs(suma - 1) > 1e-3) errores.push(`${donde}: las fracciones suman ${suma.toFixed(3)} (deben sumar 1)`);
+}
+
 export function revisarProporciones(datos) {
   const errores = [];
   const avisos = [];
@@ -65,5 +81,6 @@ export function revisarProporciones(datos) {
   const zonas = new Set((t?.entidades ?? []).filter((e) => e.tipo === 'zona').map((e) => e.id));
   const tipos = revisarTipos(t, escalas, errores);
   for (const s of datos.escenarios?.escenarios ?? []) revisarEscenario(s, zonas, tipos, errores, avisos);
+  revisarEdades(datos.escenarios?.edades_cana, errores);
   return { errores, avisos };
 }

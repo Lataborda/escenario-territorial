@@ -1,4 +1,4 @@
-// Especies del mosaico campesino con dos niveles de detalle: «cerca», con racimos de hojas, ramas, frutos y hojas
+// Especies del mosaico campesino y del silvopastoreo con dos niveles de detalle: «cerca», con racimos de hojas, ramas, frutos y hojas
 // plegadas; «lejos», con una copa suave y pocas caras. Base en y = 0. Escala 1: cafeto de 1,7 unidades de alto.
 import { DoubleSide } from 'three';
 import { VEGETACION as V } from './tipos.js';
@@ -147,6 +147,18 @@ function maiz(cerca) {
   return unir(partes);
 }
 
+// Leucaena del silvopastoreo intensivo: arbusto de follaje fino en setos densos.
+function leucaena(cerca) {
+  const ao = { oclusion: 0.25, radio: 0.9, desde: 1, hasta: 2.8 };
+  const tronco = tallo({ hacia: [0.05, 1.4, 0], radio: [0.07, 0.05], caras: 4, color: V.tronco });
+  if (!cerca) return unir([racimo({ radio: 1, detalle: 0, relieve: 0.2, escala: [0.85, 1.3, 0.85], en: [0, 1.65, 0], color: V.leucaena, semilla: 81 })], ao);
+  const partes = [tronco, tallo({ desde: [0, 0.6, 0], hacia: [-0.4, 1.7, 0.2], radio: [0.05, 0.03], caras: 4, color: V.tronco })];
+  for (const [x, y, z, r, semilla] of [[0.2, 2.3, 0, 0.66, 82], [-0.35, 1.8, 0.2, 0.58, 83], [0.1, 2.75, -0.15, 0.48, 85]]) {
+    partes.push(racimo({ radio: r, relieve: 0.32, en: [x, y, z], color: V.leucaena, semilla }));
+  }
+  return unir(partes, ao);
+}
+
 // umbral: distancia de la cámara (unidades de escena) por debajo de la cual se dibuja el nivel «cerca».
 const una = (fn, material, extra = {}) => () => [{ lejos: fn(false), cerca: fn(true), material, sombra: true, recibe: true, colorInstancia: true, ...extra }];
 export const ESPECIES = {
@@ -166,6 +178,7 @@ export const ESPECIES = {
     },
   },
   maiz: { umbral: 220, mallas: una(maiz, DOBLE, { sombra: false }) },
+  leucaena: { umbral: 200, mallas: una(leucaena, HOJAS, { sombra: false }) },
 };
 
 // Árbol de plaza y de patio para la ciudad y las cabeceras (guamo en el nivel simple: son pequeños en pantalla).

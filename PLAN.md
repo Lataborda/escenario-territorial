@@ -350,13 +350,30 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Sombras suaves (filtro PCF suave o VSM) y oclusión ambiental (SSAO o GTAO), con la relación de píxeles y el modo liviano como límites.
   - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
 - Criterios de aceptación:
-  - [ ] Ningún árbol facetado a la escala de finca o vereda.
-  - [ ] Caña sin bloques planos escalonados: surcos y altura irregular en la vista general; tallos con hojas a escala de finca y de planta; tallos visibles en los bordes de lote.
-  - [ ] Tres edades de caña distinguibles en la vista general, fijas por lote en todos los escenarios. S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa.
-  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y los tallos cercanos de la caña, y reduce instancias.
+  - [x] Ningún árbol facetado a la escala de finca o vereda (5.c.a).
+  - [x] Caña sin bloques planos escalonados: surcos y altura irregular en la vista general; tallos con hojas a escala de finca y de planta; tallos visibles en los bordes de lote (5.c.a).
+  - [x] Tres edades de caña distinguibles en la vista general, fijas por lote en todos los escenarios. S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa (5.c.a).
+  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y los tallos cercanos de la caña, y reduce instancias (5.c.a: tallos cercanos e instancias; el resto en la 5.c.b).
   - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
   - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
 - Prompt de arranque: `Etapa 5.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+- División (2026-11-04): 5.c.a, vegetación y caña (las dos primeras tareas y los tres primeros criterios; del cuarto, los tallos cercanos y las instancias) y 5.c.b, luz y posproceso (viento, sombras suaves, oclusión ambiental, desenfoque de miniatura, legibilidad y medición en el MacBook Air).
+
+## Etapa 5.c.b. Luz y posproceso
+
+- Tamaño: mediano. Fuentes: no. Origen: división de la 5.c (ver arriba).
+- Lecturas: `src/escena/escena.js` (luces, sombras y ciclo de dibujo); `src/coberturas/instancias.js`, `arboles.js` y `especies.js` (materiales y sombra por nivel); `src/coberturas/superficie.js` (sombreador de las teselas, para sumar el viento con el mismo método).
+- Objetivo: luz de diorama sobre la vegetación de la 5.c.a.
+- Trabajo:
+  - Viento leve en las copas, las hojas y las matas de caña (sombreador de vértices, amplitud pequeña, sin costo de CPU).
+  - Sombras suaves (PCF suave o VSM) y oclusión ambiental (SSAO o GTAO), con la relación de píxeles y el modo liviano como límites. Revisar la sombra por nivel de detalle de los rodales densos (`sombra: 'cerca'` en `arboles.js`).
+  - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
+  - Rendimiento: medir en el MacBook Air la vista general (1,87 millones de triángulos en S0 al cerrar la 5.c.a) y las escalas de finca, planta y suelo; si no alcanza, bajar los umbrales de detalle (`arboles.js`, `especies.js`) o el cupo de la caña cercana (`cana.js`).
+- Criterios de aceptación:
+  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento y las sombras.
+  - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
+  - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
+- Prompt de arranque: `Etapa 5.c.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 6. Fincas y Estructura Agroecológica Principal
 
