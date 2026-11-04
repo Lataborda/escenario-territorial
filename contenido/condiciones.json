@@ -1,4 +1,228 @@
 {
   "version": 1,
-  "condiciones": []
+  "advertencia": "Reglas didácticas que resumen proposiciones de la literatura citada. Carecen de calibración empírica y se presentan así al jurado.",
+  "situacion_partida": {
+    "texto": "El aislamiento de la finca agroecológica es estructural. El régimen se autorrefuerza por retornos crecientes de adopción, con cinco mecanismos: aprendizaje por uso, externalidades de red, economías de escala, retornos informacionales crecientes e interrelación tecnológica.",
+    "fuentes": ["magrini:verificar"],
+    "verificar": ["Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989)."]
+  },
+  "origen": {
+    "texto": "C1 a C8 proceden de los factores de Mier y Terán et al. (2018), según la síntesis de Zollet (2022). C9 y C10 incorporan la dimensión biofísica y la gobernanza de recursos.",
+    "fuentes": ["zollet:§4", "mieryteran:verificar"]
+  },
+  "expresiones": "Cada expresión combina «todas» (deben estar activas), «alguna» (al menos una activa) y «ninguna» (ninguna activa).",
+  "efectos": {
+    "rotulo_detonante": "Rótulo de detonante, sin cambio del paisaje",
+    "fincas_diversificadas": "Fincas individuales cambian a mosaico diversificado",
+    "islas_en_matriz": "El paisaje sigue en S0, con fincas diversificadas como islas",
+    "escuelas_activas": "Escuelas agroecológicas y de promotoría activas",
+    "organizacion_activa": "Organizaciones de familias visibles en las veredas",
+    "aliados_activos": "Universidad y ONG técnica vinculadas",
+    "mercados_activos": "Mercados agroecológicos activos",
+    "mercados_aislados": "Mercados activos y aislados, sin enlaces",
+    "politica_activa": "Política pública visible en el panel",
+    "ippta_una_finca": "Se ilumina una sola finca (IPPTA) y el resto queda igual",
+    "corredor": "Corredores de conectividad entre fincas",
+    "corredor_incompleto": "Corredor incompleto; los radios de polinizadores no se conectan",
+    "gobernanza_activa": "Gobernanza de tierra, agua y semillas visible",
+    "enlaces_red": "Enlaces entre mercados y familias",
+    "poligono_red": "Polígono del territorio de la red",
+    "corredores_continuos": "Corredores continuos",
+    "nutrientes_con_retorno": "Flujos de nutrientes con retorno",
+    "compras_publicas_activas": "Compras públicas activas"
+  },
+  "condiciones": [
+    {
+      "id": "C1",
+      "nombre": "Crisis que motiva la búsqueda de alternativas",
+      "fuentes": ["zollet:§4 (1)"],
+      "efectos": ["rotulo_detonante"],
+      "efecto_territorial_requiere": { "todas": ["C5"] },
+      "mensaje_si_falta": "Detonante sin organización social que lo convierta en acción colectiva",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C2",
+      "nombre": "Discurso movilizador y liderazgo",
+      "fuentes": ["zollet:§4 (1)"],
+      "efectos": ["rotulo_detonante"],
+      "efecto_territorial_requiere": { "todas": ["C5"] },
+      "mensaje_si_falta": "Detonante sin organización social que lo convierta en acción colectiva",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C3",
+      "nombre": "Prácticas agroecológicas eficaces",
+      "fuentes": ["zollet:§4 (2)"],
+      "efectos": ["fincas_diversificadas"],
+      "efecto_territorial_requiere": { "todas": ["C9"] },
+      "mensaje_si_falta": "Fincas diversificadas sin conectividad ecológica entre ellas; el paisaje sigue como matriz con islas",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C4",
+      "nombre": "Procesos de enseñanza y aprendizaje constructivistas, de campesino a campesino",
+      "fuentes": ["zollet:§4 (2)", "res331:línea 1.2"],
+      "efectos": ["escuelas_activas"],
+      "efecto_territorial_requiere": { "todas": ["C5", "C7"] },
+      "mensaje_si_falta": "Escuelas activas sin organización social ni mercados que articulen la red",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C5",
+      "nombre": "Organización social",
+      "nota": "Señalada como uno de los elementos más vitales del escalamiento territorial.",
+      "fuentes": ["zollet:§4 (3)"],
+      "efectos": ["organizacion_activa"],
+      "efecto_territorial_requiere": { "todas": ["C7"], "alguna": ["C4", "C6"] },
+      "mensaje_si_falta": "Organización social sin mercados ni procesos de aprendizaje o alianzas que la proyecten en el territorio",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C6",
+      "nombre": "Alianzas con actores externos",
+      "fuentes": ["zollet:§4 (3)"],
+      "efectos": ["aliados_activos"],
+      "efecto_territorial_requiere": { "todas": ["C5", "C7"] },
+      "mensaje_si_falta": "Aliados externos sin organización social ni mercados con los cuales trabajar",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C7",
+      "nombre": "Mercados favorables y circuitos cortos",
+      "fuentes": ["zollet:§4 (3)", "levidow:§2.2", "res331:lineamiento 3"],
+      "efectos": ["mercados_activos"],
+      "efecto_territorial_requiere": { "todas": ["C5"], "alguna": ["C4", "C6"] },
+      "mensaje_si_falta": "Mercados activos sin organización social que los articule",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C8",
+      "nombre": "Políticas públicas favorables, con compras públicas",
+      "fuentes": ["zollet:§4 (3)", "ley2046:verificar", "res331:verificar"],
+      "efectos": ["politica_activa"],
+      "efecto_territorial_requiere": { "todas": ["C5", "C7"] },
+      "mensaje_si_falta": "Política activa sobre una sola finca, sin organización social ni mercados que la territorialicen",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "C9",
+      "nombre": "Conectividad ecológica entre fincas",
+      "fuentes": ["leonsicard:verificar", "res331:línea 2.8"],
+      "efectos": ["corredor"],
+      "efecto_territorial_requiere": { "todas": ["C3"] },
+      "mensaje_si_falta": "Corredor incompleto: las fincas contiguas carecen de prácticas agroecológicas eficaces",
+      "estado_texto": "borrador",
+      "verificar": ["Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal."]
+    },
+    {
+      "id": "C10",
+      "nombre": "Gobernanza territorial de tierra, agua y semillas",
+      "fuentes": ["wezel2020:principio 12", "dec1406:verificar", "lopez2025:verificar"],
+      "efectos": ["gobernanza_activa"],
+      "efecto_territorial_requiere": { "todas": ["C5"] },
+      "mensaje_si_falta": "Gobernanza de tierra, agua y semillas sin un sujeto colectivo que la ejerza",
+      "estado_texto": "borrador",
+      "verificar": ["Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial."]
+    }
+  ],
+  "reglas": [
+    {
+      "id": "V1",
+      "configuracion": "C3 sola",
+      "si": { "todas": ["C3"], "ninguna": ["C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9", "C10"] },
+      "efectos": ["islas_en_matriz"]
+    },
+    {
+      "id": "V2",
+      "configuracion": "C7 sin C5",
+      "si": { "todas": ["C7"], "ninguna": ["C5"] },
+      "efectos": ["mercados_aislados"]
+    },
+    {
+      "id": "V3",
+      "configuracion": "C5 + C7 + (C4 o C6)",
+      "si": { "todas": ["C5", "C7"], "alguna": ["C4", "C6"] },
+      "efectos": ["enlaces_red", "poligono_red"],
+      "escenario": "S2"
+    },
+    {
+      "id": "V4",
+      "configuracion": "C8 sin C5 ni C7",
+      "si": { "todas": ["C8"], "ninguna": ["C5", "C7"] },
+      "efectos": ["ippta_una_finca"]
+    },
+    {
+      "id": "V5",
+      "configuracion": "C9 sin fincas contiguas con C3",
+      "si": { "todas": ["C9"], "ninguna": ["C3"] },
+      "efectos": ["corredor_incompleto"]
+    },
+    {
+      "id": "V6",
+      "configuracion": "S2 + C8 + C9 + C10",
+      "si": { "todas": ["C5", "C7", "C8", "C9", "C10"], "alguna": ["C4", "C6"] },
+      "efectos": ["corredores_continuos", "nutrientes_con_retorno", "compras_publicas_activas"],
+      "escenario": "S3"
+    },
+    {
+      "id": "V7",
+      "configuracion": "C1 o C2",
+      "si": { "alguna": ["C1", "C2"] },
+      "efectos": ["rotulo_detonante"]
+    }
+  ],
+  "supuestos": [
+    {
+      "id": "H1",
+      "texto": "La excelencia predial difunde prácticas por canales verticales (visitas, protocolos sectoriales, política nacional) y deja intacta la estructura de la matriz.",
+      "fuentes": ["calle:§11.7", "calle:§11.8"]
+    },
+    {
+      "id": "H2",
+      "texto": "Los mercados alternativos forman territorio cuando la organización social los articula.",
+      "fuentes": ["redmac:verificar", "zollet:verificar"]
+    },
+    {
+      "id": "H3",
+      "texto": "Los procesos ecológicos supraprediales exigen coordinación entre fincas vecinas.",
+      "fuentes": ["leonsicard:verificar", "wezel2016:verificar"]
+    },
+    {
+      "id": "H4",
+      "texto": "Las políticas favorables tienen efecto territorial cuando combinan producción y consumo.",
+      "fuentes": ["zollet:§4 (3)", "ley2046:verificar"]
+    },
+    {
+      "id": "H5",
+      "texto": "Un instrumento de planificación predial resulta insuficiente para un objetivo territorial.",
+      "fuentes": ["res331:objetivo general", "res331:línea 2.2"]
+    },
+    {
+      "id": "H6",
+      "texto": "La biota del suelo cierra en la finca.",
+      "fuentes": ["resumenes:ESTRATEGIA §5", "gliessman:cap. 8"]
+    },
+    {
+      "id": "H7",
+      "texto": "Las configuraciones del territorio siguen trayectorias no lineales.",
+      "fuentes": ["lopez2025:verificar", "gliessman:cap. 20"]
+    }
+  ],
+  "resultados": {
+    "nota": "Vínculos de cada resultado con condiciones y supuestos inferidos de las reglas visuales y del guion. Borrador para revisión.",
+    "intermedios": [
+      { "id": "R1", "texto": "Red de mercados articulada", "condiciones": ["C5", "C7"], "supuestos": ["H2"] },
+      { "id": "R2", "texto": "Garantía participativa en funcionamiento", "condiciones": ["C5", "C6"], "supuestos": ["H2"] },
+      { "id": "R3", "texto": "Matriz conectada por corredores", "condiciones": ["C3", "C9"], "supuestos": ["H3"] },
+      { "id": "R4", "texto": "Semillas en red de custodios", "condiciones": ["C5", "C10"], "supuestos": ["H3"] },
+      { "id": "R5", "texto": "Gobernanza multiactor del sistema alimentario", "condiciones": ["C8", "C10"], "supuestos": ["H4", "H5"] }
+    ],
+    "final": {
+      "id": "RF",
+      "texto": "Sistema alimentario territorial agroecológico, en los términos del objetivo general de la Res. 331 de 2024 y de los tres dominios con actores de Wezel et al. (2016).",
+      "fuentes": ["res331:objetivo general", "wezel2016:verificar"]
+    },
+    "estado_texto": "borrador"
+  }
 }

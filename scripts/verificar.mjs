@@ -2,10 +2,11 @@
 // Uso: npm run verificar. Sale con código 1 si hay errores de consola, solicitudes externas o vistas que no cargan.
 import { build, preview } from 'vite';
 import { chromium } from 'playwright';
-import { mkdir, readFile, writeFile, stat, readdir, rm } from 'node:fs/promises';
+import { mkdir, writeFile, stat, readdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { revisarPagina, VENTANA } from './lib/revisar-pagina.mjs';
+import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIR_VERIFICACION = path.join(RAIZ, 'verificacion');
@@ -19,18 +20,21 @@ async function compilar() {
   await build({ root: RAIZ, mode: 'unico', logLevel: 'warn' });
 }
 
-// Lee contenido/ y lista fichas en borrador y fuentes por verificar.
+// Valida contenido/, regenera los pendientes de fuente y lista fichas en borrador y fuentes por verificar.
 async function revisarContenido() {
-  const r = { validos: 0, errores: [], borradores: [], fuentesPendientes: [] };
-  const datos = {};
-  for (const nombre of CONTENIDO) {
-    try {
-      datos[nombre] = JSON.parse(await readFile(path.join(RAIZ, 'contenido', `${nombre}.json`), 'utf8'));
-      r.validos += 1;
-    } catch (error) {
-      r.errores.push(`contenido/${nombre}.json: ${error.message}`);
-    }
-  }
+  const v = await validarContenido(RAIZ);
+  await escribirPendientes(RAIZ, v);
+  const datos = v.datos;
+  const r = {
+    validos: Object.keys(datos).length,
+    errores: v.errores,
+    avisos: v.avisos,
+    resumen: v.resumen,
+    localizadores: v.pendientes?.localizadores.length ?? 0,
+    datosPendientes: v.pendientes?.datos.length ?? 0,
+    borradores: [],
+    fuentesPendientes: [],
+  };
   for (const p of datos.paradas?.paradas ?? []) {
     if (p.estado_texto === 'borrador') r.borradores.push(p.id);
   }
@@ -93,9 +97,14 @@ function escribirInforme({ fecha, version, principal, unico, tamanoUnico, conten
     '## Contenido',
     '',
     `- JSON válidos: ${contenido.validos} de ${CONTENIDO.length}`,
+    contenido.resumen
+      ? `- Paradas: ${contenido.resumen.paradas}; minutos: ${contenido.resumen.total}; saltables: ${contenido.resumen.saltables.join(', ') || 'ninguna'}`
+      : null,
     `- Errores de contenido:${lista(contenido.errores)}`,
-    `- Fichas en borrador:${lista(contenido.borradores, 'ninguna')}`,
+    `- Avisos de redacción:${lista(contenido.avisos)}`,
+    `- Fichas en borrador (${contenido.borradores.length}): ${contenido.borradores.join(', ') || 'ninguna'}`,
     `- Fuentes en falta o verificar:${lista(contenido.fuentesPendientes, 'ninguna')}`,
+    `- Pendientes de fuente: ${contenido.localizadores} localizadores y ${contenido.datosPendientes} datos (\`pendientes-de-fuente.md\`)`,
     '',
   ]
     .filter((l) => l !== null)

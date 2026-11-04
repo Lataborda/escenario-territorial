@@ -1,4 +1,161 @@
 {
   "version": 1,
-  "actores": []
+  "nota": "«escala_texto» reproduce el guion; «escalas» remite a la botonera (municipio se asigna a territorio y nación a región).",
+  "actores": [
+    {
+      "id": "familias_ladera",
+      "nombre": "Familias campesinas de ladera",
+      "escala_texto": "finca, vereda",
+      "escalas": ["finca", "vereda"],
+      "papel": "Prácticas, semillas y mercados",
+      "anclas": ["F2", "F3"]
+    },
+    {
+      "id": "familia_faro",
+      "nombre": "Familia propietaria de la finca faro",
+      "escala_texto": "finca",
+      "escalas": ["finca"],
+      "papel": "Excelencia predial y difusión vertical",
+      "anclas": ["F1"],
+      "referencia": "El Hatico",
+      "fuentes": ["calle:§11.1"]
+    },
+    {
+      "id": "canicultores",
+      "nombre": "Propietarios cañeros y proveedores del ingenio",
+      "escala_texto": "matriz",
+      "escalas": ["vereda"],
+      "papel": "Régimen",
+      "anclas": ["F4"]
+    },
+    {
+      "id": "ingenio",
+      "nombre": "Ingenio azucarero",
+      "escala_texto": "región",
+      "escalas": ["region"],
+      "papel": "Régimen sociotécnico y bloqueo",
+      "anclas": ["ingenio"],
+      "fuentes": ["magrini:verificar"]
+    },
+    {
+      "id": "cabildo",
+      "nombre": "Cabildo del resguardo indígena",
+      "escala_texto": "territorio",
+      "escalas": ["territorio"],
+      "papel": "Gobierno propio, semillas y agua",
+      "anclas": ["resguardo"]
+    },
+    {
+      "id": "consejo_comunitario",
+      "nombre": "Consejo comunitario afrodescendiente",
+      "escala_texto": "territorio",
+      "escalas": ["territorio"],
+      "papel": "Gobierno propio y tierra",
+      "anclas": ["consejo"]
+    },
+    {
+      "id": "jac_acueducto",
+      "nombre": "Junta de acción comunal y acueducto comunitario",
+      "escala_texto": "vereda, cuenca",
+      "escalas": ["vereda", "cuenca"],
+      "papel": "Gobernanza del agua",
+      "anclas": ["acueducto"]
+    },
+    {
+      "id": "mercados",
+      "nombre": "Mercados agroecológicos (siete)",
+      "escala_texto": "territorio",
+      "escalas": ["territorio"],
+      "papel": "Circuitos cortos de comercialización",
+      "anclas": ["CAB1", "CAB2", "CAB3", "CAB4", "CAB5", "CAB6", "CAB7"]
+    },
+    {
+      "id": "red_mercados",
+      "nombre": "Red de mercados",
+      "escala_texto": "territorio",
+      "escalas": ["territorio"],
+      "papel": "Articulación y territorio propio",
+      "anclas": ["CAB1", "CAB2", "CAB3", "CAB4", "CAB5", "CAB6", "CAB7", "CAB8", "CAB9"],
+      "referencia": "REDMAC",
+      "fuentes": ["redmac:verificar"]
+    },
+    {
+      "id": "spg",
+      "nombre": "Sistema participativo de garantías",
+      "escala_texto": "territorio",
+      "escalas": ["territorio"],
+      "papel": "Garantía de confianza (sello)",
+      "anclas": []
+    },
+    {
+      "id": "escuelas",
+      "nombre": "Escuelas agroecológicas y de promotoría",
+      "escala_texto": "vereda, territorio",
+      "escalas": ["vereda", "territorio"],
+      "papel": "Aprendizaje de campesino a campesino",
+      "anclas": ["escuela"],
+      "fuentes": ["res331:línea 1.2"]
+    },
+    {
+      "id": "universidad",
+      "nombre": "Universidad",
+      "escala_texto": "territorio",
+      "escalas": ["territorio"],
+      "papel": "Aliado externo",
+      "anclas": ["ciudad"],
+      "referencia": "UNAL Palmira, GIA"
+    },
+    {
+      "id": "ong_tecnica",
+      "nombre": "ONG técnica",
+      "escala_texto": "región",
+      "escalas": ["region"],
+      "papel": "Aliado externo de la finca faro",
+      "anclas": ["F1"],
+      "referencia": "CIPAV"
+    },
+    {
+      "id": "alcaldia",
+      "nombre": "Alcaldía municipal",
+      "escala_texto": "municipio",
+      "escalas": ["territorio"],
+      "papel": "Recursos, capacitaciones y plan municipal",
+      "anclas": ["ciudad"],
+      "fuentes": ["res331:línea 1.10", "res331:lineamiento 2"]
+    },
+    {
+      "id": "autoridad_ambiental",
+      "nombre": "Autoridad ambiental regional",
+      "escala_texto": "cuenca",
+      "escalas": ["cuenca"],
+      "papel": "Conservación y agua",
+      "anclas": ["rio_tributario"]
+    },
+    {
+      "id": "madr_adr",
+      "nombre": "MADR y ADR",
+      "escala_texto": "nación",
+      "escalas": ["region"],
+      "papel": "Política Pública de Agroecología e IPPTA",
+      "anclas": [],
+      "fuentes": ["res331:verificar"]
+    },
+    {
+      "id": "colegios",
+      "nombre": "Colegios con compras públicas",
+      "escala_texto": "municipio",
+      "escalas": ["territorio"],
+      "papel": "Demanda institucional",
+      "anclas": ["ciudad"],
+      "fuentes": ["ley2046:verificar"]
+    },
+    {
+      "id": "consumidores",
+      "nombre": "Consumidores urbanos",
+      "escala_texto": "región",
+      "escalas": ["region"],
+      "papel": "Demanda y brecha metabólica",
+      "anclas": ["ciudad"]
+    }
+  ]
 }

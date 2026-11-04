@@ -121,10 +121,12 @@ Ejemplo de condición:
   "nombre": "Mercados favorables y circuitos cortos",
   "fuentes": ["zollet:§4(3)", "levidow:§2.2"],
   "efectos": ["mercados_activos"],
-  "efecto_territorial_requiere": ["C5"],
+  "efecto_territorial_requiere": { "todas": ["C5"], "alguna": ["C4", "C6"] },
   "mensaje_si_falta": "Mercados activos sin organización social que los articule"
 }
 ```
+
+Las dependencias y las reglas visuales usan la misma expresión: `todas` (deben estar activas), `alguna` (al menos una) y `ninguna` (ninguna activa). Una referencia sin localizador conocido se escribe `clave:verificar` y aparece en `verificacion/pendientes-de-fuente.md`.
 
 `fuentes.json` asocia cada clave con referencia, archivo y estado (`en carpeta`, `falta`, `verificar`). El localizador va después de los dos puntos de la clave (`clave:página o sección`).
 

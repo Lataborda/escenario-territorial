@@ -1,4 +1,193 @@
 {
   "version": 1,
-  "fuentes": {}
+  "nota": "Cada referencia del contenido usa la forma clave:localizador (página o sección). El localizador «verificar» marca un pasaje por localizar en una sesión con acceso a las fuentes.",
+  "fuentes": {
+    "res356": {
+      "referencia": "Resolución 356 de 2026, Facultad de Ciencias Agropecuarias, Universidad Nacional de Colombia, Sede Palmira",
+      "corta": "Res. 356 de 2026",
+      "archivo": "../Agroecologia resolucion.pdf",
+      "estado": "en carpeta"
+    },
+    "res331": {
+      "referencia": "Resolución 000331 de 2024, Ministerio de Agricultura y Desarrollo Rural, Política Pública de Agroecología",
+      "corta": "Res. 331 de 2024",
+      "archivo": "../Normative/RESOLUCION_No._000331_de_2024_15_12_2024.pdf",
+      "estado": "en carpeta"
+    },
+    "ley2046": {
+      "referencia": "Ley 2046 de 2020",
+      "corta": "Ley 2046 de 2020",
+      "archivo": "../Normative/Ley 2046 de 2020.pdf",
+      "estado": "en carpeta"
+    },
+    "dec1406": {
+      "referencia": "Decreto 1406 de 2023",
+      "corta": "Decreto 1406 de 2023",
+      "archivo": "../Normative/Decreto_1406_de_2023.pdf",
+      "estado": "en carpeta"
+    },
+    "gliessman": {
+      "referencia": "Gliessman et al. (2023), Agroecology, 4.ª ed.",
+      "corta": "Gliessman et al. (2023)",
+      "archivo": "../Agroecologia_Grafo/raw/cap-NN-*.md",
+      "estado": "en carpeta"
+    },
+    "leonsicard": {
+      "referencia": "León-Sicard (2021), La Estructura Agroecológica Principal de los agroecosistemas",
+      "corta": "León-Sicard (2021)",
+      "archivo": "../../Libros completos/LeonSicard-21-EAP-agroecosistemas.pdf",
+      "estado": "en carpeta",
+      "nota": "Versión condensada en ../Transition/."
+    },
+    "cleves": {
+      "referencia": "Cleves-Leguízamo et al. (2017), Revista Colombiana de Ciencias Hortícolas 11(2)",
+      "corta": "Cleves-Leguízamo et al. (2017)",
+      "archivo": "../EAPnovedosaherramientaplanificacion.pdf",
+      "estado": "en carpeta"
+    },
+    "calle": {
+      "referencia": "Calle et al. (2022), cap. 11, en Montagnini (ed.), Biodiversity Islands",
+      "corta": "Calle et al. (2022)",
+      "archivo": "../Transition/M1. capitulo_11_el_hatico.md",
+      "estado": "en carpeta",
+      "nota": "Libro completo en ../../Libros completos/978-3-030-92234-4.pdf."
+    },
+    "wezel2016": {
+      "referencia": "Wezel et al. (2016), Agroecology territories",
+      "corta": "Wezel et al. (2016)",
+      "archivo": "../Transition/AgroecologyTerritoryWezeletal2016.md",
+      "estado": "en carpeta"
+    },
+    "wezel2020": {
+      "referencia": "Wezel et al. (2020), Agroecological principles and elements",
+      "corta": "Wezel et al. (2020)",
+      "archivo": "../Transition/Agroecological_principles_review.md",
+      "estado": "en carpeta"
+    },
+    "magrini": {
+      "referencia": "Magrini et al., Agroecological transition from farms to territorialised agri-food systems",
+      "corta": "Magrini et al.",
+      "archivo": "../Transition/Agroecological Transition from Farms.md",
+      "estado": "verificar",
+      "nota": "En carpeta. Año por verificar."
+    },
+    "lopezgdm": {
+      "referencia": "López-García y González de Molina (2021), Sustainability 13",
+      "corta": "López-García y González de Molina (2021)",
+      "archivo": "../Transition/An Operational Approach to Agroecology-Based Local.md",
+      "estado": "en carpeta"
+    },
+    "lopez2025": {
+      "referencia": "López-García et al. (2025), Agroecology and Sustainable Food Systems 49(7)",
+      "corta": "López-García et al. (2025)",
+      "archivo": "../Transition/what_is_transformative_in_participatory_approaches_to_territorial_agroecological_transitions.md",
+      "estado": "en carpeta"
+    },
+    "levidow": {
+      "referencia": "Levidow, Sansolo y Schiavinatto (2023), Land 12",
+      "corta": "Levidow et al. (2023)",
+      "archivo": "../Transition/ Territorialising Local Food Systems .md",
+      "estado": "en carpeta",
+      "nota": "El nombre del archivo empieza con espacio."
+    },
+    "zollet": {
+      "referencia": "Zollet (2022), Journal of Rural Problems 58(1)",
+      "corta": "Zollet (2022)",
+      "archivo": "../Transition/Territorial Scaling of Agroecology.md",
+      "estado": "en carpeta"
+    },
+    "duarte": {
+      "referencia": "Duarte et al. (2025), Agroecology and Sustainable Food Systems 49(6)",
+      "corta": "Duarte et al. (2025)",
+      "archivo": "../Transition/territorial_embeddedness_of_sustainable_agri_food_systems_a_systematic_review.md",
+      "estado": "en carpeta"
+    },
+    "padro": {
+      "referencia": "Padró et al., modelo SAFRA",
+      "corta": "Padró et al.",
+      "archivo": "../Transition/Modelling the Scaling Up of Sustainable Farming .md",
+      "estado": "verificar",
+      "nota": "En carpeta. Año por verificar."
+    },
+    "nehring": {
+      "referencia": "Nehring et al. (2026)",
+      "corta": "Nehring et al. (2026)",
+      "archivo": "../Transition/Power, policy, and practice.md",
+      "estado": "en carpeta"
+    },
+    "mottet": {
+      "referencia": "Mottet et al. (2020), TAPE",
+      "corta": "Mottet et al. (2020)",
+      "archivo": "../Transition/Assessing Transitions to Sustainable Agricultural.md",
+      "estado": "en carpeta"
+    },
+    "lamine": {
+      "referencia": "Lamine et al. (2023)",
+      "corta": "Lamine et al. (2023)",
+      "archivo": "../Transition/Italian_biodistricts_and_French_territorial_food_p.md",
+      "estado": "en carpeta"
+    },
+    "stone": {
+      "referencia": "Stone et al. (2025), Agroecology Living Labs",
+      "corta": "Stone et al. (2025)",
+      "archivo": "../Transition/Agroecology_Living_Labs_review.md",
+      "estado": "en carpeta"
+    },
+    "resumenes": {
+      "referencia": "Resúmenes de estrategia de la prueba oral (1 de noviembre de 2026)",
+      "corta": "Resúmenes de estrategia",
+      "archivo": "../RESUMEN-prueba-oral.md; ../RESUMEN-ESTRATEGIA-PRUEBA-ORAL.md",
+      "estado": "en carpeta",
+      "nota": "Localizador con prefijo ESTRATEGIA o PRUEBA según el archivo. Documento de trabajo; en pantalla se cita la fuente primaria."
+    },
+    "mieryteran": {
+      "referencia": "Mier y Terán et al. (2018)",
+      "corta": "Mier y Terán et al. (2018)",
+      "estado": "falta",
+      "nota": "Se usa vía Zollet (2022, §4)."
+    },
+    "giraldorosset": {
+      "referencia": "Giraldo y Rosset (2018), Agroecology as a territory in dispute: between institutionality and social movements",
+      "corta": "Giraldo y Rosset (2018)",
+      "estado": "falta"
+    },
+    "anderson": {
+      "referencia": "Anderson et al. (2019), dominios de transformación",
+      "corta": "Anderson et al. (2019)",
+      "estado": "falta"
+    },
+    "leonsicard2015": {
+      "referencia": "León-Sicard et al. (2015), historia de la agroecología en Colombia",
+      "corta": "León-Sicard et al. (2015)",
+      "estado": "falta"
+    },
+    "sanchezprager": {
+      "referencia": "Sánchez de Prager (2018), Aportes de la biología del suelo a la agroecología",
+      "corta": "Sánchez de Prager (2018)",
+      "estado": "falta"
+    },
+    "romero": {
+      "referencia": "Romero et al. (2023), MESMIS en Ayacucho (Palmira)",
+      "corta": "Romero et al. (2023)",
+      "estado": "falta"
+    },
+    "redmac": {
+      "referencia": "Fuentes sobre la Red de Mercados Agroecológicos (REDMAC)",
+      "corta": "REDMAC",
+      "estado": "falta",
+      "nota": "Datos consultados en línea en septiembre de 2026 (RESUMEN-prueba-oral, nota final). Citar antes de la prueba (GUION, precaución 9)."
+    },
+    "ley2294": {
+      "referencia": "Ley 2294 de 2023, art. 32",
+      "corta": "Ley 2294 de 2023",
+      "estado": "falta",
+      "nota": "Verificar el texto del artículo (GUION, precaución 4)."
+    },
+    "al012023": {
+      "referencia": "Acto Legislativo 01 de 2023",
+      "corta": "Acto Legislativo 01 de 2023",
+      "estado": "falta",
+      "nota": "Verificar el texto sobre el campesinado como sujeto de derechos."
+    }
+  }
 }

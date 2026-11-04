@@ -1,4 +1,116 @@
 {
   "version": 1,
-  "escenarios": []
+  "advertencia": {
+    "texto": "Configuraciones alternativas del mismo territorio, sin secuencia lineal obligatoria. Los enfoques lineales de cambio acumulativo reciben crítica en la literatura, y Gliessman advierte que no hay límites nítidos entre niveles de transición.",
+    "fuentes": ["lopez2025:verificar", "gliessman:cap. 20"]
+  },
+  "escenarios": [
+    {
+      "id": "S0",
+      "nombre": "Matriz de monocultivo con finca faro",
+      "rotulo": "Situación de partida",
+      "uso": ["M0", "M1", "M2", "M3"],
+      "que_se_ve": "Plano dominado por caña, relictos aislados, finca faro, fincas de ladera en sustitución de insumos y siete mercados sin vínculos.",
+      "ficha": "Matriz de monocultivo de caña en el plano, relictos de bosque aislados, una finca faro, fincas de ladera en sustitución de insumos y siete mercados sin vínculos. En Colombia, el 1,33 % del área agrícola está en producción alternativa.",
+      "fuentes": ["res331:verificar"],
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "S1",
+      "nombre": "Escalamiento sin territorialización",
+      "rotulo": "Escalamiento vertical",
+      "uso": ["M3"],
+      "que_se_ve": "Flujos de conocimiento que salen del territorio desde la finca faro. Parte de la caña cambia a manejo orgánico sin cambio en la geometría de la matriz.",
+      "ficha": "La finca faro difunde prácticas por canales verticales: visitas, protocolos sectoriales y política nacional. Parte de la caña cambia a manejo orgánico por sustitución de insumos. La geometría de la matriz permanece.",
+      "fuentes": ["calle:§11.7", "calle:§11.8"],
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "S2",
+      "nombre": "Territorialización en red",
+      "rotulo": "Territorio de la red",
+      "uso": ["M4", "M5"],
+      "que_se_ve": "Mercados articulados, SPG, escuelas, semillas en red y territorio de la red que cruza el límite departamental.",
+      "ficha": "Mercados articulados, sistema participativo de garantías, escuelas agroecológicas y semillas en red. El territorio de la red cruza el límite departamental.",
+      "fuentes": ["redmac:verificar", "zollet:§4"],
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "S3",
+      "nombre": "Territorio agroecológico",
+      "rotulo": "Escenario de referencia",
+      "uso": ["M6"],
+      "que_se_ve": "Tres dominios activos (prácticas adaptadas, biodiversidad y recursos conservados, sistema alimentario arraigado), gobernanza multiactor y políticas favorables.",
+      "ficha": "Escenario de referencia construido para la clase. Tres dominios activos: prácticas adaptadas, biodiversidad y recursos conservados, sistema alimentario arraigado. Gobernanza multiactor y políticas favorables. Ningún caso empírico lo representa completo.",
+      "fuentes": ["wezel2016:verificar", "padro:verificar", "lopez2025:verificar", "res331:objetivo general"],
+      "estado_texto": "borrador"
+    }
+  ],
+  "capa_historica": {
+    "fuentes": ["calle:§11.2", "leonsicard:presentación"],
+    "anios": [
+      {
+        "id": "1957",
+        "rotulo": "1957",
+        "texto": "Inicio del periodo de transformación documentado para la cobertura forestal de la cuenca alta del río Cauca.",
+        "fuentes": ["calle:§11.2"]
+      },
+      {
+        "id": "1986",
+        "rotulo": "1986",
+        "texto": "Transformado el 66 % de la cobertura forestal de la cuenca alta del río Cauca desde 1957.",
+        "fuentes": ["calle:§11.2"]
+      },
+      {
+        "id": "hoy",
+        "rotulo": "Hoy",
+        "texto": "Queda el 1,76 % del bosque original, en fragmentos de 6 ha en promedio y en su mayoría aislados.",
+        "fuentes": ["calle:§11.2"]
+      }
+    ],
+    "verificar": ["Cobertura del plano en 1957 para la representación (humedales y bosque seco): localizar el dato en Calle et al. (2022, §11.2) o en sus fuentes (CVC 1990; Arcila et al. 2012; Rivera et al. 2007)."]
+  },
+  "lentes": [
+    {
+      "id": "L1",
+      "numero": "①",
+      "nombre": "Sociotécnica francesa",
+      "territorio": "Escala de coordinación de actores en torno a un régimen sociotécnico",
+      "resalta": "Régimen (ingenio, insumos), nichos (fincas y mercados agroecológicos) y arenas de transición",
+      "fuentes": ["resumenes:ESTRATEGIA §4", "magrini:verificar", "lamine:verificar"]
+    },
+    {
+      "id": "L2",
+      "numero": "②",
+      "nombre": "Agronómico-territorial europea",
+      "territorio": "Área delimitada con transición en marcha: tres dominios y actores",
+      "resalta": "Polígono delimitado y tres dominios",
+      "fuentes": ["resumenes:ESTRATEGIA §4", "wezel2016:verificar", "wezel2020:verificar", "lamine:verificar", "padro:verificar"]
+    },
+    {
+      "id": "L3",
+      "numero": "③",
+      "nombre": "Agroecología política española",
+      "territorio": "Esfera de agregación de fuerzas sociales en un sujeto plural",
+      "resalta": "Sujeto plural, vínculos urbanos y rurales, brecha metabólica",
+      "fuentes": ["resumenes:ESTRATEGIA §4", "lopezgdm:verificar", "lopez2025:verificar"]
+    },
+    {
+      "id": "L4",
+      "numero": "④",
+      "nombre": "Territorial latinoamericana",
+      "territorio": "Espacio socialmente construido y en disputa",
+      "resalta": "Expansión de la matriz frente a territorios campesinos y étnicos; desterritorialización y reterritorialización",
+      "fuentes": ["resumenes:ESTRATEGIA §4", "levidow:verificar", "giraldorosset:verificar"]
+    }
+  ],
+  "contraste_lentes": {
+    "cita": "«es una transición y no una revolución, porque no implica explícitamente la necesidad de otros cambios relativos a los fundamentos capitalistas»",
+    "autor_cita": "magrini",
+    "titulo_contraste": "«Agroecology as a territory in dispute: between institutionality and social movements»",
+    "autor_contraste": "giraldorosset",
+    "estado": "verificar",
+    "fuentes": ["magrini:verificar", "giraldorosset:verificar"],
+    "verificar": ["Cita textual de Magrini et al. y su página, antes de mostrarla (GUION, sección 7)."]
+  }
 }

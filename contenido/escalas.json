@@ -1,4 +1,178 @@
 {
   "version": 1,
-  "escalas": []
+  "nota": "Botonera de siete escalas, siempre visible. La vista tipo (distancia y elevación de la cámara) es provisional hasta la etapa 3.",
+  "frentes_literatura": {
+    "texto": "La literatura sobre arraigo territorial se divide en tres frentes por escala: finca, comunidad y paisaje, y nivel regional y nacional. La botonera reproduce esa partición y la amplía hacia el suelo.",
+    "fuentes": ["duarte:verificar"]
+  },
+  "escalas": [
+    {
+      "id": "suelo",
+      "numero": 1,
+      "nombre": "Suelo",
+      "rotulo": "Suelo",
+      "unidad": "Perfil bajo el lote",
+      "que_se_ve": "Horizontes, materia orgánica, raíces, hifas y macrofauna",
+      "conceptos": ["suelo como ecosistema", "biota", "materia orgánica"],
+      "principios": [3],
+      "escala_wezel": ["FI"],
+      "vista": { "distancia": 70, "elevacion": 12 },
+      "fuentes": ["gliessman:cap. 8", "calle:§11.3", "calle:§11.4"]
+    },
+    {
+      "id": "planta",
+      "numero": 2,
+      "nombre": "Planta e interacciones",
+      "rotulo": "Planta",
+      "unidad": "Agroecosistema menor (lote)",
+      "que_se_ve": "Policultivo y monocultivo, niveles de organización",
+      "conceptos": ["interacciones", "diversidad", "sinergia"],
+      "principios": [1, 3, 5, 6],
+      "escala_wezel": ["FI"],
+      "vista": { "distancia": 160, "elevacion": 30 },
+      "fuentes": ["gliessman:fig. 3.1", "gliessman:cap. 7", "gliessman:cap. 12", "gliessman:cap. 13"]
+    },
+    {
+      "id": "finca",
+      "numero": 3,
+      "nombre": "Finca",
+      "rotulo": "Finca",
+      "unidad": "Agroecosistema mayor",
+      "que_se_ve": "Lotes, casa, familia, lindero y conectores",
+      "conceptos": ["Estructura Agroecológica Principal (EAP)", "frontera del agroecosistema", "funcionamiento"],
+      "principios": [1, 2, 4, 5, 6, 7, 8],
+      "escala_wezel": ["FA"],
+      "vista": { "distancia": 450, "elevacion": 45 },
+      "fuentes": ["leonsicard:verificar", "cleves:verificar", "gliessman:fig. 3.7", "gliessman:cap. 15", "gliessman:cap. 16"]
+    },
+    {
+      "id": "vereda",
+      "numero": 4,
+      "nombre": "Matriz y vereda",
+      "rotulo": "Vereda",
+      "unidad": "Matriz de agroecosistemas",
+      "que_se_ve": "Cobertura dominante, relictos, corredores y vecindad",
+      "conceptos": ["conectividad", "matriz agroecológica", "control biológico", "polinización"],
+      "principios": [5, 6],
+      "escala_wezel": [],
+      "vista": { "distancia": 900, "elevacion": 40 },
+      "fuentes": ["leonsicard:verificar", "wezel2016:verificar", "gliessman:cap. 14", "gliessman:cap. 18", "calle:§11.2", "calle:§11.6"]
+    },
+    {
+      "id": "cuenca",
+      "numero": 5,
+      "nombre": "Cuenca",
+      "rotulo": "Cuenca",
+      "unidad": "Unidad hidrológica",
+      "que_se_ve": "Ladera, río, páramo, sedimentos y acueducto",
+      "conceptos": ["agua y sedimentos", "conservación de suelos"],
+      "principios": [12],
+      "escala_wezel": [],
+      "vista": { "distancia": 1400, "elevacion": 35 },
+      "fuentes": ["gliessman:cap. 8", "gliessman:cap. 18", "res331:línea 2.1"],
+      "verificar": ["Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos."]
+    },
+    {
+      "id": "territorio",
+      "numero": 6,
+      "nombre": "Territorio",
+      "rotulo": "Territorio",
+      "unidad": "Espacio definido por actores",
+      "que_se_ve": "Actores, redes, mercados, SPG, semillas, escuelas y figuras territoriales",
+      "conceptos": ["territorialización", "sujeto plural", "proximidades", "disputa"],
+      "principios": [8, 9, 10, 11, 12, 13],
+      "escala_wezel": ["FA", "FS"],
+      "vista": { "distancia": 2300, "elevacion": 38 },
+      "fuentes": ["wezel2016:verificar", "lopezgdm:verificar", "levidow:verificar", "zollet:§4", "lopez2025:verificar"]
+    },
+    {
+      "id": "region",
+      "numero": 7,
+      "nombre": "Región y política",
+      "rotulo": "Región",
+      "unidad": "Sistema alimentario regional y nacional",
+      "que_se_ve": "Relación entre ciudad y campo, ingenio, compras públicas y política",
+      "conceptos": ["brecha metabólica", "régimen", "bloqueo", "política pública"],
+      "principios": [9, 10, 11, 12, 13],
+      "escala_wezel": ["FS"],
+      "vista": { "distancia": 2900, "elevacion": 42 },
+      "fuentes": ["magrini:verificar", "padro:verificar", "res331:verificar", "ley2046:verificar", "dec1406:verificar", "nehring:verificar"]
+    }
+  ],
+  "principios": {
+    "estado": "verificar",
+    "nota": "Nombres en español redactados en la sesión en la nube sin acceso al texto. Contrastar con Wezel et al. (2020), tabla 1, antes de mostrarlos.",
+    "fuentes": ["wezel2020:tabla 1"],
+    "lista": [
+      { "numero": 1, "nombre": "Reciclaje" },
+      { "numero": 2, "nombre": "Reducción de insumos" },
+      { "numero": 3, "nombre": "Salud del suelo" },
+      { "numero": 4, "nombre": "Salud animal" },
+      { "numero": 5, "nombre": "Biodiversidad" },
+      { "numero": 6, "nombre": "Sinergia" },
+      { "numero": 7, "nombre": "Diversificación económica" },
+      { "numero": 8, "nombre": "Cocreación de conocimiento" },
+      { "numero": 9, "nombre": "Valores sociales y dietas" },
+      { "numero": 10, "nombre": "Equidad" },
+      { "numero": 11, "nombre": "Conectividad" },
+      { "numero": 12, "nombre": "Gobernanza de la tierra y los recursos naturales" },
+      { "numero": 13, "nombre": "Participación" }
+    ]
+  },
+  "procesos": [
+    {
+      "id": "control_biologico",
+      "nombre": "Control biológico por conservación",
+      "por_que": "Los enemigos naturales requieren hábitat, refugio y presa alternativa fuera del lote.",
+      "escala_minima": "vereda",
+      "escala_minima_texto": "matriz y paisaje",
+      "representacion": "Radios de acción desde parches de hábitat que se superponen entre fincas",
+      "fuentes": ["resumenes:ESTRATEGIA §5"]
+    },
+    {
+      "id": "polinizacion",
+      "nombre": "Polinización",
+      "por_que": "Los rangos de forrajeo y anidación exceden el predio.",
+      "escala_minima": "vereda",
+      "escala_minima_texto": "matriz y paisaje",
+      "representacion": "Radios de forrajeo y corredores",
+      "fuentes": ["resumenes:ESTRATEGIA §5"]
+    },
+    {
+      "id": "nutrientes",
+      "nombre": "Ciclos de nitrógeno y fósforo",
+      "por_que": "Los ciclos no cierran si el sistema exporta alimento a la ciudad (brecha metabólica).",
+      "escala_minima": "region",
+      "escala_minima_texto": "región ciudad y campo",
+      "representacion": "Arcos de nutrientes de las fincas a la ciudad, sin retorno en S0",
+      "fuentes": ["resumenes:ESTRATEGIA §5"]
+    },
+    {
+      "id": "agua_sedimentos",
+      "nombre": "Agua y sedimentos",
+      "por_que": "La unidad hidrológica es la cuenca.",
+      "escala_minima": "cuenca",
+      "escala_minima_texto": "cuenca",
+      "representacion": "Escorrentía y sedimentos según la cobertura de la ladera",
+      "fuentes": ["resumenes:ESTRATEGIA §5"]
+    },
+    {
+      "id": "semillas",
+      "nombre": "Flujo genético y semillas",
+      "por_que": "Los sistemas de semillas funcionan en red.",
+      "escala_minima": "territorio",
+      "escala_minima_texto": "territorio, red de custodios",
+      "representacion": "Intercambios entre custodios",
+      "fuentes": ["resumenes:ESTRATEGIA §5"]
+    },
+    {
+      "id": "biota_suelo",
+      "nombre": "Biota del suelo",
+      "por_que": "El proceso cierra en el lote y la finca.",
+      "escala_minima": "finca",
+      "escala_minima_texto": "lote y finca",
+      "representacion": "Corte de suelo con el rótulo «cierra en la finca»",
+      "fuentes": ["resumenes:ESTRATEGIA §5"]
+    }
+  ]
 }

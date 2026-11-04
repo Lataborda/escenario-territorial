@@ -2,8 +2,10 @@
 
 ## Estado actual
 
-- Etapa siguiente: Etapa 1. Modelo de contenido. En la nube, solo con `GUION.md` (PLAN.md, etapa 1).
-- Última etapa cerrada: Etapa 0 (2026-11-04). `npm run verificar` correcto.
+- Etapa siguiente: Etapa 2. Terreno de la cuenca.
+- Última etapa cerrada: Etapa 1 (2026-11-04). `npm run validar` y `npm run verificar` correctos.
+- Contenido: 26 paradas en borrador; 68 localizadores y 20 datos por verificar en `verificacion/pendientes-de-fuente.md`, para cerrar en una sesión local (etapa 14 a más tardar).
+- Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26 y vínculos de resultados de la teoría de cambio.
 - Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor).
 - Hito alcanzado: ninguno.
 - Fecha de la prueba oral: por confirmar. La notificación llega por correo con una antelación no inferior a tres días (Guía del Aspirante, literal E); el tema se informa dentro de los tres días siguientes (Res. 356 de 2026, art. 11).
@@ -81,6 +83,50 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Sin `src/estado.js` todavía (etapa 3); los módulos actuales no se suscriben a nada.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 1. Modelo de contenido.
+
+### 2026-11-04 · Etapa 1. Modelo de contenido
+
+- Modo continuo: propuesta sin espera de aprobación. Sesión en la nube sin acceso a las fuentes; solo `GUION.md`.
+- Hecho:
+  - `fuentes.json`: las 31 claves de `GUION.md` (sección 11) con referencia, cita corta, archivo, estado y nota.
+  - `territorio.json`: 32 entidades con ancla (zonas, ríos, límite, fincas F1 a F4, siete cabeceras con mercado y dos del sur para S2, lote, corte de suelo, vista general), datos del plano del valle y catálogo de 34 capas.
+  - `escalas.json`: siete escalas con vista tipo provisional, principios de Wezel et al. (2020), procesos y escala mínima (sección 4), frentes de Duarte et al. (2025).
+  - `paradas.json`: momentos M0 a M6 con meta, ficha de sesión y 26 paradas con cámara, estado, ficha, notas y fuentes. P03, P14 y P16 llevan pasos (niveles de organización, lentes, años).
+  - `escenarios.json`: S0 a S3, capa histórica (1957, 1986, hoy), lentes L1 a L4 y contraste Magrini y Giraldo y Rosset (estado `verificar`).
+  - `condiciones.json`: C1 a C10 con efectos, dependencias y mensaje si falta; reglas visuales V1 a V7 (sección 6.5); supuestos H1 a H7; resultados R1 a R5 y final.
+  - `actores.json`: 18 actores con escalas de la botonera y anclas.
+  - `scripts/validar-contenido.mjs` con `scripts/lib/contenido.mjs`, `revisar-textos.mjs` y `revisar-referencias.mjs`; script `validar`. Revisa campos obligatorios, ids, referencias cruzadas, coordenadas, 60 palabras por ficha, minutos por momento, títulos sin dos puntos, términos vetados y «APPA» junto a «1406». Las construcciones de contraste dan aviso sin bloquear. Genera `verificacion/pendientes-de-fuente.md`.
+  - `npm run verificar` valida el contenido, regenera los pendientes y falla con errores de contenido.
+- Decisiones:
+  - Referencias `clave:localizador`; sin localizador en el guion, `clave:verificar`. Un campo `verificar` en cualquier objeto anota dudas de dato.
+  - Dependencias de condiciones y reglas visuales como expresión `{todas, alguna, ninguna}`. `PLAN.md`, sección 3.3, actualizado.
+  - Escala «matriz» del guion asignada al botón `vereda` (escala 4, «Matriz y vereda»). P25 («territorio y finca») usa la escala `territorio`. P16 («capa histórica») y P19 («actividad») usan S0 con año o modo.
+  - Títulos ajustados a sintagma nominal: P22 «Índice EAP de tres fincas tipo»; P24 «Soberanía de los datos» (antes «Quién mide»).
+  - P04 y P05 sobre F3 (finca diversificada); P22 compara F1, F2 y F3.
+  - El mercado de la ciudad intermedia queda fuera de las siete cabeceras. Posiciones de cabeceras, relictos y lote marcadas como `propuesta`.
+  - Ubicación de lentes, capa histórica, procesos y principios: `escenarios.json` y `escalas.json`, sin archivos nuevos.
+- Inviable o por resolver con Alejandro:
+  - D4: curso hipotético («Agroecología y territorio») y prerrequisitos redactados sin Alejandro.
+  - Vínculos de R1 a R5 con condiciones y supuestos inferidos de las reglas visuales; dependencias de C1, C2 y C10 sin base explícita en el guion.
+  - Nombres de los 13 principios de Wezel et al. (2020) escritos de memoria; estado `verificar`.
+  - Ancla del corte de suelo: `PLAN.md` (etapa 7) pide un lote de policultivo de ladera junto a caña; P07 cita la caña agroecológica de F1. Se resuelve en la etapa 7.
+  - P06: los usos de F1 suman 287 ha de 288 ha.
+- Pendientes de fuente (resumen de `verificacion/pendientes-de-fuente.md`):
+  - 11 fuentes en falta o por verificar: REDMAC, Romero et al., Sánchez de Prager, Mier y Terán, Giraldo y Rosset, Anderson, León-Sicard 2015, Ley 2294, Acto Legislativo 01 de 2023; año de Magrini et al. y de Padró et al.
+  - 68 referencias sin localizador en 23 fuentes. Las de más peso: Res. 331 (cifras de P02 y S0, cita de P24), Magrini et al. (cinco mecanismos de P15, cita de P14), REDMAC (P18, P20), Ley 2046 (artículo del 30 %, P21), Calle et al. (materia orgánica, P07), Cleves-Leguízamo et al. (criterios EAP, P05).
+  - 20 datos por verificar, entre ellos la frontera según Gliessman (p. 37), los diez criterios de la EAP, «de 2 % a 4 %» como cambio o intervalo, la cobertura de 1957 y las cifras de REDMAC.
+- Criterios de aceptación: cumplidos.
+  - `npm run validar` sin errores; 26 paradas y 40 minutos (M0 3, M1 6, M2 7, M3 8, M4 8, M5 5, M6 3); saltables P12, P15 y P23.
+  - Cada parada tiene al menos una fuente con localizador o con `verificar`.
+  - Pendientes generados y resumidos aquí.
+  - `GUION.md` sin cambios.
+- Verificación: correcto. Cero errores de consola y cero solicitudes externas en las dos vistas; 13 llamadas de dibujo; 13,7 cuadros por segundo con SwiftShader (referencia). El validador se probó con una copia del contenido con fallas introducidas: detectó los 20 errores y los 2 avisos esperados, sin falso positivo con el número QUIPU que contiene «1406».
+- Pendientes:
+  - Revisión de Alejandro de fichas y notas (estado `borrador`) y de la ficha de sesión.
+  - Sesión local para cerrar `pendientes-de-fuente.md`.
+  - La interfaz aún no lee `contenido/` (etapa 3).
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 2. Terreno de la cuenca.
 
 ## Plantilla de entrada
 

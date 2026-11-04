@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "build:unico": "vite build --mode unico",
     "vista-previa": "npm run build:unico && node scripts/vista-previa.mjs",
+    "validar": "node scripts/validar-contenido.mjs",
     "verificar": "node scripts/verificar.mjs"
   },
   "dependencies": {
