@@ -137,7 +137,7 @@ Almacén único en `src/estado.js` con suscripción:
 
 ```
 { parada, paso, escala, foco, camara, escenario, condiciones[], lente, anio, capas[], modo,
-  interfaz, liviano, anclas, aviso }
+  interfaz, liviano, miniatura, medidor, anclas, aviso }
 modo: recorrido | libre | actividad | autor
 ```
 
@@ -158,6 +158,8 @@ Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y 
 | F | pantalla completa |
 | H | ocultar o mostrar la interfaz |
 | V | modo liviano |
+| M | desenfoque de miniatura (etapa 5.c.c) |
+| R | medidor de rendimiento: cuadros por segundo y llamadas de dibujo (etapa 5.c.c) |
 | C | modo autor: copia la cámara actual en formato de parada |
 | A | modo autor: muestra las anclas (en modo libre, A mueve la cámara) |
 
@@ -353,8 +355,8 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [x] Ningún árbol facetado a la escala de finca o vereda (5.c.a).
   - [x] Caña sin bloques planos escalonados: surcos y altura irregular en la vista general; tallos con hojas a escala de finca y de planta; tallos visibles en los bordes de lote (5.c.a).
   - [x] Tres edades de caña distinguibles en la vista general, fijas por lote en todos los escenarios. S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa (5.c.a).
-  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y los tallos cercanos de la caña, y reduce instancias (5.c.a: tallos cercanos e instancias; el resto en la 5.c.b).
-  - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
+  - [x] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y los tallos cercanos de la caña, y reduce instancias (5.c.a: tallos cercanos e instancias; el resto en la 5.c.b y la 5.c.c).
+  - [x] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz (5.c.c).
   - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
 - Prompt de arranque: `Etapa 5.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 - División (2026-11-04): 5.c.a, vegetación y caña (las dos primeras tareas y los tres primeros criterios; del cuarto, los tallos cercanos y las instancias) y 5.c.b, caña con hojas (observación de Alejandro sobre la 5.c.a) y luz y posproceso (viento, sombras suaves, oclusión ambiental, desenfoque de miniatura, legibilidad y medición en el MacBook Air).
@@ -380,8 +382,8 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [x] La caña se reconoce como caña a escala de suelo, planta y finca: matas de tallos con nudos y hojas largas en arco, como en la referencia; ninguna espiga, flor o forma de mazorca; distinta del maíz de la huerta.
   - [x] Ningún plano verde liso a la vista en los lotes de caña, ni la línea recta del borde: el lote se ve como una masa de hojas de silueta irregular, también en la vista general (hileras y altura irregular sin manchas claras). Dentro del radio con matas la tapa baja hasta la lámina y queda en sombra; más allá (460 unidades o más) el bloque conserva hileras, textura de hojas y altura irregular.
   - [x] S1 conserva la extensión de la caña de S0 y cada transición termina igual a la carga directa.
-  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y las matas cercanas de la caña (5.c.b: matas cercanas y tapa hundida; el resto en la 5.c.c).
-  - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz (5.c.c).
+  - [x] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y las matas cercanas de la caña (5.c.b: matas cercanas y tapa hundida; el resto en la 5.c.c).
+  - [x] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz (5.c.c).
   - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo (5.c.c).
 - Prompt de arranque: `Etapa 5.c.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 - División (2026-11-04): la 5.c.b quedó en la caña (primer bloque de trabajo y tres primeros criterios); la luz y el posproceso pasan a la 5.c.c.
@@ -397,11 +399,12 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Desenfoque de miniatura (tilt-shift) suave, regulable y desactivable, sin afectar la interfaz HTML.
   - Rendimiento: medir los cuadros por segundo en el MacBook Air en la vista general (1,87 millones de triángulos en S0) y a escala de finca, planta y suelo (3,1 a 5,9 millones con las matas de caña de la 5.c.b); si no alcanza, bajar los umbrales de detalle (`arboles.js`, `especies.js`), el umbral del nivel detallado o los cupos de la caña cercana (`cana.js`).
 - Criterios de aceptación:
-  - [ ] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y las matas cercanas de la caña.
-  - [ ] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz.
-  - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo.
-  - [ ] Las capturas de la verificación y del respaldo conservan la escena idéntica en cada carga (sin ruido temporal del posproceso).
+  - [x] El modo liviano retira la oclusión ambiental, el desenfoque, el viento, las sombras y las matas cercanas de la caña.
+  - [x] Texto y rótulos legibles en videoconferencia (24 px a 1920×1080, contraste AA), sin desenfoque sobre la interfaz. Excepción: la marca «Borrador» de las fichas (16,8 px), que desaparece al revisarlas.
+  - [ ] 50 cuadros por segundo o más en el MacBook Air en la vista general; menos de 200 llamadas de dibujo (llamadas: cumplido, 44 a 69; cuadros por segundo: medición de Alejandro con la tecla R).
+  - [x] Las capturas de la verificación y del respaldo conservan la escena idéntica en cada carga (sin ruido temporal del posproceso).
 - Prompt de arranque: `Etapa 5.c.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+- Resultado (2026-11-05): viento en el sombreador de vértices (`src/escena/viento.js`), posproceso de diorama con oclusión ambiental desde la profundidad y miniatura en dos pasadas (`posproceso.js`, `sombreadores.js`), sombra PCF suave, medidor de rendimiento (tecla R) y revisión de luz y legibilidad (`scripts/lib/revisar-luz.mjs`). Parámetros `#ao`, `#mini` y `#viento` (0 apaga); tecla M y botón «Miniatura» del presentador.
 
 ## Etapa 6. Fincas y Estructura Agroecológica Principal
 

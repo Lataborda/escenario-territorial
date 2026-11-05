@@ -73,6 +73,12 @@ async function pruebasSincronia(principal, presentador, prueba) {
     (await esperar(principal, oculta)) && (await esperar(presentador, () => document.querySelector('#interfaz')?.getAttribute('aria-pressed') === 'false')));
   await presentador.click('#interfaz');
   await prueba('botón Interfaz la muestra de nuevo', () => esperar(principal, () => !document.querySelector('.interfaz')?.classList.contains('oculta')));
+  await presentador.click('#miniatura');
+  await prueba('botón Miniatura del presentador apaga el desenfoque de la principal', async () =>
+    (await esperar(principal, () => window.escenario.estado().miniatura === false && !window.escenario.luz().miniatura)) &&
+    (await esperar(presentador, () => document.querySelector('#miniatura')?.getAttribute('aria-pressed') === 'false')));
+  await presentador.keyboard.press('m');
+  await prueba('tecla M en el presentador lo enciende de nuevo', () => esperar(principal, () => window.escenario.luz().miniatura === true));
   await principal.evaluate(() => (location.hash = 'p=P20&captura=1'));
   await prueba('cambio de hash en la principal llega al presentador (P20)', () => ambas(principal, presentador, ['P20']));
   await presentador.click('.indice-parada button[data-parada="P11"]');

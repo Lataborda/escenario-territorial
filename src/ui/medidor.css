@@ -1,0 +1,25 @@
+/* Medidor de rendimiento (tecla R): arriba al centro, sobre la escena y fuera de la interfaz (visible con la tecla H).
+   Herramienta de medición, fuera del recorrido. */
+.medidor {
+  position: fixed;
+  z-index: 2;
+  top: var(--margen);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.35rem 0.7rem;
+  color: #f4f1ea;
+  background: rgba(30, 30, 28, 0.88);
+  border-radius: 0.4rem;
+  font: 500 0.75rem/1.35 var(--tipo-texto);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.medidor[hidden] {
+  display: none;
+}
+
+.medidor-detalle {
+  color: #d9d4c8;
+}

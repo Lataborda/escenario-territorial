@@ -39,6 +39,8 @@ export function crearTeclado({ bloqueCamara }) {
     v: alternar('liviano'),
     c: copiarCamara,
     a: alternar('anclas'),
+    m: alternar('miniatura'),
+    r: alternar('medidor'),
   };
   for (let n = 0; n <= 6; n++) acciones[String(n)] = () => irAMomento(n);
 

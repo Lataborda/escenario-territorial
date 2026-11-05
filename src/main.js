@@ -18,6 +18,7 @@ import { crearSeleccion } from './navegacion/seleccion.js';
 import { crearLibre } from './navegacion/libre.js';
 import { revisarTrayectorias, desvioBloque } from './navegacion/pruebas.js';
 import { crearInterfaz } from './ui/interfaz.js';
+import { crearMedidor } from './ui/medidor.js';
 import { crearSincronia } from './presentador/sincronia.js';
 
 const TIPOGRAFIAS = [
@@ -75,21 +76,27 @@ function marcarParada({ parada, paso }) {
 
 async function iniciar() {
   await cargarTipografias();
+  const parametros = leerParametros();
   let escena;
   try {
-    escena = crearEscena(document.getElementById('escena'));
+    escena = crearEscena(document.getElementById('escena'), parametros);
   } catch (error) {
     console.error('No se pudo crear la escena:', error);
     mostrarAviso('WebGL no disponible en este navegador.');
     return;
   }
-  const parametros = leerParametros();
   cambiar({ anclas: parametros.anclas });
   montar('maqueta', () => escena.agregar(crearMaqueta()));
   montar('terreno', () => escena.agregar(generarTerreno({ exageracion: parametros.exageracion })));
 
   const camara = montar('cámara', () => crearCamaraNavegacion(escena, { instantanea: parametros.captura }));
   montar('interfaz', () => crearInterfaz(document.getElementById('interfaz')));
+  montar('medidor', () => {
+    const caja = document.createElement('div');
+    caja.className = 'medidor';
+    document.body.append(caja);
+    crearMedidor(caja, { estadisticas: escena.estadisticas, luz: escena.luz });
+  });
   montar('teclado', () => crearTeclado({ bloqueCamara: camara.bloqueActual }));
   montar('hash', crearHash);
   montar('selección', () => crearSeleccion({ camara: escena.camara, lienzo: escena.renderizador.domElement }));
@@ -115,6 +122,8 @@ async function iniciar() {
   // Interfaz para la verificación automática y el modo autor.
   window.escenario = {
     estadisticas: escena.estadisticas,
+    luz: escena.luz,
+    fijarViento: escena.fijarViento,
     terreno: datosTerreno,
     coberturas: () => coberturas,
     vias: () => vias,

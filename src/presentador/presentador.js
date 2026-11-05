@@ -22,6 +22,7 @@ const TECLAS = {
   o: ['libre'],
   h: ['alternar', { clave: 'interfaz' }],
   v: ['alternar', { clave: 'liviano' }],
+  m: ['alternar', { clave: 'miniatura' }],
 };
 MOMENTOS.forEach((m, n) => (TECLAS[String(n)] = ['momento', { n }]));
 
@@ -34,7 +35,7 @@ function seccion(padre, clase, etiqueta = 'section') {
 
 // Solo las claves publicadas y con el tipo esperado pasan al almacén del presentador.
 function filtrar(estado = {}) {
-  const tipos = { parada: 'string', paso: 'number', escala: 'string', modo: 'string', interfaz: 'boolean', liviano: 'boolean' };
+  const tipos = { parada: 'string', paso: 'number', escala: 'string', modo: 'string', interfaz: 'boolean', liviano: 'boolean', miniatura: 'boolean' };
   return Object.fromEntries(CLAVES_PUBLICADAS.filter((k) => typeof estado[k] === tipos[k]).map((k) => [k, estado[k]]));
 }
 

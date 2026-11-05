@@ -4,15 +4,28 @@
 // niveles, cada puesto va a la malla «cerca» o «lejos» según la distancia de su celda a la cámara (detalle.js).
 import * as THREE from 'three';
 import { celdaDe } from './detalle.js';
+import { conViento } from '../escena/viento.js';
 
 const FRACCION_LIVIANO = 0.5; // instancias que quedan en el modo liviano
+const VAIVEN = 0.012; // desplazamiento del viento en la punta, como fracción del alto de la forma
+
+// Material de una forma, con viento salvo que la forma lo excluya (viento: false). Alto: el de la forma más alta.
+function materialDe(m) {
+  const material = new THREE.MeshStandardMaterial(m.material);
+  if (m.viento === false) return material;
+  const alto = Math.max(...[m.lejos, m.cerca].filter(Boolean).map((g) => {
+    if (!g.boundingBox) g.computeBoundingBox();
+    return g.boundingBox.max.y;
+  }));
+  return conViento(material, { alto, amplitud: m.viento ?? VAIVEN });
+}
 
 export function crearInstancias({ id, puestos, mallas, visible, colorDe, umbral = 0 }) {
   const n = puestos.length;
   const niveles = umbral > 0 && mallas.some((m) => m.cerca) ? 2 : 1;
   // Una malla instanciada por forma y nivel: grupos[forma][nivel].
   const grupos = mallas.map((m) => {
-    const material = new THREE.MeshStandardMaterial(m.material);
+    const material = materialDe(m);
     const geometrias = niveles === 2 ? [m.lejos, m.cerca ?? m.lejos] : [m.lejos];
     return geometrias.map((g, nivel) => {
       const malla = new THREE.InstancedMesh(g, material, Math.max(n, 1));

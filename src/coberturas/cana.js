@@ -15,6 +15,7 @@ import { BASE, RETIRO, factorCana } from './teselas.js';
 import { PERIODO_SURCO, HUNDIR } from './superficie.js';
 import { EDADES_CANA } from './tipos.js';
 import { matasCana, ALTO } from './mata.js';
+import { conViento } from '../escena/viento.js';
 
 export const UMBRAL_CANA = 460; // distancia de la cámara a la celda (unidades de escena)
 const UMBRAL_DETALLE = 130; // celdas con la forma detallada
@@ -34,6 +35,7 @@ const CAMPOS = 9;
 // Tinte por instancia solo en las hojas: los vértices con «propio» = 1 (tallos) conservan su color y llevan nudos:
 // un anillo oscuro con un borde claro encima, cada NUDO de altura de la forma; se atenúan cuando ocupan poco en pantalla.
 const NUDO = 0.3;
+const VAIVEN = 0.045; // desplazamiento del viento en la punta de las hojas, como fracción del alto de la mata
 function crearMaterial(opciones) {
   const material = new THREE.MeshStandardMaterial(opciones);
   material.onBeforeCompile = (s) => {
@@ -55,7 +57,8 @@ if (vPropio > 0.5) {
 }`);
   };
   material.customProgramCacheKey = () => 'mata-cana';
-  return material;
+  // Viento: las hojas se mueven más que los tallos.
+  return conViento(material, { alto: ALTO, amplitud: VAIVEN, peso: '1.0 - 0.7 * propio' });
 }
 
 export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura, alRadio = () => {}) {

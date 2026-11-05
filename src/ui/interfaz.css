@@ -212,7 +212,10 @@
   position: absolute;
   left: var(--margen);
   bottom: var(--margen);
+  padding: 0.1rem 0.5rem;
   color: var(--texto-suave);
+  background: var(--panel);
+  border-radius: 0.3rem;
   font-style: italic;
   pointer-events: none;
 }

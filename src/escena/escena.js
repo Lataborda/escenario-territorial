@@ -1,7 +1,10 @@
-// Renderizador, cámara, luces, controles de órbita y ciclo de dibujo.
+// Renderizador, cámara, luces, controles de órbita y ciclo de dibujo. Luz de diorama (etapa 5.c.c): sol cálido con
+// sombra suave, cielo claro, viento (viento.js) y posproceso con oclusión ambiental y miniatura (posproceso.js).
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { obtener, suscribir } from '../estado.js';
+import { crearPosproceso } from './posproceso.js';
+import { crearViento } from './viento.js';
 
 const COLOR_FONDO = 0xe8e4dc;
 const RELACION_PIXELES_MAX = 2;
@@ -12,6 +15,8 @@ const DESPLAZAMIENTO_REM = 8;
 // Vista general inicial: ángulos en grados respecto del centro de la maqueta.
 // Desde el suroccidente: la ladera, orientada al occidente, mira a la cámara.
 const VISTA_GENERAL = { distancia: 2500, azimut: -30, elevacion: 38 };
+// Sombra suave: radio del filtro PCF en texeles del mapa e intensidad (la luz del cielo aclara la sombra).
+const SOMBRA = { mapa: 2048, radio: 3, intensidad: 0.85 };
 
 function posicionEsferica({ distancia, azimut, elevacion }) {
   const az = THREE.MathUtils.degToRad(azimut);
@@ -26,13 +31,15 @@ function posicionEsferica({ distancia, azimut, elevacion }) {
 function crearLuces() {
   const grupo = new THREE.Group();
   grupo.name = 'luces';
-  // Luz cenital suave: cielo claro y rebote cálido de la mesa.
-  grupo.add(new THREE.HemisphereLight(0xffffff, 0xcfc6b8, 1.4));
-  // Una sola sombra direccional, desde el noroccidente: la sombra cae hacia la cámara.
-  const sol = new THREE.DirectionalLight(0xffffff, 2.0);
+  // Luz cenital suave: cielo claro, algo frío, y rebote cálido de la mesa.
+  grupo.add(new THREE.HemisphereLight(0xf6f8ff, 0xd3c8b6, 1.4));
+  // Una sola sombra direccional, desde el noroccidente: la sombra cae hacia la cámara. Sol de tarde, algo cálido.
+  const sol = new THREE.DirectionalLight(0xfff4e2, 2.05);
   sol.position.set(-700, 1800, -250);
   sol.castShadow = true;
-  sol.shadow.mapSize.set(2048, 2048);
+  sol.shadow.mapSize.set(SOMBRA.mapa, SOMBRA.mapa);
+  sol.shadow.radius = SOMBRA.radio;
+  sol.shadow.intensity = SOMBRA.intensidad;
   const s = sol.shadow.camera;
   s.left = -1100;
   s.right = 1100;
@@ -45,12 +52,15 @@ function crearLuces() {
   return { grupo, sol };
 }
 
-export function crearEscena(contenedor) {
+/** opciones: { captura, viento, oclusion, miniatura } (parámetros del hash, parametros.js). */
+export function crearEscena(contenedor, opciones = {}) {
   const renderizador = new THREE.WebGLRenderer({ antialias: true });
   renderizador.setPixelRatio(Math.min(window.devicePixelRatio, RELACION_PIXELES_MAX));
   renderizador.setSize(contenedor.clientWidth, contenedor.clientHeight);
   renderizador.shadowMap.enabled = true;
   renderizador.shadowMap.type = THREE.PCFShadowMap;
+  // Cifras de todas las pasadas del cuadro (sombra, escena y posproceso): se ponen en cero al empezar cada cuadro.
+  renderizador.info.autoReset = false;
   contenedor.appendChild(renderizador.domElement);
 
   const escena = new THREE.Scene();
@@ -62,6 +72,8 @@ export function crearEscena(contenedor) {
   const camara = new THREE.PerspectiveCamera(35, aspecto, 10, 20000);
   camara.position.copy(posicionEsferica(VISTA_GENERAL));
   camara.lookAt(0, 0, 0);
+  const posproceso = crearPosproceso(renderizador, escena, camara, opciones);
+  const viento = crearViento(opciones);
 
   // Modo libre: órbita y zoom sin pasar bajo la mesa. Sin arrastre lateral: el objetivo se mueve con
   // el doble clic y el teclado (src/navegacion/libre.js), que también limita la cámara. Inactivos en el recorrido.
@@ -125,10 +137,15 @@ export function crearEscena(contenedor) {
     }
   }
 
+  let marca = null;
   function cuadro() {
+    const ahora = performance.now();
+    viento.avanzar(marca == null ? 0 : (ahora - marca) / 1000);
+    marca = ahora;
     if (controles.enabled) controles.update();
     cadaCuadro();
-    renderizador.render(escena, camara);
+    renderizador.info.reset();
+    posproceso.dibujar();
     if (avisarPrimerCuadro) {
       avisarPrimerCuadro();
       avisarPrimerCuadro = null;
@@ -170,5 +187,12 @@ export function crearEscena(contenedor) {
       texturas: renderizador.info.memory.textures,
       relacionPixeles: renderizador.getPixelRatio(),
     }),
+    // Luz y posproceso: efectos activos, sombra y viento.
+    luz: () => ({
+      ...posproceso.datos(),
+      sombra: { activa: luces.sol.castShadow, radio: luces.sol.shadow.radius, intensidad: luces.sol.shadow.intensity, mapa: luces.sol.shadow.mapSize.x },
+      viento: viento.datos(),
+    }),
+    fijarViento: (t) => viento.fijar(t),
   };
 }

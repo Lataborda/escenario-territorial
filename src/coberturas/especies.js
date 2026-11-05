@@ -172,7 +172,7 @@ export const ESPECIES = {
     mallas: () => {
       const c = cama();
       return [
-        { lejos: c, cerca: c, material: SUELO, recibe: true },
+        { lejos: c, cerca: c, material: SUELO, recibe: true, viento: false },
         { lejos: hortalizas(false), cerca: hortalizas(true), material: HOJAS, recibe: true, colorInstancia: true },
       ];
     },

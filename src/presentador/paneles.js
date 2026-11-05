@@ -140,7 +140,7 @@ export function crearIndice(contenedor, ordenar) {
   });
 }
 
-// Controles: anterior, siguiente, momentos, modo libre, interfaz y modo liviano de la vista principal.
+// Controles: anterior, siguiente, momentos, modo libre, interfaz, modo liviano y miniatura de la vista principal.
 export function crearControles(contenedor, ordenar) {
   const boton = (id, texto, accion, datos, titulo) => {
     const b = elemento('button', 'boton', texto);
@@ -159,12 +159,14 @@ export function crearControles(contenedor, ordenar) {
   const libre = boton('libre', 'Modo libre', 'libre', null, 'Tecla O');
   const interfaz = boton('interfaz', 'Interfaz', 'alternar', { clave: 'interfaz' }, 'Tecla H');
   const liviano = boton('liviano', 'Liviano', 'alternar', { clave: 'liviano' }, 'Tecla V');
+  const miniatura = boton('miniatura', 'Miniatura', 'alternar', { clave: 'miniatura' }, 'Tecla M: desenfoque de miniatura');
   const modos = elemento('div', 'controles-modos');
-  modos.append(libre, interfaz, liviano);
+  modos.append(libre, interfaz, liviano, miniatura);
   contenedor.append(avance, momentos, modos);
 
-  suscribir(['parada', 'modo', 'interfaz', 'liviano'], (e) => {
+  suscribir(['parada', 'modo', 'interfaz', 'liviano', 'miniatura'], (e) => {
     libre.setAttribute('aria-pressed', String(e.modo === 'libre'));
+    miniatura.setAttribute('aria-pressed', String(Boolean(e.miniatura)));
     interfaz.setAttribute('aria-pressed', String(Boolean(e.interfaz)));
     liviano.setAttribute('aria-pressed', String(Boolean(e.liviano)));
     interfaz.textContent = e.interfaz ? 'Interfaz visible' : 'Interfaz oculta';

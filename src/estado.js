@@ -15,6 +15,8 @@ const inicial = {
   modo: 'recorrido', // recorrido | libre | actividad | autor
   interfaz: true, // tecla H
   liviano: false, // tecla V
+  miniatura: true, // tecla M: desenfoque de miniatura
+  medidor: false, // tecla R: cuadros por segundo y llamadas de dibujo
   anclas: false, // tecla A
   aviso: null, // mensaje breve del modo autor: { titulo, texto }
 };
