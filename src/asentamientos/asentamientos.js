@@ -12,8 +12,8 @@ const HUNDIMIENTO = 2; // las placas y los muros bajan bajo el terreno: sin huec
 const ALERO = 0.25; // vuelo del tejado
 const TEJADO = 0.45; // altura del tejado por unidad de fondo
 
-// Prisma de tejado a dos aguas: base 1 × 1 en y = 0, cumbrera a lo largo de x, altura 1.
-function crearTejado() {
+// Prisma de tejado a dos aguas: base 1 × 1 en y = 0, cumbrera a lo largo de x, altura 1. Lo usan también las fincas.
+export function crearTejado() {
   const g = new THREE.BufferGeometry();
   const v = [-0.5, 0, -0.5, 0.5, 0, -0.5, 0.5, 1, 0, -0.5, 1, 0, -0.5, 0, 0.5, 0.5, 0, 0.5];
   // Faldones norte y sur, y hastiales oriente y occidente.
@@ -24,7 +24,7 @@ function crearTejado() {
 }
 
 // Caja unitaria con la base en y = 0.
-function crearCaja() {
+export function crearCaja() {
   const g = new THREE.BoxGeometry(1, 1, 1);
   g.translate(0, 0.5, 0);
   return g;

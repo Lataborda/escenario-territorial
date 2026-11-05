@@ -4,8 +4,8 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 - Guion: 40 min; ensayo objetivo: 36 min; tolerancia: 1 min.
 - Paradas saltables (decisión D6): P12, P15, P23.
-- Respaldo: 34 imágenes (una por parada y por paso). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash `#p=P14&paso=1` abre una diapositiva.
-- Generado: 2026-11-05; huella del contenido: `0da7e4c124c4`.
+- Respaldo: 37 imágenes (una por parada y por paso). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash `#p=P14&paso=1` abre una diapositiva.
+- Generado: 2026-11-05; huella del contenido: `6ec82ca90a70`.
 
 ## M0 · Encuadre (3 min, 0:00 a 3:00)
 
@@ -44,7 +44,8 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P04 · Agroecosistema menor y agroecosistema mayor
 
-- inicio previsto 4:30 · 1,5 min · escala finca · diapositiva 7 · texto en borrador
+- inicio previsto 4:30 · 1,5 min · escala finca · diapositivas 7 a 8 · texto en borrador
+- Pasos: Agroecosistema menor · Agroecosistema mayor
 
 **Notas.** Resaltar primero el lote y después el lindero con la familia. Contrastar la frontera del agroecosistema según Gliessman y según León-Sicard.
 
@@ -54,7 +55,8 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P05 · Estructura Agroecológica Principal
 
-- inicio previsto 6:00 · 1,5 min · escala finca · diapositiva 8 · texto en borrador
+- inicio previsto 6:00 · 1,5 min · escala finca · diapositivas 9 a 11 · texto en borrador
+- Pasos: Conectores internos · Conectores externos · Conexión con la EEP
 
 **Notas.** Mostrar los conectores internos, luego los externos y la conexión con la EEP. Nombrar los dos grupos de criterios.
 
@@ -64,7 +66,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P06 · Finca faro en el plano
 
-- inicio previsto 7:30 · 1,5 min · escala finca · diapositiva 9 · texto en borrador
+- inicio previsto 7:30 · 1,5 min · escala finca · diapositiva 12 · texto en borrador
 
 **Notas.** Recorrer los usos de la finca. Anticipar que la finca faro tiene influencia documentada en otras escalas (M3).
 
@@ -76,7 +78,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P07 · Biota del suelo
 
-- inicio previsto 9:00 · 1,5 min · escala suelo · diapositiva 10 · texto en borrador
+- inicio previsto 9:00 · 1,5 min · escala suelo · diapositiva 13 · texto en borrador
 
 **Notas.** Rótulo «cierra en la finca». Afirmar que todo proceso exige territorio sería un error (GUION, precaución 2). Citar la tradición de biología del suelo de Palmira (Sánchez de Prager, 2018).
 
@@ -86,7 +88,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P08 · Control biológico y polinización
 
-- inicio previsto 10:30 · 1,5 min · escala vereda · diapositiva 11 · texto en borrador
+- inicio previsto 10:30 · 1,5 min · escala vereda · diapositiva 14 · texto en borrador
 
 **Notas.** Mostrar los radios que salen del lindero. La escala mínima de ambos procesos es la matriz y el paisaje.
 
@@ -96,7 +98,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P09 · Agua y sedimentos en la cuenca
 
-- inicio previsto 12:00 · 1,5 min · escala cuenca · diapositiva 12 · texto en borrador
+- inicio previsto 12:00 · 1,5 min · escala cuenca · diapositiva 15 · texto en borrador
 
 **Notas.** Seguir el agua desde el páramo hasta el río Cauca. Señalar el acueducto comunitario.
 
@@ -106,7 +108,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P10 · Brecha metabólica entre campo y ciudad
 
-- inicio previsto 13:30 · 1 min · escala region · diapositiva 13 · texto en borrador
+- inicio previsto 13:30 · 1 min · escala region · diapositiva 16 · texto en borrador
 
 **Notas.** Mostrar los arcos de nutrientes sin retorno. En S3 los arcos tienen retorno.
 
@@ -116,7 +118,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P11 · Semillas en red de custodios
 
-- inicio previsto 14:30 · 1 min · escala territorio · diapositiva 14 · texto en borrador
+- inicio previsto 14:30 · 1 min · escala territorio · diapositiva 17 · texto en borrador
 
 **Notas.** Mostrar los intercambios entre custodios de la ladera y del resguardo.
 
@@ -126,7 +128,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P12 · Escala mínima de cada proceso
 
-- inicio previsto 15:30 · 0,5 min · escala territorio · diapositiva 15 · **saltable** · texto en borrador
+- inicio previsto 15:30 · 0,5 min · escala territorio · diapositiva 18 · **saltable** · texto en borrador
 
 **Notas.** La biota del suelo se muestra con el mismo peso que las demás filas.
 
@@ -138,7 +140,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P13 · Límite y sujeto de decisión
 
-- inicio previsto 16:00 · 1,5 min · escala territorio · diapositiva 16 · texto en borrador
+- inicio previsto 16:00 · 1,5 min · escala territorio · diapositiva 19 · texto en borrador
 
 **Notas.** El agroecosistema mayor ya contiene poder, mercado y política pública (GUION, precaución 1). El contraste se plantea solo por el límite y el sujeto.
 
@@ -148,7 +150,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P14 · Cuatro lecturas del territorio
 
-- inicio previsto 17:30 · 2,5 min · escala territorio · diapositivas 17 a 20 · texto en borrador
+- inicio previsto 17:30 · 2,5 min · escala territorio · diapositivas 20 a 23 · texto en borrador
 - Pasos: ① Sociotécnica francesa · ② Agronómico-territorial europea · ③ Agroecología política española · ④ Territorial latinoamericana
 
 **Notas.** Avanzar las cuatro lentes con la flecha. Al cierre, contrastar la cita de Magrini et al. con el título de Giraldo y Rosset (2018), solo después de verificar la cita textual y su página.
@@ -159,7 +161,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P15 · Bloqueo del régimen
 
-- inicio previsto 20:00 · 1 min · escala region · diapositiva 21 · **saltable** · texto en borrador
+- inicio previsto 20:00 · 1 min · escala region · diapositiva 24 · **saltable** · texto en borrador
 
 **Notas.** Ubicar los cinco mecanismos sobre el ingenio y la matriz. Magrini et al. los toman de Arthur (1989).
 
@@ -169,7 +171,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P16 · El paisaje como registro
 
-- inicio previsto 21:00 · 1,5 min · escala vereda · diapositivas 22 a 24 · texto en borrador
+- inicio previsto 21:00 · 1,5 min · escala vereda · diapositivas 25 a 27 · texto en borrador
 - Pasos: 1957 · 1986 · Hoy
 
 **Notas.** Avanzar 1957, 1986 y hoy. Los humedales ocuparon casi una cuarta parte del valle. Calle et al. se apoyan en CVC (1990), Arcila et al. (2012) y Rivera et al. (2007).
@@ -180,7 +182,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P17 · Escalamiento sin territorialización
 
-- inicio previsto 22:30 · 1,5 min · escala territorio · diapositiva 25 · texto en borrador
+- inicio previsto 22:30 · 1,5 min · escala territorio · diapositiva 28 · texto en borrador
 
 **Notas.** La influencia de la finca faro es escalamiento vertical y sustitución de insumos dentro de la matriz (GUION, precaución 3). Mostrarla sin efecto sería inexacto. Calle et al. citan a Murgueitio (2019).
 
@@ -192,7 +194,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P18 · Siete mercados desarticulados
 
-- inicio previsto 24:00 · 1 min · escala territorio · diapositiva 26 · texto en borrador
+- inicio previsto 24:00 · 1 min · escala territorio · diapositiva 29 · texto en borrador
 
 **Notas.** Señalar cada mercado aislado. Preparar la actividad de la parada siguiente.
 
@@ -202,7 +204,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P19 · Actividad de condiciones de territorialización
 
-- inicio previsto 25:00 · 4 min · escala territorio · diapositiva 27 · texto en borrador
+- inicio previsto 25:00 · 4 min · escala territorio · diapositiva 30 · texto en borrador
 
 **Notas.** Los estudiantes proponen condiciones y el presentador las activa. Las reglas son didácticas y carecen de calibración empírica; decirlo al jurado.
 
@@ -212,7 +214,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P20 · Red de mercados desde 2009
 
-- inicio previsto 29:00 · 1,5 min · escala territorio · diapositiva 28 · texto en borrador
+- inicio previsto 29:00 · 1,5 min · escala territorio · diapositiva 31 · texto en borrador
 
 **Notas.** Mostrar el polígono de la red sobre el límite departamental. El SPG con el GIA se cita como antecedente (GUION, precaución 5).
 
@@ -222,7 +224,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P21 · Sujeto plural y circuitos cortos
 
-- inicio previsto 30:30 · 1,5 min · escala territorio · diapositiva 29 · texto en borrador
+- inicio previsto 30:30 · 1,5 min · escala territorio · diapositiva 32 · texto en borrador
 
 **Notas.** Vincular la ciudad, los colegios y los mercados. Definición de circuitos cortos según la Ley 2046 de 2020.
 
@@ -234,7 +236,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P22 · Índice EAP de tres fincas tipo
 
-- inicio previsto 32:00 · 2 min · escala finca · diapositiva 30 · texto en borrador
+- inicio previsto 32:00 · 2 min · escala finca · diapositiva 33 · texto en borrador
 
 **Notas.** Las tres fincas tipo son F1, F2 y F3. Los valores son ilustrativos salvo medición (GUION, precaución 8).
 
@@ -244,7 +246,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P23 · MESMIS y TAPE
 
-- inicio previsto 34:00 · 1,5 min · escala finca · diapositiva 31 · **saltable** · texto en borrador
+- inicio previsto 34:00 · 1,5 min · escala finca · diapositiva 34 · **saltable** · texto en borrador
 
 **Notas.** Romero et al. (2023) falta en la carpeta. Mottet et al. (2020) presentan TAPE.
 
@@ -254,7 +256,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P24 · Soberanía de los datos
 
-- inicio previsto 35:30 · 1,5 min · escala territorio · diapositiva 32 · texto en borrador
+- inicio previsto 35:30 · 1,5 min · escala territorio · diapositiva 35 · texto en borrador
 
 **Notas.** Pregunta para el grupo: quién mide y con qué medios. La Res. 331 de 2024 se apoya en MADR-FAO (2024a).
 
@@ -266,7 +268,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P25 · Objetivo territorial e instrumento predial
 
-- inicio previsto 37:00 · 1,5 min · escala territorio · diapositiva 33 · texto en borrador
+- inicio previsto 37:00 · 1,5 min · escala territorio · diapositiva 36 · texto en borrador
 
 **Notas.** Mostrar el horizonte territorial y, sobre él, el IPPTA en una sola finca. El argumento corresponde al supuesto H5.
 
@@ -276,7 +278,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P26 · Tarea auténtica y retorno a la pregunta
 
-- inicio previsto 38:30 · 1,5 min · escala territorio · diapositiva 34 · texto en borrador
+- inicio previsto 38:30 · 1,5 min · escala territorio · diapositiva 37 · texto en borrador
 
 **Notas.** Volver a la pregunta detonante con la maqueta en S3 y cerrar con la tarea.
 

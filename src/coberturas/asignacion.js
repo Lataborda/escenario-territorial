@@ -84,7 +84,7 @@ export function asignarEscenarios({ unidades }, escenarios, altura) {
   const criterios = crearCriterios(altura);
   const grupos = new Map();
   for (const u of unidades) {
-    if (u.clase === 'reservas') continue;
+    if (u.clase === 'reservas' || u.clase === 'lotes') continue;
     const clave = `${u.zona}.${u.clase}`;
     if (!grupos.has(clave)) grupos.set(clave, []);
     grupos.get(clave).push(u);
@@ -92,7 +92,7 @@ export function asignarEscenarios({ unidades }, escenarios, altura) {
   // Órdenes fijos por grupo y criterio, calculados una sola vez.
   const cache = new Map();
   const ordenDe = (clave, lista, regla) => {
-    const id = `${clave}|${regla.tipo}|${regla.criterio}`;
+    const id = `${clave}|${regla.tipo}|${regla.criterio}${regla.semilla ? `|${regla.semilla}` : ''}`;
     if (!cache.has(id)) cache.set(id, criterios[regla.criterio](lista, regla, crearAzar(semillaDe(id))));
     return cache.get(id);
   };
@@ -130,7 +130,7 @@ export const tipoDe = (indice) => (indice === NINGUNA ? null : LISTA_TIPOS[indic
 // contenido/escenarios.json (edades_cana). Las hileras van a lo largo del lado mayor del lote, salvo en algunos
 // lotes, con un desvío pequeño.
 export function asignarCana({ unidades, centros }, fracciones = {}) {
-  const lista = unidades.filter((u) => u.clase === 'parcelas' || u.clase === 'orillas');
+  const lista = unidades.filter((u) => u.clase === 'parcelas' || u.clase === 'orillas' || u.clase === 'lotes');
   const limites = [];
   let suma = 0;
   for (const id of EDADES_CANA.ids) limites.push((suma += fracciones[id] ?? 0));

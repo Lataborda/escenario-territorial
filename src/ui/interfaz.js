@@ -1,4 +1,5 @@
-// Interfaz sobre la escena: botonera, ficha, indicador de momento, leyenda, rótulo del esquema y avisos.
+// Interfaz sobre la escena: botonera, ficha, indicador de momento, leyendas, usos de la finca, rótulo del esquema
+// y avisos.
 // Tecla H: oculta o muestra todo.
 import './interfaz.css';
 import territorio from '../../contenido/territorio.json';
@@ -7,6 +8,7 @@ import { crearBotonera } from './botonera.js';
 import { crearFicha } from './ficha.js';
 import { crearMomentos } from './momentos.js';
 import { crearLeyenda } from './leyenda.js';
+import { crearCapas } from './capas.js';
 
 const DURACION_AVISO_MS = 8000;
 
@@ -51,7 +53,16 @@ export function crearInterfaz(raiz) {
   const ficha = parte('ficha', 'aside');
   ficha.setAttribute('aria-live', 'polite');
   montar('ficha', crearFicha, ficha);
-  montar('leyenda', crearLeyenda, parte('leyenda', 'aside'));
+  // Columna derecha: leyenda de coberturas, leyenda de capas y usos de la finca.
+  const columna = parte('columna-derecha');
+  const enColumna = (clase) => {
+    const e = document.createElement('aside');
+    e.className = clase;
+    columna.append(e);
+    return e;
+  };
+  montar('leyenda', crearLeyenda, enColumna('leyenda'));
+  montar('capas', crearCapas, columna);
   parte('rotulo-esquema').textContent = territorio.rotulo;
   const aviso = parte('aviso-autor');
   aviso.hidden = true;

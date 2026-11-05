@@ -65,6 +65,10 @@ export function crearEscena(contenedor, opciones = {}) {
 
   const escena = new THREE.Scene();
   escena.background = new THREE.Color(COLOR_FONDO);
+  // Superposición: trazos de las capas (conectores, EEP, resaltado) dibujados después del posproceso, sin
+  // oclusión ni desenfoque y sobre la escena (sin prueba de profundidad).
+  const superposicion = new THREE.Scene();
+  superposicion.name = 'superposicion';
   const luces = crearLuces();
   escena.add(luces.grupo);
 
@@ -146,6 +150,12 @@ export function crearEscena(contenedor, opciones = {}) {
     cadaCuadro();
     renderizador.info.reset();
     posproceso.dibujar();
+    if (superposicion.children.some((o) => o.visible)) {
+      renderizador.autoClear = false;
+      renderizador.setRenderTarget(null);
+      renderizador.render(superposicion, camara);
+      renderizador.autoClear = true;
+    }
     if (avisarPrimerCuadro) {
       avisarPrimerCuadro();
       avisarPrimerCuadro = null;
@@ -173,6 +183,7 @@ export function crearEscena(contenedor, opciones = {}) {
     colocar,
     mirar,
     agregar: (objeto) => escena.add(objeto),
+    superponer: (objeto) => superposicion.add(objeto),
     alCuadro: (fn) => porCuadro.push(fn),
     iniciar: () => renderizador.setAnimationLoop(cuadro),
     // Verificación: sin ciclo de dibujo el navegador responde de inmediato; un cuadro antes de cada captura.

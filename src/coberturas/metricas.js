@@ -13,7 +13,7 @@ function proporciones(unidades, asignacion, zona) {
   const area = {};
   let total = 0;
   for (const u of unidades) {
-    if (u.zona !== zona || u.clase === 'celdas' || u.clase === 'reservas') continue;
+    if (u.zona !== zona || u.clase === 'celdas' || u.clase === 'reservas' || u.clase === 'lotes') continue;
     const t = tipoDe(asignacion[u.indice]) ?? 'ninguna';
     area[t] = (area[t] ?? 0) + u.area;
     total += u.area;
@@ -25,7 +25,8 @@ function proporciones(unidades, asignacion, zona) {
 function aislamiento({ unidades, centros }, asignacion) {
   const punto = (t) => [centros.x(t % centros.columnas), centros.z(Math.floor(t / centros.columnas))];
   const bosques = unidades.filter((u) => BOSQUE.includes(tipoDe(asignacion[u.indice])));
-  const relictos = bosques.filter((u) => tipoDe(asignacion[u.indice]) === 'bosque_seco' && u.zona === 'plano');
+  // Relictos de la matriz: los bosques de las fincas tipo (lotes) cuentan como vecinos, no como relictos.
+  const relictos = bosques.filter((u) => tipoDe(asignacion[u.indice]) === 'bosque_seco' && u.zona === 'plano' && u.clase !== 'lotes');
   const separaciones = relictos.map((r) => {
     const propios = r.teselas.map(punto);
     let minimo = Infinity;

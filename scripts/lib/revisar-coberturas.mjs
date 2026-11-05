@@ -1,6 +1,9 @@
 // Revisión de coberturas (etapa 5): proporciones y aislamiento de relictos por escenario, transiciones
 // sin cortes, modo liviano, leyenda y una captura por escenario. Página sin #captura (vuelos y transiciones reales).
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { tiposPresentes } from '../../src/coberturas/tipos.js';
 import { revisarPaisaje, fallasPaisaje, seccionPaisaje } from './revisar-paisaje.mjs';
 import { revisarVegetacion, fallasVegetacion, seccionVegetacion } from './revisar-vegetacion.mjs';
 
@@ -15,6 +18,13 @@ const HOLGURA_MINIMA_S = 0.3; // la transición termina en el primer cuadro tras
 const DURACION_S = 2;
 
 const coberturas = (pagina, fn, arg) => pagina.evaluate(fn, arg);
+
+// Tipos que la leyenda debe mostrar en un escenario: proporciones de escenarios.json y usos de las fincas tipo.
+const leer = (nombre) => JSON.parse(readFileSync(fileURLToPath(new URL(`../../contenido/${nombre}.json`, import.meta.url)), 'utf8'));
+const USOS_FINCAS = leer('fincas').fincas.flatMap((f) => f.lotes.map((l) => l.uso));
+const ESCENARIOS_CONTENIDO = leer('escenarios').escenarios;
+const leyendaEsperada = (id) => [...tiposPresentes(ESCENARIOS_CONTENIDO.find((s) => s.id === id), USOS_FINCAS)].sort();
+const mismaLista = (a, b) => a.length === b.length && [...a].sort().every((x, i) => x === b[i]);
 const leyendaVisible = () => [...document.querySelectorAll('.leyenda-entrada:not([hidden])')].map((e) => e.dataset.tipo);
 
 async function transicion(pagina, id, huellaDirecta) {
@@ -106,7 +116,8 @@ export function fallasCoberturas(c, estadisticas) {
     const ok = t.empezo && t.intermedias > 0 && t.igual && t.duracion >= DURACION_S - 0.05 && t.duracion <= DURACION_S + holgura;
     if (!ok) f.push(`Coberturas: transición a ${t.escenario} incorrecta`);
   }
-  if (c.leyendaS0.includes('cana_organica') || !c.transiciones.find((t) => t.escenario === 'S1')?.leyenda.includes('cana_organica')) {
+  // Desde la etapa 6 la finca faro tiene caña agroecológica en S0: la leyenda se compara con los tipos presentes.
+  if (!mismaLista(c.leyendaS0, leyendaEsperada('S0')) || c.transiciones.some((t) => !mismaLista(t.leyenda, leyendaEsperada(t.escenario)))) {
     f.push('Coberturas: la leyenda no sigue al escenario');
   }
   if (!(c.liviano.liviano < c.liviano.completo * 0.6) || !c.liviano.restaurado) f.push('Coberturas: el modo liviano no reduce las instancias');

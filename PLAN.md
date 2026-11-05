@@ -408,6 +408,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 
 ## Etapa 6. Fincas y Estructura Agroecológica Principal
 
+- División (2026-11-05): 6.a, sin fuentes nuevas (generador de finca, cuatro fincas, resaltado, conectores, EEP y clic); 6.b, con fuentes (panel EAP). La 6.a se hizo en la nube; la 6.b requiere sesión local.
 - Tamaño: grande. Fuentes: sí, puntuales (León-Sicard 2021; Calle et al. 2022, §11.1).
 - Lecturas: `GUION.md`, secciones 2 y 3 (escala 3).
 - Objetivo: el agroecosistema mayor visible y comparable.
@@ -423,6 +424,22 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [ ] Los conectores se leen en la vista de matriz.
   - [ ] El panel EAP toma sus datos de `contenido/`.
 - Prompt de arranque: `Etapa 6 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 6.b. Panel EAP
+
+- Tamaño: mediano. Fuentes: sí (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017). Sesión local con `/add-dir ../..`.
+- Lecturas: `GUION.md`, sección 3 (escala 3) y sección 10 (precaución 8); `contenido/fincas.json`.
+- Objetivo: el índice EAP de las fincas tipo, legible y con fuente.
+- Trabajo:
+  - Localizar en las fuentes los nombres de los diez criterios y sus dos grupos, con página. El PLAN anotó «cinco ecosistémicos, cinco culturales»; confirmar el reparto antes de dibujar.
+  - Criterios, grupos, escala de cada criterio y valores por finca en `contenido/` (valores rotulados «valores ilustrativos» si no salen de una fuente).
+  - Panel EAP de las fincas tipo (capa `indices_eap`), con la misma columna derecha de la 6.a.
+  - Cerrar los localizadores pendientes de la EAP: `leonsicard:verificar` y `cleves:verificar` en P05, escalas y condiciones.
+- Criterios de aceptación:
+  - [ ] El panel EAP toma sus datos de `contenido/`.
+  - [ ] Cada criterio y cada valor muestra su fuente o el rótulo «valores ilustrativos».
+  - [ ] Texto del panel legible a 1920×1080 (24 px o más, contraste AA).
+- Prompt de arranque: `Etapa 6.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 7. Lote, interacciones de especies y suelo
 

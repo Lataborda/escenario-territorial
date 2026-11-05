@@ -87,14 +87,21 @@ export const TIPOS_POR_CLASE = {
   parcelas: ['cana', 'cana_organica', 'pastura', 'silvopastoril', 'bosque_seco', 'humedal', 'cafe', 'platano', 'frutales', 'huerta'],
   orillas: ['ripario', 'cana', 'cana_organica', 'pastura', 'cafe', 'platano'],
   celdas: ['bosque_altoandino', 'paramo'],
+  // Lotes de las fincas tipo (contenido/fincas.json): uso fijo en todos los escenarios.
+  lotes: ['cana', 'cana_organica', 'pastura', 'silvopastoril', 'bosque_seco', 'humedal', 'ripario', 'cafe', 'platano', 'frutales', 'huerta'],
 };
+
+// Tipos de la estructura ecológica principal del paisaje (capa «eep»); el agua de los cauces también cuenta.
+export const TIPOS_EEP = ['ripario', 'bosque_seco', 'humedal', 'bosque_altoandino', 'paramo'];
 
 // Orden de asignación y criterio con que cada tipo elige sus unidades (ver asignacion.js).
 // dispersion: orden aleatorio con distancia mínima decreciente (relictos aislados con fracción baja).
 // cota: de la unidad más baja a la más alta, con ruido (unidades de escena).
+// semilla: variante del orden aleatorio. La del bosque seco se eligió en la etapa 6 (las fincas recortan la matriz):
+// 7 de 8 relictos de S0 aislados, ninguno contiguo (verificación de coberturas).
 export const ASIGNACION = [
   { tipo: 'humedal', criterio: 'cercania', entidad: 'humedal' },
-  { tipo: 'bosque_seco', criterio: 'dispersion', radio: 150, lejosDeCauces: 45 },
+  { tipo: 'bosque_seco', criterio: 'dispersion', radio: 150, lejosDeCauces: 45, semilla: 11 },
   { tipo: 'ripario', criterio: 'dispersion', radio: 110 },
   { tipo: 'bosque_altoandino', criterio: 'altitud' },
   { tipo: 'paramo', criterio: 'altitud' },
@@ -109,18 +116,18 @@ export const ASIGNACION = [
 ];
 
 // Áreas reservadas para módulos posteriores (radio en unidades de escena). Se busca primero por id.
-// F1 muestra un sistema silvopastoril provisional hasta la etapa 6.
+// Las fincas tipo (etapa 6) tienen lotes propios (src/fincas/trazado.js).
 export const RESERVAS = [
   { id: 'ciudad', radio: 70 },
   { id: 'ingenio', radio: 20 },
-  { id: 'F1', radio: 46, cobertura: 'silvopastoril' },
   { id: 'lote', radio: 16 },
   { tipo: 'asentamiento', radio: 22 },
 ];
 
-// Tipos que aparecen en un escenario: proporción positiva en alguna zona o reserva con cobertura.
-export function tiposPresentes(escenario) {
-  const presentes = new Set(RESERVAS.filter((r) => r.cobertura).map((r) => r.cobertura));
+// Tipos que aparecen en un escenario: proporción positiva en alguna zona, reserva con cobertura o uso de los
+// lotes de las fincas (extra).
+export function tiposPresentes(escenario, extra = []) {
+  const presentes = new Set([...RESERVAS.filter((r) => r.cobertura).map((r) => r.cobertura), ...extra]);
   for (const clases of Object.values(escenario?.coberturas ?? {})) {
     for (const fracciones of Object.values(clases)) {
       for (const [tipo, f] of Object.entries(fracciones)) if (f > 0) presentes.add(tipo);

@@ -7,6 +7,8 @@ import { generarTerreno, ancla, altura, superficie, datosTerreno, revisarAnclasT
 import { crearCoberturas } from './coberturas/coberturas.js';
 import { crearVias } from './vias/vias.js';
 import { crearAsentamientos } from './asentamientos/asentamientos.js';
+import { crearFincas } from './fincas/fincas.js';
+import { crearRotulosFinca } from './fincas/rotulos.js';
 import { leerParametros } from './parametros.js';
 import { obtener, cambiar, suscribir } from './estado.js';
 import { crearCamaraNavegacion } from './navegacion/camara.js';
@@ -109,11 +111,28 @@ async function iniciar() {
   }
   // Coberturas después de la primera parada: su escenario se aplica sin transición.
   const coberturas = montar('coberturas', () => crearCoberturas({ altura, instantanea: parametros.captura }));
-  if (coberturas) escena.agregar(coberturas.grupo);
+  if (coberturas) {
+    escena.agregar(coberturas.grupo);
+    escena.superponer(coberturas.superposicion);
+  }
   const vias = montar('vías', () => crearVias({ altura }));
   if (vias) escena.agregar(vias.malla);
   const asentamientos = montar('asentamientos', () => crearAsentamientos({ altura }));
   if (asentamientos) escena.agregar(asentamientos.grupo);
+  const fincas = montar('fincas', () => crearFincas({ altura }));
+  if (fincas) {
+    escena.agregar(fincas.grupo);
+    escena.superponer(fincas.superposicion);
+  }
+  const rotulos = fincas && montar('rótulos de finca', () =>
+    crearRotulosFinca({
+      contenedor: document.getElementById('interfaz'),
+      fincas,
+      altura,
+      proyectar: (x, y, z) => proyectar(escena, new THREE.Vector3(x, y, z)),
+      alCuadro: escena.alCuadro,
+    }),
+  );
   // Vista del presentador (npm run presentar): publica el estado y recibe órdenes.
   montar('presentador', crearSincronia);
 
@@ -128,7 +147,9 @@ async function iniciar() {
     coberturas: () => coberturas,
     vias: () => vias,
     asentamientos: () => asentamientos,
+    fincas: () => fincas && { ...fincas.datos(), rotulos: rotulos?.visibles() ?? 0 },
     cambiarEscenario: (id) => cambiar({ escenario: id }),
+    capas: (lista) => cambiar({ capas: lista }),
     revisarAnclas: revisarAnclasTerreno,
     vista: (id, vista) => escena.mirar(ancla(id), vista),
     estado: () => obtener(),

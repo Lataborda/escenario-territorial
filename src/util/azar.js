@@ -63,3 +63,10 @@ export function huella(arreglos) {
   }
   return h.toString(16).padStart(8, '0');
 }
+
+// Semilla numérica estable a partir de un texto y una semilla base (FNV-1a).
+export function semillaTexto(texto, base = 0) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < texto.length; i++) h = Math.imul(h ^ texto.charCodeAt(i), 0x01000193) >>> 0;
+  return (h ^ base) >>> 0;
+}

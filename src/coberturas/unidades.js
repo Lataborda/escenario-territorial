@@ -1,10 +1,12 @@
 // Unidades de cobertura sobre una rejilla de teselas de 6 unidades de escena: parcelas del plano, del piedemonte
-// y de la ladera campesina, orillas de los cauces, celdas de montaña y reservas para módulos posteriores.
+// y de la ladera campesina, orillas de los cauces, celdas de montaña, lotes de las fincas tipo (src/fincas/) y
+// reservas para módulos posteriores.
 import { crearAzar, crearRuidos } from '../util/azar.js';
 import { ENTIDADES, ZONAS, aPlanoU, aPlanoV, aMundoX, aMundoZ } from '../terreno/plano.js';
 import { enPosicion } from '../terreno/hidrografia.js';
 import { SEMILLA } from '../terreno/relieve.js';
 import { obtenerVias } from '../vias/trazado.js';
+import { obtenerFincas } from '../fincas/trazado.js';
 import { CLASES_POR_ZONA, ZONAS_CON_TESELAS, RESERVAS } from './tipos.js';
 import { LADO, rejillaTeselas } from './rejilla.js';
 
@@ -77,6 +79,7 @@ function crearCatastro(centros, azar, { alto: ALTO, ancho: ANCHO }) {
 export function crearUnidades(altura) {
   const { centros, cauces } = rejillaTeselas();
   const vias = obtenerVias(altura).mascara;
+  const fincas = obtenerFincas(altura);
   const zonaDe = crearZonificador();
   const reservas = crearReservas();
   const azar = crearAzar(SEMILLA + 51);
@@ -95,7 +98,13 @@ export function crearUnidades(altura) {
       let g = null;
       const banda = cauces.rio[t] >= 0 ? BANDA[cauces.rios[cauces.rio[t]].id] ?? BANDA_QUEBRADA : 0;
       const reserva = reservas.find((r) => Math.hypot(x - r.x, z - r.z) < r.radio);
-      if (clases.includes('orillas') && borde < banda) g = { clase: 'orillas', ...claveOrilla(cauces.rios, cauces, t, x, z) };
+      const finca = fincas.fincas[fincas.fincaDe[t]];
+      // Lote de una finca tipo, con uso fijo; el solar de la casa queda sin tesela.
+      if (finca && fincas.loteDe[t] < 0) continue;
+      if (finca) {
+        const lote = fincas.loteDe[t];
+        g = { clase: 'lotes', clave: `lote:${finca.id}:${lote}`, finca: finca.id, lote, cobertura: finca.lotes[lote].uso };
+      } else if (clases.includes('orillas') && borde < banda) g = { clase: 'orillas', ...claveOrilla(cauces.rios, cauces, t, x, z) };
       else if (reserva) g = { clase: 'reservas', clave: `reserva:${reserva.entidad}`, reserva };
       else if (clases.includes('parcelas')) {
         const catastro = catastros[CATASTRO_DE[zona] ?? 'grande'];
@@ -139,8 +148,10 @@ export function crearUnidades(altura) {
       relieve: zona === 'ladera', // teselas que siguen la rejilla del terreno
       cauce: g.cauce,
       rio: g.rio ?? null,
-      entidad: g.reserva?.entidad ?? null,
-      cobertura: g.reserva?.cobertura ?? null,
+      entidad: g.reserva?.entidad ?? g.finca ?? null,
+      cobertura: g.reserva?.cobertura ?? g.cobertura ?? null,
+      finca: g.finca ?? null,
+      lote: g.lote ?? null,
       retardo: azar(), // escalonamiento de la transición
     });
   }

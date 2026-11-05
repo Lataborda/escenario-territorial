@@ -11,7 +11,7 @@ const LETRA_MINIMA = 24;
 const CONTRASTE_MINIMO = 4.5;
 const LLAMADAS_MAXIMO = 200;
 const EXCEPCIONES = ['ficha-borrador']; // marca temporal de estado: desaparece al revisar la ficha
-const PARADAS_TEXTO = [['P01', 0], ['P13', 0], ['P14', 2]];
+const PARADAS_TEXTO = [['P01', 0], ['P04', 1], ['P06', 0], ['P13', 0], ['P14', 2]];
 const VISTAS = {
   general: { ancla: 'general', vista: { distancia: 2500, azimut: -30, elevacion: 38 } },
   finca: { ancla: 'F1', vista: { distancia: 450, azimut: -30, elevacion: 45 } },
@@ -95,7 +95,7 @@ function leerTextos(excepciones) {
 
 export async function revisarLuz(pagina, { dirCapturas }) {
   const r = { vistas: {}, capturas: [] };
-  // Textos en tres paradas (con y sin pasos), antes de pausar el dibujo.
+  // Textos en cinco paradas (con y sin pasos, con rótulos de finca), antes de pausar el dibujo.
   r.textos = [];
   for (const [id, paso] of PARADAS_TEXTO) {
     await irPorHash(pagina, id, paso);

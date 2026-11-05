@@ -18,7 +18,7 @@ Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe c
 | ley2294 | Ley 2294 de 2023, art. 32 | falta | Verificar el texto del artículo (GUION, precaución 4). |
 | al012023 | Acto Legislativo 01 de 2023 | falta | Verificar el texto sobre el campesinado como sujeto de derechos. |
 
-## Localizadores por verificar (68 referencias en 23 fuentes)
+## Localizadores por verificar (69 referencias en 23 fuentes)
 
 Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar «verificar» por la página o la sección.
 
@@ -40,7 +40,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `padro` (Padró et al.): escalas (region); paradas (P10); escenarios (S3, L2)
 - `redmac` (REDMAC): paradas (P18, P20); escenarios (S2); condiciones (H2); actores (red_mercados)
 - `res331` (Res. 331 de 2024): escalas (region); paradas (P02, P24); escenarios (S0); condiciones (C8); actores (madr_adr)
-- `romero` (Romero et al. (2023)): territorio (ladera); paradas (P23)
+- `romero` (Romero et al. (2023)): territorio (ladera); paradas (P23); fincas (F2)
 - `sanchezprager` (Sánchez de Prager (2018)): paradas (P07)
 - `wezel2016` (Wezel et al. (2016)): escalas (vereda, territorio); paradas (P14); escenarios (S3, L2); condiciones (H3, RF)
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)

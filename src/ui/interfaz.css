@@ -220,12 +220,20 @@
   pointer-events: none;
 }
 
-/* Leyenda de coberturas: arriba a la derecha, dos columnas en el ancho de la ficha */
-.leyenda {
+/* Columna derecha: leyenda de coberturas, leyenda de capas y usos de la finca (src/ui/capas.css) */
+.columna-derecha {
   position: absolute;
   top: var(--margen);
   right: var(--margen);
   width: 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  pointer-events: none;
+}
+
+/* Leyenda de coberturas: dos columnas en el ancho de la ficha */
+.leyenda {
   box-sizing: border-box;
   padding: 0.45rem 0.7rem 0.5rem;
   background: var(--panel);

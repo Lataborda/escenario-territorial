@@ -1,0 +1,128 @@
+/* Leyenda de capas y usos de la finca (src/ui/capas.js), en la columna derecha. Rótulos y marcadores sobre la
+   escena (src/fincas/rotulos.js). Unidades en rem: 1 rem = 24 px a 1920×1080. */
+
+.capas,
+.usos-finca {
+  box-sizing: border-box;
+  padding: 0.45rem 0.7rem 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.capas[hidden],
+.usos-finca[hidden],
+.capas-entrada[hidden] {
+  display: none;
+}
+
+.capas-lista,
+.usos-lista {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.capas-entrada,
+.usos-entrada {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.capas-muestra {
+  flex: none;
+  width: 1.45rem;
+  height: 1rem;
+}
+
+.usos-titulo {
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.usos-pie {
+  margin-top: 0.3rem;
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+/* Número de lote: el mismo en el panel y en el marcador de la escena */
+.capas-numero {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: #2b2a27;
+  color: #fbf9f4;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Rótulos sobre la escena: siempre sobre un panel propio */
+.interfaz > .rotulos-finca {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.rotulo-finca {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.rotulo-finca[hidden] {
+  display: none;
+}
+
+.rotulo-finca.marcador {
+  border: 2px solid #fbf9f4;
+  border-radius: 50%;
+  box-shadow: var(--sombra);
+}
+
+.rotulo-finca.marcador .capas-numero {
+  min-width: 1.5rem;
+  height: 1.5rem;
+}
+
+.rotulo-finca.resaltado {
+  max-width: 15rem;
+  white-space: normal;
+  text-align: center;
+  padding: 0.25rem 0.6rem 0.3rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.35rem;
+  box-shadow: var(--sombra);
+  line-height: 1.2;
+}
+
+.rotulo-finca.resaltado strong {
+  display: block;
+  font-weight: 600;
+}
+
+.rotulo-finca.resaltado::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.45rem;
+  margin-left: -0.45rem;
+  border: 0.45rem solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--panel);
+}

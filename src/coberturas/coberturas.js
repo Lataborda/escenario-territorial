@@ -16,6 +16,11 @@ import { crearMosaico } from './mosaico.js';
 import { crearCanaCerca } from './cana.js';
 import { crearDetalle } from './detalle.js';
 import { medirAsignacion, extensionCana } from './metricas.js';
+import { crearContornoEep } from './eep.js';
+import { rejillaTeselas, LADO } from './rejilla.js';
+import { crearTrazo } from '../escena/lineas.js';
+import { ESTILO, activa } from '../fincas/estilo.js';
+import { obtenerFincas } from '../fincas/trazado.js';
 
 export const DURACION = 2; // s
 const ESCALON = 0.45; // fracción de la transición en que se reparten los inicios de cada unidad
@@ -110,6 +115,29 @@ export function crearCoberturas({ altura, instantanea = false }) {
   }
 
   aplicar(obtener().escenario, true);
+  // Capa «eep»: contorno de la estructura ecológica principal del escenario actual y conexión de las fincas con
+  // ella (superposición).
+  const contornoEep = crearContornoEep(datos, rejillaTeselas().cauces);
+  const { fincas } = obtenerFincas(altura);
+  const eep = crearTrazo('eep', altura, ESTILO.eep);
+  const conexion = crearTrazo('conexion_eep', altura, ESTILO.conexion_eep);
+  const superposicion = new THREE.Group();
+  superposicion.name = 'coberturas-capas';
+  superposicion.add(eep.grupo, conexion.grupo);
+  let eepDe = null;
+  const pintarEep = ({ capas, escenario }) => {
+    const id = asignaciones.has(escenario) ? escenario : 'S0';
+    const encendida = activa('eep', capas);
+    if (encendida && eepDe !== id) {
+      eep.fijar(contornoEep.segmentos(id, asignaciones.get(id)));
+      conexion.fijar(Object.values(contornoEep.conexiones(id, asignaciones.get(id), fincas)).flat());
+      eepDe = id;
+    }
+    eep.grupo.visible = encendida && !eep.grupo.userData.vacio;
+    conexion.grupo.visible = activa('conexion_eep', capas) && !conexion.grupo.userData.vacio;
+  };
+  suscribir(['capas', 'escenario'], pintarEep);
+  pintarEep(obtener());
   const liviano = (activo) => [...capas, cana].forEach((c) => c.liviano(activo));
   liviano(obtener().liviano);
   const ms = Math.round(performance.now() - comienzo);
@@ -121,11 +149,12 @@ export function crearCoberturas({ altura, instantanea = false }) {
   const cuenta = (clase) => datos.unidades.filter((u) => u.clase === clase).length;
   return {
     grupo,
+    superposicion,
     datos: () => ({
       escenario: actual,
       ms,
       tiempos,
-      unidades: { parcelas: cuenta('parcelas'), orillas: cuenta('orillas'), celdas: cuenta('celdas'), reservas: cuenta('reservas') },
+      unidades: { parcelas: cuenta('parcelas'), orillas: cuenta('orillas'), celdas: cuenta('celdas'), reservas: cuenta('reservas'), lotes: cuenta('lotes') },
       teselas: { unidades: teselas.unidades, vertices: teselas.vertices },
       instancias: Object.fromEntries(clases.map((c) => [c.id, c.total])),
       visibles: Object.fromEntries(clases.map((c) => [c.id, c.visiblesAhora()])),
@@ -135,9 +164,13 @@ export function crearCoberturas({ altura, instantanea = false }) {
       facetadas: capas.flatMap((c) => c.mallas).filter((m) => m.material.flatShading).map((m) => m.name),
       dibujadas: capas.flatMap((c) => c.mallas).reduce((suma, m) => suma + m.count, 0),
       transicion: registro && { ...registro },
+      eep: { visible: eep.grupo.visible, segmentos: eep.cantidad(), conexion: conexion.cantidad() },
     }),
     huella: () => huella(arreglos()),
     medir: (id) => asignaciones.has(id) && medirAsignacion(datos, asignaciones.get(id)),
+    // Largo del lindero de cada finca en conexión con la EEP (unidades de escena) en un escenario.
+    conexionEep: (id) =>
+      Object.fromEntries(Object.entries(contornoEep.conexiones(id, asignaciones.get(id), fincas)).map(([f, l]) => [f, l.length * LADO])),
     // Extensión de la caña igual en dos escenarios (misma geometría de la matriz).
     mismaCana: (a, b) => {
       const x = extensionCana(datos.unidades, asignaciones.get(a));

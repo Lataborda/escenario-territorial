@@ -53,7 +53,7 @@ export const leerFicha = (pagina) =>
       pasoActual: f.querySelector('.ficha-paso.actual')?.textContent ?? null,
       desborde: f.scrollHeight > f.clientHeight + 1,
       dentro: c.izq >= 0 && c.arr >= 0 && c.der <= innerWidth && c.aba <= innerHeight,
-      superpuesta: cruzan(c, caja('.botonera')) || cruzan(c, caja('.momentos')) || cruzan(c, caja('.leyenda:not([hidden])')),
+      superpuesta: cruzan(c, caja('.botonera')) || cruzan(c, caja('.momentos')) || cruzan(c, caja('.columna-derecha')),
       alto: Math.round(c.aba - c.arr),
       letra: parseFloat(getComputedStyle(f.querySelector('.ficha-texto')).fontSize),
     };

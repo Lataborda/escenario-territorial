@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "nota": "Recetas de las cuatro fincas tipo (etapa 6). Esquema sin escala: el tamaño de cada finca en la maqueta es ilustrativo; dentro de la finca, cada lote ocupa la proporción de su área (ha) o de su peso. tamano: columnas y filas de teselas de 6 unidades. ubicacion: cauce (junto al río o la quebrada más cercana), casa (junto a la casa) o sin indicar (resto, en franjas). divisiones: lotes del mismo uso. casa: vivienda o bodega; familia: figuras junto a la casa. lote_menor: uso del lote que se resalta como agroecosistema menor (el mayor de ese uso). conectores: fracción de linderos internos y externos con cerca viva (valores de dibujo). Dibujo en src/fincas/.",
+  "capas": {
+    "nota": "Rótulos de las capas de la finca (leyenda de capas y resaltado). Colores en src/fincas/estilo.js.",
+    "lindero": { "rotulo": "Lindero" },
+    "conectores_internos": { "rotulo": "Conectores internos", "descripcion": "Cercas vivas y corredores entre lotes" },
+    "conectores_externos": { "rotulo": "Conectores externos", "descripcion": "Cercas vivas del lindero" },
+    "eep": { "rotulo": "Estructura ecológica principal", "descripcion": "Ríos, quebradas, bosques, humedales y páramo del paisaje" },
+    "conexion_eep": { "rotulo": "Conexión con la EEP", "descripcion": "Lindero de la finca en contacto con la estructura ecológica principal" },
+    "agroecosistema_menor": { "rotulo": "Agroecosistema menor", "texto": "Lote" },
+    "agroecosistema_mayor": { "rotulo": "Agroecosistema mayor", "texto": "Finca, con la familia dentro del lindero" }
+  },
+  "fincas": [
+    {
+      "id": "F1",
+      "nombre": "Finca faro",
+      "referencia": "El Hatico",
+      "tamano": [17, 13],
+      "casa": "vivienda",
+      "familia": true,
+      "rumbo": 0,
+      "lotes": [
+        { "uso": "ripario", "rotulo": "Guadual", "ha": 26, "ubicacion": "cauce" },
+        { "uso": "bosque_seco", "rotulo": "Bosque", "ha": 14, "ubicacion": "cauce" },
+        { "uso": "frutales", "rotulo": "Frutales", "ha": 5, "ubicacion": "casa" },
+        { "uso": "silvopastoril", "rotulo": "Sistema silvopastoril", "ha": 140, "divisiones": 4 },
+        { "uso": "cana_organica", "rotulo": "Caña agroecológica", "ha": 100, "divisiones": 2 }
+      ],
+      "corredores": { "rotulo": "Corredores", "ha": 2 },
+      "conectores": { "internos": 1, "externos": 1 },
+      "proporciones": "fuente",
+      "fuentes": ["calle:§11.1"],
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "F2",
+      "nombre": "Finca de ladera en sustitución de insumos",
+      "referencia": "Ayacucho",
+      "tamano": [11, 9],
+      "casa": "vivienda",
+      "familia": true,
+      "rumbo": 70,
+      "lotes": [
+        { "uso": "huerta", "rotulo": "Huerta", "peso": 0.08, "ubicacion": "casa" },
+        { "uso": "cafe", "rotulo": "Café", "peso": 0.42, "divisiones": 2 },
+        { "uso": "pastura", "rotulo": "Pastura", "peso": 0.35 },
+        { "uso": "platano", "rotulo": "Plátano", "peso": 0.15 }
+      ],
+      "conectores": { "internos": 0.2, "externos": 0.3 },
+      "proporciones": "ilustrativas",
+      "fuentes": ["romero:verificar"],
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "F3",
+      "nombre": "Finca de ladera diversificada en red",
+      "tamano": [12, 10],
+      "casa": "vivienda",
+      "familia": true,
+      "lote_menor": "cafe",
+      "rumbo": 60,
+      "lotes": [
+        { "uso": "ripario", "rotulo": "Bosque", "peso": 0.14, "ubicacion": "cauce" },
+        { "uso": "huerta", "rotulo": "Huerta", "peso": 0.1, "ubicacion": "casa" },
+        { "uso": "frutales", "rotulo": "Frutales", "peso": 0.14, "ubicacion": "casa" },
+        { "uso": "cafe", "rotulo": "Café con sombrío", "peso": 0.3, "divisiones": 2 },
+        { "uso": "platano", "rotulo": "Plátano", "peso": 0.14 },
+        { "uso": "silvopastoril", "rotulo": "Silvopastoreo", "peso": 0.18 }
+      ],
+      "conectores": { "internos": 1, "externos": 0.9 },
+      "proporciones": "ilustrativas",
+      "estado_texto": "borrador"
+    },
+    {
+      "id": "F4",
+      "nombre": "Predio cañero convencional",
+      "tamano": [18, 13],
+      "casa": "bodega",
+      "familia": false,
+      "rumbo": 0,
+      "lotes": [
+        { "uso": "cana", "rotulo": "Caña convencional", "peso": 1, "divisiones": 4 }
+      ],
+      "conectores": { "internos": 0, "externos": 0 },
+      "proporciones": "ilustrativas",
+      "estado_texto": "borrador"
+    }
+  ]
+}

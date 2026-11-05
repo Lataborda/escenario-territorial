@@ -2,10 +2,12 @@
 // Visible en las escalas de contenido/territorio.json (coberturas.leyenda.escalas).
 import territorio from '../../contenido/territorio.json';
 import contenido from '../../contenido/escenarios.json';
+import fincas from '../../contenido/fincas.json';
 import { obtener, suscribir } from '../estado.js';
 import { TIPOS, VEGETACION, HORTALIZAS, tiposPresentes } from '../coberturas/tipos.js';
 
 const { leyenda, tipos } = territorio.coberturas;
+const USOS_FINCAS = fincas.fincas.flatMap((f) => f.lotes.map((l) => l.uso));
 const AGUA = '#4a83b4';
 const css = (hex) => `#${(hex ?? 0xffffff).toString(16).padStart(6, '0')}`;
 const SVG = 'http://www.w3.org/2000/svg';
@@ -46,7 +48,7 @@ const FORMAS = {
     ).join(''),
 };
 
-function icono(id) {
+export function icono(id) {
   const t = TIPOS[id];
   const svg = document.createElementNS(SVG, 'svg');
   svg.setAttribute('viewBox', '0 0 32 22');
@@ -85,7 +87,7 @@ export function crearLeyenda(contenedor) {
 
   function pintar({ escenario, escala }) {
     contenedor.hidden = !leyenda.escalas.includes(escala);
-    const presentes = tiposPresentes(contenido.escenarios.find((s) => s.id === escenario));
+    const presentes = tiposPresentes(contenido.escenarios.find((s) => s.id === escenario), USOS_FINCAS);
     for (const [id, li] of entradas) li.hidden = !presentes.has(id);
   }
   suscribir(['escenario', 'escala'], pintar);

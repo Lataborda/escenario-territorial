@@ -16,6 +16,7 @@ import { revisarCoberturas, fallasCoberturas, seccionCoberturas } from './lib/re
 import { revisarRespaldo } from './lib/revisar-respaldo.mjs';
 import { fallasPresentador, seccionPresentador } from './lib/informe-presentador.mjs';
 import { revisarLuz, fallasLuz, seccionLuz, VENTANA_GRANDE } from './lib/revisar-luz.mjs';
+import { revisarFincas, fallasFincas, seccionFincas } from './lib/revisar-fincas.mjs';
 import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -25,7 +26,7 @@ const ARCHIVO_UNICO = path.join(RAIZ, 'dist-unico', 'index.html');
 const INICIO = Date.now();
 // Avance en consola con los segundos transcurridos.
 const avisar = (texto) => console.log(`[${((Date.now() - INICIO) / 1000).toFixed(0)} s] ${texto}`);
-const CONTENIDO = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fuentes'];
+const CONTENIDO = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fincas', 'fuentes'];
 
 async function compilar() {
   avisar('Compilando dist/ y dist-unico/ ...');
@@ -95,7 +96,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, luz, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, luz, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación',
     '',
@@ -110,6 +111,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, coberturas
     ]),
     ...seccionTerreno(terreno),
     ...seccionCoberturas(coberturas.extra, principal.estadisticas),
+    ...seccionFincas(fincas.extra),
     ...seccionLuz(luz.extra),
     ...seccionVista('Ventana de 1920×1080 (vista compilada)', luz),
     ...seccionVista('Recorrido de paradas (vista compilada)', recorrido.vistas.recorrido),
@@ -167,7 +169,8 @@ async function revisarNavegacion(navegador, url, origen, contenido) {
     },
   });
   avisar('Midiendo transiciones ...');
-  const transiciones = await revisarPagina(navegador, `${url}#p=P05`, { origen, extra: revisarTransiciones });
+  // Último paso de P05: la flecha lleva a la parada siguiente (vuelo de P05 a P06).
+  const transiciones = await revisarPagina(navegador, `${url}#p=P05&paso=2`, { origen, extra: revisarTransiciones });
   avisar('Revisando fichas a 1280×720 ...');
   const legibilidad = await revisarPagina(navegador, `${url}#p=${abierta.id}&paso=${abierta.paso}&captura=1`, {
     origen,
@@ -223,6 +226,8 @@ async function principal() {
     await rm(repeticion, { force: true });
     avisar('Revisando coberturas y transiciones de escenario ...');
     const coberturas = await revisarPagina(navegador, `${url}#p=P13`, { origen, extra: (p) => revisarCoberturas(p, DIR_CAPTURAS) });
+    avisar('Revisando las fincas ...');
+    const fincas = await revisarPagina(navegador, `${url}#p=P06&captura=1`, { origen, extra: (p) => revisarFincas(p, { navegador, dirCapturas: DIR_CAPTURAS }) });
     avisar('Revisando luz, posproceso y textos a 1920×1080 ...');
     const luz = await revisarPagina(navegador, `${url}#p=P01&captura=1`, {
       origen,
@@ -234,7 +239,7 @@ async function principal() {
     const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
     avisar('Revisando el respaldo en imágenes ...');
     const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, luz, recorrido, presentador, respaldo, version: navegador.version() };
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, luz, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -246,6 +251,8 @@ async function principal() {
     ...fallasTerreno(resultado.terreno),
     ...fallasDe('Vista coberturas', resultado.coberturas),
     ...fallasCoberturas(resultado.coberturas.extra, resultado.principal.estadisticas),
+    ...fallasDe('Vista fincas', resultado.fincas),
+    ...fallasFincas(resultado.fincas.extra),
     ...fallasDe('Vista 1920×1080', resultado.luz),
     ...fallasLuz(resultado.luz.extra),
     ...Object.entries(resultado.recorrido.vistas).flatMap(([nombre, v]) => fallasDe(`Vista ${nombre}`, v)),

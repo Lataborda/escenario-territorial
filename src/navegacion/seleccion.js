@@ -1,15 +1,26 @@
-// Clic sobre fincas y mercados: busca el ancla más próxima al puntero en la pantalla.
-// Sin geometría propia todavía (etapas 6 y 9): basta la proyección de las anclas.
+// Clic sobre fincas y mercados: busca el ancla más próxima al puntero en la pantalla; si no hay, la finca cuyo
+// lindero contiene el punto del relieve bajo el puntero (etapa 6).
 import * as THREE from 'three';
 import { obtener } from '../estado.js';
 import { ancla } from '../terreno/terreno.js';
+import { fincaEn } from '../fincas/trazado.js';
 import { seleccionables, enfocar } from './foco.js';
+import { puntoEnTerreno } from './limites.js';
 
 const RADIO = 0.035; // fracción del alto de la ventana
 const ARRASTRE = 6; // píxeles: un movimiento mayor es órbita, no clic
 
 export function crearSeleccion({ camara, lienzo }) {
   const v = new THREE.Vector3();
+  const rayos = new THREE.Raycaster();
+
+  // Finca bajo el puntero, si responde al clic en el escenario actual.
+  function fincaBajo(cx, cy, r) {
+    rayos.setFromCamera(new THREE.Vector2(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1), camara);
+    const p = puntoEnTerreno(rayos.ray);
+    const f = p && fincaEn(p.x, p.z);
+    return f && seleccionables(obtener().escenario).some((e) => e.id === f.id) ? f.id : null;
+  }
 
   function buscar(cx, cy) {
     const r = lienzo.getBoundingClientRect();
@@ -25,7 +36,7 @@ export function crearSeleccion({ camara, lienzo }) {
       const d = Math.hypot(x - cx, y - cy);
       if (d < RADIO * r.height && (!mejor || d < mejor.d)) mejor = { id: e.id, d };
     }
-    return mejor?.id ?? null;
+    return mejor?.id ?? fincaBajo(cx, cy, r);
   }
 
   let inicio = null;

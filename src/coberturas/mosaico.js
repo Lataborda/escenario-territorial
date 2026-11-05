@@ -1,4 +1,5 @@
-// Mosaico campesino de la ladera y setos del silvopastoreo: puestos de cada especie según el patrón de su cobertura.
+// Mosaico campesino de la ladera, setos del silvopastoreo y cercas vivas de las fincas (cercas.js): puestos de cada
+// especie según el patrón de su cobertura.
 // Hileras en curva de nivel para el café, el plátano, la huerta y la leucaena; tresbolillo para los frutales;
 // sombrío y plátano dispersos en el café.
 // Una unidad que cambia de cobertura entre escenarios tiene los puestos de cada patrón; se ve el de su tipo actual.
@@ -10,6 +11,7 @@ import { TIPOS, HORTALIZAS } from './tipos.js';
 import { INDICE, LISTA_TIPOS, NINGUNA } from './asignacion.js';
 import { ESPECIES } from './especies.js';
 import { crearInstancias } from './instancias.js';
+import { puestosCercas } from './cercas.js';
 
 // entre: separación entre hileras; en: separación dentro de la hilera; holgura: desvío aleatorio;
 // filas: hileras que ocupa la especie dentro de un ciclo de hileras; prob: fracción de puestos que se conserva.
@@ -109,6 +111,8 @@ export function crearMosaico(datos, asignaciones, altura) {
     }
     for (const tipo of [...tipos].sort()) generar(u, tipo, datos, altura, azar, puestos);
   }
+  // Cercas vivas de las fincas tipo (conectores de la EAP).
+  for (const [especie, lista] of puestosCercas(datos, altura, azar)) puestos.set(especie, [...(puestos.get(especie) ?? []), ...lista]);
   const clases = Object.keys(ESPECIES)
     .filter((especie) => puestos.has(especie))
     .map((especie) =>
