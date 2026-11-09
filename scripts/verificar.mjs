@@ -26,7 +26,7 @@ const ARCHIVO_UNICO = path.join(RAIZ, 'dist-unico', 'index.html');
 const INICIO = Date.now();
 // Avance en consola con los segundos transcurridos.
 const avisar = (texto) => console.log(`[${((Date.now() - INICIO) / 1000).toFixed(0)} s] ${texto}`);
-const CONTENIDO = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fincas', 'fuentes'];
+const CONTENIDO = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fincas', 'eap', 'fuentes'];
 
 async function compilar() {
   avisar('Compilando dist/ y dist-unico/ ...');

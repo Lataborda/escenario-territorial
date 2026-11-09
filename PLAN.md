@@ -420,14 +420,15 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Panel EAP con los diez criterios (cinco ecosistémicos, cinco culturales) y valores rotulados como ilustrativos.
   - Clic en una finca acerca la cámara a ella (sección 3.4).
 - Criterios de aceptación:
-  - [ ] Las cuatro fincas se distinguen a escala de finca y de matriz.
-  - [ ] Los conectores se leen en la vista de matriz.
-  - [ ] El panel EAP toma sus datos de `contenido/`.
+  - [x] Las cuatro fincas se distinguen a escala de finca y de matriz (6.a).
+  - [x] Los conectores se leen en la vista de matriz (6.a).
+  - [x] El panel EAP toma sus datos de `contenido/` (6.b).
 - Prompt de arranque: `Etapa 6 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 6.b. Panel EAP
 
 - Tamaño: mediano. Fuentes: sí (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017). Sesión local con `/add-dir ../..`.
+- Estado (2026-11-09): panel, datos y verificación hechos en una sesión en la nube sin acceso a las fuentes (el sitio de la revista rechaza la descarga automatizada y SciELO corta la conexión). Queda pendiente el primer punto del trabajo: cotejar en las fuentes los nombres, siglas, orden, grupos y escala de los criterios, y cerrar sus localizadores (`contenido/eap.json`, campo `verificar`).
 - Lecturas: `GUION.md`, sección 3 (escala 3) y sección 10 (precaución 8); `contenido/fincas.json`.
 - Objetivo: el índice EAP de las fincas tipo, legible y con fuente.
 - Trabajo:
@@ -436,9 +437,9 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Panel EAP de las fincas tipo (capa `indices_eap`), con la misma columna derecha de la 6.a.
   - Cerrar los localizadores pendientes de la EAP: `leonsicard:verificar` y `cleves:verificar` en P05, escalas y condiciones.
 - Criterios de aceptación:
-  - [ ] El panel EAP toma sus datos de `contenido/`.
-  - [ ] Cada criterio y cada valor muestra su fuente o el rótulo «valores ilustrativos».
-  - [ ] Texto del panel legible a 1920×1080 (24 px o más, contraste AA).
+  - [x] El panel EAP toma sus datos de `contenido/`.
+  - [x] Cada criterio y cada valor muestra su fuente o el rótulo «valores ilustrativos» (fuentes con localizador pendiente, marcadas en el pie).
+  - [x] Texto del panel legible a 1920×1080 (24 px o más, contraste AA).
 - Prompt de arranque: `Etapa 6.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 7. Lote, interacciones de especies y suelo

@@ -9,6 +9,7 @@ import { crearFicha } from './ficha.js';
 import { crearMomentos } from './momentos.js';
 import { crearLeyenda } from './leyenda.js';
 import { crearCapas } from './capas.js';
+import { crearEap } from './eap.js';
 
 const DURACION_AVISO_MS = 8000;
 
@@ -53,7 +54,7 @@ export function crearInterfaz(raiz) {
   const ficha = parte('ficha', 'aside');
   ficha.setAttribute('aria-live', 'polite');
   montar('ficha', crearFicha, ficha);
-  // Columna derecha: leyenda de coberturas, leyenda de capas y usos de la finca.
+  // Columna derecha: leyenda de coberturas, leyenda de capas, usos de la finca e índice EAP.
   const columna = parte('columna-derecha');
   const enColumna = (clase) => {
     const e = document.createElement('aside');
@@ -63,6 +64,7 @@ export function crearInterfaz(raiz) {
   };
   montar('leyenda', crearLeyenda, enColumna('leyenda'));
   montar('capas', crearCapas, columna);
+  montar('índice EAP', crearEap, columna);
   parte('rotulo-esquema').textContent = territorio.rotulo;
   const aviso = parte('aviso-autor');
   aviso.hidden = true;

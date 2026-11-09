@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "nota": "Índice EAP de las fincas tipo (etapa 6.b; capa indices_eap, parada P22). Criterios en el orden del índice; corto: rótulo del panel. Escala de cada criterio y total del índice según la fuente. Valores por finca ilustrativos (GUION, sección 10, precaución 8), coherentes con los conectores dibujados en contenido/fincas.json. Grupos de criterios: se añaden con su fuente al verificarlos (campo grupo de cada criterio y lista grupos).",
+  "titulo": "Índice EAP",
+  "valores_rotulo": "Valores ilustrativos",
+  "escala": { "minimo": 1, "maximo": 10, "total": 100 },
+  "fincas": ["F1", "F2", "F3"],
+  "criterios": [
+    { "id": "ceep", "sigla": "CEEP", "corto": "Conexión con la EEP", "nombre": "Conexión con la estructura ecológica principal del paisaje" },
+    { "id": "ece", "sigla": "ECE", "corto": "Extensión de conectores externos", "nombre": "Extensión de conectores externos" },
+    { "id": "dce", "sigla": "DCE", "corto": "Diversidad de conectores externos", "nombre": "Diversidad de conectores externos" },
+    { "id": "eci", "sigla": "ECI", "corto": "Extensión de conectores internos", "nombre": "Extensión de conectores internos" },
+    { "id": "dci", "sigla": "DCI", "corto": "Diversidad de conectores internos", "nombre": "Diversidad de conectores internos" },
+    { "id": "us", "sigla": "US", "corto": "Usos del suelo", "nombre": "Usos del suelo" },
+    { "id": "ma", "sigla": "MA", "corto": "Manejo de arvenses", "nombre": "Manejo de arvenses" },
+    { "id": "opm", "sigla": "OPM", "corto": "Otras prácticas de manejo", "nombre": "Otras prácticas de manejo" },
+    { "id": "pc", "sigla": "PC", "corto": "Percepción y conciencia", "nombre": "Percepción y conciencia" },
+    { "id": "ca", "sigla": "CA", "corto": "Capacidad de acción", "nombre": "Capacidad de acción" }
+  ],
+  "valores": {
+    "F1": { "ceep": 9, "ece": 8, "dce": 6, "eci": 9, "dci": 7, "us": 8, "ma": 8, "opm": 9, "pc": 9, "ca": 9 },
+    "F2": { "ceep": 3, "ece": 3, "dce": 3, "eci": 2, "dci": 2, "us": 5, "ma": 5, "opm": 5, "pc": 6, "ca": 4 },
+    "F3": { "ceep": 8, "ece": 7, "dce": 7, "eci": 8, "dci": 8, "us": 9, "ma": 8, "opm": 8, "pc": 9, "ca": 9 }
+  },
+  "fuentes": ["leonsicard:verificar", "cleves:verificar"],
+  "verificar": [
+    "Nombres, siglas y orden de los diez criterios del índice EAP (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017): redactados sin acceso a las fuentes en la sesión en la nube del 2026-11-09.",
+    "Grupos de criterios y reparto entre ellos (el PLAN anotó cinco ecosistémicos y cinco culturales; sin confirmar).",
+    "Escala de cada criterio (1 a 10) y total máximo del índice (100); categorías del índice, si se muestran."
+  ],
+  "estado_texto": "borrador"
+}

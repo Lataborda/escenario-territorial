@@ -1,10 +1,13 @@
 // Rótulos de la finca sobre la escena: marcadores numerados de los lotes (capa «rotulos_finca», mismos números
-// que el panel de usos de src/ui/capas.js) y rótulos del resaltado del agroecosistema menor y mayor. Elementos de
-// la interfaz con panel propio, colocados en cada cuadro sobre la proyección de su punto. Textos en
-// contenido/fincas.json.
+// que el panel de usos de src/ui/capas.js), rótulos del resaltado del agroecosistema menor y mayor y total del
+// índice EAP de cada finca (capa «indices_eap», mismas columnas que el panel de src/ui/eap.js). Elementos de la
+// interfaz con panel propio, colocados en cada cuadro sobre la proyección de su punto. Textos en
+// contenido/fincas.json y contenido/eap.json.
 import contenido from '../../contenido/fincas.json';
+import eap from '../../contenido/eap.json';
 import { obtener, suscribir } from '../estado.js';
 import { marca } from '../ui/capas.js';
+import { totalEap } from '../ui/eap.js';
 
 const ALZA = 3; // altura del punto del rótulo sobre el terreno (unidades de escena)
 
@@ -52,6 +55,12 @@ export function crearRotulosFinca({ contenedor, fincas, altura, proyectar, alCua
     texto.textContent = c.texto;
     e.append(titulo, texto);
   }
+  // Total del índice EAP sobre la casa de cada finca del panel.
+  const totales = eap.fincas.map((id) => {
+    const e = crear(capa, 'resaltado eap-rotulo');
+    e.textContent = `${id} · EAP ${totalEap(id)}`;
+    return { id, e };
+  });
 
   // Elementos visibles con su punto en la escena.
   let activos = [];
@@ -74,6 +83,11 @@ export function crearRotulosFinca({ contenedor, fincas, altura, proyectar, alCua
     // Rótulos del resaltado: sobre el punto más alto de su contorno en la pantalla.
     for (const [e, nombre] of [[menor, 'agroecosistema_menor'], [mayor, 'agroecosistema_mayor']]) {
       if (resaltada && capas.includes(nombre)) activos.push({ e, contorno: fincas.contorno(nombre), ancla: 'arriba' });
+    }
+    for (const { id, e } of totales) {
+      e.hidden = true;
+      const f = fincas.fincas.find((x) => x.id === id);
+      if (f && capas.includes('indices_eap')) activos.push({ e, x: f.casa.x, z: f.casa.z, ancla: 'arriba' });
     }
     colocar();
   }

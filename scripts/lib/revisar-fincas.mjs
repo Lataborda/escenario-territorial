@@ -1,6 +1,7 @@
 // Revisión de las fincas tipo (etapa 6): proporciones de F1 frente a sus áreas, distinción de las cuatro fincas,
 // conectores legibles a escala de vereda (píxeles de su color en la captura), resaltado del agroecosistema
-// menor y mayor, contorno y conexión de la EEP, clic dentro del lindero y capturas de las cuatro fincas.
+// menor y mayor, contorno y conexión de la EEP, clic dentro del lindero, capturas de las cuatro fincas y panel
+// del índice EAP en P22 (etapa 6.b).
 // Página con #captura=1 (vuelos instantáneos).
 import path from 'node:path';
 import { readFile } from 'node:fs/promises';
@@ -138,8 +139,45 @@ export async function revisarFincas(pagina, { navegador, dirCapturas }) {
     r.clic = { punto, foco: e.foco, escala: e.escala };
   }
   await pagina.keyboard.press('h');
+  r.eap = await revisarPanelEap(pagina);
   await pagina.evaluate(() => window.escenario.dibujo(true));
   return r;
+}
+
+// Panel EAP en P22: criterios, valores y totales iguales a contenido/eap.json, sin desborde ni superposición con la
+// ficha, rótulo de valores ilustrativos al pie y un rótulo con el total sobre cada finca; oculto en P06.
+async function revisarPanelEap(pagina) {
+  const esperado = JSON.parse(await readFile(new URL('../../contenido/eap.json', import.meta.url), 'utf8'));
+  const leer = () =>
+    pagina.evaluate(() => {
+      const panel = document.querySelector('.eap');
+      if (!panel || panel.hidden) return null;
+      const caja = panel.getBoundingClientRect();
+      const ficha = document.querySelector('.ficha').getBoundingClientRect();
+      return {
+        columnas: [...panel.querySelectorAll('thead th.eap-finca')].map((th) => th.textContent),
+        filas: [...panel.querySelectorAll('tbody tr')].map((tr) => ({ criterio: tr.querySelector('th').textContent, valores: [...tr.querySelectorAll('td')].map((td) => Number(td.textContent)) })),
+        totales: [...panel.querySelectorAll('tfoot td')].map((td) => Number(td.textContent)),
+        desborde: panel.scrollWidth > panel.clientWidth + 1 || [...panel.querySelectorAll('th, td')].some((c) => c.scrollWidth > c.clientWidth + 1),
+        superpuesto: caja.bottom > ficha.top && caja.left < ficha.right && ficha.left < caja.right,
+        pie: panel.querySelector('.eap-pie').textContent,
+        rotulos: [...document.querySelectorAll('.eap-rotulo:not([hidden])')].map((e) => e.textContent),
+      };
+    });
+  await pagina.evaluate(() => window.escenario.irA('P06', { instantanea: true }));
+  await cuadro(pagina);
+  const ocultoFuera = (await leer()) === null;
+  await pagina.evaluate(() => window.escenario.irA('P22', { instantanea: true }));
+  await cuadro(pagina);
+  const leido = await leer();
+  if (!leido) return { visible: false, ocultoFuera };
+  const total = (f) => esperado.criterios.reduce((s, c) => s + esperado.valores[f][c.id], 0);
+  const igual =
+    leido.columnas.join() === esperado.fincas.join() &&
+    leido.filas.length === esperado.criterios.length &&
+    esperado.criterios.every((c, k) => leido.filas[k].criterio === c.corto && esperado.fincas.every((f, j) => leido.filas[k].valores[j] === esperado.valores[f][c.id])) &&
+    esperado.fincas.every((f, j) => leido.totales[j] === total(f));
+  return { visible: true, ocultoFuera, igual, ...leido, conRotulo: leido.pie.includes(esperado.valores_rotulo), esperados: esperado.fincas.length };
 }
 
 function distancia(a, b) {
@@ -180,6 +218,15 @@ export function fallasFincas(r) {
   if (!paso('P05', 2)?.eep?.visible || !(paso('P05', 2)?.eep?.conexion > 0)) f.push('Fincas: P05 paso 3 sin contorno de la EEP o sin conexión');
   if (!(r.conexion?.F1 > 0) || !(r.conexion?.F3 > 0) || r.conexion?.F4 > 0) f.push('Fincas: conexión con la EEP fuera de lo esperado (F1 y F3 con conexión, F4 sin conexión)');
   if (r.clic?.foco !== 'F4' || r.clic?.escala !== 'finca') f.push('Fincas: el clic dentro del lindero de F4 no acerca la cámara a la finca');
+  const e = r.eap;
+  if (!e?.visible) f.push('Panel EAP: no se ve en P22');
+  else {
+    if (!e.igual) f.push('Panel EAP: criterios, valores o totales distintos de contenido/eap.json');
+    if (e.desborde || e.superpuesto) f.push('Panel EAP: texto desbordado o panel sobre la ficha');
+    if (!e.conRotulo) f.push('Panel EAP: falta el rótulo de valores ilustrativos');
+    if (e.rotulos.length !== e.esperados) f.push('Panel EAP: falta el total sobre alguna finca');
+  }
+  if (!e?.ocultoFuera) f.push('Panel EAP: visible fuera de la capa indices_eap');
   return f;
 }
 
@@ -206,6 +253,9 @@ export function seccionFincas(r) {
     `- P04: paso 1 lote resaltado ${si(p4[0]?.capas.agroecosistema_menor)} con ${p4[0]?.rotulos ?? 0} rótulo; paso 2 lindero resaltado ${si(p4[1]?.capas.agroecosistema_mayor)} con ${p4[1]?.rotulos ?? 0} rótulo; finca ${p4[0]?.resaltada ?? '?'}`,
     `- P05: ${p5.map((x) => `paso ${x.paso + 1} internos ${si(x.capas.conectores_internos)}, externos ${si(x.capas.conectores_externos)}, EEP ${si(x.eep?.visible)} (${x.eep?.segmentos ?? 0} tramos, conexión ${x.eep?.conexion ?? 0})`).join('; ')}`,
     `- Clic dentro del lindero de F4: punto de interés ${r.clic?.foco ?? '?'}, escala ${r.clic?.escala ?? '?'}`,
+    r.eap?.visible
+      ? `- Panel EAP (P22): ${r.eap.filas.length} criterios × ${r.eap.columnas.length} fincas iguales a \`contenido/eap.json\`: ${si(r.eap.igual)}; totales ${r.eap.columnas.map((c, j) => `${c} ${r.eap.totales[j]}`).join(', ')}; rótulos en la escena: ${r.eap.rotulos.join(', ')}; desborde ${si(r.eap.desborde)}; sobre la ficha ${si(r.eap.superpuesto)}; pie «${r.eap.pie}»; oculto en P06 ${si(r.eap.ocultoFuera)}`
+      : '- Panel EAP (P22): no visible',
     `- Capturas: ${r.capturas.map((c) => `\`capturas/${c}\``).join(', ')}`,
     '',
   ];

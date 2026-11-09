@@ -1,5 +1,6 @@
-// Revisión de contenido/fincas.json: una receta por finca de territorio.json, usos admitidos en los lotes,
-// áreas o pesos positivos, ubicaciones conocidas, fracciones de conectores y fuentes de las proporciones.
+// Revisión de contenido/fincas.json y contenido/eap.json. Fincas: una receta por finca de territorio.json, usos
+// admitidos en los lotes, áreas o pesos positivos, ubicaciones conocidas, fracciones de conectores y fuentes de las
+// proporciones. EAP: ver revisarEap.
 import { TIPOS_POR_CLASE } from '../../src/coberturas/tipos.js';
 
 const UBICACIONES = ['cauce', 'casa'];
@@ -48,4 +49,31 @@ export function revisarFincas(datos) {
   }
   for (const id of entidades) if (!recetas.has(id)) errores.push(`fincas.json: falta la receta de «${id}»`);
   return { errores, avisos };
+}
+
+// contenido/eap.json: diez criterios con sigla y nombres, fincas de territorio.json, un valor entero por criterio y
+// finca dentro de la escala, rótulo de valores ilustrativos y fuentes.
+export function revisarEap(datos) {
+  const errores = [];
+  const e = datos.eap;
+  if (!e) return { errores: ['eap.json: falta el archivo'], avisos: [] };
+  const fincas = new Set((datos.territorio?.entidades ?? []).filter((x) => x.tipo === 'finca').map((x) => x.id));
+  const { minimo, maximo, total } = e.escala ?? {};
+  if (!(Number.isInteger(minimo) && Number.isInteger(maximo) && minimo < maximo)) errores.push('eap.json: escala sin mínimo y máximo enteros');
+  const ids = (e.criterios ?? []).map((c) => c.id);
+  if (ids.length !== 10 || new Set(ids).size !== 10) errores.push(`eap.json: ${ids.length} criterios distintos (se esperan diez)`);
+  if (total !== maximo * ids.length) errores.push('eap.json: el total no es la suma de los máximos de los criterios');
+  for (const c of e.criterios ?? []) {
+    if (!c.sigla?.trim() || !c.corto?.trim() || !c.nombre?.trim()) errores.push(`eap.json · ${c.id}: falta sigla, rótulo corto o nombre`);
+  }
+  for (const id of e.fincas ?? []) {
+    if (!fincas.has(id)) errores.push(`eap.json: finca «${id}» sin entidad de tipo finca`);
+    for (const c of ids) {
+      const v = e.valores?.[id]?.[c];
+      if (!(Number.isInteger(v) && v >= minimo && v <= maximo)) errores.push(`eap.json · ${id}.${c}: valor fuera de la escala`);
+    }
+  }
+  if (!e.valores_rotulo?.trim()) errores.push('eap.json: falta el rótulo de los valores (GUION, precaución 8)');
+  if (!e.fuentes?.length) errores.push('eap.json: sin fuentes');
+  return { errores, avisos: [] };
 }

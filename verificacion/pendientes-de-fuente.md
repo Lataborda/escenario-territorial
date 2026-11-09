@@ -18,17 +18,17 @@ Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe c
 | ley2294 | Ley 2294 de 2023, art. 32 | falta | Verificar el texto del artículo (GUION, precaución 4). |
 | al012023 | Acto Legislativo 01 de 2023 | falta | Verificar el texto sobre el campesinado como sujeto de derechos. |
 
-## Localizadores por verificar (69 referencias en 23 fuentes)
+## Localizadores por verificar (71 referencias en 23 fuentes)
 
 Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar «verificar» por la página o la sección.
 
 - `calle` (Calle et al. (2022)): paradas (P07)
-- `cleves` (Cleves-Leguízamo et al. (2017)): escalas (finca); paradas (P05)
+- `cleves` (Cleves-Leguízamo et al. (2017)): escalas (finca); paradas (P05); eap (fuentes)
 - `dec1406` (Decreto 1406 de 2023): escalas (region); condiciones (C10)
 - `duarte` (Duarte et al. (2025)): escalas (frentes_literatura)
 - `giraldorosset` (Giraldo y Rosset (2018)): escenarios (L4, contraste_lentes)
 - `lamine` (Lamine et al. (2023)): escenarios (L1, L2)
-- `leonsicard` (León-Sicard (2021)): escalas (finca, vereda); condiciones (C9, H3)
+- `leonsicard` (León-Sicard (2021)): escalas (finca, vereda); condiciones (C9, H3); eap (fuentes)
 - `levidow` (Levidow et al. (2023)): escalas (territorio); paradas (P14); escenarios (L4)
 - `ley2046` (Ley 2046 de 2020): escalas (region); paradas (P21); condiciones (C8, H4); actores (colegios)
 - `lopez2025` (López-García et al. (2025)): escalas (territorio); escenarios (advertencia, S3, L3); condiciones (C10, H7)
@@ -46,7 +46,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (20)
+## Datos por verificar (23)
 
 - escalas.json · cuenca: Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos.
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
@@ -68,3 +68,6 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - condiciones.json · situacion_partida: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - condiciones.json · C9: Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal.
 - condiciones.json · C10: Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial.
+- eap.json · verificar: Nombres, siglas y orden de los diez criterios del índice EAP (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017): redactados sin acceso a las fuentes en la sesión en la nube del 2026-11-09.
+- eap.json · verificar: Grupos de criterios y reparto entre ellos (el PLAN anotó cinco ecosistémicos y cinco culturales; sin confirmar).
+- eap.json · verificar: Escala de cada criterio (1 a 10) y total máximo del índice (100); categorías del índice, si se muestran.

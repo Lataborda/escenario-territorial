@@ -7,7 +7,7 @@ import { leerContenido } from './lib/contenido.mjs';
 import { revisarTextos } from './lib/revisar-textos.mjs';
 import { revisarReferencias } from './lib/revisar-referencias.mjs';
 import { revisarProporciones } from './lib/revisar-proporciones.mjs';
-import { revisarFincas } from './lib/revisar-fincas-contenido.mjs';
+import { revisarFincas, revisarEap } from './lib/revisar-fincas-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ARCHIVO_PENDIENTES = path.join('verificacion', 'pendientes-de-fuente.md');
@@ -19,10 +19,11 @@ export async function validarContenido(raiz = RAIZ) {
   const referencias = revisarReferencias(datos);
   const proporciones = revisarProporciones(datos);
   const fincas = revisarFincas(datos);
+  const eap = revisarEap(datos);
   return {
     datos,
-    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...textos.errores],
-    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...textos.avisos],
+    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...eap.errores, ...textos.errores],
+    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...eap.avisos, ...textos.avisos],
     pendientes: textos.pendientes,
     resumen: referencias.resumen,
   };

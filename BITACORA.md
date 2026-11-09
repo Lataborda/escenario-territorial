@@ -2,8 +2,9 @@
 
 ## Estado actual
 
-- Etapa siguiente: Etapa 6.b. Panel EAP (requiere fuentes: sesión local con `/add-dir ../..`). La etapa 6 se dividió en 6.a y 6.b el 2026-11-05 (`PLAN.md`).
-- Última etapa cerrada: Etapa 6.a, fincas tipo, lindero, conectores y EEP (2026-11-05). `npm run validar` y `npm run verificar` correctos.
+- Etapa siguiente: Etapa 7. Lote, interacciones de especies y suelo (requiere fuentes: sesión local con `/add-dir ../..`). En esa misma sesión local, antes de la etapa 7: cotejar los criterios del índice EAP (pendiente de la 6.b).
+- Última etapa cerrada: Etapa 6.b, panel EAP (2026-11-09), con el cotejo de fuentes pendiente. `npm run validar` y `npm run verificar` correctos.
+- Índice EAP (6.b, `contenido/eap.json`, `src/ui/eap.js`): panel en la columna derecha con la capa `indices_eap` (P22): diez criterios por fila, F1, F2 y F3 por columna, valor sobre un fondo de intensidad proporcional y total de 100; al pie, «Valores ilustrativos» y las fuentes abreviadas con la marca de pendiente. Sobre cada finca, un rótulo con su total. Nombres, siglas, orden y escala de los criterios redactados sin acceso a las fuentes: estado `verificar`. Los grupos de criterios no se muestran hasta confirmarlos.
 - Fincas (6.a, `src/fincas/`, `contenido/fincas.json`): cuatro fincas tipo generadas desde una receta (región en la rejilla de teselas con esquinas recortadas, solar con casa, lotes por área o peso, lindero y cercas vivas). F1 finca faro con las áreas de El Hatico (Calle et al. 2022, §11.1); F2 y F3 en la ladera y F4 predio cañero, con proporciones ilustrativas. Los lotes son coberturas de uso fijo (clase `lotes`); las cercas vivas son leucaena y guamo en el mosaico (`cercas.js`). Capas en la superposición (trazos en píxeles de pantalla, sin oclusión ni desenfoque, `src/escena/lineas.js`): conectores internos y externos, contorno de la EEP y conexión de cada finca con ella (`src/coberturas/eep.js`), resaltado del agroecosistema menor (lote) y mayor (lindero con la casa y la familia). Leyenda de capas y panel de usos de la finca en la columna derecha (`src/ui/capas.js`); marcadores numerados de los lotes (`src/fincas/rotulos.js`). Clic dentro del lindero de una finca: vuelo a la escala de finca.
 - Estilo visual: decisión D5 «realismo de maqueta» aplicada a toda la vegetación desde la 5.c.a (ningún material facetado en la vegetación; las teselas conservan caras planas). Luz de diorama desde la 5.c.c: sol algo cálido con sombra PCF suave (radio 3, intensidad 0,85), viento leve en copas, hojas y matas de caña (`src/escena/viento.js`), oclusión ambiental desde la profundidad y desenfoque de miniatura (`posproceso.js`, `sombreadores.js`). Intensidades en el hash: `#ao`, `#mini` y `#viento` (0 apaga, 1 por defecto); tecla M (y botón «Miniatura» del presentador) alterna la miniatura; tecla R muestra el medidor de rendimiento.
 - Caña (5.c.a y 5.c.b): lotes de tres edades fijas por lote (recién cortado, en crecimiento, maduro; fracciones ilustrativas en `escenarios.json`, `edades_cana`), distintas por altura y color, sin espigas. Mata según la referencia `referencias/cana-mata.webp` (`mata.js`: tallos con nudos de verde amarillento a morado, hojas en arco con las puntas caídas, hojas secas en la base) en dos niveles, en surco doble y en los bordes, por celda y con cupo (`cana.js`). Dentro del radio con matas (hasta 460 unidades de la cámara) la tapa del lote baja hasta la lámina y queda en sombra; más lejos, bloque con hileras, textura de hojas, altura irregular y caras de tallos (`superficie.js`).
@@ -12,16 +13,17 @@
 - Vías y asentamientos (`src/vias/`, `src/asentamientos/`): 23 tramos trazados sobre el relieve (troncales, secundarias y veredales) con 7 puentes y corredor sin parcelas; ciudad de 45 manzanas y nueve cabeceras de 9 manzanas, con tejados y plaza. No cambian con el escenario.
 - Navegación: almacén `src/estado.js`; recorrido de 26 paradas (37 estados con pasos; P04 con dos pasos y P05 con tres desde la 6.a) con flechas, espacio y Av Pág/Re Pág, pasos, teclas 0 a 6, O, F, H, V, C, A, M y R; hash `#p=ID&paso=N`; botonera de siete escalas, ficha con fuente abreviada e indicador de momento (`src/navegacion/`, `src/ui/`). Modo libre (tecla O, etapa 3.b): órbita y zoom, doble clic para volar a un punto del relieve, flechas o WASD para avanzar (Mayús acelera), cámara siempre sobre el relieve y objetivo dentro de la maqueta (`libre.js`, `limites.js`).
 - Presentación: `npm run presentar` sirve la versión compilada en el puerto 4320 y abre la vista principal y `presentador.html` (notas, siguiente, cronómetro por momento con desvío, fuentes completas, controles e índice; sincronía por BroadcastChannel). `npm run respaldo` genera `respaldo/index.html` (37 imágenes de 1920×1080, abre sin servidor) y `respaldo/notas.md`.
-- Contenido: 26 paradas y 4 recetas de finca en borrador; 69 localizadores y 20 datos por verificar en `verificacion/pendientes-de-fuente.md`, para cerrar en una sesión local (etapa 14 a más tardar).
-- Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26, vínculos de resultados de la teoría de cambio, proporciones de coberturas por escenario (plano y ladera), fracciones de edad de la caña, rótulos y colores de la leyenda, red vial y trama de la ciudad y las cabeceras, especies de la vegetación (5.c.a), mata de caña, surco doble y empalme de la caña cercana con el bloque lejano (5.c.b), intensidad de la oclusión, del desenfoque de miniatura y del viento (5.c.c), recetas de F2 a F4 (usos, pesos, tamaño y fracción de cercas vivas), colores de las capas, casa y familia, distancias de cámara de P04 a P06 y ancla de F3 (6.a).
+- Contenido: 26 paradas, 4 recetas de finca y el índice EAP en borrador; 71 localizadores y 23 datos por verificar en `verificacion/pendientes-de-fuente.md`, para cerrar en una sesión local (etapa 14 a más tardar).
+- Revisión pendiente de Alejandro: ficha de sesión (D4), fichas P01 a P26, vínculos de resultados de la teoría de cambio, proporciones de coberturas por escenario (plano y ladera), fracciones de edad de la caña, rótulos y colores de la leyenda, red vial y trama de la ciudad y las cabeceras, especies de la vegetación (5.c.a), mata de caña, surco doble y empalme de la caña cercana con el bloque lejano (5.c.b), intensidad de la oclusión, del desenfoque de miniatura y del viento (5.c.c), recetas de F2 a F4 (usos, pesos, tamaño y fracción de cercas vivas), colores de las capas, casa y familia, distancias de cámara de P04 a P06 y ancla de F3 (6.a), criterios y valores ilustrativos del índice EAP y su panel (6.b).
 - Rendimiento: Alejandro informó fluidez en el MacBook Air con la escena de la 5.a (0,9 millones de triángulos) y con el archivo HTML de la 5.c.a (2,6 a 4,5 millones de cerca). Tras la 6.a (S0): 1,92 millones en la vista general, 3,3 a escala de finca, 4,7 a escala de planta y de suelo y 5,9 en la caña a 70 unidades; 0,89 en modo liviano de cerca. Llamadas de dibujo por cuadro, con sombra, posproceso y capas: 53 a 78 (33 en liviano). Falta la cifra de cuadros por segundo en el MacBook Air: medidor con la tecla R (vista general, finca, planta y suelo, con y sin la tecla V).
 - Vista previa: `vista-previa/escenario.html` (archivo único, abre sin servidor) y respaldo en imágenes (`respaldo/`), regenerados al cerrar la 6.a.
 - Hito A (recorrido mínimo): completo en lo técnico; falta la prueba manual de Alejandro en videoconferencia (criterio de la etapa 4).
-- Hito B (biofísica, etapas 5 a 8): en curso (6.a cerrada; falta el panel EAP de la 6.b).
+- Hito B (biofísica, etapas 5 a 8): en curso (etapa 6 cerrada; criterios EAP por cotejar).
 - Fecha de la prueba oral: por confirmar. La notificación llega por correo con una antelación no inferior a tres días (Guía del Aspirante, literal E); el tema se informa dentro de los tres días siguientes (Res. 356 de 2026, art. 11).
 - Plataforma de videoconferencia: por confirmar.
 - Decisiones D1 a D7 (`GUION.md`, sección 12): resueltas el 2026-11-04 con las opciones recomendadas; D5 revisada el mismo día («realismo de maqueta»). D4 se redacta con Alejandro en la etapa 1; D7 se registra aquí al recibir la notificación.
-- Bloqueos: ninguno.
+- Entorno en la nube: desde el 2026-11-09 este repositorio usa el entorno personal «escenario-territorial» (red limitada con `doi.org`, `revistas.uptc.edu.co` y `www.scielo.org.co`). La revista de Cleves-Leguízamo et al. (2017) responde con una página contra robots y SciELO corta la conexión: las fuentes siguen siendo de sesión local.
+- Bloqueos: ninguno. Las etapas con fuentes (cotejo EAP, 7 en adelante) necesitan sesión local.
 
 ## Prompt de sesión
 
@@ -481,6 +483,32 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Pendientes heredados de la 5.c.c, la 5.c.b, la 5.b y la 3.b.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 6.b. Panel EAP (requiere fuentes).
+
+### 2026-11-09 · Etapa 6.b. Panel EAP
+
+- Modo continuo: propuesta anotada en la respuesta, sin espera de aprobación. Sesión en la nube, sin las fuentes locales. Verificación inicial correcta.
+- Fuentes: sin `../Transition/` ni `../../Libros completos/`. Búsqueda en Google Drive sin resultados propios. Con un entorno personal nuevo (aprobado por Alejandro) se consultó en línea el artículo de Cleves-Leguízamo et al. (2017): el DOI 10.17584/rcch.2017v11i2.7350 resuelve a la revista (registrado en `fuentes.json`), pero el sitio responde con una página contra robots (no se eludió) y SciELO corta la conexión. No se leyó texto de ninguna fuente.
+- Hecho:
+  - `contenido/eap.json` (nuevo, validado por `revisarEap` en `scripts/lib/revisar-fincas-contenido.mjs`): título, rótulo «Valores ilustrativos», escala (1 a 10 por criterio, total 100), fincas F1, F2 y F3, diez criterios con sigla, rótulo corto y nombre, y valores por finca. Valores ilustrativos coherentes con los conectores dibujados: F1 82, F2 38, F3 81. Fuentes `leonsicard:verificar` y `cleves:verificar`; tres datos por verificar (nombres y orden de los criterios, grupos, escala).
+  - `src/ui/eap.js` y estilos en `capas.css`: tabla en la columna derecha con la capa `indices_eap`; cabecera con el título y las fincas, un renglón por criterio, valor sobre un fondo del color de acento con opacidad proporcional (texto oscuro, contraste en todo el intervalo), total y pie con el rótulo de valores ilustrativos y las fuentes abreviadas (marca de pendiente).
+  - `src/fincas/rotulos.js`: rótulo «F1 · EAP 82» sobre la casa de cada finca del panel.
+  - Verificación: `revisar-fincas.mjs` revisa el panel en P22 (criterios, valores y totales iguales a `contenido/eap.json`, sin desborde, sin superposición con la ficha, rótulo de valores ilustrativos, un total por finca, oculto en P06); textos a 1920×1080 también en P22.
+- Decisiones:
+  - Nombres de los criterios redactados sin la fuente y marcados `verificar`, para tener el panel listo; el cotejo en sesión local corrige `contenido/eap.json` sin tocar el código.
+  - Grupos de criterios fuera del panel hasta confirmarlos: el PLAN anotó «cinco ecosistémicos, cinco culturales» y no fue posible comprobarlo. El modelo admite el campo `grupo` en cada criterio.
+  - Tres fincas en el panel, como dice la ficha de P22; F4 queda fuera.
+  - Entorno personal «escenario-territorial» para este repositorio (el Default lo comparten todos los repositorios).
+- Criterios de aceptación (6.b):
+  - El panel EAP toma sus datos de `contenido/`: cumplido (criterios, valores y totales leídos del panel iguales a `contenido/eap.json`).
+  - Cada criterio y cada valor muestra su fuente o el rótulo «valores ilustrativos»: cumplido (rótulo y fuentes al pie; localizadores pendientes marcados).
+  - Texto del panel legible a 1920×1080: cumplido (267 textos en seis paradas, P22 incluida; letra mínima 24 px, contraste mínimo 6,48).
+- Verificación: correcta. Cero errores de consola y cero solicitudes externas; huellas de terreno y coberturas iguales en la segunda carga y en el archivo único (996 kB); 53 llamadas de dibujo en la vista general. Panel EAP en P22 igual a `contenido/eap.json`, sin desborde ni superposición con la ficha, oculto en P06. Respaldo en imágenes (37 de 37) y vista previa regenerados.
+- Pendientes:
+  - Sesión local: cotejar en León-Sicard (2021, cap. 3) y Cleves-Leguízamo et al. (2017) los nombres, siglas, orden, grupos y escala de los criterios; si hay grupos, añadirlos al panel; cerrar los localizadores de `eap.json`, P05, P22, escalas y condiciones.
+  - Revisión de Alejandro: valores ilustrativos de F1 a F3 y diseño del panel.
+  - Pendientes heredados de la 6.a, la 5.c.c, la 5.c.b, la 5.b y la 3.b.
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 7 (requiere fuentes), con el cotejo EAP en la misma sesión local.
 
 ## Plantilla de entrada
 

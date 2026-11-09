@@ -126,3 +126,70 @@
   border-bottom: 0;
   border-top-color: var(--panel);
 }
+
+/* Panel del índice EAP (src/ui/eap.js): valor sobre un fondo de intensidad proporcional; texto oscuro */
+.eap {
+  box-sizing: border-box;
+  padding: 0.35rem 0.7rem 0.45rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.15;
+  pointer-events: none;
+}
+
+.eap[hidden] {
+  display: none;
+}
+
+.eap-titulo {
+  font-weight: 600;
+}
+
+.eap-pie {
+  margin-top: 0.3rem;
+  color: var(--texto-suave);
+  line-height: 1.2;
+}
+
+.eap-nota {
+  font-style: italic;
+}
+
+.eap-tabla {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.12rem;
+}
+
+.eap-tabla th,
+.eap-tabla td {
+  padding: 0.05rem 0;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.eap-tabla thead th {
+  font-weight: 600;
+}
+
+.eap-criterio {
+  text-align: left;
+  padding-right: 0.3rem;
+}
+
+.eap-finca,
+.eap-valor {
+  width: 2.2rem;
+  text-align: center;
+}
+
+.eap-valor {
+  border-left: 0.15rem solid var(--panel);
+}
+
+.eap-total th,
+.eap-total td {
+  font-weight: 600;
+}
