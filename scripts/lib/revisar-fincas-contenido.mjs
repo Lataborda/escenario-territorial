@@ -63,9 +63,15 @@ export function revisarEap(datos) {
   const ids = (e.criterios ?? []).map((c) => c.id);
   if (ids.length !== 10 || new Set(ids).size !== 10) errores.push(`eap.json: ${ids.length} criterios distintos (se esperan diez)`);
   if (total !== maximo * ids.length) errores.push('eap.json: el total no es la suma de los máximos de los criterios');
+  const grupos = new Set((e.grupos ?? []).map((g) => g.id));
+  for (const g of e.grupos ?? []) if (!g.rotulo?.trim()) errores.push(`eap.json · grupo ${g.id}: falta el rótulo`);
   for (const c of e.criterios ?? []) {
     if (!c.sigla?.trim() || !c.corto?.trim() || !c.nombre?.trim()) errores.push(`eap.json · ${c.id}: falta sigla, rótulo corto o nombre`);
+    if (grupos.size && !grupos.has(c.grupo)) errores.push(`eap.json · ${c.id}: grupo «${c.grupo}» sin entrada en grupos`);
   }
+  // Con grupos, los criterios van en el orden de sus grupos (el panel los muestra así).
+  const orden = (e.criterios ?? []).map((c) => [...grupos].indexOf(c.grupo));
+  if (grupos.size && orden.some((g, k) => k && g < orden[k - 1])) errores.push('eap.json: criterios fuera del orden de sus grupos');
   for (const id of e.fincas ?? []) {
     if (!fincas.has(id)) errores.push(`eap.json: finca «${id}» sin entidad de tipo finca`);
     for (const c of ids) {

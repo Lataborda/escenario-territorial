@@ -68,6 +68,7 @@ export async function revisarLote(pagina, { navegador, dirCapturas, raiz }) {
       rotulos: datos.rotulos,
       anillo: datos.anillo,
       contorno: datos.contorno,
+      finca: datos.finca,
       detalle: datos.detalle,
       distancia: bloque.distancia,
       desvio: await pagina.evaluate((b) => window.escenario.desvioBloque(b), bloque),
@@ -123,7 +124,8 @@ export function fallasLote(r) {
   if (!solo(pob, ['cafeto', 'cana'])) f.push('Lote: paso Población debe resaltar solo cafetos y caña');
   if (!solo(com, Object.keys(total)) || !solo(eco, Object.keys(total))) f.push('Lote: pasos Comunidad y Ecosistema deben resaltar todas las especies');
   if (!igualLista(com.rotulos.interacciones, r.contenido.interacciones) || !igualLista(com.interfaz.interacciones, r.contenido.interacciones)) f.push('Lote: marcadores o panel de interacciones distintos de contenido/lote.json');
-  if (!eco.contorno) f.push('Lote: paso Ecosistema sin el contorno de los lotes');
+  if (!com.contorno || com.finca) f.push('Lote: paso Comunidad sin el contorno de los dos lotes');
+  if (!eco.finca || eco.contorno) f.push('Lote: paso Ecosistema sin el lindero de la finca');
   if (r.pasos.some((p, k) => k && p.distancia <= r.pasos[k - 1].distancia)) f.push('Lote: la cámara de P03 no se aleja paso a paso');
   for (const p of r.pasos) {
     if (!(p.desvio < DESVIO_MAXIMO)) f.push(`Lote: cámara del paso ${p.id} distinta de su bloque (${p.desvio?.toFixed(2)})`);
@@ -158,7 +160,7 @@ export function seccionLote(r) {
     `- Plantas: ${resumen(total)}`,
     ...r.pasos.map(
       (p) =>
-        `- P03 ${p.id}: nivel ${p.nivel}; resaltadas ${resumen(p.resaltadas)}; cámara a ${p.distancia} (desvío ${p.desvio.toFixed(2)}); detalle ${p.detalle}; rótulos de nivel ${p.rotulos.niveles}, marcadores de interacción ${p.rotulos.interacciones.length}; anillo ${si(p.anillo)}, contorno ${si(p.contorno)}; panel de interacciones ${p.interfaz.interacciones ? p.interfaz.interacciones.length : 'oculto'}; rótulos sobre la interfaz ${p.interfaz.sobreInterfaz}, fuera ${p.interfaz.fuera}; ${p.estadisticas.llamadas} llamadas, ${p.estadisticas.triangulos} triángulos`,
+        `- P03 ${p.id}: nivel ${p.nivel}; resaltadas ${resumen(p.resaltadas)}; cámara a ${p.distancia} (desvío ${p.desvio.toFixed(2)}); detalle ${p.detalle}; rótulos de nivel ${p.rotulos.niveles}, marcadores de interacción ${p.rotulos.interacciones.length}; anillo ${si(p.anillo)}, contorno de los lotes ${si(p.contorno)}, lindero de la finca ${si(p.finca)}; panel de interacciones ${p.interfaz.interacciones ? p.interfaz.interacciones.length : 'oculto'}; rótulos sobre la interfaz ${p.interfaz.sobreInterfaz}, fuera ${p.interfaz.fuera}; ${p.estadisticas.llamadas} llamadas, ${p.estadisticas.triangulos} triángulos`,
     ),
     `- P07: corte visible ${si(c?.visible)}, en su lugar ${si(c?.enSuLugar)} (base ${c?.base} sobre el terreno); rótulos ${c?.rotulos} de ${CORTE_ROTULOS}; materia orgánica ${(c?.interfaz.materia ?? []).map((x) => `${x.id} «${x.valor}»`).join(', ')}; rótulos sobre la interfaz ${c?.interfaz.sobreInterfaz}, fuera ${c?.interfaz.fuera}; ${c?.estadisticas.llamadas} llamadas, ${c?.estadisticas.triangulos} triángulos`,
     `- Corte oculto en P06 (con sus paneles): ${si(r.ocultoP06)}; visible con la escala de suelo: ${si(r.escalaSuelo)}`,

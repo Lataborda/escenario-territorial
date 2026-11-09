@@ -156,7 +156,8 @@ async function revisarPanelEap(pagina) {
       const ficha = document.querySelector('.ficha').getBoundingClientRect();
       return {
         columnas: [...panel.querySelectorAll('thead th.eap-finca')].map((th) => th.textContent),
-        filas: [...panel.querySelectorAll('tbody tr')].map((tr) => ({ criterio: tr.querySelector('th').textContent, valores: [...tr.querySelectorAll('td')].map((td) => Number(td.textContent)) })),
+        filas: [...panel.querySelectorAll('tbody tr:not(.eap-grupo)')].map((tr) => ({ criterio: tr.querySelector('th').textContent, valores: [...tr.querySelectorAll('td')].map((td) => Number(td.textContent)) })),
+        grupos: [...panel.querySelectorAll('tbody tr.eap-grupo')].map((tr) => tr.textContent),
         totales: [...panel.querySelectorAll('tfoot td')].map((td) => Number(td.textContent)),
         desborde: panel.scrollWidth > panel.clientWidth + 1 || [...panel.querySelectorAll('th, td')].some((c) => c.scrollWidth > c.clientWidth + 1),
         superpuesto: caja.bottom > ficha.top && caja.left < ficha.right && ficha.left < caja.right,
@@ -176,7 +177,8 @@ async function revisarPanelEap(pagina) {
     leido.columnas.join() === esperado.fincas.join() &&
     leido.filas.length === esperado.criterios.length &&
     esperado.criterios.every((c, k) => leido.filas[k].criterio === c.corto && esperado.fincas.every((f, j) => leido.filas[k].valores[j] === esperado.valores[f][c.id])) &&
-    esperado.fincas.every((f, j) => leido.totales[j] === total(f));
+    esperado.fincas.every((f, j) => leido.totales[j] === total(f)) &&
+    leido.grupos.join() === (esperado.grupos ?? []).map((g) => g.rotulo).join();
   return { visible: true, ocultoFuera, igual, ...leido, conRotulo: leido.pie.includes(esperado.valores_rotulo), esperados: esperado.fincas.length };
 }
 

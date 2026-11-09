@@ -5,7 +5,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 - Guion: 40 min; ensayo objetivo: 36 min; tolerancia: 1 min.
 - Paradas saltables (decisión D6): P12, P15, P23.
 - Respaldo: 37 imágenes (una por parada y por paso). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash `#p=P14&paso=1` abre una diapositiva.
-- Generado: 2026-11-09; huella del contenido: `3cc507d72612`.
+- Generado: 2026-11-09; huella del contenido: `cb7df4e2eed7`.
 
 ## M0 · Encuadre (3 min, 0:00 a 3:00)
 
@@ -36,11 +36,11 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 - inicio previsto 3:00 · 1,5 min · escala planta · diapositivas 3 a 6 · texto en borrador
 - Pasos: Organismo · Población · Comunidad · Ecosistema
 
-**Notas.** Avanzar los cuatro pasos con la flecha: cada paso aleja la cámara un nivel. En la comunidad, nombrar las interacciones rotuladas (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad) y la competencia en el monocultivo. Señalar las propiedades que aparecen en cada nivel.
+**Notas.** Avanzar los cuatro pasos con la flecha: cada paso aleja la cámara un nivel. En la comunidad, nombrar las interacciones numeradas (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad) y la competencia intraespecífica en el monocultivo. Señalar las propiedades que aparecen en cada nivel: en cada uno emergen propiedades ausentes en el nivel inferior, y la sostenibilidad puede considerarse la propiedad emergente última del agroecosistema (Gliessman et al. 2023, p. 38).
 
-**Ficha en pantalla.** Cuatro niveles de organización en el agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de un cafeto del lote, sigue con la población de cafetos y la comunidad del policultivo con sus interacciones, y termina en el ecosistema del piedemonte dentro de su cuenca. El lote vecino de caña reúne una sola población.
+**Ficha en pantalla.** Cuatro niveles de organización aplicados al agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de un cafeto, sigue con la población de cafetos y el monocultivo de caña, pasa a la comunidad del policultivo con sus interacciones y termina en la finca dentro de su cuenca.
 
-**Fuentes.** Gliessman et al. (2023), fig. 3.1
+**Fuentes.** Gliessman et al. (2023), fig. 3.1, pp. 37 y 38, caps. 7 y 12
 
 ### P04 · Agroecosistema menor y agroecosistema mayor
 
@@ -58,11 +58,11 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 - inicio previsto 6:00 · 1,5 min · escala finca · diapositivas 9 a 11 · texto en borrador
 - Pasos: Conectores internos · Conectores externos · Conexión con la EEP
 
-**Notas.** Mostrar los conectores internos, luego los externos y la conexión con la EEP. Nombrar los dos grupos de criterios.
+**Notas.** Mostrar los conectores internos, luego los externos y la conexión con la EEP. Nombrar los dos grupos de criterios: indicadores ecosistémicos (CEEP, ECE, ECI, DCE y DCI) e indicadores culturales (US, PMa y PMg, PRC, CON y CA).
 
-**Ficha en pantalla.** Estructura Agroecológica Principal (EAP): configuración espacial de la agrobiodiversidad de la finca y su conectividad. Comprende conectores internos y externos y la conexión con la estructura ecológica principal (EEP) del paisaje. El índice EAP reúne diez criterios en dos grupos.
+**Ficha en pantalla.** Estructura Agroecológica Principal (EAP): configuración espacial de la agrobiodiversidad de la finca y su conectividad. Comprende conectores internos y externos y la conexión con la estructura ecológica principal (EEP) del paisaje. El índice EAP reúne diez criterios: cinco indicadores ecosistémicos y cinco culturales.
 
-**Fuentes.** León-Sicard (2021), p. 31, cap. 3 · Cleves-Leguízamo et al. (2017) (por verificar)
+**Fuentes.** León-Sicard (2021), p. 31, cap. 2, tabla 1, cap. 3 · Cleves-Leguízamo et al. (2017) (por verificar)
 
 ### P06 · Finca faro en el plano
 
@@ -80,11 +80,11 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 - inicio previsto 9:00 · 1,5 min · escala suelo · diapositiva 13 · texto en borrador
 
-**Notas.** Rótulo «cierra en la finca». Afirmar que todo proceso exige territorio sería un error (GUION, precaución 2). Citar la tradición de biología del suelo de Palmira (Sánchez de Prager, 2018).
+**Notas.** Rótulo «cierra en la finca». Afirmar que todo proceso exige territorio sería un error (GUION, precaución 2). Citar la tradición de biología del suelo de Palmira (Sánchez de Prager, 2018). Dato para la exposición: en la estación húmeda, la biomasa de macroinvertebrados fue 15,3 veces mayor en la caña agroecológica de El Hatico que en la convencional de un predio vecino, sobre todo por lombrices y milpiés (Calle et al. 2022, §11.4.2, con base en Pardo 2009).
 
-**Ficha en pantalla.** La biota del suelo cierra su ciclo en el lote y la finca. Raíces, hifas y macrofauna transforman la materia orgánica bajo el lote. Materia orgánica en la caña agroecológica de la finca faro: de 2 % a 4 %. Bosque de referencia: 4,3 %.
+**Ficha en pantalla.** La biota del suelo cierra su ciclo en el lote y la finca. Raíces, hifas y macrofauna transforman la materia orgánica bajo el lote. Materia orgánica en la caña agroecológica de la finca faro: de 2 % en 1994 a 4 %. Bosque de referencia: 4,2 %.
 
-**Fuentes.** Gliessman et al. (2023), cap. 8 · Calle et al. (2022) (por verificar) · Sánchez de Prager (2018) (por verificar)
+**Fuentes.** Gliessman et al. (2023), pp. 113 y 114 · Calle et al. (2022), §11.4.2 · Sánchez de Prager (2018) (por verificar)
 
 ### P08 · Control biológico y polinización
 

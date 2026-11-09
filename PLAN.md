@@ -428,7 +428,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 ## Etapa 6.b. Panel EAP
 
 - Tamaño: mediano. Fuentes: sí (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017). Sesión local con `/add-dir ../..`.
-- Estado (2026-11-09): panel, datos y verificación hechos en una sesión en la nube sin acceso a las fuentes (el sitio de la revista rechaza la descarga automatizada y SciELO corta la conexión). Queda pendiente el primer punto del trabajo: cotejar en las fuentes los nombres, siglas, orden, grupos y escala de los criterios, y cerrar sus localizadores (`contenido/eap.json`, campo `verificar`).
+- Estado (2026-11-09): panel, datos y verificación hechos en una sesión en la nube sin acceso a las fuentes (el sitio de la revista rechaza la descarga automatizada y SciELO corta la conexión). Cotejo hecho el mismo día, en la nube, con la versión de texto de León-Sicard (2021) en la carpeta de Drive del proyecto: criterios, siglas, orden y escala (0 a 10) del cap. 3 y grupos del cap. 2, tabla 1 (indicadores ecosistémicos y culturales), con encabezados de grupo en el panel. Cleves-Leguízamo et al. (2017) no está en la carpeta; su localizador sigue pendiente en P05 y en la escala de finca.
 - Lecturas: `GUION.md`, sección 3 (escala 3) y sección 10 (precaución 8); `contenido/fincas.json`.
 - Objetivo: el índice EAP de las fincas tipo, legible y con fuente.
 - Trabajo:
@@ -470,8 +470,9 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Sánchez de Prager (2018): localizador o retiro de la referencia.
   - Confirmar con Alejandro la composición del policultivo de ladera (maíz y fríjol; cafeto con guamo y plátano).
 - Criterios de aceptación:
-  - [ ] Sin localizadores `verificar` en `contenido/lote.json`, P03 y P07.
-  - [ ] Rótulos de niveles, interacciones y biota iguales al término de la fuente.
+  - [x] Sin localizadores `verificar` en `contenido/lote.json`, P03 y P07, salvo Sánchez de Prager (2018), ausente de la carpeta de Drive.
+  - [x] Rótulos de niveles, interacciones y biota iguales al término de la fuente.
+- Resultado (2026-11-09, en la nube con la carpeta de Drive): niveles según la fig. 3.1 (el cuarto paso dibuja el lindero de una finca con los dos lotes: «la finca en el contexto de su cuenca»); interacciones con página de los caps. 7 y 12 (facilitación cambiada: «el maíz sostiene al fríjol» no está en la fuente); horizontes y biota del cap. 8; materia orgánica de Calle et al. (2022, §11.4.2): de 2 % en 1994 a 4 %, bosque de referencia 4,2 %.
 - Prompt de arranque: `Etapa 7.b de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
 
 ## Etapa 8. Procesos supraprediales

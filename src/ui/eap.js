@@ -1,5 +1,6 @@
 // Panel del índice EAP de las fincas tipo (capa «indices_eap»), en la columna derecha: un renglón por criterio,
-// una columna por finca con el valor sobre un fondo de intensidad proporcional, y el total. Datos en
+// agrupados bajo el encabezado de su grupo (indicadores ecosistémicos y culturales), una columna por finca con el
+// valor sobre un fondo de intensidad proporcional, y el total. Datos en
 // contenido/eap.json; al pie, el rótulo de valores ilustrativos y la fuente abreviada (con la marca de pendiente si
 // el localizador falta).
 import contenido from '../../contenido/eap.json';
@@ -40,19 +41,32 @@ export function crearEap(columna) {
   const columnas = contenido.fincas;
   const encabezado = elemento('thead');
   encabezado.append(fila(elemento('th', 'eap-criterio eap-titulo', contenido.titulo), columnas.map((f) => elemento('th', 'eap-finca', f))));
-  const cuerpo = elemento('tbody');
-  for (const c of contenido.criterios) {
-    const nombre = elemento('th', 'eap-criterio', c.corto);
-    nombre.scope = 'row';
-    nombre.title = `${c.sigla} · ${c.nombre}`;
-    nombre.dataset.criterio = c.id;
-    cuerpo.append(fila(nombre, columnas.map((f) => celda(contenido.valores[f][c.id], contenido.escala.maximo))));
-  }
+  // Un cuerpo por grupo, con su encabezado; sin grupos, un solo cuerpo.
+  const grupos = contenido.grupos?.length ? contenido.grupos : [{ id: null }];
+  const cuerpos = grupos.map((g) => {
+    const cuerpo = elemento('tbody');
+    if (g.id) {
+      const titulo = elemento('th', 'eap-criterio', g.rotulo);
+      titulo.colSpan = columnas.length + 1;
+      titulo.scope = 'colgroup';
+      const tr = elemento('tr', 'eap-grupo');
+      tr.append(titulo);
+      cuerpo.append(tr);
+    }
+    for (const c of contenido.criterios.filter((x) => !g.id || x.grupo === g.id)) {
+      const nombre = elemento('th', 'eap-criterio', c.corto);
+      nombre.scope = 'row';
+      nombre.title = `${c.sigla} · ${c.nombre}`;
+      nombre.dataset.criterio = c.id;
+      cuerpo.append(fila(nombre, columnas.map((f) => celda(contenido.valores[f][c.id], contenido.escala.maximo))));
+    }
+    return cuerpo;
+  });
   const pieTabla = elemento('tfoot');
   const total = elemento('th', 'eap-criterio', `Total (de ${contenido.escala.total})`);
   total.scope = 'row';
   pieTabla.append(fila(total, columnas.map((f) => celda(totalEap(f), contenido.escala.total)), 'eap-total'));
-  tabla.append(encabezado, cuerpo, pieTabla);
+  tabla.append(encabezado, ...cuerpos, pieTabla);
   const pie = elemento('div', 'eap-pie');
   pie.append(elemento('span', 'eap-nota', contenido.valores_rotulo));
   for (const f of abreviar(contenido.fuentes, fuentes.fuentes)) {

@@ -86,10 +86,9 @@
           "camara": { "ancla": "lote", "distancia": 620, "elevacion": 40 }
         }
       ],
-      "ficha": "Cuatro niveles de organización en el agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de un cafeto del lote, sigue con la población de cafetos y la comunidad del policultivo con sus interacciones, y termina en el ecosistema del piedemonte dentro de su cuenca. El lote vecino de caña reúne una sola población.",
-      "notas": "Avanzar los cuatro pasos con la flecha: cada paso aleja la cámara un nivel. En la comunidad, nombrar las interacciones rotuladas (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad) y la competencia en el monocultivo. Señalar las propiedades que aparecen en cada nivel.",
-      "fuentes": ["gliessman:fig. 3.1"],
-      "verificar": ["Pasaje de Gliessman (cap. 3) sobre las propiedades emergentes de cada nivel, si se mencionan en la exposición."],
+      "ficha": "Cuatro niveles de organización aplicados al agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de un cafeto, sigue con la población de cafetos y el monocultivo de caña, pasa a la comunidad del policultivo con sus interacciones y termina en la finca dentro de su cuenca.",
+      "notas": "Avanzar los cuatro pasos con la flecha: cada paso aleja la cámara un nivel. En la comunidad, nombrar las interacciones numeradas (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad) y la competencia intraespecífica en el monocultivo. Señalar las propiedades que aparecen en cada nivel: en cada uno emergen propiedades ausentes en el nivel inferior, y la sostenibilidad puede considerarse la propiedad emergente última del agroecosistema (Gliessman et al. 2023, p. 38).",
+      "fuentes": ["gliessman:fig. 3.1", "gliessman:pp. 37 y 38", "gliessman:caps. 7 y 12"],
       "estado_texto": "borrador"
     },
     {
@@ -125,10 +124,9 @@
         { "id": "externos", "rotulo": "Conectores externos", "estado": { "capas": ["conectores_internos", "conectores_externos"] } },
         { "id": "eep", "rotulo": "Conexión con la EEP", "estado": { "capas": ["conectores_eap", "eep"] } }
       ],
-      "ficha": "Estructura Agroecológica Principal (EAP): configuración espacial de la agrobiodiversidad de la finca y su conectividad. Comprende conectores internos y externos y la conexión con la estructura ecológica principal (EEP) del paisaje. El índice EAP reúne diez criterios en dos grupos.",
-      "notas": "Mostrar los conectores internos, luego los externos y la conexión con la EEP. Nombrar los dos grupos de criterios.",
-      "fuentes": ["leonsicard:p. 31", "leonsicard:cap. 3", "cleves:verificar"],
-      "verificar": ["Nombres de los diez criterios de la EAP y de sus dos grupos (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017)."],
+      "ficha": "Estructura Agroecológica Principal (EAP): configuración espacial de la agrobiodiversidad de la finca y su conectividad. Comprende conectores internos y externos y la conexión con la estructura ecológica principal (EEP) del paisaje. El índice EAP reúne diez criterios: cinco indicadores ecosistémicos y cinco culturales.",
+      "notas": "Mostrar los conectores internos, luego los externos y la conexión con la EEP. Nombrar los dos grupos de criterios: indicadores ecosistémicos (CEEP, ECE, ECI, DCE y DCI) e indicadores culturales (US, PMa y PMg, PRC, CON y CA).",
+      "fuentes": ["leonsicard:p. 31", "leonsicard:cap. 2, tabla 1", "leonsicard:cap. 3", "cleves:verificar"],
       "estado_texto": "borrador"
     },
     {
@@ -155,10 +153,9 @@
       "escala": "suelo",
       "camara": { "ancla": "corte_suelo", "distancia": 60, "azimut": -60, "elevacion": 10, "duracion": 2.5 },
       "estado": { "escenario": "S0", "capas": ["corte_suelo"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
-      "ficha": "La biota del suelo cierra su ciclo en el lote y la finca. Raíces, hifas y macrofauna transforman la materia orgánica bajo el lote. Materia orgánica en la caña agroecológica de la finca faro: de 2 % a 4 %. Bosque de referencia: 4,3 %.",
-      "notas": "Rótulo «cierra en la finca». Afirmar que todo proceso exige territorio sería un error (GUION, precaución 2). Citar la tradición de biología del suelo de Palmira (Sánchez de Prager, 2018).",
-      "fuentes": ["gliessman:cap. 8", "calle:verificar", "sanchezprager:verificar"],
-      "verificar": ["Sección de Calle et al. (2022, cap. 11) con la materia orgánica de la caña agroecológica; precisar si «de 2 % a 4 %» es un cambio en el tiempo o un intervalo."],
+      "ficha": "La biota del suelo cierra su ciclo en el lote y la finca. Raíces, hifas y macrofauna transforman la materia orgánica bajo el lote. Materia orgánica en la caña agroecológica de la finca faro: de 2 % en 1994 a 4 %. Bosque de referencia: 4,2 %.",
+      "notas": "Rótulo «cierra en la finca». Afirmar que todo proceso exige territorio sería un error (GUION, precaución 2). Citar la tradición de biología del suelo de Palmira (Sánchez de Prager, 2018). Dato para la exposición: en la estación húmeda, la biomasa de macroinvertebrados fue 15,3 veces mayor en la caña agroecológica de El Hatico que en la convencional de un predio vecino, sobre todo por lombrices y milpiés (Calle et al. 2022, §11.4.2, con base en Pardo 2009).",
+      "fuentes": ["gliessman:pp. 113 y 114", "calle:§11.4.2", "sanchezprager:verificar"],
       "estado_texto": "borrador"
     },
     {

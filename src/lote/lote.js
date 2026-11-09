@@ -1,7 +1,9 @@
 // Lote de policultivo de ladera junto a un lote de caña en monocultivo (etapa 7, parada P03). Lámina de suelo de
 // cada lote sobre el relieve, plantas instanciadas con dos niveles de detalle según la distancia de la cámara al lote
 // y resaltado de los niveles de organización (contenido/lote.json, niveles): las plantas fuera del nivel se apagan
-// (formas.js) y la superposición dibuja el anillo del organismo y el contorno de los lotes. Reacciona a «capas».
+// (formas.js) y la superposición dibuja el anillo del organismo, el contorno de los lotes (comunidad) y el lindero de
+// la finca que los reúne (ecosistema: «la finca en el contexto de su cuenca», Gliessman et al. 2023, fig. 3.1).
+// Reacciona a «capas».
 import * as THREE from 'three';
 import contenido from '../../contenido/lote.json';
 import { obtener, suscribir } from '../estado.js';
@@ -26,6 +28,7 @@ export const ALTO = { cafeto: 1.7, platano: 3.4, guamo: 5.6, maiz: 2.3, frijol: 
 const ESTILO = {
   anillo: { color: 0xf2c14e, halo: 0x2b2a27, ancho: 3, alto: 0.25, encima: true, orden: 20 },
   contorno: { color: 0xfbf9f4, halo: 0x2b2a27, ancho: 2.5, alto: 0.4, encima: true, orden: 20 },
+  finca: { color: 0xfbf9f4, halo: 0x2b2a27, ancho: 3, alto: 0.4, encima: true, orden: 20 },
 };
 const COLOR = { suelo: 0x5a4130, mantillo: 0x7d6744, surco: 0x6c573f, camellon: 0x93805a, paja: 0xb4a06a, borde: 0x4a3626 };
 
@@ -156,7 +159,7 @@ export function crearLote({ altura, camara, instantanea = false }) {
     return { especie, plantas, niveles, actual: new Float32Array(plantas.length), meta: new Float32Array(plantas.length) };
   });
 
-  // Superposición: anillo del organismo y contornos de los lotes.
+  // Superposición: anillo del organismo, contornos de los lotes y lindero de la finca.
   const superposicion = new THREE.Group();
   superposicion.name = 'lote-capas';
   const organismo = d.plantas.find((p) => p.organismo);
@@ -164,7 +167,9 @@ export function crearLote({ altura, camara, instantanea = false }) {
   anillo.fijar(circulo(organismo.x, organismo.z, 1.25));
   const contorno = crearTrazo('lote-contorno', altura, ESTILO.contorno);
   contorno.fijar([...rectangulo(d.policultivo), ...rectangulo(d.monocultivo)]);
-  superposicion.add(anillo.grupo, contorno.grupo);
+  const finca = crearTrazo('lote-finca', altura, ESTILO.finca);
+  finca.fijar(rectangulo(d.todo));
+  superposicion.add(anillo.grupo, contorno.grupo, finca.grupo);
 
   let nivel = null;
   let enMarcha = false;
@@ -196,7 +201,8 @@ export function crearLote({ altura, camara, instantanea = false }) {
     aplicar(instantanea ? 1 : 0);
     enMarcha = true;
     anillo.grupo.visible = nivel?.id === 'organismo';
-    contorno.grupo.visible = ['comunidad', 'ecosistema'].includes(nivel?.id);
+    contorno.grupo.visible = nivel?.id === 'comunidad';
+    finca.grupo.visible = nivel?.id === 'ecosistema';
   }
   suscribir('capas', pintar);
   pintar(obtener());
@@ -226,6 +232,7 @@ export function crearLote({ altura, camara, instantanea = false }) {
       detalle: distancia < CERCA ? (liviano ? 'lejos' : 'cerca') : distancia < LEJOS && !liviano ? 'lejos' : 'oculto',
       anillo: anillo.grupo.visible,
       contorno: contorno.grupo.visible,
+      finca: finca.grupo.visible,
       organismo: [organismo.x, altura(organismo.x, organismo.z) + SUELO, organismo.z],
       policultivo: d.policultivo,
       monocultivo: d.monocultivo,

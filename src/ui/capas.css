@@ -193,3 +193,10 @@
 .eap-total td {
   font-weight: 600;
 }
+
+/* Encabezado de grupo de criterios (indicadores ecosistémicos y culturales) */
+.eap-tabla .eap-grupo th {
+  padding-top: 0.2rem;
+  color: var(--texto-suave);
+  font-style: italic;
+}

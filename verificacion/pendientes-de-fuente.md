@@ -18,18 +18,16 @@ Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe c
 | ley2294 | Ley 2294 de 2023, art. 32 | falta | Verificar el texto del artículo (GUION, precaución 4). |
 | al012023 | Acto Legislativo 01 de 2023 | falta | Verificar el texto sobre el campesinado como sujeto de derechos. |
 
-## Localizadores por verificar (79 referencias en 24 fuentes)
+## Localizadores por verificar (66 referencias en 22 fuentes)
 
 Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar «verificar» por la página o la sección.
 
-- `calle` (Calle et al. (2022)): paradas (P07); lote (materia_organica)
-- `cleves` (Cleves-Leguízamo et al. (2017)): escalas (finca); paradas (P05); eap (fuentes)
+- `cleves` (Cleves-Leguízamo et al. (2017)): escalas (finca); paradas (P05)
 - `dec1406` (Decreto 1406 de 2023): escalas (region); condiciones (C10)
 - `duarte` (Duarte et al. (2025)): escalas (frentes_literatura)
 - `giraldorosset` (Giraldo y Rosset (2018)): escenarios (L4, contraste_lentes)
-- `gliessman` (Gliessman et al. (2023)): lote (sombrio, fijacion_nitrogeno, facilitacion, mutualismo, complementariedad, competencia)
 - `lamine` (Lamine et al. (2023)): escenarios (L1, L2)
-- `leonsicard` (León-Sicard (2021)): escalas (finca, vereda); condiciones (C9, H3); eap (fuentes)
+- `leonsicard` (León-Sicard (2021)): condiciones (H3)
 - `levidow` (Levidow et al. (2023)): escalas (territorio); paradas (P14); escenarios (L4)
 - `ley2046` (Ley 2046 de 2020): escalas (region); paradas (P21); condiciones (C8, H4); actores (colegios)
 - `lopez2025` (López-García et al. (2025)): escalas (territorio); escenarios (advertencia, S3, L3); condiciones (C10, H7)
@@ -47,16 +45,13 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (27)
+## Datos por verificar (17)
 
 - escalas.json · cuenca: Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos.
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
 - paradas.json · P02: Página de la Res. 331 de 2024 con el área en producción alternativa (61.435,70 ha de 4.617.116 ha) y el conteo de escuelas agroecológicas por departamento.
-- paradas.json · P03: Pasaje de Gliessman (cap. 3) sobre las propiedades emergentes de cada nivel, si se mencionan en la exposición.
 - paradas.json · P04: Criterio de frontera del agroecosistema en Gliessman (p. 37), para redactar el contraste con León-Sicard.
-- paradas.json · P05: Nombres de los diez criterios de la EAP y de sus dos grupos (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017).
 - paradas.json · P06: Los usos listados suman 287 ha de 288 ha; confirmar en Calle et al. (2022, §11.1) el uso restante.
-- paradas.json · P07: Sección de Calle et al. (2022, cap. 11) con la materia orgánica de la caña agroecológica; precisar si «de 2 % a 4 %» es un cambio en el tiempo o un intervalo.
 - paradas.json · P09: Pasajes de Gliessman (caps. 8 y 18) sobre escorrentía, sedimentos y prácticas de conservación de suelos.
 - paradas.json · P15: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - paradas.json · P18: Fuente citable para los siete mercados anteriores a 2009 (REDMAC).
@@ -69,10 +64,3 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - condiciones.json · situacion_partida: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - condiciones.json · C9: Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal.
 - condiciones.json · C10: Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial.
-- eap.json · verificar: Nombres, siglas y orden de los diez criterios del índice EAP (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017): redactados sin acceso a las fuentes en la sesión en la nube del 2026-11-09.
-- eap.json · verificar: Grupos de criterios y reparto entre ellos (el PLAN anotó cinco ecosistémicos y cinco culturales; sin confirmar).
-- eap.json · verificar: Escala de cada criterio (1 a 10) y total máximo del índice (100); categorías del índice, si se muestran.
-- lote.json · suelo: Designación y orden de los horizontes del corte (O, A, B y C) y grupos de biota en Gliessman et al. (2023, cap. 8); grosores de dibujo ilustrativos.
-- lote.json · materia_organica: Mismo dato de P07: sección de Calle et al. (2022, cap. 11) con la materia orgánica de la caña agroecológica y del bosque; precisar si «de 2 % a 4 %» es un cambio en el tiempo o un intervalo y ajustar la barra.
-- lote.json · verificar: Ejemplos de especies de cada interacción (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad y competencia) en Gliessman et al. (2023, caps. 7 y 12), y pasaje de cada una para el localizador.
-- lote.json · verificar: Composición del policultivo de ladera (maíz y fríjol; cafeto con guamo y plátano): ejemplo de dibujo sin fuente; confirmar con Alejandro.

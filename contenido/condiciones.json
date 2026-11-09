@@ -108,7 +108,7 @@
     {
       "id": "C9",
       "nombre": "Conectividad ecológica entre fincas",
-      "fuentes": ["leonsicard:verificar", "res331:línea 2.8"],
+      "fuentes": ["leonsicard:cap. 2", "res331:línea 2.8"],
       "efectos": ["corredor"],
       "efecto_territorial_requiere": { "todas": ["C3"] },
       "mensaje_si_falta": "Corredor incompleto: las fincas contiguas carecen de prácticas agroecológicas eficaces",

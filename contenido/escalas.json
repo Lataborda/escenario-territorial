@@ -43,7 +43,7 @@
       "principios": [1, 2, 4, 5, 6, 7, 8],
       "escala_wezel": ["FA"],
       "vista": { "distancia": 450, "elevacion": 45, "ancla": "F1" },
-      "fuentes": ["leonsicard:verificar", "cleves:verificar", "gliessman:fig. 3.7", "gliessman:cap. 15", "gliessman:cap. 16"]
+      "fuentes": ["leonsicard:cap. 1", "leonsicard:cap. 2", "cleves:verificar", "gliessman:fig. 3.7", "gliessman:cap. 15", "gliessman:cap. 16"]
     },
     {
       "id": "vereda",
@@ -56,7 +56,7 @@
       "principios": [5, 6],
       "escala_wezel": [],
       "vista": { "distancia": 900, "elevacion": 40, "ancla": "F1" },
-      "fuentes": ["leonsicard:verificar", "wezel2016:verificar", "gliessman:cap. 14", "gliessman:cap. 18", "calle:§11.2", "calle:§11.6"]
+      "fuentes": ["leonsicard:cap. 1", "wezel2016:verificar", "gliessman:cap. 14", "gliessman:cap. 18", "calle:§11.2", "calle:§11.6"]
     },
     {
       "id": "cuenca",
