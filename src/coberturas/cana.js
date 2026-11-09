@@ -36,7 +36,7 @@ const CAMPOS = 9;
 // un anillo oscuro con un borde claro encima, cada NUDO de altura de la forma; se atenúan cuando ocupan poco en pantalla.
 const NUDO = 0.3;
 const VAIVEN = 0.045; // desplazamiento del viento en la punta de las hojas, como fracción del alto de la mata
-function crearMaterial(opciones) {
+export function crearMaterialMata(opciones) {
   const material = new THREE.MeshStandardMaterial(opciones);
   material.onBeforeCompile = (s) => {
     s.vertexShader = s.vertexShader
@@ -143,7 +143,7 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
 
   // Mallas instanciadas por nivel, con color por instancia (el del lote).
   const formas = matasCana();
-  const material = crearMaterial(formas.material);
+  const material = crearMaterialMata(formas.material);
   const mallas = {};
   for (const id of Object.keys(CUPO)) {
     const malla = new THREE.InstancedMesh(formas[id], material, CUPO[id]);

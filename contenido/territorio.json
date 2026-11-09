@@ -16,6 +16,11 @@
     { "id": "ficha_sesion", "descripcion": "Ficha de sesión sobre la vista aérea" },
     { "id": "pregunta_detonante", "descripcion": "Pregunta orientadora y datos de partida" },
     { "id": "niveles_organizacion", "descripcion": "Secuencia organismo, población, comunidad y ecosistema" },
+    { "id": "nivel_organismo", "descripcion": "Resaltado de una planta del lote de policultivo" },
+    { "id": "nivel_poblacion", "descripcion": "Resaltado de la población de cafetos y de la población de caña" },
+    { "id": "nivel_comunidad", "descripcion": "Especies del policultivo frente al monocultivo de caña" },
+    { "id": "nivel_ecosistema", "descripcion": "Lotes en el piedemonte dentro de la cuenca" },
+    { "id": "interacciones", "descripcion": "Rótulos de interacciones entre especies del lote" },
     { "id": "agroecosistema_menor", "descripcion": "Resaltado de un lote de la finca" },
     { "id": "agroecosistema_mayor", "descripcion": "Resaltado del lindero con la casa y la familia dentro" },
     { "id": "conectores_internos", "descripcion": "Conectores internos de la EAP" },
@@ -162,8 +167,28 @@
       "x": 0.55,
       "z": 0.46,
       "posicion": "propuesta",
-      "notas": "Descenso de la finca al lote (PLAN, etapa 7)"
+      "ancla": { "x": 0.535, "z": 0.46 },
+      "notas": "x y z: centro del lote de policultivo (contenido/lote.json; PLAN, etapa 7). ancla: centro de los dos lotes (policultivo y monocultivo), objetivo de la cámara en la escala de planta."
     },
-    { "id": "corte_suelo", "nombre": "Corte de suelo bajo el lote", "tipo": "suelo", "x": 0.55, "z": 0.46, "posicion": "propuesta" }
+    {
+      "id": "organismo",
+      "nombre": "Cafeto del nivel de organismo",
+      "tipo": "planta",
+      "x": 0.5475,
+      "z": 0.4733,
+      "posicion": "propuesta",
+      "alto": 0.8,
+      "notas": "Cafeto del lote de policultivo resaltado en el primer paso de P03, cerca del borde sur del lote para que la cámara lo vea sin copas delante (src/lote/disposicion.js). alto: altura del ancla sobre la superficie (unidades de escena)."
+    },
+    {
+      "id": "corte_suelo",
+      "nombre": "Corte de suelo bajo el lote",
+      "tipo": "suelo",
+      "x": 0.3825,
+      "z": 0.46,
+      "posicion": "propuesta",
+      "alto": 10,
+      "notas": "En el lote de caña agroecológica de la finca faro (F1), con los datos de materia orgánica de El Hatico. alto: centro del corte extraído (separación más medio alto, contenido/lote.json)."
+    }
   ]
 }

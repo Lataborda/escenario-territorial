@@ -7,6 +7,7 @@ import { enPosicion } from '../terreno/hidrografia.js';
 import { SEMILLA } from '../terreno/relieve.js';
 import { obtenerVias } from '../vias/trazado.js';
 import { obtenerFincas } from '../fincas/trazado.js';
+import { rectangulos as rectangulosLote } from '../lote/disposicion.js';
 import { CLASES_POR_ZONA, ZONAS_CON_TESELAS, RESERVAS } from './tipos.js';
 import { LADO, rejillaTeselas } from './rejilla.js';
 
@@ -48,10 +49,15 @@ function crearReservas() {
   for (const e of ENTIDADES) {
     if (typeof e.x !== 'number' || typeof e.z !== 'number') continue;
     const regla = RESERVAS.find((r) => r.id === e.id) ?? RESERVAS.find((r) => !r.id && r.tipo === e.tipo);
-    if (regla) lista.push({ entidad: e.id, x: aMundoX(e.x), z: aMundoZ(e.z), radio: regla.radio, cobertura: regla.cobertura ?? null });
+    if (!regla) continue;
+    // Lote de la etapa 7: el rectángulo de sus dos lotes (src/lote/disposicion.js).
+    const rect = regla.rectangulo === 'lote' ? rectangulosLote().todo : null;
+    lista.push({ entidad: e.id, x: aMundoX(e.x), z: aMundoZ(e.z), radio: regla.radio, rect, cobertura: regla.cobertura ?? null });
   }
   return lista;
 }
+
+const enReserva = (r, x, z) => (r.rect ? x > r.rect.x0 && x < r.rect.x1 && z > r.rect.z0 && z < r.rect.z1 : Math.hypot(x - r.x, z - r.z) < r.radio);
 
 // Bandas de parcelas: filas de alto variable y columnas de ancho variable por banda.
 function crearCatastro(centros, azar, { alto: ALTO, ancho: ANCHO }) {
@@ -97,7 +103,7 @@ export function crearUnidades(altura) {
       if (borde < MARGEN_CAUCE || vias[t]) continue;
       let g = null;
       const banda = cauces.rio[t] >= 0 ? BANDA[cauces.rios[cauces.rio[t]].id] ?? BANDA_QUEBRADA : 0;
-      const reserva = reservas.find((r) => Math.hypot(x - r.x, z - r.z) < r.radio);
+      const reserva = reservas.find((r) => enReserva(r, x, z));
       const finca = fincas.fincas[fincas.fincaDe[t]];
       // Lote de una finca tipo, con uso fijo; el solar de la casa queda sin tesela.
       if (finca && fincas.loteDe[t] < 0) continue;

@@ -5,7 +5,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 - Guion: 40 min; ensayo objetivo: 36 min; tolerancia: 1 min.
 - Paradas saltables (decisión D6): P12, P15, P23.
 - Respaldo: 37 imágenes (una por parada y por paso). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash `#p=P14&paso=1` abre una diapositiva.
-- Generado: 2026-11-09; huella del contenido: `756a8caec39d`.
+- Generado: 2026-11-09; huella del contenido: `3cc507d72612`.
 
 ## M0 · Encuadre (3 min, 0:00 a 3:00)
 
@@ -36,9 +36,9 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 - inicio previsto 3:00 · 1,5 min · escala planta · diapositivas 3 a 6 · texto en borrador
 - Pasos: Organismo · Población · Comunidad · Ecosistema
 
-**Notas.** Avanzar los cuatro pasos con la flecha. Señalar las propiedades que aparecen en cada nivel.
+**Notas.** Avanzar los cuatro pasos con la flecha: cada paso aleja la cámara un nivel. En la comunidad, nombrar las interacciones rotuladas (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad) y la competencia en el monocultivo. Señalar las propiedades que aparecen en cada nivel.
 
-**Ficha en pantalla.** Cuatro niveles de organización en el agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de una planta del lote, sigue con la población del cultivo y la comunidad del policultivo, y termina en la finca dentro de su cuenca.
+**Ficha en pantalla.** Cuatro niveles de organización en el agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de un cafeto del lote, sigue con la población de cafetos y la comunidad del policultivo con sus interacciones, y termina en el ecosistema del piedemonte dentro de su cuenca. El lote vecino de caña reúne una sola población.
 
 **Fuentes.** Gliessman et al. (2023), fig. 3.1
 

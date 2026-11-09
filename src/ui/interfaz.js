@@ -10,6 +10,8 @@ import { crearMomentos } from './momentos.js';
 import { crearLeyenda } from './leyenda.js';
 import { crearCapas } from './capas.js';
 import { crearEap } from './eap.js';
+import { crearMateria } from './materia.js';
+import { crearInteracciones } from './interacciones.js';
 
 const DURACION_AVISO_MS = 8000;
 
@@ -54,7 +56,8 @@ export function crearInterfaz(raiz) {
   const ficha = parte('ficha', 'aside');
   ficha.setAttribute('aria-live', 'polite');
   montar('ficha', crearFicha, ficha);
-  // Columna derecha: leyenda de coberturas, leyenda de capas, usos de la finca e índice EAP.
+  // Columna derecha: leyenda de coberturas, leyenda de capas, usos de la finca, índice EAP, interacciones del lote y
+  // materia orgánica.
   const columna = parte('columna-derecha');
   const enColumna = (clase) => {
     const e = document.createElement('aside');
@@ -65,6 +68,8 @@ export function crearInterfaz(raiz) {
   montar('leyenda', crearLeyenda, enColumna('leyenda'));
   montar('capas', crearCapas, columna);
   montar('índice EAP', crearEap, columna);
+  montar('interacciones', crearInteracciones, columna);
+  montar('materia orgánica', crearMateria, columna);
   parte('rotulo-esquema').textContent = territorio.rotulo;
   const aviso = parte('aviso-autor');
   aviso.hidden = true;

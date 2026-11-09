@@ -116,11 +116,12 @@ export const ASIGNACION = [
 ];
 
 // Áreas reservadas para módulos posteriores (radio en unidades de escena). Se busca primero por id.
-// Las fincas tipo (etapa 6) tienen lotes propios (src/fincas/trazado.js).
+// Las fincas tipo (etapa 6) tienen lotes propios (src/fincas/trazado.js). El lote de la etapa 7 reserva el
+// rectángulo de sus dos lotes (src/lote/disposicion.js).
 export const RESERVAS = [
   { id: 'ciudad', radio: 70 },
   { id: 'ingenio', radio: 20 },
-  { id: 'lote', radio: 16 },
+  { id: 'lote', rectangulo: 'lote', radio: 58 }, // radio: área que las fincas tipo no ocupan
   { tipo: 'asentamiento', radio: 22 },
 ];
 

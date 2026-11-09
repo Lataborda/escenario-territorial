@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "nota": "Lote de policultivo de ladera junto a un lote de caña en monocultivo (etapa 7; ancla «lote», parada P03) y corte de suelo bajo el lote de caña agroecológica de la finca faro (ancla «corte_suelo», parada P07). Esquema sin escala: medidas en unidades de escena (1 tesela = 6). El policultivo se centra en el ancla «lote»; el monocultivo queda al occidente, hacia la matriz de caña del plano. Franjas del policultivo de occidente a oriente; la última ocupa el resto. separacion: distancia entre plantas a lo largo y entre hileras; en el corte de suelo, altura de su base sobre el terreno (corte extraído); frente: azimut (grados) hacia el que mira la cara dibujada, el de la cámara de P07; sobre: especie que crece apoyada en otra (fracción de sus plantas). lugar: punto del lote (fracción de ancho y fondo) junto al que se coloca el marcador numerado de una interacción; el número remite al panel de interacciones (columna derecha). Formas en src/coberturas/especies.js y src/coberturas/mata.js; dibujo en src/lote/.",
+  "especies": {
+    "cafeto": { "nombre": "Cafeto", "plural": "cafetos" },
+    "platano": { "nombre": "Plátano", "plural": "plátanos" },
+    "guamo": { "nombre": "Guamo", "plural": "guamos" },
+    "maiz": { "nombre": "Maíz", "plural": "matas de maíz" },
+    "frijol": { "nombre": "Fríjol", "plural": "fríjoles" },
+    "cana": { "nombre": "Caña", "plural": "matas de caña" }
+  },
+  "lotes": {
+    "policultivo": {
+      "rotulo": "Policultivo de ladera",
+      "ancho": 36,
+      "fondo": 36,
+      "franjas": [
+        {
+          "id": "maiz_frijol",
+          "ancho": 9,
+          "especies": [
+            { "especie": "maiz", "separacion": [2, 2.2] },
+            { "especie": "frijol", "sobre": "maiz", "fraccion": 0.6 }
+          ]
+        },
+        {
+          "id": "cafe_sombrio",
+          "especies": [
+            { "especie": "cafeto", "separacion": [1.7, 1.8] },
+            { "especie": "platano", "separacion": [5.4, 5.4] },
+            { "especie": "guamo", "separacion": [9, 9] }
+          ]
+        }
+      ]
+    },
+    "monocultivo": {
+      "rotulo": "Monocultivo de caña",
+      "ancho": 36,
+      "fondo": 36,
+      "especies": [{ "especie": "cana", "separacion": [1.2, 2.4] }]
+    }
+  },
+  "niveles": [
+    {
+      "id": "organismo",
+      "capa": "nivel_organismo",
+      "resalta": { "especies": ["cafeto"], "uno": true },
+      "rotulos": [{ "en": "planta", "titulo": "Organismo", "texto": "Un cafeto del lote" }]
+    },
+    {
+      "id": "poblacion",
+      "capa": "nivel_poblacion",
+      "resalta": { "especies": ["cafeto", "cana"] },
+      "rotulos": [
+        { "en": "policultivo", "titulo": "Población", "texto": "Cafetos del lote" },
+        { "en": "monocultivo", "titulo": "Población", "texto": "Caña del lote vecino" }
+      ]
+    },
+    {
+      "id": "comunidad",
+      "capa": "nivel_comunidad",
+      "resalta": { "especies": ["cafeto", "platano", "guamo", "maiz", "frijol", "cana"] },
+      "rotulos": [
+        { "en": "policultivo", "titulo": "Comunidad", "texto": "Cinco especies cultivadas y sus interacciones" },
+        { "en": "monocultivo", "titulo": "Monocultivo", "texto": "Una sola población cultivada" }
+      ]
+    },
+    {
+      "id": "ecosistema",
+      "capa": "nivel_ecosistema",
+      "resalta": { "especies": ["cafeto", "platano", "guamo", "maiz", "frijol", "cana"] },
+      "rotulos": [{ "en": "lotes", "titulo": "Ecosistema", "texto": "Comunidades y ambiente físico del piedemonte, en la cuenca" }]
+    }
+  ],
+  "niveles_fuentes": ["gliessman:fig. 3.1"],
+  "interacciones_titulo": "Interacciones en el lote",
+  "interacciones_fuentes": ["gliessman:verificar"],
+  "interacciones": [
+    { "id": "sombrio", "rotulo": "Sombrío", "texto": "Guamo y plátano sobre el cafeto", "lote": "policultivo", "en": "cafeto", "lugar": [0.62, 0.3], "fuentes": ["gliessman:verificar"] },
+    { "id": "fijacion_nitrogeno", "rotulo": "Fijación de nitrógeno", "texto": "Guamo, leguminosa arbórea", "lote": "policultivo", "en": "guamo", "lugar": [0.85, 0.78], "fuentes": ["gliessman:verificar"] },
+    { "id": "facilitacion", "rotulo": "Facilitación", "texto": "El maíz sostiene al fríjol", "lote": "policultivo", "en": "maiz", "lugar": [0.12, 0.2], "fuentes": ["gliessman:verificar"] },
+    { "id": "mutualismo", "rotulo": "Mutualismo", "texto": "Fríjol y rizobios de la raíz", "lote": "policultivo", "en": "frijol", "lugar": [0.12, 0.78], "fuentes": ["gliessman:verificar"] },
+    { "id": "complementariedad", "rotulo": "Complementariedad", "texto": "Copas y raíces en estratos distintos", "lote": "policultivo", "en": "platano", "lugar": [0.5, 0.62], "fuentes": ["gliessman:verificar"] },
+    { "id": "competencia", "rotulo": "Competencia", "texto": "Plantas de caña por los mismos recursos", "lote": "monocultivo", "en": "cana", "lugar": [0.45, 0.45], "fuentes": ["gliessman:verificar"] }
+  ],
+  "suelo": {
+    "rotulo": "Corte de suelo bajo el lote",
+    "finca": "F1",
+    "uso": "cana_organica",
+    "lote": "Caña agroecológica de la finca faro",
+    "medidas": { "ancho": 12, "fondo": 7, "alto": 13, "separacion": 3.5, "frente": -60 },
+    "horizontes": [
+      { "id": "o", "rotulo": "Hojarasca y residuos", "fraccion": 0.06 },
+      { "id": "a", "rotulo": "Horizonte A", "fraccion": 0.32 },
+      { "id": "b", "rotulo": "Horizonte B", "fraccion": 0.36 },
+      { "id": "c", "rotulo": "Horizonte C", "fraccion": 0.26 }
+    ],
+    "biota": [
+      { "id": "raices", "rotulo": "Raíces", "texto": "Caña y arvenses" },
+      { "id": "hifas", "rotulo": "Hifas", "texto": "Hongos del suelo" },
+      { "id": "macrofauna", "rotulo": "Macrofauna", "texto": "Lombrices y artrópodos" },
+      { "id": "materia", "rotulo": "Materia orgánica", "texto": "Residuos en transformación" }
+    ],
+    "cierre": { "titulo": "Cierra en la finca", "texto": "La biota del suelo cumple su ciclo en el lote" },
+    "fuentes": ["gliessman:cap. 8", "resumenes:ESTRATEGIA §5", "sanchezprager:verificar"],
+    "verificar": [
+      "Designación y orden de los horizontes del corte (O, A, B y C) y grupos de biota en Gliessman et al. (2023, cap. 8); grosores de dibujo ilustrativos."
+    ]
+  },
+  "materia_organica": {
+    "titulo": "Materia orgánica del suelo",
+    "subtitulo": "Finca faro, referencia El Hatico",
+    "unidad": "%",
+    "maximo": 5,
+    "filas": [
+      { "id": "cana", "rotulo": "Caña agroecológica", "desde": 2, "hasta": 4, "texto": "de 2 % a 4 %" },
+      { "id": "bosque", "rotulo": "Bosque de referencia", "hasta": 4.3, "texto": "4,3 %" }
+    ],
+    "fuentes": ["calle:verificar"],
+    "verificar": [
+      "Mismo dato de P07: sección de Calle et al. (2022, cap. 11) con la materia orgánica de la caña agroecológica y del bosque; precisar si «de 2 % a 4 %» es un cambio en el tiempo o un intervalo y ajustar la barra."
+    ]
+  },
+  "estado_texto": "borrador",
+  "verificar": [
+    "Ejemplos de especies de cada interacción (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad y competencia) en Gliessman et al. (2023, caps. 7 y 12), y pasaje de cada una para el localizador.",
+    "Composición del policultivo de ladera (maíz y fríjol; cafeto con guamo y plátano): ejemplo de dibujo sin fuente; confirmar con Alejandro."
+  ]
+}

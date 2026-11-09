@@ -2,7 +2,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-export const ARCHIVOS = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fincas', 'eap', 'fuentes'];
+export const ARCHIVOS = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fincas', 'eap', 'lote', 'fuentes'];
 
 export async function leerContenido(raiz) {
   const datos = {};

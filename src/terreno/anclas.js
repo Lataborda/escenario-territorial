@@ -9,7 +9,8 @@ const TOLERANCIA = 0.05;
 
 const centro = (valor) => (Array.isArray(valor) ? (valor[0] + valor[1]) / 2 : valor);
 
-// Devuelve un Map id -> Vector3 con la altura de la superficie visible (terreno o agua).
+// Devuelve un Map id -> Vector3 con la altura de la superficie visible (terreno o agua) más el alto de la entidad
+// (territorio.json, campo opcional «alto»: centro de un objeto elevado, como el corte de suelo).
 export function calcularAnclas(entidades, { superficie, puntoDelRio }) {
   const anclas = new Map();
   for (const e of entidades) {
@@ -26,7 +27,7 @@ export function calcularAnclas(entidades, { superficie, puntoDelRio }) {
         z = p.z;
       }
     }
-    anclas.set(e.id, new THREE.Vector3(x, superficie(x, z), z));
+    anclas.set(e.id, new THREE.Vector3(x, superficie(x, z) + (e.alto ?? 0), z));
   }
   return anclas;
 }
@@ -54,8 +55,8 @@ export function crearMarcadores(anclas) {
   return marcadores;
 }
 
-// Comprueba con rayos verticales que cada ancla queda sobre la malla visible.
-export function revisarAnclas(anclas, objetivos) {
+// Comprueba con rayos verticales que cada ancla queda sobre la malla visible (descontado su alto).
+export function revisarAnclas(anclas, objetivos, altos = new Map()) {
   const rayo = new THREE.Raycaster();
   const abajo = new THREE.Vector3(0, -1, 0);
   const resultado = { total: anclas.size, maximo: 0, fuera: [], sinImpacto: [] };
@@ -66,7 +67,7 @@ export function revisarAnclas(anclas, objetivos) {
       resultado.sinImpacto.push(id);
       continue;
     }
-    const desvio = Math.abs(impacto.point.y - p.y);
+    const desvio = Math.abs(impacto.point.y + (altos.get(id) ?? 0) - p.y);
     resultado.maximo = Math.max(resultado.maximo, desvio);
     if (desvio > TOLERANCIA) resultado.fuera.push(`${id} (${desvio.toFixed(3)})`);
   }

@@ -1,0 +1,166 @@
+/* Rótulos del lote y del corte de suelo (src/lote/rotulos.js) y panel de materia orgánica (src/ui/materia.js).
+   Unidades en rem: 1 rem = 24 px a 1920×1080. */
+
+/* La posición sale de la caja calculada en rotulos.js: sin centrado propio */
+.rotulo-lote.en-linea {
+  max-width: none;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.rotulo-lote.en-linea strong {
+  display: inline;
+}
+
+.rotulo-lote.en-linea span {
+  color: var(--texto-suave);
+}
+
+.rotulo-lote.interaccion {
+  border-color: rgba(47, 93, 80, 0.45);
+}
+
+.rotulo-lote.interaccion strong {
+  color: var(--acento);
+}
+
+.rotulo-lote.cierre {
+  max-width: 17rem;
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #fbf9f4;
+}
+
+.rotulo-lote.cierre::after {
+  border-top-color: var(--acento);
+}
+
+/* Rótulos laterales del corte: la punta señala el borde de la cara dibujada */
+.rotulo-lote.lado-izquierdo::after,
+.rotulo-lote.lado-derecho::after {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  margin: -0.45rem 0 0;
+  border: 0.45rem solid transparent;
+}
+
+.rotulo-lote.lado-izquierdo::after {
+  right: -0.45rem;
+  border-right: 0;
+  border-left-color: var(--panel);
+}
+
+.rotulo-lote.lado-derecho::after {
+  left: -0.45rem;
+  border-left: 0;
+  border-right-color: var(--panel);
+}
+
+/* Panel de materia orgánica: barra sobre una escala de 0 al máximo; intervalo en tono claro */
+.materia {
+  box-sizing: border-box;
+  padding: 0.4rem 0.7rem 0.45rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.materia[hidden] {
+  display: none;
+}
+
+.materia-titulo {
+  font-weight: 600;
+}
+
+.materia-subtitulo,
+.materia-pie {
+  color: var(--texto-suave);
+}
+
+.materia-fila {
+  margin-top: 0.3rem;
+}
+
+.materia-rotulo {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.materia-valor {
+  font-weight: 600;
+}
+
+.materia-barra {
+  position: relative;
+  height: 0.55rem;
+  margin-top: 0.15rem;
+  background: rgba(43, 42, 39, 0.08);
+  border-radius: 0.3rem;
+  overflow: hidden;
+}
+
+.materia-tramo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 0.3rem;
+  background: var(--acento);
+}
+
+.materia-tramo.base {
+  background: rgba(47, 93, 80, 0.35);
+}
+
+.materia-pie {
+  margin-top: 0.35rem;
+}
+
+/* Panel de interacciones (src/ui/interacciones.js): número del marcador de la escena, nombre y descripción */
+.interacciones {
+  box-sizing: border-box;
+  padding: 0.4rem 0.7rem 0.45rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.interacciones[hidden] {
+  display: none;
+}
+
+.interacciones-titulo {
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.interacciones-lista {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.interacciones-entrada {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.interacciones-entrada strong {
+  font-weight: 600;
+}
+
+.interacciones-pie {
+  margin-top: 0.3rem;
+  color: var(--texto-suave);
+}

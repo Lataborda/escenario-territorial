@@ -52,7 +52,7 @@ function cajaEnPantalla(pagina, id) {
 }
 
 // Mosaico de capturas en una sola imagen (página auxiliar del mismo navegador).
-async function componer(navegador, imagenes, columnas, destino) {
+export async function componer(navegador, imagenes, columnas, destino) {
   const pagina = await navegador.newPage({ viewport: { width: 1600, height: 900 } });
   const filas = Math.ceil(imagenes.length / columnas);
   const celdas = imagenes.map((b) => `<img src="data:image/jpeg;base64,${b.toString('base64')}">`).join('');

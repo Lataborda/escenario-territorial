@@ -52,7 +52,7 @@ export function generarTerreno({ exageracion = 2 } = {}) {
     superficie,
     anclas,
     marcadores,
-    revisar: () => revisarAnclas(anclas, [malla, agua]),
+    revisar: () => revisarAnclas(anclas, [malla, agua], new Map(ENTIDADES.filter((e) => e.alto).map((e) => [e.id, e.alto]))),
     huella: huella([alturasMundo, nivelesMundo.map((n) => (Number.isNaN(n) ? -1 : n)), agua.geometry.attributes.position.array]),
   };
   return grupo;

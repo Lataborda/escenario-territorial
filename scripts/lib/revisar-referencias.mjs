@@ -48,6 +48,7 @@ function revisarTerritorio(t, c, errores) {
     requeridos(e, ['id', 'nombre', 'tipo', 'x', 'z'], donde, errores);
     if (!coordenada(e.x) || !coordenada(e.z)) errores.push(`${donde}: coordenadas fuera de 0 a 1`);
     if (e.ancla && !(enRango(e.ancla.x) && enRango(e.ancla.z))) errores.push(`${donde}: ancla fuera de 0 a 1`);
+    if (e.alto != null && !(typeof e.alto === 'number' && e.alto >= 0 && e.alto <= 40)) errores.push(`${donde}: alto del ancla fuera de 0 a 40`);
     if (e.escenarios) existen(e.escenarios, c.escenarios, donde, 'escenario', errores);
   }
 }
@@ -141,6 +142,11 @@ function revisarParadas(p, c, errores, avisos) {
     for (const paso of x.pasos ?? []) {
       if (!paso.rotulo) errores.push(`${donde} · ${paso.id}: paso sin rótulo`);
       if (paso.estado) revisarEstado(paso.estado, c, `${donde} · ${paso.id}`, errores);
+      // Cámara del paso: se superpone a la de la parada (src/navegacion/recorrido.js, camaraDe).
+      if (paso.camara) {
+        existen(paso.camara.ancla, c.entidades, `${donde} · ${paso.id}`, 'ancla', errores);
+        revisarCamara({ ...x.camara, ...paso.camara }, `${donde} · ${paso.id}`, errores);
+      }
     }
     if (x.momento in minutos) minutos[x.momento] += x.minutos ?? 0;
   }

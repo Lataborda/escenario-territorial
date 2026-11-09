@@ -24,6 +24,14 @@ export function estadoDe(parada, paso = 0) {
   };
 }
 
+// Cámara de una parada en un paso: la del paso (si la tiene) se superpone a la de la parada.
+export const camaraDe = (parada, paso = 0) => ({ ...parada.camara, ...(parada.pasos?.[paso]?.camara ?? {}) });
+const conCamaraPorPaso = (parada) => Boolean(parada.pasos?.some((x) => x.camara));
+
+// Bloques de cámara de todos los estados del recorrido, en orden (verificación de trayectorias).
+export const bloquesDelRecorrido = () =>
+  PARADAS.flatMap((p) => Array.from({ length: cantidadPasos(p) }, (_, k) => camaraDe(p, k)));
+
 // Aplica una parada completa: estado, escala, punto de interés y cámara (duración 0 = sin vuelo).
 export function irA(id, { paso = 0, instantanea = false } = {}) {
   const parada = buscarParada(id);
@@ -32,21 +40,22 @@ export function irA(id, { paso = 0, instantanea = false } = {}) {
     return false;
   }
   const k = Math.min(Math.max(paso, 0), cantidadPasos(parada) - 1);
+  const camara = camaraDe(parada, k);
   cambiar({
     parada: parada.id,
     paso: k,
     escala: parada.escala,
     foco: parada.camara.ancla,
     ...estadoDe(parada, k),
-    camara: { ...parada.camara, duracion: instantanea ? 0 : parada.camara.duracion },
+    camara: { ...camara, duracion: instantanea ? 0 : camara.duracion },
   });
   return true;
 }
 
-// Un paso cambia el estado visual y conserva cámara y modo.
+// Un paso cambia el estado visual y conserva el modo; la cámara cambia si la parada tiene cámara por paso.
 function irAPaso(parada, k) {
   const { modo, ...resto } = estadoDe(parada, k);
-  cambiar({ paso: k, ...resto });
+  cambiar({ paso: k, ...resto, ...(conCamaraPorPaso(parada) ? { camara: camaraDe(parada, k) } : {}) });
   return true;
 }
 
@@ -84,5 +93,5 @@ export function alternarLibre() {
   if (modo !== 'libre') return cambiar({ modo: 'libre' });
   const p = buscarParada(parada);
   if (!p) return cambiar({ modo: 'recorrido' });
-  cambiar({ modo: estadoDe(p, paso).modo, escala: p.escala, foco: p.camara.ancla, camara: { ...p.camara } });
+  cambiar({ modo: estadoDe(p, paso).modo, escala: p.escala, foco: p.camara.ancla, camara: camaraDe(p, paso) });
 }

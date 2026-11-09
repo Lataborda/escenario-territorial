@@ -18,15 +18,16 @@ Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe c
 | ley2294 | Ley 2294 de 2023, art. 32 | falta | Verificar el texto del artículo (GUION, precaución 4). |
 | al012023 | Acto Legislativo 01 de 2023 | falta | Verificar el texto sobre el campesinado como sujeto de derechos. |
 
-## Localizadores por verificar (71 referencias en 23 fuentes)
+## Localizadores por verificar (79 referencias en 24 fuentes)
 
 Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar «verificar» por la página o la sección.
 
-- `calle` (Calle et al. (2022)): paradas (P07)
+- `calle` (Calle et al. (2022)): paradas (P07); lote (materia_organica)
 - `cleves` (Cleves-Leguízamo et al. (2017)): escalas (finca); paradas (P05); eap (fuentes)
 - `dec1406` (Decreto 1406 de 2023): escalas (region); condiciones (C10)
 - `duarte` (Duarte et al. (2025)): escalas (frentes_literatura)
 - `giraldorosset` (Giraldo y Rosset (2018)): escenarios (L4, contraste_lentes)
+- `gliessman` (Gliessman et al. (2023)): lote (sombrio, fijacion_nitrogeno, facilitacion, mutualismo, complementariedad, competencia)
 - `lamine` (Lamine et al. (2023)): escenarios (L1, L2)
 - `leonsicard` (León-Sicard (2021)): escalas (finca, vereda); condiciones (C9, H3); eap (fuentes)
 - `levidow` (Levidow et al. (2023)): escalas (territorio); paradas (P14); escenarios (L4)
@@ -41,12 +42,12 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `redmac` (REDMAC): paradas (P18, P20); escenarios (S2); condiciones (H2); actores (red_mercados)
 - `res331` (Res. 331 de 2024): escalas (region); paradas (P02, P24); escenarios (S0); condiciones (C8); actores (madr_adr)
 - `romero` (Romero et al. (2023)): territorio (ladera); paradas (P23); fincas (F2)
-- `sanchezprager` (Sánchez de Prager (2018)): paradas (P07)
+- `sanchezprager` (Sánchez de Prager (2018)): paradas (P07); lote (suelo)
 - `wezel2016` (Wezel et al. (2016)): escalas (vereda, territorio); paradas (P14); escenarios (S3, L2); condiciones (H3, RF)
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (23)
+## Datos por verificar (27)
 
 - escalas.json · cuenca: Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos.
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
@@ -71,3 +72,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - eap.json · verificar: Nombres, siglas y orden de los diez criterios del índice EAP (León-Sicard 2021, cap. 3; Cleves-Leguízamo et al. 2017): redactados sin acceso a las fuentes en la sesión en la nube del 2026-11-09.
 - eap.json · verificar: Grupos de criterios y reparto entre ellos (el PLAN anotó cinco ecosistémicos y cinco culturales; sin confirmar).
 - eap.json · verificar: Escala de cada criterio (1 a 10) y total máximo del índice (100); categorías del índice, si se muestran.
+- lote.json · suelo: Designación y orden de los horizontes del corte (O, A, B y C) y grupos de biota en Gliessman et al. (2023, cap. 8); grosores de dibujo ilustrativos.
+- lote.json · materia_organica: Mismo dato de P07: sección de Calle et al. (2022, cap. 11) con la materia orgánica de la caña agroecológica y del bosque; precisar si «de 2 % a 4 %» es un cambio en el tiempo o un intervalo y ajustar la barra.
+- lote.json · verificar: Ejemplos de especies de cada interacción (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad y competencia) en Gliessman et al. (2023, caps. 7 y 12), y pasaje de cada una para el localizador.
+- lote.json · verificar: Composición del policultivo de ladera (maíz y fríjol; cafeto con guamo y plátano): ejemplo de dibujo sin fuente; confirmar con Alejandro.

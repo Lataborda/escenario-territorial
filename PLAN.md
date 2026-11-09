@@ -444,6 +444,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 
 ## Etapa 7. Lote, interacciones de especies y suelo
 
+- División (2026-11-09): 7.a, sin fuentes (lote de policultivo y monocultivo, cuatro pasos de P03 con cámara por paso, marcadores y panel de interacciones, corte de suelo, panel de materia orgánica y verificación, con los rótulos en `contenido/lote.json` en estado `borrador` y localizadores `verificar`); 7.b, con fuentes (cotejo). La 7.a se hizo en la nube; la 7.b requiere sesión local y va junto al cotejo de la 6.b.
 - Tamaño: mediana a grande. Fuentes: sí (Gliessman caps. 3, 7, 8 y 12; Calle et al. 2022, cap. 11).
 - Objetivo: el descenso continuo de la finca al lote y al suelo.
 - Trabajo:
@@ -454,9 +455,24 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Contraste de materia orgánica con los datos de El Hatico.
   - Transición de cámara sin cortes de finca a lote y a suelo.
 - Criterios de aceptación:
-  - [ ] Descenso continuo en las paradas P03, P04 y P07.
-  - [ ] Cada rótulo conceptual tiene fuente en `contenido/`.
+  - [x] Descenso continuo en las paradas P03, P04 y P07 (7.a: vuelos sin saltos entre los pasos de P03, de P03 a P04 y de P06 a P07).
+  - [x] Cada rótulo conceptual tiene fuente en `contenido/` (7.a: clave de fuente en cada rótulo; localizadores pendientes en la 7.b).
 - Prompt de arranque: `Etapa 7 de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
+- Resultado 7.a (2026-11-09): `contenido/lote.json` (especies, lotes, niveles, interacciones, corte y materia orgánica) y su validador; `src/lote/` (disposición con semilla, plantas instanciadas con apagado por nivel, fríjol, corte de suelo con perfil dibujado en un lienzo, rótulos); paneles de interacciones y de materia orgánica (`src/ui/`); cámara por paso en `recorrido.js`; anclas con alto (`territorio.json`); entidad `organismo`; revisión `scripts/lib/revisar-lote.mjs`.
+
+## Etapa 7.b. Cotejo del lote y del suelo
+
+- Tamaño: pequeño. Fuentes: sí. Sesión local con `/add-dir ../..`, en la misma sesión del cotejo de la 6.b.
+- Lecturas: `contenido/lote.json` (campos `verificar` y fuentes con `verificar`); `GUION.md`, sección 10.
+- Trabajo:
+  - Gliessman et al. (2023): fig. 3.1 (niveles de organización y texto de cada nivel); caps. 7 y 12 (pasaje y ejemplo de especies de cada interacción); cap. 8 (horizontes y grupos de biota del corte). Ajustar rótulos y cerrar localizadores.
+  - Calle et al. (2022, cap. 11): sección con la materia orgánica de la caña agroecológica y del bosque; precisar si «de 2 % a 4 %» es un cambio en el tiempo o un intervalo y ajustar la barra del panel (`desde` y `hasta`).
+  - Sánchez de Prager (2018): localizador o retiro de la referencia.
+  - Confirmar con Alejandro la composición del policultivo de ladera (maíz y fríjol; cafeto con guamo y plátano).
+- Criterios de aceptación:
+  - [ ] Sin localizadores `verificar` en `contenido/lote.json`, P03 y P07.
+  - [ ] Rótulos de niveles, interacciones y biota iguales al término de la fuente.
+- Prompt de arranque: `Etapa 7.b de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
 
 ## Etapa 8. Procesos supraprediales
 

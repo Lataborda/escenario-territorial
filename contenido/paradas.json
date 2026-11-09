@@ -63,16 +63,31 @@
       "saltable": false,
       "titulo": "Niveles de organización",
       "escala": "planta",
-      "camara": { "ancla": "lote", "distancia": 160, "azimut": -30, "elevacion": 30, "duracion": 2.5 },
-      "estado": { "escenario": "S0", "capas": ["niveles_organizacion"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
+      "camara": { "ancla": "organismo", "distancia": 24, "azimut": -30, "elevacion": 28, "duracion": 2.5 },
+      "estado": { "escenario": "S0", "capas": ["niveles_organizacion", "nivel_organismo"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
       "pasos": [
         { "id": "organismo", "rotulo": "Organismo" },
-        { "id": "poblacion", "rotulo": "Población" },
-        { "id": "comunidad", "rotulo": "Comunidad" },
-        { "id": "ecosistema", "rotulo": "Ecosistema" }
+        {
+          "id": "poblacion",
+          "rotulo": "Población",
+          "estado": { "capas": ["niveles_organizacion", "nivel_poblacion"] },
+          "camara": { "ancla": "lote", "distancia": 95, "elevacion": 34 }
+        },
+        {
+          "id": "comunidad",
+          "rotulo": "Comunidad",
+          "estado": { "capas": ["niveles_organizacion", "nivel_comunidad", "interacciones"] },
+          "camara": { "ancla": "lote", "distancia": 125, "elevacion": 38 }
+        },
+        {
+          "id": "ecosistema",
+          "rotulo": "Ecosistema",
+          "estado": { "capas": ["niveles_organizacion", "nivel_ecosistema"] },
+          "camara": { "ancla": "lote", "distancia": 620, "elevacion": 40 }
+        }
       ],
-      "ficha": "Cuatro niveles de organización en el agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de una planta del lote, sigue con la población del cultivo y la comunidad del policultivo, y termina en la finca dentro de su cuenca.",
-      "notas": "Avanzar los cuatro pasos con la flecha. Señalar las propiedades que aparecen en cada nivel.",
+      "ficha": "Cuatro niveles de organización en el agroecosistema: organismo, población, comunidad y ecosistema. El recorrido parte de un cafeto del lote, sigue con la población de cafetos y la comunidad del policultivo con sus interacciones, y termina en el ecosistema del piedemonte dentro de su cuenca. El lote vecino de caña reúne una sola población.",
+      "notas": "Avanzar los cuatro pasos con la flecha: cada paso aleja la cámara un nivel. En la comunidad, nombrar las interacciones rotuladas (sombrío, fijación de nitrógeno, facilitación, mutualismo, complementariedad) y la competencia en el monocultivo. Señalar las propiedades que aparecen en cada nivel.",
       "fuentes": ["gliessman:fig. 3.1"],
       "verificar": ["Pasaje de Gliessman (cap. 3) sobre las propiedades emergentes de cada nivel, si se mencionan en la exposición."],
       "estado_texto": "borrador"
@@ -138,7 +153,7 @@
       "saltable": false,
       "titulo": "Biota del suelo",
       "escala": "suelo",
-      "camara": { "ancla": "corte_suelo", "distancia": 70, "azimut": -30, "elevacion": 12, "duracion": 2.5 },
+      "camara": { "ancla": "corte_suelo", "distancia": 60, "azimut": -60, "elevacion": 10, "duracion": 2.5 },
       "estado": { "escenario": "S0", "capas": ["corte_suelo"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
       "ficha": "La biota del suelo cierra su ciclo en el lote y la finca. Raíces, hifas y macrofauna transforman la materia orgánica bajo el lote. Materia orgánica en la caña agroecológica de la finca faro: de 2 % a 4 %. Bosque de referencia: 4,3 %.",
       "notas": "Rótulo «cierra en la finca». Afirmar que todo proceso exige territorio sería un error (GUION, precaución 2). Citar la tradición de biología del suelo de Palmira (Sánchez de Prager, 2018).",

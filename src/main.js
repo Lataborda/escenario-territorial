@@ -9,10 +9,13 @@ import { crearVias } from './vias/vias.js';
 import { crearAsentamientos } from './asentamientos/asentamientos.js';
 import { crearFincas } from './fincas/fincas.js';
 import { crearRotulosFinca } from './fincas/rotulos.js';
+import { crearLote } from './lote/lote.js';
+import { crearCorte } from './lote/suelo.js';
+import { crearRotulosLote } from './lote/rotulos.js';
 import { leerParametros } from './parametros.js';
 import { obtener, cambiar, suscribir } from './estado.js';
 import { crearCamaraNavegacion } from './navegacion/camara.js';
-import { PARADAS, irA, siguiente, anterior } from './navegacion/recorrido.js';
+import { PARADAS, irA, siguiente, anterior, bloquesDelRecorrido } from './navegacion/recorrido.js';
 import { irAEscala, enfocar } from './navegacion/foco.js';
 import { crearTeclado } from './navegacion/teclado.js';
 import { crearHash } from './navegacion/hash.js';
@@ -133,6 +136,25 @@ async function iniciar() {
       alCuadro: escena.alCuadro,
     }),
   );
+  // Lote de policultivo y monocultivo (P03) y corte de suelo (P07), con sus rótulos.
+  const lote = montar('lote', () => crearLote({ altura, camara: escena.camara, instantanea: parametros.captura }));
+  if (lote) {
+    escena.agregar(lote.grupo);
+    escena.superponer(lote.superposicion);
+    escena.alCuadro(lote.cuadro);
+  }
+  const corte = montar('corte de suelo', () => crearCorte({ altura, instantanea: parametros.captura }));
+  if (corte) escena.agregar(corte.grupo);
+  const rotulosLote = lote && corte && montar('rótulos del lote', () =>
+    crearRotulosLote({
+      contenedor: document.getElementById('interfaz'),
+      lote,
+      corte,
+      altura,
+      proyectar: (x, y, z) => proyectar(escena, new THREE.Vector3(x, y, z)),
+      alCuadro: escena.alCuadro,
+    }),
+  );
   // Vista del presentador (npm run presentar): publica el estado y recibe órdenes.
   montar('presentador', crearSincronia);
 
@@ -148,6 +170,7 @@ async function iniciar() {
     vias: () => vias,
     asentamientos: () => asentamientos,
     fincas: () => fincas && { ...fincas.datos(), rotulos: rotulos?.visibles() ?? 0 },
+    lote: () => lote && { ...lote.datos(), corte: corte?.datos() ?? null, rotulos: rotulosLote?.visibles() ?? null },
     cambiarEscenario: (id) => cambiar({ escenario: id }),
     capas: (lista) => cambiar({ capas: lista }),
     revisarAnclas: revisarAnclasTerreno,
@@ -171,7 +194,7 @@ async function iniciar() {
     colocar: (posicion, objetivo) => escena.colocar(new THREE.Vector3(...posicion), new THREE.Vector3(...objetivo)),
     superficie: (x, z) => superficie(x, z),
     ancla: (id) => ancla(id)?.toArray() ?? null,
-    revisarTrayectorias: () => revisarTrayectorias(PARADAS.map((p) => p.camara)),
+    revisarTrayectorias: () => revisarTrayectorias(bloquesDelRecorrido()),
     desvioBloque: (bloque) => desvioBloque(bloque, escena.camara.position),
     // Posición en pantalla (píxeles) del ancla de una entidad o de un punto [x, y, z].
     proyectar: (id) => proyectar(escena, ancla(id)),
