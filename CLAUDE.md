@@ -38,7 +38,7 @@ Si una etapa resulta grande, dividirla en N.a y N.b, registrar la división en l
 
 ## Acceso a las fuentes
 
-Las fuentes están fuera de esta carpeta. En las etapas que las requieren, ejecutar al inicio `/add-dir ../..` para dar lectura a la carpeta `TC`. Rutas relativas desde este proyecto:
+Las fuentes están fuera de esta carpeta. En una sesión local, ejecutar al inicio `/add-dir ../..` para dar lectura a la carpeta `TC`. En una sesión en la nube, leerlas con el conector de Google Drive: carpeta «TC» (`Prueba Oral/Transition`, `Prueba Oral/Agroecologia_Grafo`, `Prueba Oral/Normative`); el archivo leído queda guardado en el contenedor: convertirlo a texto en el directorio temporal y buscar con `rg`, sin leerlo entero (detalle en `BITACORA.md`, «Fuentes en la nube»). Rutas relativas desde este proyecto:
 
 - `../RESUMEN-prueba-oral.md` y `../RESUMEN-ESTRATEGIA-PRUEBA-ORAL.md`: síntesis previas de la estrategia de la prueba oral.
 - `../Transition/`: artículos en markdown (ojo: un archivo empieza con espacio, ` Territorialising Local Food Systems .md`).

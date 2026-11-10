@@ -177,7 +177,8 @@ El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recarga
 
 ## 4. Principios técnicos
 
-- Rendimiento: 50 cuadros por segundo o más en el MacBook Air en la vista general. Vegetación con InstancedMesh; menos de 200 llamadas de dibujo; relación de píxeles máxima de 2. El modo liviano retira sombras y reduce instancias.
+- Rendimiento: 50 cuadros por segundo o más en el MacBook Air en la vista general. Vegetación con InstancedMesh; menos de 200 llamadas de dibujo; relación de píxeles máxima de 2 (1,5 desde la etapa 7.c). El modo liviano retira sombras y reduce instancias.
+- Presupuesto gráfico (desde la auditoría del 2026-11-10): toda capa nueva se mide en triángulos y llamadas por cuadro y se anota en la bitácora. Las capas de las etapas 8 a 12 (flujos, redes, radios, polígonos, paneles) se dibujan con líneas, partículas instanciadas e interfaz HTML, sin geometría densa: 50.000 triángulos por capa como máximo. Nada nuevo se dibuja fuera del encuadre ni recalcula sombras con la cámara quieta. El WebGL corre en el equipo de quien abre la página (también si se publica en la web), así que la calidad adaptable de la etapa 7.c es condición para el uso en clase.
 - Legibilidad en videoconferencia: texto de 24 px o más a 1920×1080; contraste AA; fichas de 60 palabras como máximo; siete rótulos simultáneos como máximo.
 - Determinismo: semilla fija; la escena es idéntica en cada carga.
 - Sin red: bibliotecas, tipografías y datos locales.
@@ -475,6 +476,53 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - Resultado (2026-11-09, en la nube con la carpeta de Drive): niveles según la fig. 3.1 (el cuarto paso dibuja el lindero de una finca con los dos lotes: «la finca en el contexto de su cuenca»); interacciones con página de los caps. 7 y 12 (facilitación cambiada: «el maíz sostiene al fríjol» no está en la fuente); horizontes y biota del cap. 8; materia orgánica de Calle et al. (2022, §11.4.2): de 2 % en 1994 a 4 %, bosque de referencia 4,2 %.
 - Prompt de arranque: `Etapa 7.b de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
 
+## Etapa 7.c. Rendimiento sin cambio visible y calidad adaptable
+
+- Origen: auditoría del 2026-11-10 (entrada de la bitácora). Alejandro informó que en el MacBook Air M1 corre bien, «tal vez un poco lento», y que en un equipo antiguo de poca gráfica no corre bien. Va antes de la etapa 8, que añade partículas.
+- Tamaño: mediana. Fuentes: no. Si resulta grande, dividir: primero los puntos 1 a 4; después la calidad adaptable y el HTML.
+- Objetivo: la misma imagen con la mitad del trabajo de la tarjeta gráfica, y una calidad que se adapta sola al equipo.
+- Línea base (versión compilada, S0, ventana de 1600×900; triángulos por cuadro sumando todas las pasadas; `renderer.info`):
+
+| Vista | Total | Caña cercana | Pasada de sombra | Llamadas |
+|---|---|---|---|---|
+| General (P01) | 1,93 M | 0 | 0,67 M | 55 |
+| Finca faro (P06) | 3,71 M | 1,53 M | 0,79 M | 84 |
+| Lote (P03, comunidad) | 5,30 M | 1,43 M | 1,47 M | 88 |
+| Suelo (P07) | 5,42 M | 2,27 M | 1,23 M | 99 |
+| Modo liviano (tecla V) | 0,89 a 0,93 M | 0 | 0 | 35 a 49 |
+
+- Trabajo (ningún punto debe cambiar la imagen; comprobar con las capturas de la verificación):
+  1. Sombra fija. La sombra ya no sigue el viento, pero el mapa se recalcula en cada cuadro. Usar `renderizador.shadowMap.autoUpdate = false` y pedir `needsUpdate` solo al cambiar el escenario (durante su transición), el nivel de detalle (cuando `detalle.medir` devuelve cambio de celdas, `src/coberturas/coberturas.js`), el modo liviano, la subida del corte de suelo y el primer cuadro (`src/escena/escena.js`).
+  2. Descarte por zonas de la vegetación. Las mallas instanciadas de `src/coberturas/instancias.js` llevan `frustumCulled = false` y dibujan todo el mapa en cada cuadro. Ordenar las instancias por celda (`detalle.js`, celdas de 60 unidades) y dibujar solo las celdas dentro del encuadre, como ya hace `cana.js` (`encuadre.intersectsBox`). El nivel «cerca» también debe limitarse al encuadre. Cuidado: la pasada de sombra usa otra cámara; con la sombra fija del punto 1, el mapa se calcula con todas las instancias que proyectan sombra y el descarte se aplica solo a la pasada principal.
+  3. Tope de cuadros. El ciclo de `escena.js` dibuja a 60 cuadros por segundo aunque la cámara esté quieta. Tope de 30 con la cámara quieta y viento activo; 60 durante los vuelos y en el modo libre. Parámetro `#cps=` para ajustarlo. Con viento apagado y cámara quieta, no dibujar.
+  4. Suavizado de bordes. El lienzo se crea con `antialias: true` y además el destino del posproceso lleva MSAA ×4 (`posproceso.js`); con posproceso activo el suavizado del lienzo no se usa. Crear el lienzo sin suavizado cuando el posproceso está activo, bajar el MSAA a ×2 con relación de píxeles de 1,5 o más, y limitar la relación de píxeles a 1,5 (`RELACION_PIXELES_MAX`). Comparar una captura ampliada antes y después.
+  5. Calidad adaptable. Tres niveles en el estado (`calidad`: `alta`, `media`, `liviana`), en reemplazo del booleano `liviano`: alta, la actual con los puntos 1 a 4; media, sin oclusión ni miniatura, relación de píxeles 1, caña cercana a la mitad del cupo y del radio; liviana, la actual de la tecla V. La tecla V recorre los tres. Parámetro `#calidad=` en el hash (se conserva al recargar) y detección al arrancar: medir los primeros 60 cuadros tras `escenario:listo` y bajar un nivel si el promedio queda por debajo de 30 cuadros por segundo (una sola vez; sin subir solo). Adelanta el «modo liviano automático» de la etapa 13. Actualizar la vista del presentador (`src/presentador/`), el indicador de `src/ui/momentos.js` y el medidor.
+  6. HTML de salida. Aviso «Cargando…» en `index.html` (visible hasta `escenario:listo`; hoy la pantalla queda en blanco mientras se genera la escena). Aviso breve si la calidad bajó sola («Calidad media. Tecla V para cambiarla»).
+  7. Rótulos del lote y del corte (`src/lote/rotulos.js`): `colocar` lee `offsetWidth` y `offsetHeight` en cada cuadro. Medir cada rótulo una vez al mostrarlo y no recolocar si la cámara no se movió.
+  8. Verificación: `scripts/lib/revisar-lote.mjs` y `revisar-luz.mjs` deben seguir pasando; añadir al informe los triángulos por vista de la tabla y un límite por vista (la mitad de la línea base, salvo la general). Como la verificación corre sin tarjeta gráfica, los cuadros por segundo reales los mide Alejandro con la tecla R.
+- Fuera de alcance: cambiar formas, densidades o materiales (etapa 7.d).
+- Criterios de aceptación:
+  - [ ] Capturas de P01, P03, P06 y P07 sin diferencia apreciable frente a las del commit `97baa57`.
+  - [ ] Triángulos por cuadro con la cámara quieta: P01 1,3 M o menos; P06 2,8 M o menos; P03 (comunidad) 3,0 M o menos; P07 3,5 M o menos.
+  - [ ] La calidad queda en el hash y sobrevive a la recarga; la detección baja de nivel en un equipo lento (prueba con un umbral forzado).
+  - [ ] Cifras de Alejandro en el MacBook Air (tecla R) en P01, P06, P03 y P07, anotadas en la bitácora.
+- Prompt de arranque: `Etapa 7.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 7.d. Caña y materiales con aprobación visual
+
+- Origen: auditoría del 2026-11-10. Cambios que alteran un poco la imagen: se entregan con capturas de antes y después y esperan la aprobación de Alejandro (sin modo continuo).
+- Tamaño: pequeña a mediana. Fuentes: no.
+- Objetivo: bajar el mayor costo de la escena, la caña cercana, sin perder la mata de la referencia `referencias/cana-mata.webp`.
+- Trabajo:
+  1. Mata detallada (`src/coberturas/mata.js`): hoy 430 triángulos por mata, hasta 4.500 matas. Meta: 200 a 240 (menos segmentos por hoja y menos caras por tallo), con nudos y hojas en arco.
+  2. Mata lejana: hoy 66 triángulos, hasta 26.000 matas (1,5 M en P06). Meta: 30 a 36, o cupo y radio menores (`CUPO`, `UMBRAL_CANA` y `UMBRAL_DETALLE` en `cana.js`). Revisar el empalme con el bloque lejano.
+  3. Material mate: toda la escena usa `MeshStandardMaterial`. Probar `MeshLambertMaterial` en la vegetación, la caña y las teselas (los sombreadores propios de `viento.js`, `cana.js` y `lote/formas.js` usan fragmentos comunes a ambos). Adoptarlo solo si la diferencia no se nota.
+  4. El lote de la etapa 7 (`src/lote/lote.js`) se dibuja en detalle a menos de 280 unidades aunque la parada sea otra (aparece en P07): limitar el nivel cercano a la escala de planta o al encuadre.
+- Criterios de aceptación:
+  - [ ] Mosaico de antes y después (P06, P07 y `cana-cerca.jpg`) aprobado por Alejandro.
+  - [ ] Caña cercana en P07: 1,2 M de triángulos o menos (hoy 2,27 M).
+- Prompt de arranque: `Etapa 7.d de PLAN.md. Sigue el protocolo de CLAUDE.md. Sin modo continuo: presenta el antes y el después y espera aprobación.`
+
 ## Etapa 8. Procesos supraprediales
 
 - Tamaño: mediana a grande. Fuentes: sí, puntuales.
@@ -562,7 +610,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - Objetivo: funcionamiento estable en las condiciones reales de la prueba.
 - Trabajo:
   - Medición de cuadros por segundo, llamadas de dibujo y memoria en el MacBook Air mientras se comparte pantalla.
-  - Modo liviano automático si el rendimiento cae.
+  - Modo liviano automático si el rendimiento cae (adelantado a la etapa 7.c como calidad adaptable; aquí se prueba compartiendo pantalla y se ajusta el umbral).
   - Revisión de contraste y tamaño de texto.
   - Prueba con la plataforma de la notificación (o Meet si aún no se conoce) y un segundo dispositivo como receptor.
   - Video del recorrido completo como respaldo adicional; respaldo de imágenes actualizado.
@@ -607,8 +655,9 @@ El prototipo Hyperframes cubre M1 y el respaldo de imágenes cubre cualquier fal
 | O1 | Relieve real | Alejandro descarga un modelo digital de elevación (SRTM o ALOS) de la cuenca de referencia; Claude Code lo convierte en mapa de alturas y reemplaza el relieve procedimental. Las capas esquemáticas se conservan |
 | O2 | Insertos de video generativo | clips cortos tipo diorama en paradas puntuales (campo `video` de la parada). Herramientas de pago |
 | O3 | Grafo de conocimiento | requiere construir el grafo de `../Agroecologia_Grafo/` con una clave de API; enlaza paradas con conceptos |
-| O4 | Versión para docencia | exploración libre por estudiantes, preguntas y publicación web gratuita (por ejemplo, GitHub Pages) |
+| O4 | Versión para docencia en la web | Alejandro quiere usar el escenario en sus clases desde ya (2026-11-10) y publicarlo en GitHub Pages. Requisitos: etapa 7.c cerrada (calidad adaptable: el WebGL corre en el equipo de cada estudiante); publicar la carpeta `dist/` (rutas relativas, ya abre desde cualquier carpeta) con un flujo de GitHub Actions o una rama `gh-pages`; sin la vista del presentador ni las notas; rótulo de versión en borrador mientras las fichas no estén revisadas. Decisiones de Alejandro antes de publicar: repositorio público o plan de pago (Pages en repositorio privado exige plan de pago; confirmar en la documentación de GitHub) y si se publica antes de la prueba oral de enero, porque la clase quedaría a la vista. Enlace al respaldo en imágenes para equipos sin WebGL |
 | O5 | Modo exploración | vuelo de un ave o una abeja sobre la cuenca; puntos de interés que abren fichas de `contenido/`; misiones cortas. Nuevo valor `exploracion` en el campo `modo` del estado |
+| O6 | Juego de encargos para estudiantes (proyecto futuro) | idea de Alejandro (2026-11-10): usar esta maqueta como base de un juego donde estudiantes de ingeniería agroecológica reciben encargos y aprenden haciendo (diagnosticar una finca, medir la EAP, conectar con la EEP, activar condiciones de la teoría de cambio). Lo que ya sirve: contenido en `contenido/*.json`, almacén de estado, escena con semilla fija, fincas por receta y O5 como primer paso (misiones de un jugador). Lo que falta para un juego en línea tipo Roblox: servidor y cuentas (GitHub Pages solo sirve archivos; alcanza para un jugador con progreso guardado en el navegador), avatar y controles, edición del territorio por el jugador y evaluación de encargos. Proyecto aparte, después de la prueba oral; no condiciona las etapas 8 a 14 |
 
 ## Riesgos y respaldo
 
@@ -626,7 +675,8 @@ El prototipo Hyperframes cubre M1 y el respaldo de imágenes cubre cualquier fal
 ## Uso de Claude Code
 
 - Abrir Claude Code dentro de `Escenario_Territorial/`. Así se carga este `CLAUDE.md` y no el del prototipo Hyperframes.
-- `/add-dir ../..`: da acceso a la carpeta `TC` durante la sesión, en las etapas con fuentes.
+- `/add-dir ../..`: da acceso a la carpeta `TC` durante la sesión local, en las etapas con fuentes. En la nube, las fuentes se leen de la carpeta de Google Drive del proyecto (ver `CLAUDE.md`, «Acceso a las fuentes»).
+- Ritmo (2026-11-10): la prueba oral será en enero. Una etapa por sesión, sin modo continuo salvo indicación, con revisión de Alejandro entre etapas (avance, calidad y contenido). Las etapas divididas (N.a, N.b) se cierran una por sesión.
 - Modo plan (`/plan` o Shift+Tab): para la propuesta inicial de cada sesión.
 - `/clear` entre etapas; `/compact` si el contexto crece dentro de una etapa; `/context` para ver qué ocupa el contexto.
 - `/cost` y `/usage`: consumo de la sesión y estado del cupo. Anotar el consumo aproximado en la bitácora ayuda a planear las siguientes etapas.
