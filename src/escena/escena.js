@@ -1,13 +1,16 @@
 // Renderizador, cámara, luces, controles de órbita y ciclo de dibujo. Luz de diorama (etapa 5.c.c): sol cálido con
 // sombra suave, cielo claro, viento (viento.js) y posproceso con oclusión ambiental y miniatura (posproceso.js).
+// Etapa 7.c: la sombra se recalcula solo a pedido (pedidos.js) y el dibujo sigue el ritmo de ritmo.js.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { obtener, suscribir } from '../estado.js';
 import { crearPosproceso } from './posproceso.js';
 import { crearViento } from './viento.js';
+import { crearRitmo } from './ritmo.js';
+import { pedirSombra, pedirCuadro, tomarPedidos } from './pedidos.js';
 
 const COLOR_FONDO = 0xe8e4dc;
-const RELACION_PIXELES_MAX = 2;
+const RELACION_PIXELES_MAX = 1.5;
 // Con la interfaz visible, el centro de la vista se corre a la izquierda para quedar
 // entre la botonera y la ficha (medidas de src/ui/interfaz.css, en rem).
 const DESPLAZAMIENTO_REM = 8;
@@ -52,13 +55,15 @@ function crearLuces() {
   return { grupo, sol };
 }
 
-/** opciones: { captura, viento, oclusion, miniatura } (parámetros del hash, parametros.js). */
+/** opciones: { captura, viento, oclusion, miniatura, cps } (parámetros del hash, parametros.js). */
 export function crearEscena(contenedor, opciones = {}) {
   const renderizador = new THREE.WebGLRenderer({ antialias: true });
   renderizador.setPixelRatio(Math.min(window.devicePixelRatio, RELACION_PIXELES_MAX));
   renderizador.setSize(contenedor.clientWidth, contenedor.clientHeight);
   renderizador.shadowMap.enabled = true;
   renderizador.shadowMap.type = THREE.PCFShadowMap;
+  // Sombra fija: el sol no se mueve; el mapa se recalcula cuando un módulo lo pide (pedidos.js).
+  renderizador.shadowMap.autoUpdate = false;
   // Cifras de todas las pasadas del cuadro (sombra, escena y posproceso): se ponen en cero al empezar cada cuadro.
   renderizador.info.autoReset = false;
   contenedor.appendChild(renderizador.domElement);
@@ -78,6 +83,7 @@ export function crearEscena(contenedor, opciones = {}) {
   camara.lookAt(0, 0, 0);
   const posproceso = crearPosproceso(renderizador, escena, camara, opciones);
   const viento = crearViento(opciones);
+  const ritmo = crearRitmo(camara, { reposo: opciones.cps, vientoActivo: viento.activo });
 
   // Modo libre: órbita y zoom sin pasar bajo la mesa. Sin arrastre lateral: el objetivo se mueve con
   // el doble clic y el teclado (src/navegacion/libre.js), que también limita la cámara. Inactivos en el recorrido.
@@ -107,6 +113,7 @@ export function crearEscena(contenedor, opciones = {}) {
     desplazar();
     camara.updateProjectionMatrix();
     renderizador.setSize(ancho, alto);
+    pedirCuadro();
   }
   window.addEventListener('resize', ajustarTamano);
   suscribir('interfaz', desplazar);
@@ -116,6 +123,7 @@ export function crearEscena(contenedor, opciones = {}) {
   suscribir('liviano', ({ liviano }) => {
     luces.sol.castShadow = !liviano;
     renderizador.setPixelRatio(liviano ? 1 : Math.min(window.devicePixelRatio, RELACION_PIXELES_MAX));
+    pedirSombra();
   });
 
   let avisarPrimerCuadro;
@@ -141,13 +149,20 @@ export function crearEscena(contenedor, opciones = {}) {
     }
   }
 
+  // Un cuadro del navegador: controles y funciones por cuadro siempre; el dibujo, solo si toca (ritmo.js) o si es
+  // forzado (verificación).
   let marca = null;
-  function cuadro() {
+  let dibujados = 0;
+  function cuadro(forzado) {
     const ahora = performance.now();
-    viento.avanzar(marca == null ? 0 : (ahora - marca) / 1000);
-    marca = ahora;
     if (controles.enabled) controles.update();
     cadaCuadro();
+    const toca = ritmo.toca(ahora);
+    if (!forzado && !toca) return;
+    viento.avanzar(marca == null ? 0 : (ahora - marca) / 1000);
+    marca = ahora;
+    if (tomarPedidos().sombra) renderizador.shadowMap.needsUpdate = true;
+    dibujados += 1;
     renderizador.info.reset();
     posproceso.dibujar();
     if (superposicion.children.some((o) => o.visible)) {
@@ -185,10 +200,10 @@ export function crearEscena(contenedor, opciones = {}) {
     agregar: (objeto) => escena.add(objeto),
     superponer: (objeto) => superposicion.add(objeto),
     alCuadro: (fn) => porCuadro.push(fn),
-    iniciar: () => renderizador.setAnimationLoop(cuadro),
+    iniciar: () => renderizador.setAnimationLoop(() => cuadro(false)),
     // Verificación: sin ciclo de dibujo el navegador responde de inmediato; un cuadro antes de cada captura.
     pausar: () => renderizador.setAnimationLoop(null),
-    dibujar: cuadro,
+    dibujar: () => cuadro(true),
     primerCuadro: () => primerCuadro,
     // Cifras de rendimiento para la verificación automática.
     estadisticas: () => ({
@@ -197,6 +212,8 @@ export function crearEscena(contenedor, opciones = {}) {
       geometrias: renderizador.info.memory.geometries,
       texturas: renderizador.info.memory.textures,
       relacionPixeles: renderizador.getPixelRatio(),
+      cuadros: dibujados,
+      ritmo: ritmo.datos(),
     }),
     // Luz y posproceso: efectos activos, sombra y viento.
     luz: () => ({

@@ -5,7 +5,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 - Guion: 40 min; ensayo objetivo: 36 min; tolerancia: 1 min.
 - Paradas saltables (decisión D6): P12, P15, P23.
 - Respaldo: 37 imágenes (una por parada y por paso). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash `#p=P14&paso=1` abre una diapositiva.
-- Generado: 2026-11-09; huella del contenido: `cb7df4e2eed7`.
+- Generado: 2026-11-13; huella del contenido: `cb7df4e2eed7`.
 
 ## M0 · Encuadre (3 min, 0:00 a 3:00)
 

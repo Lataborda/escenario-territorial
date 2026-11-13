@@ -17,6 +17,7 @@ import { TIPOS } from '../coberturas/tipos.js';
 import { crearAzar } from '../util/azar.js';
 import { dibujarPerfil } from './perfil.js';
 import { visibleCorte } from './disposicion.js';
+import { pedirSombra } from '../escena/pedidos.js';
 
 const SUBIDA = 1.4; // s
 const MATAS = [4, 2]; // matas de caña sobre el bloque (a lo ancho y a lo hondo)
@@ -123,6 +124,7 @@ export function crearCorte({ altura, instantanea = false }) {
     if (ver === mostrado) return;
     mostrado = ver;
     tween?.kill();
+    pedirSombra();
     if (!ver) {
       grupo.visible = false;
       return;
@@ -136,7 +138,17 @@ export function crearCorte({ altura, instantanea = false }) {
     // Sube desde bajo el terreno hasta su lugar sobre la huella.
     guia.visible = false;
     bloque.position.y = suelo - m.alto - 0.5;
-    tween = gsap.to(bloque.position, { y: base, duration: SUBIDA, ease: 'power2.out', onComplete: () => (guia.visible = true) });
+    // La sombra del bloque sigue la subida.
+    tween = gsap.to(bloque.position, {
+      y: base,
+      duration: SUBIDA,
+      ease: 'power2.out',
+      onUpdate: pedirSombra,
+      onComplete: () => {
+        guia.visible = true;
+        pedirSombra();
+      },
+    });
   }
   suscribir(['capas', 'escala'], pintar);
   pintar(obtener());

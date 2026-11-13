@@ -18,6 +18,7 @@ import { fallasPresentador, seccionPresentador } from './lib/informe-presentador
 import { revisarLuz, fallasLuz, seccionLuz, VENTANA_GRANDE } from './lib/revisar-luz.mjs';
 import { revisarFincas, fallasFincas, seccionFincas } from './lib/revisar-fincas.mjs';
 import { revisarLote, fallasLote, seccionLote } from './lib/revisar-lote.mjs';
+import { revisarRendimiento, fallasRendimiento, seccionRendimiento } from './lib/revisar-rendimiento.mjs';
 import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -97,7 +98,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, luz, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, luz, rendimiento, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación',
     '',
@@ -115,6 +116,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, coberturas
     ...seccionFincas(fincas.extra),
     ...seccionLote(lote.extra),
     ...seccionLuz(luz.extra),
+    ...seccionRendimiento(rendimiento.extra),
     ...seccionVista('Ventana de 1920×1080 (vista compilada)', luz),
     ...seccionVista('Recorrido de paradas (vista compilada)', recorrido.vistas.recorrido),
     ...seccionVista('Transiciones (vista compilada, sin #captura)', recorrido.vistas.transiciones),
@@ -242,12 +244,14 @@ async function principal() {
       ventana: VENTANA_GRANDE,
       extra: (pagina) => revisarLuz(pagina, { dirCapturas: DIR_CAPTURAS }),
     });
+    avisar('Revisando el rendimiento ...');
+    const rendimiento = await revisarPagina(navegador, `${url}#p=P01&captura=1`, { origen, extra: revisarRendimiento });
     const recorrido = await revisarNavegacion(navegador, url, origen, contenido);
     avisar('Revisando la vista del presentador ...');
     const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
     avisar('Revisando el respaldo en imágenes ...');
     const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, luz, recorrido, presentador, respaldo, version: navegador.version() };
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, luz, rendimiento, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -265,6 +269,8 @@ async function principal() {
     ...fallasLote(resultado.lote.extra),
     ...fallasDe('Vista 1920×1080', resultado.luz),
     ...fallasLuz(resultado.luz.extra),
+    ...fallasDe('Vista rendimiento', resultado.rendimiento),
+    ...fallasRendimiento(resultado.rendimiento.extra),
     ...Object.entries(resultado.recorrido.vistas).flatMap(([nombre, v]) => fallasDe(`Vista ${nombre}`, v)),
     ...fallasRecorrido(resultado.recorrido),
     ...fallasPresentador(resultado.presentador, resultado.respaldo),

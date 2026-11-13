@@ -480,6 +480,8 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 
 - Origen: auditoría del 2026-11-10 (entrada de la bitácora). Alejandro informó que en el MacBook Air M1 corre bien, «tal vez un poco lento», y que en un equipo antiguo de poca gráfica no corre bien. Va antes de la etapa 8, que añade partículas.
 - Tamaño: mediana. Fuentes: no. Si resulta grande, dividir: primero los puntos 1 a 4; después la calidad adaptable y el HTML.
+- División (2026-11-13): 7.c.a, cerrada, con los puntos 1 a 4 y la tabla de triángulos del punto 8 (criterios 1 y 2). 7.c.b, pendiente, con los puntos 5 a 7 y el resto del punto 8 (criterio 3). El criterio 4 lo toma Alejandro.
+- Ajustes de la 7.c.a frente a este texto: el lienzo conserva `antialias` (los trazos de la superposición y el modo liviano se dibujan directo en él); el nivel de detalle y el encuadre se miden antes del dibujo (`coberturas.cuadro`), ya no en `onBeforeRender`; la caña cercana dibuja solo las matas que tocan el encuadre con la cámara quieta; con el medidor visible (tecla R) no hay tope de cuadros.
 - Objetivo: la misma imagen con la mitad del trabajo de la tarjeta gráfica, y una calidad que se adapta sola al equipo.
 - Línea base (versión compilada, S0, ventana de 1600×900; triángulos por cuadro sumando todas las pasadas; `renderer.info`):
 
@@ -502,11 +504,11 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   8. Verificación: `scripts/lib/revisar-lote.mjs` y `revisar-luz.mjs` deben seguir pasando; añadir al informe los triángulos por vista de la tabla y un límite por vista (la mitad de la línea base, salvo la general). Como la verificación corre sin tarjeta gráfica, los cuadros por segundo reales los mide Alejandro con la tecla R.
 - Fuera de alcance: cambiar formas, densidades o materiales (etapa 7.d).
 - Criterios de aceptación:
-  - [ ] Capturas de P01, P03, P06 y P07 sin diferencia apreciable frente a las del commit `97baa57`.
-  - [ ] Triángulos por cuadro con la cámara quieta: P01 1,3 M o menos; P06 2,8 M o menos; P03 (comunidad) 3,0 M o menos; P07 3,5 M o menos.
+  - [x] Capturas de P01, P03, P06 y P07 sin diferencia apreciable frente a las del commit `97baa57` (7.c.a: idénticas píxel a píxel con relación de píxeles 1).
+  - [x] Triángulos por cuadro con la cámara quieta: P01 1,3 M o menos; P06 2,8 M o menos; P03 (comunidad) 3,0 M o menos; P07 3,5 M o menos (7.c.a: 1,25; 1,92; 1,51 y 2,64 M).
   - [ ] La calidad queda en el hash y sobrevive a la recarga; la detección baja de nivel en un equipo lento (prueba con un umbral forzado).
   - [ ] Cifras de Alejandro en el MacBook Air (tecla R) en P01, P06, P03 y P07, anotadas en la bitácora.
-- Prompt de arranque: `Etapa 7.c de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+- Prompt de arranque: `Etapa 7.c.b de PLAN.md (puntos 5 a 7 de la etapa 7.c). Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 7.d. Caña y materiales con aprobación visual
 

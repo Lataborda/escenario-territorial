@@ -4,7 +4,8 @@
 // guardan. Las celdas más cercanas llevan el nivel detallado; un cupo fijo por nivel limita las instancias, primero
 // las celdas más cercanas. El radio cubierto (todas las celdas a menor distancia tienen matas) se informa a las teselas, que
 // hunden y oscurecen la tapa dentro de él. Las matas siguen la altura, el peso de caña y el color actuales de su lote
-// (lectura de teselas.js). El lote recién cortado no lleva matas. El modo liviano las retira.
+// (lectura de teselas.js). El lote recién cortado no lleva matas. El modo liviano las retira. Con la cámara quieta
+// (etapa 7.c) solo se dibujan las matas que tocan el encuadre; el cupo y el radio cubierto se cuentan igual.
 import * as THREE from 'three';
 import { crearAzar } from '../util/azar.js';
 import { SEMILLA } from '../terreno/relieve.js';
@@ -155,8 +156,19 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
     mallas[id] = malla;
   }
 
+  // Esfera que contiene una mata, en su escala local: centro a media altura y radio con holgura para el viento.
+  const alcance = { alto: 0, radio: 0 };
+  for (const id of Object.keys(CUPO)) {
+    formas[id].computeBoundingBox();
+    const b = formas[id].boundingBox;
+    alcance.alto = Math.max(alcance.alto, b.max.y);
+    alcance.radio = Math.max(alcance.radio, Math.hypot(Math.max(-b.min.x, b.max.x), Math.max(-b.min.z, b.max.z)));
+  }
+
   let orden = []; // [distancia, celda], de la más cercana a la más lejana
   let activo = true;
+  let filtro = null; // esfera(x, y, z, radio) del encuadre con la cámara quieta; null en movimiento
+  const escritas = { cerca: 0, lejos: 0 }; // matas dibujadas de cada nivel (las del cupo que tocan el encuadre)
   let radio = 0;
   let corte = -1; // lugar en el orden de la primera celda incompleta (−1 si todas tienen matas)
   const cuenta = { cerca: 0, lejos: 0 };
@@ -169,7 +181,10 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
   const tinte = new THREE.Color();
 
   function poner(id, x, y, z, giro, sx, sy, brillo, k) {
-    const lugar = cuenta[id]++;
+    cuenta[id] += 1;
+    const alto = alcance.alto * sy;
+    if (filtro && !filtro(x, y + alto / 2, z, 0.6 * alto + alcance.radio * sx)) return;
+    const lugar = escritas[id]++;
     mallas[id].setMatrixAt(lugar, matriz.compose(pos.set(x, y, z), q.setFromAxisAngle(eje, giro), esc.set(sx, sy, sx)));
     tinte.setRGB(lectura.c[k * 3] * brillo, lectura.c[k * 3 + 1] * brillo, lectura.c[k * 3 + 2] * brillo);
     mallas[id].setColorAt(lugar, tinte);
@@ -178,7 +193,7 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
 
   // Escribe las matas de las celdas en orden hasta llenar un cupo; el radio cubierto llega a la primera celda incompleta.
   function llenar() {
-    cuenta.cerca = cuenta.lejos = tipo.dosel = tipo.borde = 0;
+    cuenta.cerca = cuenta.lejos = escritas.cerca = escritas.lejos = tipo.dosel = tipo.borde = 0;
     radio = activo && orden.length ? UMBRAL_CANA : 0;
     corte = -1;
     recorrido: for (const [lugar, [distancia, celda]] of (activo ? orden : []).entries()) {
@@ -209,31 +224,31 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
     }
     // El resto de los arreglos queda en cero: el estado no depende del camino de la cámara.
     for (const [id, malla] of Object.entries(mallas)) {
-      malla.count = cuenta[id];
-      malla.instanceMatrix.array.fill(0, cuenta[id] * 16);
-      malla.instanceColor.array.fill(0, cuenta[id] * 3);
+      malla.count = escritas[id];
+      malla.instanceMatrix.array.fill(0, escritas[id] * 16);
+      malla.instanceColor.array.fill(0, escritas[id] * 3);
       malla.instanceMatrix.needsUpdate = true;
       malla.instanceColor.needsUpdate = true;
     }
     alRadio(radio);
   }
 
-  // Celdas de caña a menos del umbral y dentro del encuadre, de la más cercana a la más lejana.
-  const encuadre = new THREE.Frustum();
-  const proyeccion = new THREE.Matrix4();
-  function medir(camara) {
-    encuadre.setFromProjectionMatrix(proyeccion.multiplyMatrices(camara.projectionMatrix, camara.matrixWorldInverse));
+  // Celdas de caña a menos del umbral y dentro del encuadre (enEncuadre(caja), detalle.js), de la más cercana a la
+  // más lejana. Devuelve true si cambiaron las matas.
+  function medir(camara, enEncuadre) {
     const lista = [];
     for (const [celda, caja] of cajas) {
       const d = caja.distanceToPoint(camara.position);
-      if (d < UMBRAL_CANA && encuadre.intersectsBox(caja)) lista.push([d, celda]);
+      if (d < UMBRAL_CANA && enEncuadre(caja)) lista.push([d, celda]);
     }
     lista.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
     const igual = lista.length === orden.length && lista.every((c, i) => c[1] === orden[i][1] && (c[0] < UMBRAL_DETALLE) === (orden[i][0] < UMBRAL_DETALLE));
     orden = lista;
-    if (!igual) {
+    // En movimiento vuelven todas las matas de las celdas del encuadre.
+    if (!igual || filtro) {
+      filtro = null;
       llenar();
-      return true;
+      return !igual;
     }
     // Mismas celdas: solo cambia la distancia de la celda del corte.
     if (corte >= 0 && activo) {
@@ -246,13 +261,18 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
   return {
     mallas: Object.values(mallas),
     medir,
+    // Cámara quieta: quedan solo las matas que tocan el encuadre. esfera(x, y, z, radio).
+    afinar(esfera) {
+      filtro = esfera;
+      if (orden.length && activo) llenar();
+    },
     // Durante una transición, las matas siguen el estado de sus lotes.
     avanzar: () => orden.length && activo && llenar(),
     liviano(liviano) {
       activo = !liviano;
       llenar();
     },
-    datos: () => ({ celdas: activo ? orden.length : 0, ...cuenta, ...tipo, generadas: memoria.size, radio: Math.round(radio) }),
+    datos: () => ({ celdas: activo ? orden.length : 0, ...cuenta, ...tipo, dibujadas: escritas.cerca + escritas.lejos, generadas: memoria.size, radio: Math.round(radio) }),
     arreglos: () => Object.values(mallas).flatMap((m) => [m.instanceMatrix.array, m.instanceColor.array]),
   };
 }

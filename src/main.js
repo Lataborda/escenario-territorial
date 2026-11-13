@@ -25,6 +25,7 @@ import { revisarTrayectorias, desvioBloque } from './navegacion/pruebas.js';
 import { crearInterfaz } from './ui/interfaz.js';
 import { crearMedidor } from './ui/medidor.js';
 import { crearSincronia } from './presentador/sincronia.js';
+import { pedirSombra } from './escena/pedidos.js';
 
 const TIPOGRAFIAS = [
   '400 24px "IBM Plex Sans"',
@@ -113,10 +114,11 @@ async function iniciar() {
     irA(PARADAS[0].id, { instantanea: true });
   }
   // Coberturas después de la primera parada: su escenario se aplica sin transición.
-  const coberturas = montar('coberturas', () => crearCoberturas({ altura, instantanea: parametros.captura }));
+  const coberturas = montar('coberturas', () => crearCoberturas({ altura, camara: escena.camara, instantanea: parametros.captura }));
   if (coberturas) {
     escena.agregar(coberturas.grupo);
     escena.superponer(coberturas.superposicion);
+    escena.alCuadro(coberturas.cuadro);
   }
   const vias = montar('vías', () => crearVias({ altura }));
   if (vias) escena.agregar(vias.malla);
@@ -178,6 +180,8 @@ async function iniciar() {
     estado: () => obtener(),
     dibujo: (activo) => (activo ? escena.iniciar() : escena.pausar()),
     dibujarCuadro: () => escena.dibujar(),
+    // Verificación: fuerza el recálculo de la sombra en el cuadro siguiente.
+    pedirSombra,
     irA,
     siguiente,
     anterior,

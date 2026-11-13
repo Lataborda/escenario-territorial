@@ -4,15 +4,16 @@
 
 Resumen para abrir sesión. El detalle de cada etapa está en su entrada del registro; no repetirlo aquí.
 
-- Etapa siguiente: Etapa 7.c. Rendimiento sin cambio visible y calidad adaptable (`PLAN.md`; sin fuentes). Después, 7.d (caña y materiales, con aprobación visual) y la etapa 8.
-- Última sesión: auditoría del 2026-11-10 (solo documentación). Último commit de código: cotejos de la 6.b y la 7.b (`97baa57`), con `npm run validar` y `npm run verificar` correctos.
+- Etapa siguiente: Etapa 7.c.b. Calidad adaptable, aviso de carga y rótulos del lote (puntos 5 a 7 de la etapa 7.c de `PLAN.md`; sin fuentes). Después, 7.d (caña y materiales, con aprobación visual) y la etapa 8.
+- Última sesión: etapa 7.c.a del 2026-11-13 (sombra fija, descarte por zonas, tope de cuadros y suavizado), con `npm run verificar` correcto.
 - Fecha y ritmo: la prueba oral será en enero de 2027 (dato de Alejandro, 2026-11-10; falta la notificación con fecha y plataforma). Ritmo pausado para cuidar el cupo: una etapa por sesión, sin modo continuo salvo indicación, y revisión de Alejandro entre etapas.
 - Avance: etapas 0 a 7 cerradas (hito A completo en lo técnico; hito B sin la etapa 8). Dibujo propio en 6 de 26 paradas (P03 a P07 y P22). Las otras 20 (30,5 de 40 minutos; M0, M2 desde P08, M3, M4, M5 salvo P22 y M6) muestran solo la ficha sobre la maqueta: 28 de 42 capas de `territorio.json` sin módulo, y `lente`, `anio` y `condiciones` del estado sin consumidor. Es el riesgo principal; lo cubren las etapas 8 a 12, que son líneas, flujos y paneles (baratos en gráfica).
-- Rendimiento (línea base en `PLAN.md`, etapa 7.c): 1,9 M de triángulos por cuadro en la vista general y 3,7 a 5,4 M de cerca; 0,9 M en modo liviano (tecla V). Alejandro: en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Falta su cifra de cuadros por segundo (tecla R).
+- Rendimiento (tabla en `verificacion/informe.md`, sección «Rendimiento»): con la cámara quieta, 1,25 M de triángulos por cuadro en la vista general (antes 1,93 M) y 1,5 a 2,6 M de cerca (antes 3,7 a 5,4 M); 30 cuadros por segundo con la cámara quieta y 60 en movimiento. Alejandro (antes de la 7.c.a): en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Falta su cifra de cuadros por segundo (tecla R, que mide sin tope) en P01, P06, P03 y P07.
 - Qué hay construido (módulo y etapa de referencia):
   - Terreno, ríos, bloque y 33 anclas, con `alto` opcional (`src/terreno/`; etapas 2 y 7.a).
   - Coberturas por escenario S0 a S3, vegetación en dos niveles de detalle, caña con matas cercanas, mosaico de ladera (`src/coberturas/`; 5.a a 5.c.b). Vías, ciudad y cabeceras (`src/vias/`, `src/asentamientos/`; 5.b).
   - Luz de diorama: sombra suave, viento, oclusión ambiental y miniatura; `#ao`, `#mini`, `#viento`; teclas M, V y R (`src/escena/`; 5.c.c).
+  - Rendimiento: sombra a pedido (`src/escena/pedidos.js`), ritmo del dibujo y `#cps=` (`src/escena/ritmo.js`), vegetación y caña limitadas al encuadre (`src/coberturas/instancias.js`, `cana.js`, `detalle.js`); 7.c.a.
   - Fincas tipo F1 a F4, lindero, conectores, EEP y resaltado menor y mayor (`src/fincas/`, `contenido/fincas.json`; 6.a). Índice EAP con sus dos grupos, cotejado con León-Sicard (2021) (`src/ui/eap.js`, `contenido/eap.json`; 6.b).
   - Finca de piedemonte con policultivo y monocultivo, niveles de la fig. 3.1 en cuatro pasos con cámara propia, interacciones, corte de suelo en la finca faro y panel de materia orgánica, cotejados (`src/lote/`, `contenido/lote.json`; 7.a y 7.b).
   - Navegación: 26 paradas (37 estados), pasos con cámara opcional, botonera de siete escalas, modo libre (`src/navegacion/`; 3, 3.b y 7.a). Vista del presentador, respaldo en imágenes (37) y archivo único (`npm run presentar`, `respaldo`, `build:unico`; etapa 4).
@@ -24,6 +25,7 @@ Resumen para abrir sesión. El detalle de cada etapa está en su entrada del reg
   - Bosque de referencia 4,2 % en pantalla frente a 4,3 % en `GUION.md` (sección 8, P07); posición de F3 en `GUION.md` (sección 2).
   - Regla de «siete rótulos simultáneos» (`PLAN.md`, sección 4): P07 muestra nueve y P03 ocho; reducir o ajustar la regla.
   - Composición del policultivo, finca del lote sin casa ni familia, valores ilustrativos de la EAP.
+  - Suavizado de la 7.c.a: relación de píxeles máxima de 1,5 (antes 2) y MSAA ×2 en pantallas densas. Ampliada, la imagen queda algo más suave; confirmar en el MacBook Air o volver a 2 (`RELACION_PIXELES_MAX` en `src/escena/escena.js`).
   - Publicación en GitHub Pages (opción O4): repositorio público o no, y antes o después de la prueba.
   - Capturas versionadas: el repositorio pesa 159 MB porque cada etapa guarda capturas nuevas; decidir si `verificacion/capturas/` y `respaldo/capturas/` salen del control de versiones.
   - Prueba manual en videoconferencia (criterio de la etapa 4), aún sin hacer.
@@ -597,6 +599,36 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
 - Pendientes: los de «Decisiones pendientes de Alejandro» en «Estado actual». `GUION.md`: 4,3 % en P07 y posición de F3.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 7.c.
+
+### 2026-11-13 · Etapa 7.c.a. Rendimiento sin cambio visible
+
+- División: la etapa 7.c se partió como prevé `PLAN.md`. 7.c.a (esta sesión): puntos 1 a 4 y la tabla de triángulos del punto 8. 7.c.b: puntos 5 a 7 (calidad adaptable, aviso de carga, rótulos del lote) y el resto del punto 8.
+- Hecho:
+  - Sombra fija: `shadowMap.autoUpdate = false`; el mapa se recalcula a pedido. `src/escena/pedidos.js` (nuevo) reúne los avisos `pedirSombra()` y `pedirCuadro()`; avisan la transición de escenario, el cambio de nivel de detalle, el modo liviano, la subida del corte de suelo y el nivel de detalle del lote.
+  - Descarte por zonas: en cada malla de vegetación van primero los puestos de las celdas dentro del encuadre y la pasada principal dibuja solo esos; la pasada de sombra dibuja todos (`onBeforeShadow`), de modo que la sombra de un árbol fuera del encuadre sigue cayendo dentro. Durante los vuelos el encuadre va ampliado en una celda y solo se reordena si falta una celda; con la cámara quieta queda exacto.
+  - Caña cercana: con la cámara quieta se dibujan solo las matas que tocan el encuadre; el cupo y el radio de la tapa hundida se cuentan igual que antes. No estaba en el plan y fue lo que llevó P07 bajo su límite (de 3,52 a 2,64 M).
+  - Nivel de detalle, encuadre y matas se miden antes del dibujo (`coberturas.cuadro`), ya no en `onBeforeRender`: los arreglos de instancias suben a la tarjeta en el mismo cuadro.
+  - Tope de cuadros: `src/escena/ritmo.js` (nuevo). 60 cuadros por segundo con la cámara en movimiento, un pedido o un cambio del estado; 30 con la cámara quieta y viento (`#cps=` lo ajusta, de 5 a 120); con la cámara quieta y sin viento, un cuadro de seguridad por segundo. Con el medidor visible (tecla R) no hay tope.
+  - Suavizado: relación de píxeles máxima de 1,5 y MSAA ×2 con relación de 1,5 o más (×4 por debajo).
+  - Verificación: `scripts/lib/revisar-rendimiento.mjs` (nuevo) añade al informe la tabla de triángulos por vista con su límite, la comparación de la sombra fija con la recalculada y el ritmo en reposo. Los cuadros por segundo del informe cuentan cuadros dibujados, con el medidor visible. La huella de la vegetación usa el estado de cada puesto y ya no depende del encuadre.
+- Cifras (triángulos por cuadro con la cámara quieta, 1600×900, S0; antes → ahora): P01 1,93 → 1,25 M; P06 3,71 → 1,92 M; P03 (comunidad) 5,30 → 1,51 M; P07 5,42 → 2,64 M. Llamadas: 55 → 39; 84 → 48; 88 → 39; 99 → 63. El primer cuadro tras un salto de cámara sigue dibujando todo (sombra incluida).
+- Decisiones:
+  - El lienzo conserva `antialias` (desviación del punto 4): los trazos de la superposición y el modo liviano se dibujan directo en él y quedarían dentados.
+  - El modo libre no lleva tope propio: la cámara en movimiento pasa a 60 cuadros por segundo al instante y vuelve a 30 al detenerse.
+  - En pantallas de 144 Hz el tope de movimiento queda en 72 (un cuadro de cada dos).
+- Hallazgo: las capturas de la verificación y del respaldo se toman en el primer cuadro tras el salto de cámara. El código anterior subía las matas de caña un cuadro tarde, así que las capturas versionadas de las vistas con caña cercana (P03 a P08 y P23 a P25, entre otras) mostraban la caña cercana sin matas, distinta de la que se ve en uso. Ahora el primer cuadro ya es el definitivo. Por eso cambian esas capturas en `verificacion/capturas/` y 13 imágenes de `respaldo/` (regenerado).
+- Criterios de aceptación:
+  - Capturas sin diferencia: cumplido. P01, P06, P03 (comunidad) y P07 son idénticas píxel a píxel a las de `97baa57` en estado estable (tres cuadros tras el salto), y el primer cuadro nuevo es idéntico a ese estado estable (relación de píxeles 1).
+  - Triángulos por vista: cumplido (límites 1,3; 2,8; 3,0 y 3,5 M).
+  - Calidad en el hash y detección: pendiente (7.c.b).
+  - Cifras de Alejandro con la tecla R: pendiente.
+- Verificación: `npm run verificar` correcto dos veces (línea base sobre `97baa57` y versión final; unos 18 minutos cada una). Cero errores de consola y cero solicitudes externas. Sombra fija igual a la recalculada en las cuatro vistas. Con la cámara quieta y el viento detenido, 2 cuadros dibujados en 5,4 s.
+- Pendientes:
+  - Alejandro: cuadros por segundo con la tecla R en P01, P06, P03 y P07 en el MacBook Air; revisar el suavizado (relación de píxeles 1,5) a tamaño real.
+  - 7.c.b: la tecla R mide sin tope, pero el indicador no dice el tope vigente; añadirlo al medidor junto con la calidad.
+  - Teselas (0,21 M) y terreno (0,24 M) se dibujan completos en todas las vistas; el lote de la etapa 7 se dibuja en detalle en P07 (etapa 7.d, punto 4).
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 7.c.b.
 
 ## Plantilla de entrada
 

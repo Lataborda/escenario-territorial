@@ -1,6 +1,6 @@
 // Coberturas del paisaje (etapas 5.a a 5.c): teselas, vegetación, mosaico campesino y caña cercana según el
-// escenario del estado, con transición suave. Reacciona a «escenario» y «liviano»; el nivel de detalle y las matas
-// de caña cercanas siguen a la cámara.
+// escenario del estado, con transición suave. Reacciona a «escenario» y «liviano»; el nivel de detalle, el descarte
+// por zonas y las matas de caña cercanas siguen a la cámara (cuadro(), antes de cada dibujo).
 // Ningún temporizador cambia el escenario: solo anima el cambio pedido.
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -14,11 +14,12 @@ import { crearTeselas } from './teselas.js';
 import { crearVegetacion } from './vegetacion.js';
 import { crearMosaico } from './mosaico.js';
 import { crearCanaCerca } from './cana.js';
-import { crearDetalle } from './detalle.js';
+import { crearDetalle, crearEncuadre } from './detalle.js';
 import { medirAsignacion, extensionCana } from './metricas.js';
 import { crearContornoEep } from './eep.js';
 import { rejillaTeselas, LADO } from './rejilla.js';
 import { crearTrazo } from '../escena/lineas.js';
+import { pedirSombra } from '../escena/pedidos.js';
 import { ESTILO, activa } from '../fincas/estilo.js';
 import { obtenerFincas } from '../fincas/trazado.js';
 
@@ -28,7 +29,8 @@ const ESCALON = 0.45; // fracción de la transición en que se reparten los inic
 // Fracción de un elemento con retardo r (0 a 1) en el instante t (0 a 1) de la transición: continua y suave.
 export const progreso = (t, r) => suave(0, 1, (t - r * ESCALON) / (1 - ESCALON));
 
-export function crearCoberturas({ altura, instantanea = false }) {
+/** camara: cámara principal (nivel de detalle y encuadre); instantanea: sin transición (#captura=1). */
+export function crearCoberturas({ altura, camara, instantanea = false }) {
   const comienzo = performance.now();
   // Tiempo de generación de cada parte (ms), para el informe de verificación.
   const tiempos = {};
@@ -54,15 +56,31 @@ export function crearCoberturas({ altura, instantanea = false }) {
   grupo.name = 'coberturas';
   grupo.add(teselas.malla, ...vegetacion.mallas, ...mosaico.mallas, ...cana.mallas);
 
-  // Nivel de detalle: antes de dibujar las teselas (primeras en el orden de dibujo) se mide la cámara principal.
+  // Por cuadro, antes del dibujo (los arreglos de instancias suben a la tarjeta en el mismo cuadro): nivel de
+  // detalle, celdas dentro del encuadre y matas de caña. Con la cámara en movimiento, el encuadre va ampliado; el
+  // primer cuadro con la cámara quieta lo deja exacto.
   const detalle = crearDetalle(altura);
+  const encuadre = crearEncuadre();
   teselas.malla.renderOrder = -1;
   teselas.malla.frustumCulled = false;
-  teselas.malla.onBeforeRender = (renderizador, escena, camara) => {
-    if (!camara.isPerspectiveCamera || !detalle.medir(camara)) return;
-    capas.forEach((c) => c.detalle(detalle.cercana));
-    cana.medir(camara);
-  };
+  let enVuelo = false;
+  function cuadro() {
+    camara.updateMatrixWorld();
+    const movida = detalle.medir(camara);
+    const girada = encuadre.medir(camara);
+    if (!movida && !girada) {
+      if (enVuelo) {
+        capas.forEach((c) => c.mirar(null, encuadre.dentro, true));
+        cana.afinar(encuadre.esfera);
+      }
+      enVuelo = false;
+      return;
+    }
+    enVuelo = true;
+    const cambio = capas.reduce((v, c) => c.mirar(movida ? detalle.cercana : null, encuadre.dentro, false) || v, false);
+    // Las especies del nivel cercano proyectan otra sombra.
+    if (cana.medir(camara, encuadre.dentro) || cambio) pedirSombra();
+  }
 
   let actual = null;
   let animacion = null;
@@ -72,6 +90,7 @@ export function crearCoberturas({ altura, instantanea = false }) {
   const avanzar = (t) => {
     const intermedias = capas.reduce((suma, c) => suma + c.avanzar(t, progreso), teselas.avanzar(t, progreso, retardos));
     cana.avanzar();
+    pedirSombra();
     if (registro) {
       const ahora = performance.now();
       registro.cuadros += 1;
@@ -138,7 +157,10 @@ export function crearCoberturas({ altura, instantanea = false }) {
   };
   suscribir(['capas', 'escenario'], pintarEep);
   pintarEep(obtener());
-  const liviano = (activo) => [...capas, cana].forEach((c) => c.liviano(activo));
+  const liviano = (activo) => {
+    [...capas, cana].forEach((c) => c.liviano(activo));
+    pedirSombra();
+  };
   liviano(obtener().liviano);
   const ms = Math.round(performance.now() - comienzo);
   suscribir('escenario', ({ escenario }) => aplicar(escenario, instantanea));
@@ -150,6 +172,7 @@ export function crearCoberturas({ altura, instantanea = false }) {
   return {
     grupo,
     superposicion,
+    cuadro,
     datos: () => ({
       escenario: actual,
       ms,

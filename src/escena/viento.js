@@ -31,6 +31,8 @@ export function crearViento({ captura = false, viento = 1 } = {}) {
       fijado = t;
       if (t != null) RELOJ.tiempo.value = t;
     },
+    // El vaivén está en marcha: mientras lo esté, la escena se dibuja aunque la cámara esté quieta (ritmo.js).
+    activo: () => !quieto && fijado == null && RELOJ.fuerza.value > 0,
     datos: () => ({ tiempo: Number(RELOJ.tiempo.value.toFixed(3)), fuerza: RELOJ.fuerza.value, quieto: quieto || fijado != null }),
   };
 }

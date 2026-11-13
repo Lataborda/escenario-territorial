@@ -14,6 +14,7 @@ import { crearMaterialMata } from '../coberturas/cana.js';
 import { TIPOS } from '../coberturas/tipos.js';
 import { conViento } from '../escena/viento.js';
 import { crearTrazo } from '../escena/lineas.js';
+import { pedirSombra, pedirCuadro } from '../escena/pedidos.js';
 import { crearRuidos, crearAzar } from '../util/azar.js';
 import { frijol, conApagado, atributoApagado } from './formas.js';
 
@@ -211,12 +212,20 @@ export function crearLote({ altura, camara, instantanea = false }) {
   // del lote) y transición del apagado.
   let distancia = Infinity;
   let liviano = false;
+  let dibujado = null;
   suscribir('liviano', (e) => (liviano = e.liviano));
   function cuadro(dt) {
     distancia = camara.position.distanceTo(centro);
     const k = distancia < CERCA ? (liviano ? 0 : 1) : distancia < LEJOS && !liviano ? 0 : -1;
-    for (const e of porEspecie) e.niveles.forEach((n, nivelDetalle) => (n.malla.visible = nivelDetalle === k));
-    if (enMarcha) aplicar(Math.min(1, (dt || 1) * RAPIDEZ));
+    if (k !== dibujado) {
+      for (const e of porEspecie) e.niveles.forEach((n, nivelDetalle) => (n.malla.visible = nivelDetalle === k));
+      dibujado = k;
+      pedirSombra(); // las plantas del lote proyectan sombra
+    }
+    if (enMarcha) {
+      aplicar(Math.min(1, (dt || 1) * RAPIDEZ));
+      pedirCuadro();
+    }
   }
 
   return {

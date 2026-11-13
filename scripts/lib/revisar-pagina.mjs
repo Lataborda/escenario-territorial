@@ -32,17 +32,25 @@ export function vigilar(pagina, origen, r) {
   });
 }
 
+// Cuadros dibujados por segundo. Con el medidor visible (tecla R) la escena se dibuja sin tope (src/escena/ritmo.js).
 async function medirFps(pagina, duracion) {
+  await pagina.keyboard.press('r');
+  const fps = await medirDibujados(pagina, duracion);
+  await pagina.keyboard.press('r');
+  return fps;
+}
+
+function medirDibujados(pagina, duracion) {
   return pagina.evaluate(
     (ms) =>
       new Promise((resolver) => {
-        let cuadros = 0;
+        const dibujados = () => window.escenario.estadisticas().cuadros;
+        const antes = dibujados();
         const inicio = performance.now();
         function contar() {
-          cuadros += 1;
           const transcurrido = performance.now() - inicio;
           if (transcurrido < ms) requestAnimationFrame(contar);
-          else resolver(Math.round((cuadros * 10000) / transcurrido) / 10);
+          else resolver(Math.round(((dibujados() - antes) * 10000) / transcurrido) / 10);
         }
         requestAnimationFrame(contar);
       }),

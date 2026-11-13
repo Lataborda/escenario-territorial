@@ -3,13 +3,15 @@
 // respetando los bordes; el desenfoque de miniatura (tilt-shift) va en dos pasadas separables y la última escribe en
 // sRGB. Patrón de muestreo fijo: el resultado depende solo de la escena y de la cámara (sin ruido temporal). Solo afecta
 // al lienzo: la interfaz HTML queda nítida. Reacciona a «liviano» (dibujo directo, sin posproceso) y a «miniatura»
-// (tecla M). Intensidades del hash: #ao=0 a 1 y #mini=0 a 1 (0 apaga el efecto).
+// (tecla M). Intensidades del hash: #ao=0 a 1 y #mini=0 a 1 (0 apaga el efecto). Etapa 7.c: MSAA ×2 con relación de
+// píxeles de 1,5 o más (los píxeles ya son más finos que los de la pantalla) y ×4 por debajo. El lienzo conserva su
+// propio suavizado: los trazos de la superposición y el modo liviano se dibujan directo en él.
 import * as THREE from 'three';
 import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { obtener, suscribir } from '../estado.js';
 import { VERTICES, OCLUSION, SUAVIZADO, DIFUSION } from './sombreadores.js';
 
-const MSAA = 4;
+const MSAA = { normal: 4, densa: 2, relacion: 1.5 }; // muestras según la relación de píxeles
 const RADIO_OCLUSION = 0.022; // radio de la oclusión en pantalla, como fracción del alto de la imagen
 const RADIO_MUNDO = [0.4, 8]; // límites del radio en unidades de escena
 const FUERZA_OCLUSION = 0.7; // oscurecimiento máximo con #ao=1
@@ -22,7 +24,7 @@ export function crearPosproceso(renderizador, escena, camara, { oclusion = 1, mi
   const lineal = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, generateMipmaps: false };
   const principal = new THREE.WebGLRenderTarget(1, 1, {
     ...lineal,
-    samples: MSAA,
+    samples: MSAA.normal,
     colorSpace: THREE.SRGBColorSpace,
     depthTexture: new THREE.DepthTexture(1, 1),
   });
@@ -79,6 +81,11 @@ export function crearPosproceso(renderizador, escena, camara, { oclusion = 1, mi
     if (lienzo.equals(medida)) return;
     medida.copy(lienzo);
     const [w, h] = [lienzo.x, lienzo.y];
+    const muestras = renderizador.getPixelRatio() >= MSAA.relacion ? MSAA.densa : MSAA.normal;
+    if (principal.samples !== muestras) {
+      principal.samples = muestras;
+      principal.dispose();
+    }
     const [mw, mh] = [Math.ceil(w / 2), Math.ceil(h / 2)];
     principal.setSize(w, h);
     intermedio.setSize(w, h);
@@ -123,6 +130,6 @@ export function crearPosproceso(renderizador, escena, camara, { oclusion = 1, mi
   return {
     dibujar,
     // Verificación y medidor: efectos activos e intensidades.
-    datos: () => ({ ...efectos(), intensidad: { ...ajuste }, msaa: MSAA, tamano: medida.toArray() }),
+    datos: () => ({ ...efectos(), intensidad: { ...ajuste }, msaa: principal.samples, tamano: medida.toArray() }),
   };
 }

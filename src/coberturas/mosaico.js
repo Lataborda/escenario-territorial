@@ -131,7 +131,7 @@ export function crearMosaico(datos, asignaciones, altura) {
     preparar: (asignacion) => clases.reduce((suma, c) => suma + c.preparar(asignacion), 0),
     avanzar: (t, progreso) => clases.reduce((suma, c) => suma + c.avanzar(t, progreso), 0),
     liviano: (activo) => clases.forEach((c) => c.liviano(activo)),
-    detalle: (cercana) => clases.reduce((cambio, c) => c.detalle(cercana) || cambio, false),
+    mirar: (...a) => clases.reduce((cambio, c) => c.mirar(...a) || cambio, false),
     arreglos: () => clases.flatMap((c) => c.arreglos()),
   };
 }

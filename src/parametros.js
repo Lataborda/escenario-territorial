@@ -1,6 +1,8 @@
 // Parámetros de la dirección (hash), por ejemplo #p=P06&paso=1&ex=2.5&anclas=1&captura=1. Luz de diorama: #ao, #mini y
-// #viento regulan la oclusión ambiental, la miniatura y el viento (0 apaga; 1 por defecto).
+// #viento regulan la oclusión ambiental, la miniatura y el viento (0 apaga; 1 por defecto). #cps= fija el tope de
+// cuadros por segundo con la cámara quieta (30 por defecto; ritmo.js).
 import { limitar } from './util/interpolar.js';
+import { CPS } from './escena/ritmo.js';
 
 // Exageración vertical del relieve.
 export const EXAGERACION = { minima: 1.5, maxima: 3, inicial: 2 };
@@ -15,6 +17,7 @@ export function leerParametros(hash = window.location.hash) {
   const p = new URLSearchParams(hash.replace(/^#/, ''));
   const ex = parseFloat(p.get('ex'));
   const paso = parseInt(p.get('paso'), 10);
+  const cps = parseFloat(p.get('cps'));
   return {
     exageracion: Number.isFinite(ex) ? limitar(ex, EXAGERACION.minima, EXAGERACION.maxima) : EXAGERACION.inicial,
     anclas: p.get('anclas') === '1',
@@ -25,6 +28,7 @@ export function leerParametros(hash = window.location.hash) {
     oclusion: intensidad(p.get('ao')),
     miniatura: intensidad(p.get('mini')),
     viento: intensidad(p.get('viento'), 3),
+    cps: Number.isFinite(cps) ? limitar(cps, CPS.minimo, CPS.maximo) : CPS.reposo,
   };
 }
 
