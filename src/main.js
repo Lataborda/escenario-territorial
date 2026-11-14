@@ -26,6 +26,7 @@ import { crearInterfaz } from './ui/interfaz.js';
 import { crearMedidor } from './ui/medidor.js';
 import { crearSincronia } from './presentador/sincronia.js';
 import { pedirSombra } from './escena/pedidos.js';
+import { crearDeteccion, DETECCION } from './escena/deteccion.js';
 
 const TIPOGRAFIAS = [
   '400 24px "IBM Plex Sans"',
@@ -43,7 +44,23 @@ async function cargarTipografias() {
   }
 }
 
+// Cede dos cuadros al navegador para que el aviso de carga de index.html se pinte antes de generar la escena
+// (con un plazo, por si la pestaña está oculta y no hay cuadros).
+const cederCuadro = () =>
+  new Promise((resolver) => {
+    const plazo = setTimeout(resolver, 150);
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        clearTimeout(plazo);
+        resolver();
+      }),
+    );
+  });
+
+const quitarCarga = () => document.getElementById('carga')?.setAttribute('hidden', '');
+
 function mostrarAviso(texto) {
+  quitarCarga();
   const aviso = document.getElementById('aviso');
   aviso.textContent = texto;
   aviso.hidden = false;
@@ -51,6 +68,7 @@ function mostrarAviso(texto) {
 
 // Señal para la verificación automática y para módulos futuros.
 function marcarListo() {
+  quitarCarga();
   document.documentElement.dataset.listo = '1';
   window.dispatchEvent(new CustomEvent('escenario:listo'));
 }
@@ -82,7 +100,10 @@ function marcarParada({ parada, paso }) {
 
 async function iniciar() {
   await cargarTipografias();
+  await cederCuadro();
   const parametros = leerParametros();
+  // Calidad del hash antes de montar la escena: los módulos arrancan ya en ese nivel.
+  if (parametros.calidad) cambiar({ calidad: parametros.calidad });
   let escena;
   try {
     escena = crearEscena(document.getElementById('escena'), parametros);
@@ -154,11 +175,20 @@ async function iniciar() {
       corte,
       altura,
       proyectar: (x, y, z) => proyectar(escena, new THREE.Vector3(x, y, z)),
+      camara: escena.camara,
       alCuadro: escena.alCuadro,
     }),
   );
   // Vista del presentador (npm run presentar): publica el estado y recibe órdenes.
   montar('presentador', crearSincronia);
+  // Detección de calidad: sin #calidad= en el hash; en la verificación y con #captura=1, solo con #deteccion=.
+  const deteccion = montar('detección de calidad', () =>
+    crearDeteccion({
+      cuadros: escena.cuadros,
+      umbral: parametros.deteccion ?? DETECCION.umbral,
+      activa: !parametros.calidad && (parametros.deteccion != null || !(parametros.captura || navigator.webdriver)),
+    }),
+  );
 
   escena.iniciar();
   await escena.primerCuadro();
@@ -178,6 +208,7 @@ async function iniciar() {
     revisarAnclas: revisarAnclasTerreno,
     vista: (id, vista) => escena.mirar(ancla(id), vista),
     estado: () => obtener(),
+    deteccion: () => deteccion?.datos() ?? null,
     dibujo: (activo) => (activo ? escena.iniciar() : escena.pausar()),
     dibujarCuadro: () => escena.dibujar(),
     // Verificación: fuerza el recálculo de la sombra en el cuadro siguiente.

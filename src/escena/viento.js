@@ -1,7 +1,7 @@
 // Viento leve en la vegetación (etapa 5.c.c): desplazamiento en el sombreador de vértices, sin costo de CPU. Las
 // formas tienen la base en y = 0: el vaivén crece con el cuadrado de la altura relativa y sigue una onda que recorre
 // el plano con ráfagas lentas. Un reloj compartido por todos los materiales; quieto (tiempo fijo) en la verificación
-// automática y con #captura=1, para que las capturas sean idénticas en cada carga. El modo liviano lo apaga.
+// automática y con #captura=1, para que las capturas sean idénticas en cada carga. La calidad liviana lo apaga.
 // La sombra proyectada no sigue el vaivén (amplitud pequeña).
 import { obtener, suscribir } from '../estado.js';
 
@@ -16,10 +16,10 @@ let intensidad = 1;
 export function crearViento({ captura = false, viento = 1 } = {}) {
   quieto = captura || navigator.webdriver === true;
   intensidad = viento;
-  const aplicar = ({ liviano }) => {
-    RELOJ.fuerza.value = liviano ? 0 : intensidad;
+  const aplicar = ({ calidad }) => {
+    RELOJ.fuerza.value = calidad === 'liviana' ? 0 : intensidad;
   };
-  suscribir('liviano', aplicar);
+  suscribir('calidad', aplicar);
   aplicar(obtener());
   return {
     avanzar(dt) {

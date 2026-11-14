@@ -3,6 +3,7 @@
 // cubierto, ninguna en la vista general ni en el modo liviano, ninguna forma de espiga, y capturas de la caña de cerca,
 // a escala de suelo y de la ribera.
 import path from 'node:path';
+import { fijarCalidad } from './revisar-calidad.mjs';
 
 const EDADES = ['cortado', 'crecimiento', 'maduro'];
 const VISTAS = {
@@ -41,9 +42,9 @@ export async function revisarVegetacion(pagina, dirCapturas) {
   await pagina.evaluate(() => window.escenario.dibujo(false));
   r.vistas = {};
   for (const id of ['general', 'finca', 'planta']) r.vistas[id] = await mirar(pagina, VISTAS[id]);
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'liviana');
   r.vistas.liviano = await mirar(pagina, VISTAS.planta);
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'alta');
   const archivos = { cana: 'cana-cerca.jpg', suelo: 'cana-suelo.jpg', ribera: 'vegetacion-ribera.jpg' };
   for (const [id, archivo] of Object.entries(archivos)) {
     r.vistas[id] = await mirar(pagina, VISTAS[id]);
@@ -70,7 +71,7 @@ export function fallasVegetacion(v) {
   if (!(planta.cerca.dosel > 0 && planta.cerca.borde > 0)) f.push('Caña: sin matas cercanas a escala de planta');
   if (!(finca.cerca.dosel > 0 && finca.cerca.borde > 0)) f.push('Caña: sin matas cercanas a escala de finca');
   if (!(v.vistas.suelo.cerca.cerca > 0)) f.push('Caña: sin matas detalladas a escala de suelo');
-  if (liviano.cerca.celdas || totalCerca(liviano)) f.push('Caña: el modo liviano conserva las matas cercanas');
+  if (liviano.cerca.celdas || totalCerca(liviano)) f.push('Caña: la calidad liviana conserva las matas cercanas');
   // Tapa hundida bajo las matas: radio cubierto a escala de planta y de finca; ninguno en la vista general ni en liviano.
   if (!(planta.cerca.radio > 0 && finca.cerca.radio > 0)) f.push('Caña: la tapa no baja bajo las matas cercanas');
   if (general.cerca.radio || liviano.cerca.radio) f.push('Caña: tapa hundida sin matas cercanas (vista general o liviano)');

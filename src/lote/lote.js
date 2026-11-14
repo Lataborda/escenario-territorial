@@ -20,7 +20,7 @@ import { frijol, conApagado, atributoApagado } from './formas.js';
 
 export const SUELO = 0.3; // lámina del lote sobre el terreno
 export const CERCA = 280; // distancia de la cámara al lote bajo la cual se dibuja el nivel cercano
-const LEJOS = 900; // más lejos no se dibujan las plantas (en el modo liviano, más lejos que CERCA)
+const LEJOS = 900; // más lejos no se dibujan las plantas (en la calidad liviana, más lejos que CERCA)
 const PASO = 1.5; // resolución de la lámina
 const RAPIDEZ = 4; // apagado: fracción del camino por segundo (transición de unos 0,6 s)
 const SOMBRA = ['guamo', 'platano'];
@@ -208,12 +208,12 @@ export function crearLote({ altura, camara, instantanea = false }) {
   suscribir('capas', pintar);
   pintar(obtener());
 
-  // Por cuadro: nivel de detalle según la distancia de la cámara (en el modo liviano, solo el lejano y solo cerca
+  // Por cuadro: nivel de detalle según la distancia de la cámara (en la calidad liviana, solo el lejano y solo cerca
   // del lote) y transición del apagado.
   let distancia = Infinity;
-  let liviano = false;
+  let liviano = obtener().calidad === 'liviana';
   let dibujado = null;
-  suscribir('liviano', (e) => (liviano = e.liviano));
+  suscribir('calidad', (e) => (liviano = e.calidad === 'liviana'));
   function cuadro(dt) {
     distancia = camara.position.distanceTo(centro);
     const k = distancia < CERCA ? (liviano ? 0 : 1) : distancia < LEJOS && !liviano ? 0 : -1;

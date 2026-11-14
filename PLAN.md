@@ -137,8 +137,9 @@ Almacén único en `src/estado.js` con suscripción:
 
 ```
 { parada, paso, escala, foco, camara, escenario, condiciones[], lente, anio, capas[], modo,
-  interfaz, liviano, miniatura, medidor, anclas, aviso }
+  interfaz, calidad, miniatura, medidor, anclas, aviso }
 modo: recorrido | libre | actividad | autor
+calidad: alta | media | liviana
 ```
 
 `foco` es el ancla del punto de interés; `camara` es la vista pedida (ancla, distancia, azimut, elevación, duración) y el módulo de cámara la anima. Al llegar a una parada con pasos se muestra el primero; al retroceder desde la parada siguiente se llega al último.
@@ -157,7 +158,7 @@ Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y 
 | O | modo libre; otra vez O vuelve al recorrido con la cámara de la parada |
 | F | pantalla completa |
 | H | ocultar o mostrar la interfaz |
-| V | modo liviano |
+| V | calidad: alta, media y liviana, en ese orden (etapa 7.c.b) |
 | M | desenfoque de miniatura (etapa 5.c.c) |
 | R | medidor de rendimiento: cuadros por segundo y llamadas de dibujo (etapa 5.c.c) |
 | C | modo autor: copia la cámara actual en formato de parada |
@@ -165,7 +166,7 @@ Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y 
 
 Modo libre (etapa 3.b): órbita y zoom con el ratón; doble clic en un punto del relieve para volar hasta él (la distancia se reduce a la mitad, hasta 90); flechas o WASD para avanzar sobre el paisaje, con Mayús para ir más rápido. La cámara no baja del relieve y el objetivo no sale de la maqueta. Av Pág, Re Pág y espacio siguen avanzando el recorrido, de modo que el presentador inalámbrico funciona igual. La botonera, en modo libre, toma como punto de interés el objetivo actual de la cámara.
 
-El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar.
+El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar. La calidad elegida también queda en el hash (`#calidad=media`).
 
 ### 3.5 Vista del presentador
 
@@ -177,7 +178,7 @@ El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recarga
 
 ## 4. Principios técnicos
 
-- Rendimiento: 50 cuadros por segundo o más en el MacBook Air en la vista general. Vegetación con InstancedMesh; menos de 200 llamadas de dibujo; relación de píxeles máxima de 2 (1,5 desde la etapa 7.c). El modo liviano retira sombras y reduce instancias.
+- Rendimiento: 50 cuadros por segundo o más en el MacBook Air en la vista general. Vegetación con InstancedMesh; menos de 200 llamadas de dibujo; relación de píxeles máxima de 2 (1,5 desde la etapa 7.c). Calidad en tres niveles (etapa 7.c.b): la media retira la oclusión, la miniatura y la mitad de la caña cercana, con relación de píxeles 1; la liviana retira además sombras, viento y la mitad de la vegetación. Sin `#calidad=` en el hash, la detección del arranque baja un nivel si el promedio queda por debajo de 30 cuadros por segundo.
 - Presupuesto gráfico (desde la auditoría del 2026-11-10): toda capa nueva se mide en triángulos y llamadas por cuadro y se anota en la bitácora. Las capas de las etapas 8 a 12 (flujos, redes, radios, polígonos, paneles) se dibujan con líneas, partículas instanciadas e interfaz HTML, sin geometría densa: 50.000 triángulos por capa como máximo. Nada nuevo se dibuja fuera del encuadre ni recalcula sombras con la cámara quieta. El WebGL corre en el equipo de quien abre la página (también si se publica en la web), así que la calidad adaptable de la etapa 7.c es condición para el uso en clase.
 - Legibilidad en videoconferencia: texto de 24 px o más a 1920×1080; contraste AA; fichas de 60 palabras como máximo; siete rótulos simultáneos como máximo.
 - Determinismo: semilla fija; la escena es idéntica en cada carga.
@@ -480,7 +481,8 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 
 - Origen: auditoría del 2026-11-10 (entrada de la bitácora). Alejandro informó que en el MacBook Air M1 corre bien, «tal vez un poco lento», y que en un equipo antiguo de poca gráfica no corre bien. Va antes de la etapa 8, que añade partículas.
 - Tamaño: mediana. Fuentes: no. Si resulta grande, dividir: primero los puntos 1 a 4; después la calidad adaptable y el HTML.
-- División (2026-11-13): 7.c.a, cerrada, con los puntos 1 a 4 y la tabla de triángulos del punto 8 (criterios 1 y 2). 7.c.b, pendiente, con los puntos 5 a 7 y el resto del punto 8 (criterio 3). El criterio 4 lo toma Alejandro.
+- División (2026-11-13): 7.c.a, cerrada, con los puntos 1 a 4 y la tabla de triángulos del punto 8 (criterios 1 y 2). 7.c.b, cerrada el 2026-11-14, con los puntos 5 a 7 y el resto del punto 8 (criterio 3). El criterio 4 lo toma Alejandro.
+- Ajustes de la 7.c.b frente a este texto: la detección descarta 10 cuadros de calentamiento antes de medir y pone un límite de tiempo a la medida (equipos muy lentos); se cancela si la calidad cambia a mano y no corre con `#calidad=` en el hash; `#deteccion=` cambia el umbral (0 la apaga). En la calidad media la caña cercana conserva el nivel detallado dentro de la mitad del radio.
 - Ajustes de la 7.c.a frente a este texto: el lienzo conserva `antialias` (los trazos de la superposición y el modo liviano se dibujan directo en él); el nivel de detalle y el encuadre se miden antes del dibujo (`coberturas.cuadro`), ya no en `onBeforeRender`; la caña cercana dibuja solo las matas que tocan el encuadre con la cámara quieta; con el medidor visible (tecla R) no hay tope de cuadros.
 - Objetivo: la misma imagen con la mitad del trabajo de la tarjeta gráfica, y una calidad que se adapta sola al equipo.
 - Línea base (versión compilada, S0, ventana de 1600×900; triángulos por cuadro sumando todas las pasadas; `renderer.info`):
@@ -506,7 +508,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - Criterios de aceptación:
   - [x] Capturas de P01, P03, P06 y P07 sin diferencia apreciable frente a las del commit `97baa57` (7.c.a: idénticas píxel a píxel con relación de píxeles 1).
   - [x] Triángulos por cuadro con la cámara quieta: P01 1,3 M o menos; P06 2,8 M o menos; P03 (comunidad) 3,0 M o menos; P07 3,5 M o menos (7.c.a: 1,25; 1,92; 1,51 y 2,64 M).
-  - [ ] La calidad queda en el hash y sobrevive a la recarga; la detección baja de nivel en un equipo lento (prueba con un umbral forzado).
+  - [x] La calidad queda en el hash y sobrevive a la recarga; la detección baja de nivel en un equipo lento (prueba con un umbral forzado; 7.c.b: sección «Calidad» de `verificacion/informe.md`).
   - [ ] Cifras de Alejandro en el MacBook Air (tecla R) en P01, P06, P03 y P07, anotadas en la bitácora.
 - Prompt de arranque: `Etapa 7.c.b de PLAN.md (puntos 5 a 7 de la etapa 7.c). Sigue el protocolo de CLAUDE.md.`
 

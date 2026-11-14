@@ -128,10 +128,13 @@ async function revisarTeclas(pagina, paradas, momentos) {
   const h1 = await oculta();
   await pagina.keyboard.press('h');
   r.interfaz = h1 && !(await oculta());
-  await pagina.keyboard.press('v');
-  const v1 = (await estado(pagina)).liviano;
-  await pagina.keyboard.press('v');
-  r.liviano = v1 && !(await estado(pagina)).liviano;
+  // Tecla V: recorre las calidades alta, media y liviana.
+  const calidades = [];
+  for (let i = 0; i < 3; i++) {
+    await pagina.keyboard.press('v');
+    calidades.push((await estado(pagina)).calidad);
+  }
+  r.calidad = calidades.join() === 'media,liviana,alta';
   return r;
 }
 

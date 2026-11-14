@@ -1,5 +1,5 @@
 // Coberturas del paisaje (etapas 5.a a 5.c): teselas, vegetación, mosaico campesino y caña cercana según el
-// escenario del estado, con transición suave. Reacciona a «escenario» y «liviano»; el nivel de detalle, el descarte
+// escenario del estado, con transición suave. Reacciona a «escenario» y «calidad»; el nivel de detalle, el descarte
 // por zonas y las matas de caña cercanas siguen a la cámara (cuadro(), antes de cada dibujo).
 // Ningún temporizador cambia el escenario: solo anima el cambio pedido.
 import * as THREE from 'three';
@@ -157,14 +157,16 @@ export function crearCoberturas({ altura, camara, instantanea = false }) {
   };
   suscribir(['capas', 'escenario'], pintarEep);
   pintarEep(obtener());
-  const liviano = (activo) => {
-    [...capas, cana].forEach((c) => c.liviano(activo));
+  // Calidad: la liviana deja la mitad de la vegetación; la caña cercana tiene su propia escala (cana.js).
+  const calidad = (nivel) => {
+    capas.forEach((c) => c.liviano(nivel === 'liviana'));
+    cana.calidad(nivel);
     pedirSombra();
   };
-  liviano(obtener().liviano);
+  calidad(obtener().calidad);
   const ms = Math.round(performance.now() - comienzo);
   suscribir('escenario', ({ escenario }) => aplicar(escenario, instantanea));
-  suscribir('liviano', ({ liviano: activo }) => liviano(activo));
+  suscribir('calidad', (e) => calidad(e.calidad));
   const arreglos = () => [...teselas.arreglos(), ...capas.flatMap((c) => c.arreglos()), ...cana.arreglos()];
 
   // Interfaz para la verificación automática.

@@ -1,6 +1,7 @@
 // Revisión del paisaje (etapa 5.b): mosaico campesino de la ladera por escenario, niveles de detalle de la
 // vegetación, modo liviano de cerca, vías y asentamientos, con capturas de la ladera y de la ciudad.
 import path from 'node:path';
+import { fijarCalidad } from './revisar-calidad.mjs';
 
 const MOSAICO = ['cafe', 'platano', 'frutales', 'huerta'];
 const LLAMADAS_MAXIMO = 200;
@@ -30,10 +31,10 @@ export async function revisarPaisaje(pagina, dirCapturas) {
   for (const id of ['general', 'finca', 'cerca']) r.detalle[id] = await mirar(pagina, VISTAS[id]);
   await pagina.screenshot({ path: path.join(dirCapturas, 'mosaico-cerca.jpg'), type: 'jpeg', quality: 80 });
   r.capturas.push('mosaico-cerca.jpg');
-  // Modo liviano de cerca: todo en el nivel simple.
-  await pagina.keyboard.press('v');
+  // Calidad liviana de cerca: todo en el nivel simple.
+  await fijarCalidad(pagina, 'liviana');
   r.detalle.liviano = await mirar(pagina, VISTAS.cerca);
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'alta');
   r.detalle.ciudad = await mirar(pagina, VISTAS.ciudad);
   await pagina.screenshot({ path: path.join(dirCapturas, 'ciudad.jpg'), type: 'jpeg', quality: 80 });
   r.capturas.push('ciudad.jpg');
@@ -60,7 +61,7 @@ export function fallasPaisaje(p, medidas) {
   const d = p.detalle;
   if (d.general.total !== 0) f.push('Detalle: hay especies en nivel «cerca» en la vista general');
   if (!(d.cerca.total > 0)) f.push('Detalle: ninguna especie en nivel «cerca» a escala de planta');
-  if (d.liviano.total !== 0) f.push('Detalle: el modo liviano conserva el nivel «cerca»');
+  if (d.liviano.total !== 0) f.push('Detalle: la calidad liviana conserva el nivel «cerca»');
   for (const [id, v] of Object.entries(d)) {
     if (v.estadisticas.llamadas >= LLAMADAS_MAXIMO) f.push(`Detalle: ${v.estadisticas.llamadas} llamadas de dibujo en la vista ${id}`);
   }

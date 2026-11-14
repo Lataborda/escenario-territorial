@@ -1,8 +1,10 @@
 // Medidor de rendimiento (tecla R, etapa 5.c.c): cuadros por segundo, duración del cuadro, llamadas de dibujo,
-// triángulos, tamaño del lienzo y efectos activos. Sirve para medir en el equipo de la prueba (MacBook Air).
-// Reacciona a «medidor»; solo cuenta cuadros mientras está visible.
+// triángulos, tamaño del lienzo, calidad y efectos activos. Sirve para medir en el equipo de la prueba (MacBook Air).
+// Reacciona a «medidor»; solo cuenta cuadros mientras está visible. Mientras lo está, la escena se dibuja sin tope
+// (ritmo.js): la tercera línea recuerda el tope que rige sin el medidor.
 import './medidor.css';
-import { suscribir } from '../estado.js';
+import { obtener, suscribir } from '../estado.js';
+import { NOMBRE_CALIDAD } from '../calidad.js';
 
 const VENTANA_MS = 1000; // cifras de cada segundo
 const MEDIA_S = 5; // media móvil de cuadros por segundo
@@ -14,7 +16,9 @@ export function crearMedidor(contenedor, { estadisticas, luz }) {
   const linea1 = document.createElement('div');
   const linea2 = document.createElement('div');
   linea2.className = 'medidor-detalle';
-  contenedor.append(linea1, linea2);
+  const linea3 = document.createElement('div');
+  linea3.className = 'medidor-detalle';
+  contenedor.append(linea1, linea2, linea3);
   contenedor.hidden = true;
 
   let activo = false;
@@ -35,6 +39,7 @@ export function crearMedidor(contenedor, { estadisticas, luz }) {
       .join(', ');
     linea1.textContent = `${numero(fps)} cuadros/s (media ${numero(media)}) · ${numero(ms, 1)} ms, peor ${numero(peor, 1)} ms`;
     linea2.textContent = `${e.llamadas} llamadas · ${numero(e.triangulos / 1e6, 2)} M triángulos · píxeles ×${e.relacionPixeles} · efectos: ${efectos || 'ninguno'}`;
+    linea3.textContent = `${NOMBRE_CALIDAD[obtener().calidad]} · tope sin el medidor: ${e.ritmo.reposo} cuadros/s en reposo, ${e.ritmo.movimiento} en movimiento`;
   }
 
   function contar(t) {
@@ -62,6 +67,7 @@ export function crearMedidor(contenedor, { estadisticas, luz }) {
     peor = 0;
     linea1.textContent = 'Midiendo…';
     linea2.textContent = '';
+    linea3.textContent = '';
     requestAnimationFrame(contar);
   });
 }

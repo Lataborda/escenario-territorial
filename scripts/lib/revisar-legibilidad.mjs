@@ -1,5 +1,6 @@
 // Revisión de transiciones (duración real del vuelo) y de fichas legibles en una ventana de 1280×720.
 import path from 'node:path';
+import { fijarCalidad } from './revisar-calidad.mjs';
 import { irPorHash, leerFicha, estado, pausarDibujo, dibujarCuadro } from './revisar-paradas.mjs';
 
 export const VENTANA_PEQUENA = { width: 1280, height: 720 };
@@ -38,10 +39,10 @@ async function medir(pagina, accion) {
   };
 }
 
-// Página sin #captura=1: vuelo entre dos paradas, desde la botonera y por doble clic en modo libre. Se mide en modo liviano (tecla V): la
+// Página sin #captura=1: vuelo entre dos paradas, desde la botonera y por doble clic en modo libre. Se mide en la calidad liviana (tecla V): la
 // prueba revisa la duración del vuelo; los cuadros por segundo se miden en el equipo de la prueba.
 export async function revisarTransiciones(pagina) {
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'liviana');
   const parada = await medir(pagina, () => pagina.keyboard.press('ArrowRight'));
   parada.destino = (await estado(pagina)).parada;
   const botonera = await medir(pagina, () => pagina.click('.escala[data-escala="cuenca"]'));
@@ -52,7 +53,7 @@ export async function revisarTransiciones(pagina) {
   const libre = await medir(pagina, () => pagina.mouse.dblclick(blanco.x, blanco.y));
   await pagina.keyboard.press('o');
   await esperarFin(pagina);
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'alta');
   const ok = (m) =>
     m.empezo &&
     m.declarada >= 1.5 &&

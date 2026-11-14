@@ -14,7 +14,7 @@ const inicial = {
   capas: [],
   modo: 'recorrido', // recorrido | libre | actividad | autor
   interfaz: true, // tecla H
-  liviano: false, // tecla V
+  calidad: 'alta', // tecla V: alta | media | liviana (src/calidad.js)
   miniatura: true, // tecla M: desenfoque de miniatura
   medidor: false, // tecla R: cuadros por segundo y llamadas de dibujo
   anclas: false, // tecla A

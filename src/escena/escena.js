@@ -119,12 +119,15 @@ export function crearEscena(contenedor, opciones = {}) {
   suscribir('interfaz', desplazar);
   desplazar();
 
-  // Modo liviano (tecla V): sin sombras y con relación de píxeles 1.
-  suscribir('liviano', ({ liviano }) => {
-    luces.sol.castShadow = !liviano;
-    renderizador.setPixelRatio(liviano ? 1 : Math.min(window.devicePixelRatio, RELACION_PIXELES_MAX));
+  // Calidad (tecla V): relación de píxeles 1 por debajo de la alta; sin sombras en la liviana.
+  const aplicarCalidad = ({ calidad }) => {
+    luces.sol.castShadow = calidad !== 'liviana';
+    const relacion = calidad === 'alta' ? Math.min(window.devicePixelRatio, RELACION_PIXELES_MAX) : 1;
+    if (relacion !== renderizador.getPixelRatio()) renderizador.setPixelRatio(relacion);
     pedirSombra();
-  });
+  };
+  suscribir('calidad', aplicarCalidad);
+  if (obtener().calidad !== 'alta') aplicarCalidad(obtener());
 
   let avisarPrimerCuadro;
   const primerCuadro = new Promise((resolver) => {
@@ -205,6 +208,8 @@ export function crearEscena(contenedor, opciones = {}) {
     pausar: () => renderizador.setAnimationLoop(null),
     dibujar: () => cuadro(true),
     primerCuadro: () => primerCuadro,
+    // Cuadros dibujados desde el arranque (detección de calidad).
+    cuadros: () => dibujados,
     // Cifras de rendimiento para la verificación automática.
     estadisticas: () => ({
       llamadas: renderizador.info.render.calls,

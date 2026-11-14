@@ -4,6 +4,7 @@
 import { obtener, suscribir } from '../estado.js';
 import { PARADAS, MOMENTOS, buscarParada, numeroDe, cantidadPasos } from '../navegacion/recorrido.js';
 import { abreviarFuentes } from '../ui/fuentes.js';
+import { NOMBRE_CALIDAD } from '../calidad.js';
 
 const elemento = (etiqueta, clase, texto) => {
   const e = document.createElement(etiqueta);
@@ -140,7 +141,7 @@ export function crearIndice(contenedor, ordenar) {
   });
 }
 
-// Controles: anterior, siguiente, momentos, modo libre, interfaz, modo liviano y miniatura de la vista principal.
+// Controles: anterior, siguiente, momentos, modo libre, interfaz, calidad y miniatura de la vista principal.
 export function crearControles(contenedor, ordenar) {
   const boton = (id, texto, accion, datos, titulo) => {
     const b = elemento('button', 'boton', texto);
@@ -158,17 +159,18 @@ export function crearControles(contenedor, ordenar) {
   MOMENTOS.forEach((m, n) => momentos.append(boton(`momento-${n}`, m.id, 'momento', { n }, `${m.nombre} (tecla ${n})`)));
   const libre = boton('libre', 'Modo libre', 'libre', null, 'Tecla O');
   const interfaz = boton('interfaz', 'Interfaz', 'alternar', { clave: 'interfaz' }, 'Tecla H');
-  const liviano = boton('liviano', 'Liviano', 'alternar', { clave: 'liviano' }, 'Tecla V');
+  const calidad = boton('calidad', NOMBRE_CALIDAD.alta, 'calidad', null, 'Tecla V: alta, media o liviana');
   const miniatura = boton('miniatura', 'Miniatura', 'alternar', { clave: 'miniatura' }, 'Tecla M: desenfoque de miniatura');
   const modos = elemento('div', 'controles-modos');
-  modos.append(libre, interfaz, liviano, miniatura);
+  modos.append(libre, interfaz, calidad, miniatura);
   contenedor.append(avance, momentos, modos);
 
-  suscribir(['parada', 'modo', 'interfaz', 'liviano', 'miniatura'], (e) => {
+  suscribir(['parada', 'modo', 'interfaz', 'calidad', 'miniatura'], (e) => {
     libre.setAttribute('aria-pressed', String(e.modo === 'libre'));
     miniatura.setAttribute('aria-pressed', String(Boolean(e.miniatura)));
     interfaz.setAttribute('aria-pressed', String(Boolean(e.interfaz)));
-    liviano.setAttribute('aria-pressed', String(Boolean(e.liviano)));
+    calidad.textContent = NOMBRE_CALIDAD[e.calidad] ?? NOMBRE_CALIDAD.alta;
+    calidad.setAttribute('aria-pressed', String(e.calidad !== 'alta'));
     interfaz.textContent = e.interfaz ? 'Interfaz visible' : 'Interfaz oculta';
     const k = MOMENTOS.findIndex((m) => m.id === buscarParada(e.parada)?.momento);
     [...momentos.children].forEach((b, i) => b.classList.toggle('actual', i === k));

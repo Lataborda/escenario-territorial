@@ -7,6 +7,7 @@ import contenido from '../../contenido/paradas.json';
 import { cambiar, suscribir } from '../estado.js';
 import { MOMENTOS, buscarParada } from '../navegacion/recorrido.js';
 import { crearCanal, CLAVES_PUBLICADAS } from './canal.js';
+import { esNivel, NOMBRE_CALIDAD } from '../calidad.js';
 import { crearActual, crearSiguiente, crearIndice, crearControles } from './paneles.js';
 import { crearCronometro, crearVistaCronometro } from './cronometro.js';
 
@@ -21,7 +22,7 @@ const TECLAS = {
   PageUp: ['anterior'],
   o: ['libre'],
   h: ['alternar', { clave: 'interfaz' }],
-  v: ['alternar', { clave: 'liviano' }],
+  v: ['calidad'],
   m: ['alternar', { clave: 'miniatura' }],
 };
 MOMENTOS.forEach((m, n) => (TECLAS[String(n)] = ['momento', { n }]));
@@ -35,8 +36,10 @@ function seccion(padre, clase, etiqueta = 'section') {
 
 // Solo las claves publicadas y con el tipo esperado pasan al almacén del presentador.
 function filtrar(estado = {}) {
-  const tipos = { parada: 'string', paso: 'number', escala: 'string', modo: 'string', interfaz: 'boolean', liviano: 'boolean', miniatura: 'boolean' };
-  return Object.fromEntries(CLAVES_PUBLICADAS.filter((k) => typeof estado[k] === tipos[k]).map((k) => [k, estado[k]]));
+  const tipos = { parada: 'string', paso: 'number', escala: 'string', modo: 'string', interfaz: 'boolean', calidad: 'string', miniatura: 'boolean' };
+  return Object.fromEntries(
+    CLAVES_PUBLICADAS.filter((k) => typeof estado[k] === tipos[k] && (k !== 'calidad' || esNivel(estado[k]))).map((k) => [k, estado[k]]),
+  );
 }
 
 function montar(nombre, crear) {
@@ -78,9 +81,9 @@ function iniciar(raiz) {
     vistaCrono?.pintar();
   });
 
-  suscribir(['modo', 'interfaz', 'liviano', 'escala'], (e) => {
+  suscribir(['modo', 'interfaz', 'calidad', 'escala'], (e) => {
     const modo = { recorrido: 'Recorrido', libre: 'Modo libre', actividad: 'Actividad', autor: 'Modo autor' }[e.modo] ?? e.modo;
-    vistaEstado.textContent = [modo, `escala ${e.escala}`, e.interfaz ? 'interfaz visible' : 'interfaz oculta', e.liviano ? 'liviano' : null]
+    vistaEstado.textContent = [modo, `escala ${e.escala}`, e.interfaz ? 'interfaz visible' : 'interfaz oculta', e.calidad !== 'alta' ? NOMBRE_CALIDAD[e.calidad].toLowerCase() : null]
       .filter(Boolean)
       .join(' · ');
   });

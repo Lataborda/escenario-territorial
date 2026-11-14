@@ -3,6 +3,7 @@
 import { obtener, cambiar, suscribir } from '../estado.js';
 import { siguiente, anterior, irA, irAMomento, alternarLibre } from '../navegacion/recorrido.js';
 import { crearCanal, CLAVES_PUBLICADAS, ALTERNABLES } from './canal.js';
+import { siguienteCalidad } from '../calidad.js';
 
 const resumen = (e) => Object.fromEntries(CLAVES_PUBLICADAS.map((k) => [k, e[k]]));
 
@@ -13,6 +14,8 @@ const ORDENES = {
   momento: (m) => Number.isInteger(m.n) && irAMomento(m.n),
   libre: () => alternarLibre(),
   alternar: (m) => ALTERNABLES.includes(m.clave) && cambiar({ [m.clave]: !obtener()[m.clave] }),
+  // Calidad: pasa al nivel siguiente, como la tecla V.
+  calidad: () => cambiar({ calidad: siguienteCalidad(obtener().calidad) }),
 };
 
 export function crearSincronia() {

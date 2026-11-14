@@ -2,10 +2,10 @@
 // oclusión ambiental sale de esa profundidad a media resolución (sin un segundo dibujo de la escena) y se suaviza
 // respetando los bordes; el desenfoque de miniatura (tilt-shift) va en dos pasadas separables y la última escribe en
 // sRGB. Patrón de muestreo fijo: el resultado depende solo de la escena y de la cámara (sin ruido temporal). Solo afecta
-// al lienzo: la interfaz HTML queda nítida. Reacciona a «liviano» (dibujo directo, sin posproceso) y a «miniatura»
+// al lienzo: la interfaz HTML queda nítida. Reacciona a «calidad» (media y liviana: dibujo directo) y a «miniatura»
 // (tecla M). Intensidades del hash: #ao=0 a 1 y #mini=0 a 1 (0 apaga el efecto). Etapa 7.c: MSAA ×2 con relación de
 // píxeles de 1,5 o más (los píxeles ya son más finos que los de la pantalla) y ×4 por debajo. El lienzo conserva su
-// propio suavizado: los trazos de la superposición y el modo liviano se dibujan directo en él.
+// propio suavizado: los trazos de la superposición y las calidades media y liviana se dibujan directo en él.
 import * as THREE from 'three';
 import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { obtener, suscribir } from '../estado.js';
@@ -62,18 +62,18 @@ export function crearPosproceso(renderizador, escena, camara, { oclusion = 1, mi
   const cuadro = new FullScreenQuad();
 
   const ajuste = { oclusion: Math.max(0, oclusion), miniatura: Math.max(0, miniatura) };
-  let liviano = obtener().liviano;
+  let alta = obtener().calidad === 'alta';
   let conMiniatura = obtener().miniatura;
-  suscribir(['liviano', 'miniatura'], (e) => {
-    liviano = e.liviano;
+  suscribir(['calidad', 'miniatura'], (e) => {
+    alta = e.calidad === 'alta';
     conMiniatura = e.miniatura;
   });
   const efectos = () => ({
-    oclusion: !liviano && ajuste.oclusion > 0,
-    miniatura: !liviano && conMiniatura && ajuste.miniatura > 0,
+    oclusion: alta && ajuste.oclusion > 0,
+    miniatura: alta && conMiniatura && ajuste.miniatura > 0,
   });
 
-  // Tamaño de los destinos según el lienzo (cambia con la ventana y con la relación de píxeles del modo liviano).
+  // Tamaño de los destinos según el lienzo (cambia con la ventana y con la relación de píxeles de la calidad).
   const lienzo = new THREE.Vector2();
   const medida = new THREE.Vector2();
   function ajustar() {

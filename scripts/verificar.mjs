@@ -19,6 +19,7 @@ import { revisarLuz, fallasLuz, seccionLuz, VENTANA_GRANDE } from './lib/revisar
 import { revisarFincas, fallasFincas, seccionFincas } from './lib/revisar-fincas.mjs';
 import { revisarLote, fallasLote, seccionLote } from './lib/revisar-lote.mjs';
 import { revisarRendimiento, fallasRendimiento, seccionRendimiento } from './lib/revisar-rendimiento.mjs';
+import { revisarCalidad, fallasCalidad, seccionCalidad } from './lib/revisar-calidad.mjs';
 import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -52,14 +53,10 @@ async function revisarContenido() {
     borradores: [],
     fuentesPendientes: [],
   };
-  for (const p of datos.paradas?.paradas ?? []) {
-    if (p.estado_texto === 'borrador') r.borradores.push(p.id);
-  }
+  r.borradores = (datos.paradas?.paradas ?? []).filter((p) => p.estado_texto === 'borrador').map((p) => p.id);
   const fuentes = datos.fuentes?.fuentes ?? {};
   const lista = Array.isArray(fuentes) ? fuentes : Object.entries(fuentes).map(([clave, f]) => ({ clave, ...f }));
-  for (const f of lista) {
-    if (f.estado === 'falta' || f.estado === 'verificar') r.fuentesPendientes.push(`${f.clave} (${f.estado})`);
-  }
+  r.fuentesPendientes = lista.filter((f) => f.estado === 'falta' || f.estado === 'verificar').map((f) => `${f.clave} (${f.estado})`);
   return r;
 }
 
@@ -98,7 +95,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, luz, rendimiento, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, luz, rendimiento, calidad, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación',
     '',
@@ -117,6 +114,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, coberturas
     ...seccionLote(lote.extra),
     ...seccionLuz(luz.extra),
     ...seccionRendimiento(rendimiento.extra),
+    ...seccionCalidad(calidad),
     ...seccionVista('Ventana de 1920×1080 (vista compilada)', luz),
     ...seccionVista('Recorrido de paradas (vista compilada)', recorrido.vistas.recorrido),
     ...seccionVista('Transiciones (vista compilada, sin #captura)', recorrido.vistas.transiciones),
@@ -246,12 +244,14 @@ async function principal() {
     });
     avisar('Revisando el rendimiento ...');
     const rendimiento = await revisarPagina(navegador, `${url}#p=P01&captura=1`, { origen, extra: revisarRendimiento });
+    avisar('Revisando la calidad adaptable ...');
+    const calidad = await revisarCalidad(navegador, url, { origen });
     const recorrido = await revisarNavegacion(navegador, url, origen, contenido);
     avisar('Revisando la vista del presentador ...');
     const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
     avisar('Revisando el respaldo en imágenes ...');
     const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, luz, rendimiento, recorrido, presentador, respaldo, version: navegador.version() };
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, luz, rendimiento, calidad, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -271,6 +271,7 @@ async function principal() {
     ...fallasLuz(resultado.luz.extra),
     ...fallasDe('Vista rendimiento', resultado.rendimiento),
     ...fallasRendimiento(resultado.rendimiento.extra),
+    ...fallasCalidad(resultado.calidad),
     ...Object.entries(resultado.recorrido.vistas).flatMap(([nombre, v]) => fallasDe(`Vista ${nombre}`, v)),
     ...fallasRecorrido(resultado.recorrido),
     ...fallasPresentador(resultado.presentador, resultado.respaldo),

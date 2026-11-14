@@ -4,8 +4,9 @@
 // guardan. Las celdas más cercanas llevan el nivel detallado; un cupo fijo por nivel limita las instancias, primero
 // las celdas más cercanas. El radio cubierto (todas las celdas a menor distancia tienen matas) se informa a las teselas, que
 // hunden y oscurecen la tapa dentro de él. Las matas siguen la altura, el peso de caña y el color actuales de su lote
-// (lectura de teselas.js). El lote recién cortado no lleva matas. El modo liviano las retira. Con la cámara quieta
-// (etapa 7.c) solo se dibujan las matas que tocan el encuadre; el cupo y el radio cubierto se cuentan igual.
+// (lectura de teselas.js). El lote recién cortado no lleva matas. Calidad (etapa 7.c): la media deja la mitad del cupo y
+// del radio y la liviana retira las matas. Con la cámara quieta solo se dibujan las matas que tocan el encuadre; el
+// cupo y el radio cubierto se cuentan igual.
 import * as THREE from 'three';
 import { crearAzar } from '../util/azar.js';
 import { SEMILLA } from '../terreno/relieve.js';
@@ -21,6 +22,7 @@ import { conViento } from '../escena/viento.js';
 export const UMBRAL_CANA = 460; // distancia de la cámara a la celda (unidades de escena)
 const UMBRAL_DETALLE = 130; // celdas con la forma detallada
 const CUPO = { cerca: 4500, lejos: 26000 };
+const FACTOR_CALIDAD = { alta: 1, media: 0.5, liviana: 0 }; // fracción del cupo y del radio
 const EN_HILERA = 1.7; // separación de las matas de dosel dentro de cada línea del surco doble
 const DOBLE = 0.6; // media separación entre las dos líneas de cada surco
 const CRUCE = 0.3; // desvío máximo de las matas de dosel a través de la línea
@@ -166,10 +168,11 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
   }
 
   let orden = []; // [distancia, celda], de la más cercana a la más lejana
-  let activo = true;
+  let factor = 1; // calidad: fracción del cupo y del radio (0: sin matas)
   let filtro = null; // esfera(x, y, z, radio) del encuadre con la cámara quieta; null en movimiento
   const escritas = { cerca: 0, lejos: 0 }; // matas dibujadas de cada nivel (las del cupo que tocan el encuadre)
   let radio = 0;
+  let celdas = 0; // celdas con matas (dentro del radio de la calidad)
   let corte = -1; // lugar en el orden de la primera celda incompleta (−1 si todas tienen matas)
   const cuenta = { cerca: 0, lejos: 0 };
   const tipo = { dosel: 0, borde: 0 };
@@ -194,9 +197,13 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
   // Escribe las matas de las celdas en orden hasta llenar un cupo; el radio cubierto llega a la primera celda incompleta.
   function llenar() {
     cuenta.cerca = cuenta.lejos = escritas.cerca = escritas.lejos = tipo.dosel = tipo.borde = 0;
-    radio = activo && orden.length ? UMBRAL_CANA : 0;
+    const umbral = UMBRAL_CANA * factor;
+    radio = orden.length ? umbral : 0;
     corte = -1;
-    recorrido: for (const [lugar, [distancia, celda]] of (activo ? orden : []).entries()) {
+    celdas = orden.reduce((n, c) => n + (c[0] < umbral ? 1 : 0), 0);
+    recorrido: for (const [lugar, [distancia, celda]] of orden.entries()) {
+      // La lista llega hasta el radio completo; con menos calidad se usa solo su parte más cercana.
+      if (distancia >= umbral) break;
       const cerca = distancia < UMBRAL_DETALLE;
       const m = celdaGenerada(celda);
       for (let i = 0; i < m.length; i += CAMPOS) {
@@ -208,8 +215,8 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
         const brillo = 1 + 0.18 * m[i + 7];
         const alto = h * m[i + 8];
         // Nivel detallado en las celdas cercanas mientras quede cupo; si no, el lejano.
-        const id = cerca && cuenta.cerca < CUPO.cerca ? 'cerca' : 'lejos';
-        if (cuenta[id] >= CUPO[id]) {
+        const id = cerca && cuenta.cerca < CUPO.cerca * factor ? 'cerca' : 'lejos';
+        if (cuenta[id] >= CUPO[id] * factor) {
           radio = distancia;
           corte = lugar;
           break recorrido;
@@ -242,7 +249,9 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
       if (d < UMBRAL_CANA && enEncuadre(caja)) lista.push([d, celda]);
     }
     lista.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-    const igual = lista.length === orden.length && lista.every((c, i) => c[1] === orden[i][1] && (c[0] < UMBRAL_DETALLE) === (orden[i][0] < UMBRAL_DETALLE));
+    const umbral = UMBRAL_CANA * factor;
+    const tramo = (d) => (d < UMBRAL_DETALLE ? 0 : d < umbral ? 1 : 2);
+    const igual = lista.length === orden.length && lista.every((c, i) => c[1] === orden[i][1] && tramo(c[0]) === tramo(orden[i][0]));
     orden = lista;
     // En movimiento vuelven todas las matas de las celdas del encuadre.
     if (!igual || filtro) {
@@ -251,7 +260,7 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
       return !igual;
     }
     // Mismas celdas: solo cambia la distancia de la celda del corte.
-    if (corte >= 0 && activo) {
+    if (corte >= 0) {
       radio = orden[corte][0];
       alRadio(radio);
     }
@@ -264,15 +273,15 @@ export function crearCanaCerca({ centros, unidadDe, unidades }, lectura, altura,
     // Cámara quieta: quedan solo las matas que tocan el encuadre. esfera(x, y, z, radio).
     afinar(esfera) {
       filtro = esfera;
-      if (orden.length && activo) llenar();
+      if (orden.length && factor) llenar();
     },
     // Durante una transición, las matas siguen el estado de sus lotes.
-    avanzar: () => orden.length && activo && llenar(),
-    liviano(liviano) {
-      activo = !liviano;
+    avanzar: () => orden.length && factor && llenar(),
+    calidad(nivel) {
+      factor = FACTOR_CALIDAD[nivel] ?? 1;
       llenar();
     },
-    datos: () => ({ celdas: activo ? orden.length : 0, ...cuenta, ...tipo, dibujadas: escritas.cerca + escritas.lejos, generadas: memoria.size, radio: Math.round(radio) }),
+    datos: () => ({ celdas, ...cuenta, ...tipo, dibujadas: escritas.cerca + escritas.lejos, generadas: memoria.size, radio: Math.round(radio) }),
     arreglos: () => Object.values(mallas).flatMap((m) => [m.instanceMatrix.array, m.instanceColor.array]),
   };
 }

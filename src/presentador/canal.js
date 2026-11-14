@@ -1,17 +1,17 @@
 // Canal entre la vista principal y la del presentador (BroadcastChannel, mismo origen).
 // Mensajes:
 //   presentador → principal: { tipo: 'hola' } y { tipo: 'orden', accion, ... }
-//   principal → presentador: { tipo: 'estado', estado: { parada, paso, escala, modo, interfaz, liviano, miniatura } }
+//   principal → presentador: { tipo: 'estado', estado: { parada, paso, escala, modo, interfaz, calidad, miniatura } }
 // Sin BroadcastChannel (por ejemplo, el archivo único en file://) el canal queda inactivo.
 
 export const NOMBRE_CANAL = 'escenario-territorial';
 
 // Claves del estado que la vista principal publica.
-export const CLAVES_PUBLICADAS = ['parada', 'paso', 'escala', 'modo', 'interfaz', 'liviano', 'miniatura'];
+export const CLAVES_PUBLICADAS = ['parada', 'paso', 'escala', 'modo', 'interfaz', 'calidad', 'miniatura'];
 
 // Órdenes que acepta la vista principal.
-export const ACCIONES = ['siguiente', 'anterior', 'irA', 'momento', 'libre', 'alternar'];
-export const ALTERNABLES = ['interfaz', 'liviano', 'miniatura'];
+export const ACCIONES = ['siguiente', 'anterior', 'irA', 'momento', 'libre', 'alternar', 'calidad'];
+export const ALTERNABLES = ['interfaz', 'miniatura'];
 
 export function crearCanal(nombre = NOMBRE_CANAL) {
   let canal = null;

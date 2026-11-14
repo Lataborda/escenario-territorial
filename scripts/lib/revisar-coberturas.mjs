@@ -1,6 +1,7 @@
 // Revisión de coberturas (etapa 5): proporciones y aislamiento de relictos por escenario, transiciones
 // sin cortes, modo liviano, leyenda y una captura por escenario. Página sin #captura (vuelos y transiciones reales).
 import path from 'node:path';
+import { fijarCalidad } from './revisar-calidad.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { tiposPresentes } from '../../src/coberturas/tipos.js';
@@ -63,21 +64,21 @@ export async function revisarCoberturas(pagina, dirCapturas) {
 
   // Huella de cada escenario aplicado sin transición (equivale a cargarlo directamente).
   r.huellas = await coberturas(pagina, (ids) => Object.fromEntries([...ids, 'S0'].map((id) => [id, window.escenario.coberturas().aplicarAhora(id)])), SECUENCIA);
-  // Transiciones en modo liviano (tecla V): la prueba revisa la animación; la fluidez se mide en el equipo.
-  // En la vista general ninguna especie está en el nivel «cerca»: las huellas no cambian con el modo.
-  await pagina.keyboard.press('v');
+  // Transiciones en la calidad liviana (tecla V): la prueba revisa la animación; la fluidez se mide en el equipo.
+  // En la vista general ninguna especie está en el nivel «cerca»: las huellas no cambian con la calidad.
+  await fijarCalidad(pagina, 'liviana');
   r.transiciones = [];
   for (const id of SECUENCIA) r.transiciones.push(await transicion(pagina, id, r.huellas[id]));
   await pagina.evaluate(() => window.escenario.cambiarEscenario('S0'));
   await pagina.waitForFunction(() => !document.documentElement.dataset.coberturas, null, { timeout: 20000 });
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'alta');
 
-  // Modo liviano (tecla V): la mitad de las instancias.
+  // Calidad liviana (tecla V): la mitad de las instancias.
   const dibujadas = () => coberturas(pagina, () => window.escenario.coberturas().datos().dibujadas);
   const completo = await dibujadas();
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'liviana');
   const liviano = await dibujadas();
-  await pagina.keyboard.press('v');
+  await fijarCalidad(pagina, 'alta');
   r.liviano = { completo, liviano, restaurado: (await dibujadas()) === completo };
 
   // Una captura por escenario desde la misma vista, con el ciclo de dibujo en pausa.
@@ -120,7 +121,7 @@ export function fallasCoberturas(c, estadisticas) {
   if (!mismaLista(c.leyendaS0, leyendaEsperada('S0')) || c.transiciones.some((t) => !mismaLista(t.leyenda, leyendaEsperada(t.escenario)))) {
     f.push('Coberturas: la leyenda no sigue al escenario');
   }
-  if (!(c.liviano.liviano < c.liviano.completo * 0.6) || !c.liviano.restaurado) f.push('Coberturas: el modo liviano no reduce las instancias');
+  if (!(c.liviano.liviano < c.liviano.completo * 0.6) || !c.liviano.restaurado) f.push('Coberturas: la calidad liviana no reduce las instancias');
   if (!estadisticas || estadisticas.llamadas >= LLAMADAS_MAXIMO) f.push(`Coberturas: ${estadisticas?.llamadas} llamadas de dibujo`);
   return [...f, ...fallasPaisaje(c.paisaje, c.medidas), ...fallasVegetacion(c.vegetacion)];
 }
@@ -144,10 +145,10 @@ export function seccionCoberturas(c, estadisticas) {
     `- Salto máximo de un elemento por cuadro a 60 cuadros por segundo: ${c.salto} (máximo ${SALTO_MAXIMO})`,
     ...c.transiciones.map(
       (t) =>
-        `- Transición a ${t.escenario} (modo liviano): ${t.cambios} elementos; en curso ${si(t.empezo)}; ${t.cuadros} cuadros (intervalo máximo ${t.intervalo} s); máximo de elementos a medio camino en un cuadro: ${t.intermedias}; ${t.duracion} s (declarada ${DURACION_S} s); final igual a la carga directa: ${si(t.igual)}; leyenda: ${t.leyenda.length} tipos`,
+        `- Transición a ${t.escenario} (calidad liviana): ${t.cambios} elementos; en curso ${si(t.empezo)}; ${t.cuadros} cuadros (intervalo máximo ${t.intervalo} s); máximo de elementos a medio camino en un cuadro: ${t.intermedias}; ${t.duracion} s (declarada ${DURACION_S} s); final igual a la carga directa: ${si(t.igual)}; leyenda: ${t.leyenda.length} tipos`,
     ),
     `- Leyenda en S0: ${c.leyendaS0.join(', ')}`,
-    `- Modo liviano: ${c.liviano.completo} instancias dibujadas, ${c.liviano.liviano} en liviano; restaurado ${si(c.liviano.restaurado)}`,
+    `- Calidad liviana: ${c.liviano.completo} instancias dibujadas en la alta, ${c.liviano.liviano} en la liviana; restaurado ${si(c.liviano.restaurado)}`,
     `- Llamadas de dibujo en la vista general: ${estadisticas?.llamadas} (máximo ${LLAMADAS_MAXIMO}); triángulos ${estadisticas?.triangulos}`,
     `- Capturas: ${c.capturas.map((x) => `\`capturas/${x}\``).join(', ')}`,
     '',

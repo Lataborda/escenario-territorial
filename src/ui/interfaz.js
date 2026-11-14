@@ -34,7 +34,8 @@ function crearAviso(contenedor) {
     contenedor.hidden = !aviso;
     if (!aviso) return;
     titulo.textContent = aviso.titulo;
-    texto.textContent = aviso.texto;
+    texto.textContent = aviso.texto ?? '';
+    texto.hidden = !aviso.texto;
     // El temporizador solo oculta el aviso: no cambia parada, escala ni cámara.
     temporizador = setTimeout(() => {
       contenedor.hidden = true;

@@ -4,28 +4,29 @@
 
 Resumen para abrir sesión. El detalle de cada etapa está en su entrada del registro; no repetirlo aquí.
 
-- Etapa siguiente: Etapa 7.c.b. Calidad adaptable, aviso de carga y rótulos del lote (puntos 5 a 7 de la etapa 7.c de `PLAN.md`; sin fuentes). Después, 7.d (caña y materiales, con aprobación visual) y la etapa 8.
-- Última sesión: etapa 7.c.a del 2026-11-13 (sombra fija, descarte por zonas, tope de cuadros y suavizado), con `npm run verificar` correcto.
+- Etapa siguiente: Etapa 7.d. Caña y materiales con aprobación visual (`PLAN.md`; sin fuentes). Después, la etapa 8.
+- Última sesión: etapa 7.c.b del 2026-11-14 (calidad en tres niveles con detección al arrancar, aviso de carga y rótulos del lote sin lecturas por cuadro), con `npm run verificar` correcto. La etapa 7.c queda cerrada salvo las cifras de Alejandro.
 - Fecha y ritmo: la prueba oral será en enero de 2027 (dato de Alejandro, 2026-11-10; falta la notificación con fecha y plataforma). Ritmo pausado para cuidar el cupo: una etapa por sesión, sin modo continuo salvo indicación, y revisión de Alejandro entre etapas.
 - Avance: etapas 0 a 7 cerradas (hito A completo en lo técnico; hito B sin la etapa 8). Dibujo propio en 6 de 26 paradas (P03 a P07 y P22). Las otras 20 (30,5 de 40 minutos; M0, M2 desde P08, M3, M4, M5 salvo P22 y M6) muestran solo la ficha sobre la maqueta: 28 de 42 capas de `territorio.json` sin módulo, y `lente`, `anio` y `condiciones` del estado sin consumidor. Es el riesgo principal; lo cubren las etapas 8 a 12, que son líneas, flujos y paneles (baratos en gráfica).
-- Rendimiento (tabla en `verificacion/informe.md`, sección «Rendimiento»): con la cámara quieta, 1,25 M de triángulos por cuadro en la vista general (antes 1,93 M) y 1,5 a 2,6 M de cerca (antes 3,7 a 5,4 M); 30 cuadros por segundo con la cámara quieta y 60 en movimiento. Alejandro (antes de la 7.c.a): en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Falta su cifra de cuadros por segundo (tecla R, que mide sin tope) en P01, P06, P03 y P07.
+- Rendimiento (tabla en `verificacion/informe.md`, sección «Rendimiento»): con la cámara quieta, 1,25 M de triángulos por cuadro en la vista general (antes 1,93 M) y 1,5 a 2,6 M de cerca (antes 3,7 a 5,4 M); 30 cuadros por segundo con la cámara quieta y 60 en movimiento. Calidad (tecla V; sección «Calidad» del informe): la media baja P06 a 0,70 M y P07 a 2,22 M; la liviana queda entre 0,57 y 0,89 M. Alejandro (antes de la 7.c.a): en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Falta su cifra de cuadros por segundo (tecla R, que mide sin tope) en P01, P06, P03 y P07, y probar la detección en el equipo antiguo (abrir sin `#calidad=` en la dirección).
 - Qué hay construido (módulo y etapa de referencia):
   - Terreno, ríos, bloque y 33 anclas, con `alto` opcional (`src/terreno/`; etapas 2 y 7.a).
   - Coberturas por escenario S0 a S3, vegetación en dos niveles de detalle, caña con matas cercanas, mosaico de ladera (`src/coberturas/`; 5.a a 5.c.b). Vías, ciudad y cabeceras (`src/vias/`, `src/asentamientos/`; 5.b).
   - Luz de diorama: sombra suave, viento, oclusión ambiental y miniatura; `#ao`, `#mini`, `#viento`; teclas M, V y R (`src/escena/`; 5.c.c).
-  - Rendimiento: sombra a pedido (`src/escena/pedidos.js`), ritmo del dibujo y `#cps=` (`src/escena/ritmo.js`), vegetación y caña limitadas al encuadre (`src/coberturas/instancias.js`, `cana.js`, `detalle.js`); 7.c.a.
+  - Rendimiento: sombra a pedido (`src/escena/pedidos.js`), ritmo del dibujo y `#cps=` (`src/escena/ritmo.js`), vegetación y caña limitadas al encuadre (`src/coberturas/instancias.js`, `cana.js`, `detalle.js`); 7.c.a. Calidad `alta`, `media` y `liviana` en el estado (`src/calidad.js`), tecla V, `#calidad=` y `#deteccion=` en el hash, detección al arrancar (`src/escena/deteccion.js`) y aviso «Cargando…» (`index.html`); 7.c.b.
   - Fincas tipo F1 a F4, lindero, conectores, EEP y resaltado menor y mayor (`src/fincas/`, `contenido/fincas.json`; 6.a). Índice EAP con sus dos grupos, cotejado con León-Sicard (2021) (`src/ui/eap.js`, `contenido/eap.json`; 6.b).
   - Finca de piedemonte con policultivo y monocultivo, niveles de la fig. 3.1 en cuatro pasos con cámara propia, interacciones, corte de suelo en la finca faro y panel de materia orgánica, cotejados (`src/lote/`, `contenido/lote.json`; 7.a y 7.b).
   - Navegación: 26 paradas (37 estados), pasos con cámara opcional, botonera de siete escalas, modo libre (`src/navegacion/`; 3, 3.b y 7.a). Vista del presentador, respaldo en imágenes (37) y archivo único (`npm run presentar`, `respaldo`, `build:unico`; etapa 4).
 - Contenido: 26 fichas, recetas de finca, EAP y lote en `borrador`; 66 localizadores y 17 datos por verificar (`verificacion/pendientes-de-fuente.md`).
 - Fuentes en la nube: carpeta «TC» de Google Drive (id `1ksyETkFQb1pTaylPqOXMm3lowFrFGWnt`): `Prueba Oral/Transition`, `Prueba Oral/Agroecologia_Grafo` (Gliessman et al. 2023 por capítulos) y `Prueba Oral/Normative`. Leer con el conector (el resultado queda guardado como archivo en el contenedor), convertir a texto en el directorio temporal y buscar con `rg`; en Gliessman, las líneas «NNN Título» marcan la página impresa. No están: los libros completos, Cleves-Leguízamo et al. (2017) y Sánchez de Prager (2018).
-- Entorno en la nube: entorno personal «escenario-territorial» (red limitada). Verificación completa: unos 15 minutos, sin tarjeta gráfica (los cuadros por segundo no son representativos).
+- Entorno en la nube: entorno personal «escenario-territorial» (red limitada). Verificación completa: unos 20 minutos, sin tarjeta gráfica (los cuadros por segundo no son representativos).
 - Decisiones pendientes de Alejandro (acumuladas; la lista completa por etapa está en el registro):
   - Fichas P01 a P26 y ficha de sesión (D4): todas en borrador.
   - Bosque de referencia 4,2 % en pantalla frente a 4,3 % en `GUION.md` (sección 8, P07); posición de F3 en `GUION.md` (sección 2).
   - Regla de «siete rótulos simultáneos» (`PLAN.md`, sección 4): P07 muestra nueve y P03 ocho; reducir o ajustar la regla.
   - Composición del policultivo, finca del lote sin casa ni familia, valores ilustrativos de la EAP.
   - Suavizado de la 7.c.a: relación de píxeles máxima de 1,5 (antes 2) y MSAA ×2 en pantallas densas. Ampliada, la imagen queda algo más suave; confirmar en el MacBook Air o volver a 2 (`RELACION_PIXELES_MAX` en `src/escena/escena.js`).
+  - Calidad media de la 7.c.b: con la mitad del radio de la caña cercana, en la vista de finca (P06) los lotes de caña se ven como bloques rayados, sin matas; confirmar o pedir otro reparto (por ejemplo, radio completo y la mitad del cupo). Umbral de la detección: 30 cuadros por segundo y un solo nivel de bajada.
   - Publicación en GitHub Pages (opción O4): repositorio público o no, y antes o después de la prueba.
   - Capturas versionadas: el repositorio pesa 159 MB porque cada etapa guarda capturas nuevas; decidir si `verificacion/capturas/` y `respaldo/capturas/` salen del control de versiones.
   - Prueba manual en videoconferencia (criterio de la etapa 4), aún sin hacer.
@@ -629,6 +630,39 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Teselas (0,21 M) y terreno (0,24 M) se dibujan completos en todas las vistas; el lote de la etapa 7 se dibuja en detalle en P07 (etapa 7.d, punto 4).
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 7.c.b.
+
+### 2026-11-14 · Etapa 7.c.b. Calidad adaptable, aviso de carga y rótulos del lote
+
+- Hecho:
+  - Calidad en el estado: la clave `calidad` (`alta`, `media`, `liviana`) reemplaza a `liviano`; `src/calidad.js` (nuevo) reúne los niveles y sus nombres. Media: sin oclusión ni miniatura, relación de píxeles 1 y la mitad del cupo y del radio de la caña cercana; conserva sombras, viento y vegetación completa. Liviana: la anterior de la tecla V. La tecla V recorre alta, media y liviana.
+  - Hash: `#calidad=` fija el nivel y se escribe cuando cambia (tecla V, presentador o detección); `#deteccion=` cambia el umbral de la detección (0 la apaga).
+  - Detección al arrancar (`src/escena/deteccion.js`, nuevo): tras `escenario:listo` descarta 10 cuadros, mide 60 sin tope y baja un nivel si el promedio queda bajo 30 cuadros por segundo, con el aviso «Calidad media. Tecla V para cambiarla». Una sola vez. Se cancela si la calidad cambia a mano, no corre con `#calidad=` en el hash y empieza de nuevo si la pestaña se oculta.
+  - Indicador de momento («Calidad media» o «Calidad liviana»), medidor (tercera línea con la calidad y el tope que rige sin el medidor) y vista del presentador (botón «Calidad alta / media / liviana», tecla V y barra de estado).
+  - Aviso «Cargando…» en `index.html`, con estilo en línea; `src/main.js` cede dos cuadros antes de generar la escena y lo oculta en `escenario:listo` o al fallar WebGL.
+  - Rótulos del lote y del corte (`src/lote/rotulos.js`): la medida de cada rótulo se lee una vez y solo se recolocan cuando cambian la cámara, la ventana, el corte o los rótulos activos.
+  - Verificación: `scripts/lib/revisar-calidad.mjs` e `informe-calidad.mjs` (nuevos) añaden la sección «Calidad» del informe. Las revisiones que usaban la tecla V llegan a la calidad liviana con un auxiliar común (`fijarCalidad`).
+- Cifras (triángulos por cuadro con la cámara quieta, 1600×900, S0; alta, media y liviana): P01 1,25; 1,25 y 0,89 M. P06 1,92; 0,70 y 0,57 M. P03 (comunidad) 1,51; 1,45 y 0,58 M. P07 2,64; 2,22 y 0,70 M. Matas de caña del cupo en P06: 23.119 en alta y 899 en media.
+- Decisiones:
+  - La detección baja un solo nivel (de alta a media), como dice `PLAN.md`. Un equipo que tampoco rinda en media se pasa a liviana con la tecla V.
+  - La medida de la detección tiene límite de tiempo (2 s de calentamiento y 4 s de medida), para que un equipo muy lento no espere 70 cuadros.
+  - En la verificación automática y con `#captura=1` la detección queda inactiva, salvo `#deteccion=` explícito: sin tarjeta gráfica bajaría siempre.
+  - La imagen se compara con la huella del lienzo, sin la interfaz (ver el hallazgo).
+- Hallazgos:
+  - Entre dos corridas con el mismo código, algunas capturas de parada difieren en pocos píxeles del número de un botón de la botonera (suavizado del texto; diferencia máxima de 3 niveles por canal en una caja de 16×8 píxeles). En la corrida de base cambiaron P24 a P26 y en la final P08. La escena es idéntica; afecta solo a las capturas versionadas.
+  - En este entorno una captura de página puede tardar más de 10 s con el dibujo en marcha, más que los 8 s del aviso. La revisión lee el aviso del DOM.
+- Criterios de aceptación:
+  - Capturas en calidad alta sin diferencia: cumplido. De 48 capturas, 46 son idénticas byte a byte a las de base (entre ellas P01, P03, P06 y P07); cambian `presentador.png` (botón nuevo) y `P08.jpg` (hallazgo anterior).
+  - Calidad en el hash y tras la recarga; detección con umbral forzado: cumplido (baja a media una vez, avisa y la recarga conserva el nivel sin volver a medir; con umbral mínimo no baja; la tecla V la cancela).
+  - `revisar-lote.mjs` y `revisar-luz.mjs`: pasan.
+  - Cifras de Alejandro con la tecla R: pendiente.
+- Verificación: `npm run verificar` correcto dos veces (base sobre `d44d60e` y versión final; unos 20 minutos la final). Cero errores de consola y cero solicitudes externas. Rótulos: 0 recolocaciones en 15 cuadros con la cámara quieta. Pantalla densa: relación de píxeles 1,5 en alta y 1 en media y liviana.
+- Pendientes:
+  - Alejandro: cuadros por segundo con la tecla R en P01, P06, P03 y P07 en el MacBook Air; abrir el escenario en el equipo antiguo sin `#calidad=` y anotar si baja a media y cómo corre en media y en liviana.
+  - Alejandro: aspecto de la calidad media en P06 (lotes de caña sin matas más allá de la mitad del radio).
+  - Etapa 13: ajustar el umbral de la detección compartiendo pantalla.
+  - `npm run respaldo` no se regeneró: las imágenes de las paradas no cambian.
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 7.d.
 
 ## Plantilla de entrada
 

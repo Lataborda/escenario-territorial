@@ -2,8 +2,9 @@
 // marcadores numerados de las interacciones entre especies (capa «interacciones»; el número remite al panel de
 // src/ui/interacciones.js) y corte de suelo: horizontes a la izquierda, biota a la derecha y rótulo de cierre encima
 // (visible con el corte en su lugar). Textos en contenido/lote.json. Elementos de
-// la interfaz con panel propio, colocados en cada cuadro sobre la proyección de su punto; un rótulo que se cruza con
-// otro ya colocado sube hasta quedar libre.
+// la interfaz con panel propio, colocados sobre la proyección de su punto; un rótulo que se cruza con otro ya
+// colocado sube hasta quedar libre. Etapa 7.c: la medida de cada rótulo se lee una vez (hasta que cambie la ventana)
+// y solo se recoloca cuando cambian la cámara, la ventana, el corte o los rótulos activos.
 import './lote.css';
 import contenido from '../../contenido/lote.json';
 import { obtener, suscribir } from '../estado.js';
@@ -30,8 +31,8 @@ function crear(capa, clase, titulo, texto, enLinea = false) {
   return e;
 }
 
-/** lote y corte: módulos de lote.js y suelo.js; proyectar(x, y, z) → { x, y } en píxeles o null. */
-export function crearRotulosLote({ contenedor, lote, corte, altura, proyectar, alCuadro }) {
+/** lote y corte: módulos de lote.js y suelo.js; proyectar(x, y, z) → { x, y } en píxeles o null; camara: la principal. */
+export function crearRotulosLote({ contenedor, lote, corte, altura, proyectar, camara, alCuadro }) {
   const capa = document.createElement('div');
   capa.className = 'rotulos-finca rotulos-lote';
   capa.setAttribute('aria-hidden', 'true');
@@ -78,14 +79,50 @@ export function crearRotulosLote({ contenedor, lote, corte, altura, proyectar, a
   }
   delCorte.push({ e: crear(capa, 'cierre', s.cierre.titulo, s.cierre.texto), u: 0.5, v: -0.3, afuera: 0, ancla: 'arriba' });
 
+  // Medida de cada rótulo (su texto no cambia): se lee al mostrarlo y se descarta al cambiar la ventana, de la que
+  // depende el tamaño de la letra.
+  const medidas = new Map();
+  const medida = (e) => {
+    if (!medidas.has(e)) medidas.set(e, [e.offsetWidth, e.offsetHeight]);
+    return medidas.get(e);
+  };
+  // Firma de lo que mueve los rótulos: matrices de la cámara, ventana y altura del corte en su lugar.
+  const firma = new Float64Array(35);
+  let sucio = true;
+  let colocaciones = 0;
+  function sinCambio() {
+    camara.updateMatrixWorld();
+    let igual = !sucio;
+    const poner = (i, v) => {
+      if (firma[i] !== v) {
+        firma[i] = v;
+        igual = false;
+      }
+    };
+    camara.matrixWorld.elements.forEach((v, i) => poner(i, v));
+    camara.projectionMatrix.elements.forEach((v, i) => poner(16 + i, v));
+    poner(32, window.innerWidth);
+    poner(33, window.innerHeight);
+    poner(34, corte.enSuLugar() ? corte.puntoCara(0, 0).y : -Infinity);
+    sucio = false;
+    return igual;
+  }
+  window.addEventListener('resize', () => {
+    medidas.clear();
+    sucio = true;
+  });
+
   let activos = [];
   function pintar({ capas }) {
     for (const r of [...fijos, ...delCorte]) r.e.hidden = true;
     activos = fijos.filter((r) => capas.includes(r.capa));
+    sucio = true;
     colocar();
   }
 
   function colocar() {
+    if (sinCambio()) return;
+    colocaciones += 1;
     const lista = [...activos];
     if (corte.enSuLugar()) {
       for (const r of delCorte) lista.push({ ...r, punto: corte.puntoCara(r.u, r.v, r.afuera).toArray() });
@@ -98,8 +135,7 @@ export function crearRotulosLote({ contenedor, lote, corte, altura, proyectar, a
       const fuera = !p || p.x < 0 || p.y < 0 || p.x > ancho || p.y > alto;
       r.e.hidden = fuera;
       if (fuera) continue;
-      const w = r.e.offsetWidth;
-      const h = r.e.offsetHeight;
+      const [w, h] = medida(r.e);
       // Caja en pantalla según el ancla: arriba (punta en el punto), a la izquierda o a la derecha del punto.
       let x0 = r.ancla === 'izquierda' ? p.x - w - 12 : r.ancla === 'derecha' ? p.x + 12 : p.x - w / 2;
       let y0 = r.ancla === 'arriba' ? p.y - h - 10 : p.y - h / 2;
@@ -123,6 +159,7 @@ export function crearRotulosLote({ contenedor, lote, corte, altura, proyectar, a
       niveles: fijos.filter((r) => r.capa !== 'interacciones' && !r.e.hidden).length,
       interacciones: fijos.filter((r) => r.capa === 'interacciones' && !r.e.hidden).map((r) => r.id),
       corte: delCorte.filter((r) => !r.e.hidden).length,
+      colocaciones,
     }),
   };
 }

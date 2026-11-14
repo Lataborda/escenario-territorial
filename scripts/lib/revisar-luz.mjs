@@ -1,8 +1,9 @@
 // Revisión de la luz de diorama y de la legibilidad (etapa 5.c.c) en una ventana de 1920×1080: efectos activos y su
-// retiro en el modo liviano, sombra suave, llamadas de dibujo por vista, captura igual al repetir (sin ruido temporal),
+// retiro en la calidad liviana, sombra suave, llamadas de dibujo por vista, captura igual al repetir (sin ruido temporal),
 // viento visible al mover el reloj, tecla M y textos de la interfaz (24 px o más, contraste AA sobre su panel, ningún
 // texto directo sobre la escena y ningún filtro sobre la interfaz).
 import path from 'node:path';
+import { fijarCalidad } from './revisar-calidad.mjs';
 import { createHash } from 'node:crypto';
 import { irPorHash, pausarDibujo } from './revisar-paradas.mjs';
 
@@ -122,7 +123,8 @@ export async function revisarLuz(pagina, { dirCapturas }) {
   r.miniaturaCambia = (await huellaCaptura(pagina)) !== base;
   r.conMiniatura = await tecla(pagina, 'm');
   r.miniaturaVuelve = (await huellaCaptura(pagina)) === base;
-  // Modo liviano (tecla V): sin oclusión, miniatura, viento, sombras ni matas cercanas; al volver, igual a la referencia.
+  // Calidad liviana (tecla V): sin oclusión, miniatura, viento, sombras ni matas cercanas; al volver, igual a la referencia.
+  await fijarCalidad(pagina, 'media');
   r.liviano = await tecla(pagina, 'v');
   r.liviano.estadisticas = await pagina.evaluate(() => {
     window.escenario.dibujarCuadro();
@@ -147,8 +149,8 @@ export function fallasLuz(l) {
   }
   const lv = l.liviano.luz;
   const matas = l.liviano.cana.cerca + l.liviano.cana.lejos;
-  if (lv.oclusion || lv.miniatura || lv.viento.fuerza > 0 || lv.sombra.activa || matas > 0) f.push('Luz: el modo liviano no retira todos los efectos');
-  if (!activos(l.restaurado.luz)) f.push('Luz: los efectos no vuelven al salir del modo liviano');
+  if (lv.oclusion || lv.miniatura || lv.viento.fuerza > 0 || lv.sombra.activa || matas > 0) f.push('Luz: la calidad liviana no retira todos los efectos');
+  if (!activos(l.restaurado.luz)) f.push('Luz: los efectos no vuelven al salir de la calidad liviana');
   if (!l.repeticionIgual || !l.livianoVuelve) f.push('Luz: la captura cambia al repetir (ruido temporal)');
   if (!l.vientoMueve || !l.vientoVuelve) f.push('Luz: el viento no se mueve con el reloj o no vuelve');
   if (l.sinMiniatura.luz.miniatura || !l.miniaturaCambia || !l.miniaturaVuelve) f.push('Luz: la tecla M no alterna la miniatura');
@@ -172,7 +174,7 @@ export function seccionLuz(l) {
     ...Object.entries(l.vistas).map(([id, v]) => `- Vista ${id}: ${v.estadisticas.llamadas} llamadas de dibujo (máximo ${LLAMADAS_MAXIMO}), ${(v.estadisticas.triangulos / 1e6).toFixed(2)} millones de triángulos`),
     `- Captura igual tras seis cuadros más: ${si(l.repeticionIgual)}; viento visible con el reloj en 1,3 s: ${si(l.vientoMueve)}; vuelve con el reloj en 0: ${si(l.vientoVuelve)}`,
     `- Tecla M: miniatura ${si(l.sinMiniatura.luz.miniatura)} tras pulsarla, la imagen cambia ${si(l.miniaturaCambia)}, vuelve igual ${si(l.miniaturaVuelve)}`,
-    `- Modo liviano: oclusión ${si(l.liviano.luz.oclusion)}, miniatura ${si(l.liviano.luz.miniatura)}, viento ${si(l.liviano.luz.viento.fuerza > 0)}, sombra ${si(l.liviano.luz.sombra.activa)}, matas de caña ${l.liviano.cana.cerca + l.liviano.cana.lejos}; ${l.liviano.estadisticas.llamadas} llamadas; al salir, igual a la referencia: ${si(l.livianoVuelve)}`,
+    `- Calidad liviana: oclusión ${si(l.liviano.luz.oclusion)}, miniatura ${si(l.liviano.luz.miniatura)}, viento ${si(l.liviano.luz.viento.fuerza > 0)}, sombra ${si(l.liviano.luz.sombra.activa)}, matas de caña ${l.liviano.cana.cerca + l.liviano.cana.lejos}; ${l.liviano.estadisticas.llamadas} llamadas; al salir, igual a la referencia: ${si(l.livianoVuelve)}`,
     `- Textos revisados: ${normales.length} en ${l.textos.map((t) => `${t.id}${t.paso ? ` paso ${t.paso}` : ''}`).join(', ')}; letra mínima ${Math.min(...normales.map((x) => x.letra)).toFixed(1)} px (mínimo ${LETRA_MINIMA}); contraste mínimo ${Math.min(...normales.map((x) => x.contraste)).toFixed(2)} (mínimo ${CONTRASTE_MINIMO}); sin fondo propio: ${normales.filter((x) => !x.conFondo).length}`,
     `- Excepciones (marca de borrador): ${excepciones.join('; ') || 'ninguna'}`,
     `- Filtros sobre la interfaz: ${l.textos.reduce((a, t) => a + t.filtros, 0)}; lienzo fuera de la interfaz: ${si(l.textos.every((t) => t.lienzoAparte))}`,

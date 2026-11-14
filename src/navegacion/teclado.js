@@ -3,6 +3,7 @@
 import { obtener, cambiar } from '../estado.js';
 import { siguiente, anterior, irAMomento, alternarLibre } from './recorrido.js';
 import { esTeclaDeMovimiento } from './libre.js';
+import { siguienteCalidad } from '../calidad.js';
 
 const alternar = (clave) => () => cambiar({ [clave]: !obtener()[clave] });
 
@@ -36,7 +37,7 @@ export function crearTeclado({ bloqueCamara }) {
     o: alternarLibre,
     f: pantallaCompleta,
     h: alternar('interfaz'),
-    v: alternar('liviano'),
+    v: () => cambiar({ calidad: siguienteCalidad(obtener().calidad) }),
     c: copiarCamara,
     a: alternar('anclas'),
     m: alternar('miniatura'),

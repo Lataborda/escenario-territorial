@@ -79,6 +79,15 @@ async function pruebasSincronia(principal, presentador, prueba) {
     (await esperar(presentador, () => document.querySelector('#miniatura')?.getAttribute('aria-pressed') === 'false')));
   await presentador.keyboard.press('m');
   await prueba('tecla M en el presentador lo enciende de nuevo', () => esperar(principal, () => window.escenario.luz().miniatura === true));
+  await presentador.click('#calidad');
+  await prueba('botón Calidad del presentador pasa la principal a la calidad media', async () =>
+    (await esperar(principal, () => window.escenario.estado().calidad === 'media' && !window.escenario.luz().oclusion)) &&
+    (await esperar(presentador, () => document.querySelector('#calidad')?.textContent === 'Calidad media')));
+  await presentador.keyboard.press('v');
+  await presentador.keyboard.press('v');
+  await prueba('tecla V en el presentador recorre liviana y vuelve a la alta', async () =>
+    (await esperar(principal, () => window.escenario.estado().calidad === 'alta' && window.escenario.luz().oclusion)) &&
+    (await esperar(presentador, () => document.querySelector('#calidad')?.textContent === 'Calidad alta')));
   await principal.evaluate(() => (location.hash = 'p=P20&captura=1'));
   await prueba('cambio de hash en la principal llega al presentador (P20)', () => ambas(principal, presentador, ['P20']));
   await presentador.click('.indice-parada button[data-parada="P11"]');

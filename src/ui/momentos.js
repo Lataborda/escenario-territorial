@@ -1,6 +1,7 @@
 // Indicador de momento: barra de M0 a M6 (ancho según la meta en minutos), momento y parada actuales.
 import { obtener, suscribir } from '../estado.js';
 import { MOMENTOS, PARADAS, buscarParada, numeroDe } from '../navegacion/recorrido.js';
+import { NOMBRE_CALIDAD } from '../calidad.js';
 
 const MODOS = { libre: 'Modo libre', actividad: 'Actividad', autor: 'Modo autor' };
 
@@ -31,9 +32,9 @@ export function crearMomentos(contenedor) {
     nombre.textContent = k >= 0 ? `${MOMENTOS[k].id} · ${MOMENTOS[k].nombre}` : '';
     const partes = p ? [`Parada ${numeroDe(p.id)} de ${PARADAS.length}`] : [];
     if (MODOS[e.modo]) partes.push(MODOS[e.modo]);
-    if (e.liviano) partes.push('Liviano');
+    if (e.calidad !== 'alta') partes.push(NOMBRE_CALIDAD[e.calidad]);
     detalle.textContent = partes.join(' · ');
   }
-  suscribir(['parada', 'modo', 'liviano'], pintar);
+  suscribir(['parada', 'modo', 'calidad'], pintar);
   pintar(obtener());
 }
