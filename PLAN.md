@@ -522,9 +522,10 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   2. Mata lejana: hoy 66 triángulos, hasta 26.000 matas (1,5 M en P06). Meta: 30 a 36, o cupo y radio menores (`CUPO`, `UMBRAL_CANA` y `UMBRAL_DETALLE` en `cana.js`). Revisar el empalme con el bloque lejano.
   3. Material mate: toda la escena usa `MeshStandardMaterial`. Probar `MeshLambertMaterial` en la vegetación, la caña y las teselas (los sombreadores propios de `viento.js`, `cana.js` y `lote/formas.js` usan fragmentos comunes a ambos). Adoptarlo solo si la diferencia no se nota.
   4. El lote de la etapa 7 (`src/lote/lote.js`) se dibuja en detalle a menos de 280 unidades aunque la parada sea otra (aparece en P07): limitar el nivel cercano a la escala de planta o al encuadre.
+- Resultado (2026-11-14): mata detallada de 236 triángulos (hoja en cinta, tallo de 4 caras) y lejana de 30 (tallo en listón); cupos y radios sin cambio; material mate (`src/escena/material.js`) en la vegetación, la caña, el lote y las teselas; nivel cercano del lote a menos de 180 unidades.
 - Criterios de aceptación:
-  - [ ] Mosaico de antes y después (P06, P07 y `cana-cerca.jpg`) aprobado por Alejandro.
-  - [ ] Caña cercana en P07: 1,2 M de triángulos o menos (hoy 2,27 M).
+  - [x] Mosaico de antes y después (P06, P07 y `cana-cerca.jpg`) aprobado por Alejandro (2026-11-14: mata nueva y material mate).
+  - [x] Caña cercana en P07: 1,2 M de triángulos o menos (hoy 2,27 M). Queda en 1,11 M con el cupo completo; P07 completo, 1,84 M.
 - Prompt de arranque: `Etapa 7.d de PLAN.md. Sigue el protocolo de CLAUDE.md. Sin modo continuo: presenta el antes y el después y espera aprobación.`
 
 ## Etapa 8. Procesos supraprediales

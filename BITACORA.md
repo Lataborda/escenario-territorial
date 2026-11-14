@@ -4,16 +4,16 @@
 
 Resumen para abrir sesión. El detalle de cada etapa está en su entrada del registro; no repetirlo aquí.
 
-- Etapa siguiente: Etapa 7.d, en curso. La propuesta (mata de 236 y 30 triángulos, material mate y umbral del lote) está en la rama con `npm run verificar` correcto y espera la aprobación visual de Alejandro sobre las láminas de antes y después del 2026-11-14. Con la aprobación: regenerar el respaldo, cerrar la entrada de la bitácora y marcar los criterios en `PLAN.md`. Si pide ajustes, se repite la entrega. Después, la etapa 8.
-- Última sesión: etapa 7.c.b del 2026-11-14 (calidad en tres niveles con detección al arrancar, aviso de carga y rótulos del lote sin lecturas por cuadro), con `npm run verificar` correcto. La etapa 7.c queda cerrada salvo las cifras de Alejandro.
+- Etapa siguiente: Etapa 8. Procesos supraprediales (`PLAN.md`).
+- Última sesión: etapa 7.d del 2026-11-14 (mata de caña de 236 y 30 triángulos, material mate y nivel cercano del lote a menos de 180 unidades), aprobada por Alejandro sobre láminas de antes y después, con `npm run verificar` correcto. Las etapas 7.c y 7.d quedan cerradas salvo las cifras de Alejandro.
 - Fecha y ritmo: la prueba oral será en enero de 2027 (dato de Alejandro, 2026-11-10; falta la notificación con fecha y plataforma). Ritmo pausado para cuidar el cupo: una etapa por sesión, sin modo continuo salvo indicación, y revisión de Alejandro entre etapas.
 - Avance: etapas 0 a 7 cerradas (hito A completo en lo técnico; hito B sin la etapa 8). Dibujo propio en 6 de 26 paradas (P03 a P07 y P22). Las otras 20 (30,5 de 40 minutos; M0, M2 desde P08, M3, M4, M5 salvo P22 y M6) muestran solo la ficha sobre la maqueta: 28 de 42 capas de `territorio.json` sin módulo, y `lente`, `anio` y `condiciones` del estado sin consumidor. Es el riesgo principal; lo cubren las etapas 8 a 12, que son líneas, flujos y paneles (baratos en gráfica).
-- Rendimiento (tabla en `verificacion/informe.md`, sección «Rendimiento»): con la cámara quieta, 1,25 M de triángulos por cuadro en la vista general (antes 1,93 M) y 1,5 a 2,6 M de cerca (antes 3,7 a 5,4 M); 30 cuadros por segundo con la cámara quieta y 60 en movimiento. Calidad (tecla V; sección «Calidad» del informe): la media baja P06 a 0,70 M y P07 a 2,22 M; la liviana queda entre 0,57 y 0,89 M. Alejandro (antes de la 7.c.a): en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Cifra de Alejandro del 2026-11-14 (versión anterior a la 7.c.b): vista general a 60 cuadros por segundo, 16,7 ms por cuadro y 17,7 ms el peor, con todos los efectos y relación de píxeles 1,5; 60 es el refresco de la pantalla, así que no mide el margen. Falta su cifra (tecla R, que mide sin tope) en P06, P03 y P07, y probar la detección en el equipo antiguo (abrir sin `#calidad=` en la dirección).
+- Rendimiento (tabla en `verificacion/informe.md`, sección «Rendimiento»): con la cámara quieta, 1,25 M de triángulos por cuadro en la vista general (antes de la 7.c, 1,93 M) y 1,2 a 1,8 M de cerca tras la 7.d (antes de la 7.c, 3,7 a 5,4 M); 30 cuadros por segundo con la cámara quieta y 60 en movimiento. Calidad (tecla V; sección «Calidad» del informe): la media baja P06 a 0,69 M y P07 a 1,62 M; la liviana queda entre 0,57 y 0,89 M. Alejandro (antes de la 7.c.a): en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Cifra de Alejandro del 2026-11-14 (versión anterior a la 7.c.b): vista general a 60 cuadros por segundo, 16,7 ms por cuadro y 17,7 ms el peor, con todos los efectos y relación de píxeles 1,5; 60 es el refresco de la pantalla, así que no mide el margen. Falta su cifra (tecla R, que mide sin tope) en P06, P03 y P07, y probar la detección en el equipo antiguo (abrir sin `#calidad=` en la dirección).
 - Qué hay construido (módulo y etapa de referencia):
   - Terreno, ríos, bloque y 33 anclas, con `alto` opcional (`src/terreno/`; etapas 2 y 7.a).
   - Coberturas por escenario S0 a S3, vegetación en dos niveles de detalle, caña con matas cercanas, mosaico de ladera (`src/coberturas/`; 5.a a 5.c.b). Vías, ciudad y cabeceras (`src/vias/`, `src/asentamientos/`; 5.b).
   - Luz de diorama: sombra suave, viento, oclusión ambiental y miniatura; `#ao`, `#mini`, `#viento`; teclas M, V y R (`src/escena/`; 5.c.c).
-  - Rendimiento: sombra a pedido (`src/escena/pedidos.js`), ritmo del dibujo y `#cps=` (`src/escena/ritmo.js`), vegetación y caña limitadas al encuadre (`src/coberturas/instancias.js`, `cana.js`, `detalle.js`); 7.c.a. Calidad `alta`, `media` y `liviana` en el estado (`src/calidad.js`), tecla V, `#calidad=` y `#deteccion=` en el hash, detección al arrancar (`src/escena/deteccion.js`) y aviso «Cargando…» (`index.html`); 7.c.b.
+  - Rendimiento: sombra a pedido (`src/escena/pedidos.js`), ritmo del dibujo y `#cps=` (`src/escena/ritmo.js`), vegetación y caña limitadas al encuadre (`src/coberturas/instancias.js`, `cana.js`, `detalle.js`); 7.c.a. Calidad `alta`, `media` y `liviana` en el estado (`src/calidad.js`), tecla V, `#calidad=` y `#deteccion=` en el hash, detección al arrancar (`src/escena/deteccion.js`) y aviso «Cargando…» (`index.html`); 7.c.b. Mata de caña en cinta (`src/coberturas/mata.js`) y material mate con interruptor (`src/escena/material.js`); 7.d.
   - Fincas tipo F1 a F4, lindero, conectores, EEP y resaltado menor y mayor (`src/fincas/`, `contenido/fincas.json`; 6.a). Índice EAP con sus dos grupos, cotejado con León-Sicard (2021) (`src/ui/eap.js`, `contenido/eap.json`; 6.b).
   - Finca de piedemonte con policultivo y monocultivo, niveles de la fig. 3.1 en cuatro pasos con cámara propia, interacciones, corte de suelo en la finca faro y panel de materia orgánica, cotejados (`src/lote/`, `contenido/lote.json`; 7.a y 7.b).
   - Navegación: 26 paradas (37 estados), pasos con cámara opcional, botonera de siete escalas, modo libre (`src/navegacion/`; 3, 3.b y 7.a). Vista del presentador, respaldo en imágenes (37) y archivo único (`npm run presentar`, `respaldo`, `build:unico`; etapa 4).
@@ -664,9 +664,9 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 7.d.
 
-### 2026-11-14 · Etapa 7.d. Caña y materiales (pendiente de aprobación visual)
+### 2026-11-14 · Etapa 7.d. Caña y materiales con aprobación visual
 
-- Estado: propuesta entregada con cuatro láminas de antes y después (enviadas en la conversación, sin versionar). Falta la aprobación de Alejandro para cerrar la etapa.
+- Estado: cerrada. Propuesta entregada con cuatro láminas de antes y después (enviadas en la conversación, sin versionar) y aprobada por Alejandro el mismo día: mata nueva y material mate.
 - Hecho:
   - Mata detallada (`src/coberturas/mata.js`): de 430 a 236 triángulos. Mismos 7 tallos y 28 hojas en arco de 3 tramos; la hoja es una cinta de dos vértices por tramo (`hoja()` de `formas.js`, opción `cinta`), un quinto más ancha que la plegada, y el tallo tiene 4 caras.
   - Mata lejana: de 66 a 30 triángulos (tallos en listón plano y 6 hojas en cinta de 2 tramos). `CUPO`, `UMBRAL_CANA` y `UMBRAL_DETALLE` no cambian.
@@ -676,16 +676,16 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
 - Cifras (triángulos por cuadro con la cámara quieta, 1600×900, S0; antes → ahora): P06 1,92 → 1,24 M; P07 2,64 → 1,84 M; P03 (comunidad) 1,51 → 1,22 M; caña a 70 unidades 2,23 → 1,51 M; caña a 30 unidades 1,46 → 1,29 M. P01 no cambia (1,25 M). Caña cercana en P07 con el cupo completo: 1,11 M.
 - Material mate frente al estándar (misma geometría, seis vistas): diferencia media por canal de 0,4 a 0,9 niveles de 255 en rojo y verde y de 1,4 a 2,2 en azul; máximo en un píxel, 19. Tiempo de dibujo sin tarjeta gráfica (una medida, indicativa): P07 4,5 s antes, 3,5 s con la geometría nueva y 3,0 s con el material mate; P06 3,1; 2,2 y 2,0 s.
 - Lo que se nota: en P06 y P07, nada apreciable. A 70 unidades, las matas de primer plano algo menos frondosas y el cañaduzal del fondo un poco más liso. A 30 unidades, la hoja en cinta se lee más plana que la plegada.
-- Decisiones propuestas (por confirmar): hoja en cinta en todas las hojas (alternativa: pliegue en las 7 hojas centrales, 264 triángulos); material mate adoptado.
+- Decisiones (aprobadas por Alejandro): hoja en cinta en todas las hojas (la alternativa era el pliegue en las 7 hojas centrales, 264 triángulos); material mate adoptado.
 - Criterios de aceptación:
-  - Mosaico de antes y después aprobado por Alejandro: pendiente.
+  - Mosaico de antes y después aprobado por Alejandro: cumplido.
   - Caña cercana en P07 de 1,2 M o menos: cumplido (1,11 M).
-- Verificación: `npm run verificar` correcto sobre la propuesta (base sobre `deb8fe1`, también correcta). Cero errores de consola y cero solicitudes externas. Cambian casi todas las capturas versionadas, por el material mate.
+- Verificación: `npm run verificar` correcto tres veces (base sobre `deb8fe1`, propuesta y cierre con el respaldo regenerado). Cero errores de consola y cero solicitudes externas. Cambian casi todas las capturas versionadas y las 37 imágenes del respaldo (`npm run respaldo`), por el material mate.
 - Pendientes:
-  - Alejandro: aprobar o ajustar la mata nueva y el material mate; cuadros por segundo con la tecla R en P06, P03 y P07.
-  - Al cerrar: `npm run respaldo` (las imágenes del respaldo son anteriores al material mate), criterios de `PLAN.md` y estado actual.
+  - Alejandro: cuadros por segundo con la tecla R en P06, P03 y P07 con esta versión (el medidor debe mostrar tres líneas).
+  - Calidad media de la 7.c.b: sigue pendiente la decisión sobre el reparto de la caña cercana.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
-- Siguiente: cierre de la 7.d tras la aprobación; después, etapa 8.
+- Siguiente: Etapa 8.
 
 ## Plantilla de entrada
 
