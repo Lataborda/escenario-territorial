@@ -5,6 +5,7 @@
 // distancia. Dentro del radio con matas cercanas (uniforme uCercaCana, cana.js), la tapa y el borde bajan bajo el
 // dosel y la tapa queda oscura, en sombra entre los tallos. Sin texturas: todo se calcula en el sombreador.
 import * as THREE from 'three';
+import { crearMaterial } from '../escena/material.js';
 
 export const PERIODO_SURCO = 4; // separación entre hileras, en unidades de escena (exagerada, como en una maqueta)
 export const HUNDIR = 1; // fracción de la altura del bloque que baja la tapa bajo las matas cercanas (1: hasta la lámina)
@@ -121,7 +122,7 @@ if (vCana > 0.002 && abs(normalMundo().y) > 0.6) {
 
 // El radio con matas cercanas se fija con material.userData.cercaCana.value (0: ninguna).
 export function crearMaterialSuperficie() {
-  const material = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.95 });
+  const material = crearMaterial({ vertexColors: true, flatShading: true, roughness: 0.95 });
   const cercaCana = { value: 0 };
   material.userData.cercaCana = cercaCana;
   material.onBeforeCompile = (s) => {

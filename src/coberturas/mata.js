@@ -1,6 +1,7 @@
 // Mata de caña del nivel cercano (cana.js), según la referencia `referencias/cana-mata.webp`: tallos rectos y algo
 // inclinados con nudos marcados, hojas largas en arco desde el tercio superior con las puntas caídas y hojas secas
-// en la base; sin espiga ni flor. Dos niveles: «cerca» (siete tallos) y «lejos» (tres tallos). Las hojas van en color
+// en la base; sin espiga ni flor. Dos niveles: «cerca» (siete tallos de cuatro caras, 236 triángulos) y «lejos» (tres
+// tallos planos, 30 triángulos); las hojas son cintas (etapa 7.d: antes, 430 y 66). Las hojas van en color
 // claro y toman el color del lote (color por instancia); los tallos conservan el suyo (atributo «propio» = 1) y el
 // sombreador de cana.js les dibuja los nudos. Base en y = 0; alto aproximado ALTO en escala 1.
 import * as THREE from 'three';
@@ -24,7 +25,7 @@ function hojaCana(azar, { largo, altura, rumbo, en, segmentos, recta = false }) 
   const t = (segmentos - 1) / segmentos;
   const g = hoja({
     largo,
-    ancho: 0.09 * largo + 0.04,
+    ancho: 0.108 * largo + 0.048, // un quinto más ancha que la hoja plegada: la cinta conserva la masa del follaje
     segmentos,
     inclinacion,
     caida: (inclinacion - punta) / (t * t),
@@ -34,9 +35,23 @@ function hojaCana(azar, { largo, altura, rumbo, en, segmentos, recta = false }) 
     color: HOJAS[Math.floor(azar() * HOJAS.length)],
     seca: 0.25 + 0.2 * azar(),
     nervio: 0xfafbee,
+    cinta: true,
   });
   g.translate(en[0], 0, en[2]);
   return marcar(g, 0);
+}
+
+// Listón: tallo plano de a hacia b, de ancho 2 × radio y perpendicular al rumbo; base más oscura, como tallo().
+const c = new THREE.Color();
+function liston(a, b, radio, rumbo, color) {
+  const [dx, dz] = [-Math.sin(rumbo) * radio, Math.cos(rumbo) * radio];
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute([a[0] - dx, a[1], a[2] - dz, a[0] + dx, a[1], a[2] + dz, b[0] - dx, b[1], b[2] - dz, b[0] + dx, b[1], b[2] + dz], 3));
+  const [oscuro, claro] = [c.setHex(color).multiplyScalar(0.72).toArray(), c.setHex(color).multiplyScalar(1.07).toArray()];
+  g.setAttribute('color', new THREE.Float32BufferAttribute([...oscuro, ...oscuro, ...claro, ...claro], 3));
+  g.setIndex([0, 1, 2, 2, 1, 3]);
+  g.computeVertexNormals();
+  return g.toNonIndexed();
 }
 
 // Mata: tallos de color propio, de verde amarillento a morado; hojas desde el tercio superior de cada tallo y, en el
@@ -50,9 +65,10 @@ function mata(cerca) {
     const r = 0.06 + 0.2 * azar();
     const color = V.canaTallos[Math.floor(azar() * V.canaTallos.length)];
     const desde = [Math.cos(rumbo) * r, -0.1, Math.sin(rumbo) * r];
-    const tallo = arco({ desde, alto: 1.5 + 0.45 * azar(), inclinacion: 0.15 + 0.3 * azar(), rumbo, tramos: 1, radio: [0.05, 0.042], caras: cerca ? 5 : 3, color });
-    partes.push(...tallo.partes.map((p) => marcar(p, 1)));
+    const tallo = arco({ desde, alto: 1.5 + 0.45 * azar(), inclinacion: 0.15 + 0.3 * azar(), rumbo, tramos: 1, radio: [0.05, 0.042], caras: 4, color });
     const tope = tallo.puntos.at(-1);
+    // De lejos el tallo es un listón plano, de cara al rumbo de la mata.
+    partes.push(...(cerca ? tallo.partes : [liston(desde, tope, 0.05, rumbo, color)]).map((p) => marcar(p, 1)));
     const hojas = cerca ? 4 : 2;
     for (let h = 0; h < hojas; h++) {
       const recta = cerca && h === 0;
@@ -63,7 +79,7 @@ function mata(cerca) {
   }
   if (cerca) {
     for (let k = 0; k < 3; k++) {
-      const g = hoja({ largo: 0.6 + 0.25 * azar(), ancho: 0.09, segmentos: 2, inclinacion: 0.45, caida: 3.2, pliegue: 0.2, giro: k * 2.1 + azar(), altura: 0.12, color: V.canaSeca, seca: 0.6, nervio: V.canaSeca });
+      const g = hoja({ largo: 0.6 + 0.25 * azar(), ancho: 0.09, segmentos: 2, inclinacion: 0.45, caida: 3.2, pliegue: 0.2, giro: k * 2.1 + azar(), altura: 0.12, color: V.canaSeca, seca: 0.6, nervio: V.canaSeca, cinta: true });
       partes.push(marcar(g, 0));
     }
   }

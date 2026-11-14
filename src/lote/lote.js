@@ -13,13 +13,16 @@ import { matasCana } from '../coberturas/mata.js';
 import { crearMaterialMata } from '../coberturas/cana.js';
 import { TIPOS } from '../coberturas/tipos.js';
 import { conViento } from '../escena/viento.js';
+import { crearMaterial } from '../escena/material.js';
 import { crearTrazo } from '../escena/lineas.js';
 import { pedirSombra, pedirCuadro } from '../escena/pedidos.js';
 import { crearRuidos, crearAzar } from '../util/azar.js';
 import { frijol, conApagado, atributoApagado } from './formas.js';
 
 export const SUELO = 0.3; // lámina del lote sobre el terreno
-export const CERCA = 280; // distancia de la cámara al lote bajo la cual se dibuja el nivel cercano
+// Distancia de la cámara al lote bajo la cual se dibuja el nivel cercano. Los pasos de P03 que lo usan están a 125
+// o menos; P07, a 237, queda en el nivel lejano (etapa 7.d).
+export const CERCA = 180;
 const LEJOS = 900; // más lejos no se dibujan las plantas (en la calidad liviana, más lejos que CERCA)
 const PASO = 1.5; // resolución de la lámina
 const RAPIDEZ = 4; // apagado: fracción del camino por segundo (transición de unos 0,6 s)
@@ -40,11 +43,11 @@ function formasDe(especie) {
     return { cerca: f.cerca, lejos: f.lejos, material: conApagado(crearMaterialMata(f.material)) };
   }
   if (especie === 'frijol') {
-    const material = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.82, side: THREE.DoubleSide });
+    const material = crearMaterial({ vertexColors: true, roughness: 0.82, side: THREE.DoubleSide });
     return { cerca: frijol(true), lejos: frijol(false), material: conApagado(conViento(material, { alto: ALTO.frijol })) };
   }
   const m = ESPECIES[especie].mallas()[0];
-  const material = conViento(new THREE.MeshStandardMaterial(m.material), { alto: ALTO[especie] });
+  const material = conViento(crearMaterial(m.material), { alto: ALTO[especie] });
   return { cerca: m.cerca, lejos: m.lejos, material: conApagado(material) };
 }
 
@@ -98,7 +101,7 @@ function crearSuelo(d, altura) {
     c.copy(surco).lerp(camellon, 0.5 + 0.5 * Math.cos((fase - 0.5) * Math.PI * 2));
     c.lerp(paja, Math.max(0, grano(x / 3, z / 3)) * 0.45).multiplyScalar(0.95 + 0.08 * grano(x * 2, z * 2));
   });
-  const material = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1 });
+  const material = crearMaterial({ vertexColors: true, roughness: 1 });
   const grupo = new THREE.Group();
   for (const [nombre, g] of [['lote-suelo-policultivo', poli], ['lote-suelo-monocultivo', mono]]) {
     const malla = new THREE.Mesh(g, material);

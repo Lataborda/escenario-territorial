@@ -18,6 +18,7 @@ import { PERIODO_SURCO, HUNDIR } from './superficie.js';
 import { EDADES_CANA } from './tipos.js';
 import { matasCana, ALTO } from './mata.js';
 import { conViento } from '../escena/viento.js';
+import { crearMaterial } from '../escena/material.js';
 
 export const UMBRAL_CANA = 460; // distancia de la cámara a la celda (unidades de escena)
 const UMBRAL_DETALLE = 130; // celdas con la forma detallada
@@ -40,7 +41,7 @@ const CAMPOS = 9;
 const NUDO = 0.3;
 const VAIVEN = 0.045; // desplazamiento del viento en la punta de las hojas, como fracción del alto de la mata
 export function crearMaterialMata(opciones) {
-  const material = new THREE.MeshStandardMaterial(opciones);
+  const material = crearMaterial(opciones);
   material.onBeforeCompile = (s) => {
     s.vertexShader = s.vertexShader
       .replace('#include <common>', '#include <common>\nattribute float propio;\nvarying float vPropio;\nvarying float vNudo;')

@@ -36,6 +36,10 @@ export async function revisarVegetacion(pagina, dirCapturas) {
   r.facetadas = await pagina.evaluate(() => window.escenario.coberturas().datos().facetadas);
   // Formas de la caña cercana (ninguna espiga).
   r.formasCana = await pagina.evaluate(() => window.escenario.coberturas().grupo.children.map((m) => m.name).filter((n) => n.startsWith('cana-cerca')));
+  // Triángulos de cada forma de mata (etapa 7.d: 240 como máximo la detallada y 36 la lejana).
+  r.triangulosCana = await pagina.evaluate(() =>
+    Object.fromEntries(window.escenario.coberturas().grupo.children.filter((m) => m.name.startsWith('cana-cerca')).map((m) => [m.name.replace('cana-cerca-', ''), m.geometry.attributes.position.count / 3])),
+  );
   // Edades por escenario (aplicadas sin transición) y regreso a S0.
   r.edades = {};
   for (const id of ['S1', 'S3', 'S0']) r.edades[id] = await edadesEn(pagina, id);
@@ -75,6 +79,7 @@ export function fallasVegetacion(v) {
   // Tapa hundida bajo las matas: radio cubierto a escala de planta y de finca; ninguno en la vista general ni en liviano.
   if (!(planta.cerca.radio > 0 && finca.cerca.radio > 0)) f.push('Caña: la tapa no baja bajo las matas cercanas');
   if (general.cerca.radio || liviano.cerca.radio) f.push('Caña: tapa hundida sin matas cercanas (vista general o liviano)');
+  if (!(v.triangulosCana.cerca <= 240 && v.triangulosCana.lejos <= 36)) f.push(`Caña: mata de ${v.triangulosCana.cerca} y ${v.triangulosCana.lejos} triángulos (máximo 240 y 36)`);
   if (!v.formasCana.length || v.formasCana.some((n) => n.includes('espiga'))) f.push(`Caña: formas cercanas inesperadas (${v.formasCana.join(', ')})`);
   for (const [id, x] of Object.entries(v.vistas)) {
     if (x.estadisticas.llamadas >= 200) f.push(`Vegetación: ${x.estadisticas.llamadas} llamadas de dibujo en la vista ${id}`);
@@ -96,7 +101,7 @@ export function seccionVegetacion(v) {
     '## Vegetación y caña',
     '',
     `- Materiales facetados en la vegetación: ${v.facetadas.length ? v.facetadas.join(', ') : 'ninguno'}`,
-    `- Formas de la caña cercana: ${v.formasCana.join(', ')} (ninguna espiga)`,
+    `- Formas de la caña cercana: ${v.formasCana.join(', ')} (ninguna espiga); triángulos por mata: ${v.triangulosCana.cerca} la detallada y ${v.triangulosCana.lejos} la lejana`,
     ...['S0', 'S1', 'S3'].map((id) => `- Lotes con caña por edad en ${id}: ${lista(v.edades[id].edades)}; alturas del bloque ${v.edades[id].alturas.join(', ')}`),
     ...Object.keys(v.vistas).map((id) => `- Vista ${vista(id)}`),
     `- Especies en nivel «cerca» a escala de finca: ${arboles('finca') || 'ninguna'}; a escala de planta: ${arboles('planta') || 'ninguna'}`,

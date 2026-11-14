@@ -75,8 +75,10 @@ export function arco({ desde = [0, 0, 0], alto, inclinacion = 0.3, rumbo = 0, tr
 }
 
 // Hoja larga (plátano, maíz): nervio en arco que se curva hacia abajo, lámina plegada en V y borde más claro
-// o seco. Se extiende sobre +x y gira alrededor del eje vertical.
-export function hoja({ largo, ancho, segmentos = 5, inclinacion = 0.9, caida = 1.4, pliegue = 0.35, giro = 0, altura = 0, color, seca = 0, nervio = 0xd9e2a0 }) {
+// o seco. Se extiende sobre +x y gira alrededor del eje vertical. Con cinta = true (caña, etapa 7.d) la lámina es
+// una cinta de dos vértices por tramo, ladeada según «pliegue» y con el color del nervio en un borde: la mitad de
+// los triángulos.
+export function hoja({ largo, ancho, segmentos = 5, inclinacion = 0.9, caida = 1.4, pliegue = 0.35, giro = 0, altura = 0, color, seca = 0, nervio = 0xd9e2a0, cinta = false }) {
   const pos = [];
   const colores = [];
   const ind = [];
@@ -88,12 +90,16 @@ export function hoja({ largo, ancho, segmentos = 5, inclinacion = 0.9, caida = 1
     const t = k / segmentos;
     const angulo = inclinacion - caida * t * t;
     const w = (ancho / 2) * Math.pow(Math.sin(Math.PI * Math.min(1, 0.08 + t * 0.95)), 0.6);
-    for (const lado of [-1, 0, 1]) {
-      pos.push(x, y - (lado ? pliegue * w : 0), lado * w);
-      c.setHex(lado ? color : nervio).lerp(seco, lado ? seca * t * t : 0);
+    for (const lado of cinta ? [-1, 1] : [-1, 0, 1]) {
+      const claro = cinta ? lado > 0 : !lado;
+      pos.push(x, y - (cinta ? lado : lado ? 1 : 0) * pliegue * w, lado * w);
+      c.setHex(claro ? nervio : color).lerp(seco, claro ? 0 : seca * t * t);
       colores.push(c.r * (0.8 + 0.25 * t), c.g * (0.8 + 0.25 * t), c.b * (0.8 + 0.25 * t));
     }
-    if (k > 0) {
+    if (k > 0 && cinta) {
+      const b = (k - 1) * 2;
+      ind.push(b, b + 2, b + 1, b + 1, b + 2, b + 3);
+    } else if (k > 0) {
       const b = (k - 1) * 3;
       ind.push(b, b + 3, b + 1, b + 1, b + 3, b + 4, b + 1, b + 4, b + 2, b + 2, b + 4, b + 5);
     }

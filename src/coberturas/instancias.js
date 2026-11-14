@@ -5,6 +5,7 @@
 // Descarte por zonas (etapa 7.c): en cada malla van primero los puestos de las celdas dentro del encuadre y la pasada
 // principal dibuja solo esos; la pasada de sombra dibuja todos (la sombra de un árbol fuera del encuadre cae dentro).
 import * as THREE from 'three';
+import { crearMaterial } from '../escena/material.js';
 import { CELDA, celdaDe, origenCelda } from './detalle.js';
 import { conViento } from '../escena/viento.js';
 
@@ -13,7 +14,7 @@ const VAIVEN = 0.012; // desplazamiento del viento en la punta, como fracción d
 
 // Material de una forma, con viento salvo que la forma lo excluya (viento: false). Alto: el de la forma más alta.
 function materialDe(m) {
-  const material = new THREE.MeshStandardMaterial(m.material);
+  const material = crearMaterial(m.material);
   if (m.viento === false) return material;
   const alto = Math.max(...[m.lejos, m.cerca].filter(Boolean).map((g) => {
     if (!g.boundingBox) g.computeBoundingBox();
