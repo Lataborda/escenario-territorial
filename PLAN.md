@@ -69,7 +69,7 @@ Escenario_Territorial/
   presentador.html         vista del presentador
   contenido/               datos editables (JSON)
     territorio.json  escalas.json  paradas.json  escenarios.json
-    condiciones.json  actores.json  fuentes.json
+    condiciones.json  actores.json  fuentes.json  procesos.json
   src/
     main.js  estado.js
     escena/        renderizador, luces, cámara, bloque de la maqueta
@@ -77,7 +77,7 @@ Escenario_Territorial/
     coberturas/    vegetación y usos del suelo por zona
     fincas/        generador de fincas y conectores EAP
     suelo/         lote e interacciones, corte de suelo
-    procesos/      flujos (agua, sedimentos, nutrientes, semillas, polinizadores)
+    flujos/        flujos de los procesos (agua, sedimentos, nutrientes, semillas); partículas sobre curvas
     redes/         actores, enlaces, polígonos, figuras territoriales
     reglas/        teoría de cambio: condiciones a efectos
     navegacion/    paradas, transiciones, teclado, hash
@@ -544,7 +544,24 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [ ] Paradas P07 a P12 completas.
   - [ ] La biota del suelo aparece como proceso que cierra en la finca.
   - [ ] 50 cuadros por segundo o más con los flujos activos.
-- Prompt de arranque: `Etapa 8 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+- División (2026-11-15, aprobada por Alejandro): la etapa se cierra en dos sesiones.
+  - 8.a (cerrada): sistema de flujos (`src/flujos/`), leyenda de flujos, agua y sedimentos en la cuenca (P09), nutrientes de las fincas a la ciudad (P10) y semillas entre custodios (P11). Contenido en `contenido/procesos.json`.
+  - 8.b: lo que sigue en «Etapa 8.b».
+- Prompt de arranque: `Etapa 8.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 8.b. Radios, prácticas de conservación y síntesis
+
+- Tamaño: mediana. Fuentes: sí, puntuales (carpeta «TC» de Google Drive).
+- Lecturas: `GUION.md`, sección 4; `contenido/procesos.json`; entrada de la etapa 8.a en `BITACORA.md`.
+- Objetivo: cerrar el hito B con las paradas P08, P09 (ladera) y P12.
+- Trabajo:
+  - Polinización y control biológico (P08): radios desde parches de hábitat y su superposición entre fincas, con el rótulo de radios ilustrativos. Reutilizar `src/flujos/` y `crearTrazo`.
+  - Prácticas de conservación en la vista de ladera (paso nuevo de P09): curvas a nivel, barreras vivas y terrazas en una finca de ladera.
+  - Parada de síntesis (P12): panel con la tabla de escala mínima de `contenido/escalas.json` (procesos), la biota del suelo con el mismo peso que las demás filas.
+  - Cotejo de fuentes de P08 a P10: Gliessman (caps. 8, 14 y 18) y López-García y González de Molina (2021, §4).
+  - Decisiones de la 8.a que Alejandro deje anotadas (clases de escorrentía, custodios, retorno de nutrientes).
+- Criterios de aceptación: los tres de la etapa 8, más el presupuesto gráfico de cada capa nueva (50.000 triángulos como máximo).
+- Prompt de arranque: `Etapa 8.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 9. Actores, redes y figuras territoriales
 

@@ -116,6 +116,15 @@
   font-weight: 600;
 }
 
+/* Rótulo colocado debajo de su punto (flujos): la punta sale hacia arriba */
+.rotulo-finca.resaltado.abajo::after {
+  top: -0.45rem;
+  bottom: auto;
+  border: 0.45rem solid transparent;
+  border-top: 0;
+  border-bottom-color: var(--panel);
+}
+
 .rotulo-finca.resaltado::after {
   content: '';
   position: absolute;

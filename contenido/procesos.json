@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "nota": "Flujos de los procesos supraprediales (PLAN, etapa 8.a): agua y sedimentos (P09), nutrientes de las fincas a la ciudad (P10) y semillas entre custodios (P11). Esquema sin escala. Las posiciones «propuesta» y las clases de escorrentía son ilustrativas. Color, forma y tamaño de cada flujo: src/flujos/estilo.js.",
+  "leyenda": {
+    "titulo": "Flujos",
+    "nota": "Esquema ilustrativo",
+    "entradas": [
+      { "id": "agua", "capa": "escorrentia_sedimentos", "rotulo": "Agua" },
+      { "id": "sedimento", "capa": "escorrentia_sedimentos", "rotulo": "Agua con sedimentos" },
+      { "id": "nutrientes", "capa": "flujos_nutrientes", "rotulo": "Nutrientes en los alimentos" },
+      { "id": "retorno", "capa": "flujos_nutrientes", "rotulo": "Retorno de nutrientes al suelo", "escenarios": ["S3"] },
+      { "id": "semillas", "capa": "red_semillas", "rotulo": "Intercambio de semillas" },
+      { "id": "custodio", "capa": "red_semillas", "rotulo": "Familia custodia" }
+    ]
+  },
+  "escorrentia": {
+    "capa": "escorrentia_sedimentos",
+    "nota": "Clases ilustrativas. La escorrentía nace en la ladera y el piedemonte y toma la clase de la cobertura de su punto de origen en el escenario actual. El páramo y el humedal no tienen puntos de origen.",
+    "zonas": ["piedemonte", "ladera"],
+    "rutas": 40,
+    "clases": [
+      {
+        "id": "agua",
+        "rotulo": "Escorrentía bajo cobertura arbórea",
+        "coberturas": ["bosque_seco", "ripario", "bosque_altoandino", "cafe", "frutales", "silvopastoril"]
+      },
+      {
+        "id": "sedimento",
+        "rotulo": "Escorrentía sin cobertura arbórea",
+        "coberturas": ["pastura", "cana", "cana_organica", "platano", "huerta"]
+      }
+    ],
+    "sin_origen": ["paramo", "humedal"],
+    "fuentes": ["gliessman:cap. 8", "gliessman:cap. 18"],
+    "verificar": ["Pasajes de Gliessman (caps. 8 y 18) sobre la relación entre cobertura arbórea, escorrentía y sedimentos (cotejo en la etapa 8.b)."]
+  },
+  "nutrientes": {
+    "capa": "flujos_nutrientes",
+    "nota": "Arcos de las fincas tipo y de parcelas de posición propuesta hacia la ciudad. El retorno aparece en los escenarios indicados.",
+    "destino": "ciudad",
+    "origenes": [
+      { "id": "F1", "ancla": "F1" },
+      { "id": "F2", "ancla": "F2" },
+      { "id": "F3", "ancla": "F3" },
+      { "id": "F4", "ancla": "F4" },
+      { "id": "N1", "x": 0.12, "z": 0.22, "posicion": "propuesta" },
+      { "id": "N2", "x": 0.4, "z": 0.12, "posicion": "propuesta" },
+      { "id": "N3", "x": 0.16, "z": 0.62, "posicion": "propuesta" },
+      { "id": "N4", "x": 0.42, "z": 0.66, "posicion": "propuesta" },
+      { "id": "N5", "x": 0.56, "z": 0.18, "posicion": "propuesta" },
+      { "id": "N6", "x": 0.66, "z": 0.52, "posicion": "propuesta" },
+      { "id": "N7", "x": 0.75, "z": 0.14, "posicion": "propuesta" },
+      { "id": "N8", "x": 0.7, "z": 0.7, "posicion": "propuesta" }
+    ],
+    "retorno": { "escenarios": ["S3"] },
+    "rotulos": [
+      { "id": "sin_retorno", "titulo": "Sin retorno", "ancla": "ciudad", "lado": "abajo", "escenarios": ["S0", "S1", "S2"] },
+      { "id": "con_retorno", "titulo": "Flujos de nutrientes con retorno", "ancla": "ciudad", "lado": "abajo", "escenarios": ["S3"] }
+    ],
+    "fuentes": ["lopezgdm:§4", "padro:verificar"]
+  },
+  "semillas": {
+    "capa": "red_semillas",
+    "nota": "Familias custodias de posición propuesta en la ladera y en el resguardo indígena (figura genérica, decisión D3). Los intercambios van en ambos sentidos.",
+    "custodios": [
+      { "id": "F2", "ancla": "F2", "grupo": "ladera" },
+      { "id": "F3", "ancla": "F3", "grupo": "ladera" },
+      { "id": "K1", "x": 0.64, "z": 0.15, "posicion": "propuesta", "grupo": "ladera" },
+      { "id": "K2", "x": 0.75, "z": 0.5, "posicion": "propuesta", "grupo": "ladera" },
+      { "id": "K3", "x": 0.66, "z": 0.6, "posicion": "propuesta", "grupo": "ladera" },
+      { "id": "K4", "x": 0.7, "z": 0.71, "posicion": "propuesta", "grupo": "ladera" },
+      { "id": "K5", "x": 0.69, "z": 0.84, "posicion": "propuesta", "grupo": "resguardo" },
+      { "id": "K6", "x": 0.76, "z": 0.8, "posicion": "propuesta", "grupo": "resguardo" }
+    ],
+    "enlaces": [
+      ["F3", "F2"], ["F3", "K1"], ["K1", "F2"], ["F2", "K2"], ["F2", "K3"], ["K2", "K3"],
+      ["K3", "K4"], ["K4", "K5"], ["K4", "K6"], ["K5", "K6"], ["K2", "K6"]
+    ],
+    "rotulos": [
+      { "id": "custodias", "titulo": "Familias custodias", "texto": "Conservan e intercambian semillas", "en": "K1" },
+      { "id": "resguardo", "titulo": "Resguardo indígena", "texto": "Custodios en la red", "en": "K5", "lado": "abajo" }
+    ],
+    "fuentes": ["gliessman:cap. 11", "res331:lineamiento 4"]
+  },
+  "estado_texto": "borrador"
+}

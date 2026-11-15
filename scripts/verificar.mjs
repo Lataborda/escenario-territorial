@@ -20,16 +20,15 @@ import { revisarFincas, fallasFincas, seccionFincas } from './lib/revisar-fincas
 import { revisarLote, fallasLote, seccionLote } from './lib/revisar-lote.mjs';
 import { revisarRendimiento, fallasRendimiento, seccionRendimiento } from './lib/revisar-rendimiento.mjs';
 import { revisarCalidad, fallasCalidad, seccionCalidad } from './lib/revisar-calidad.mjs';
-import { validarContenido, escribirPendientes } from './validar-contenido.mjs';
+import { revisarProcesos, fallasProcesos, seccionProcesos } from './lib/revisar-procesos.mjs';
+import { validarContenido, escribirPendientes, ARCHIVOS as CONTENIDO } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIR_VERIFICACION = path.join(RAIZ, 'verificacion');
 const DIR_CAPTURAS = path.join(DIR_VERIFICACION, 'capturas');
 const ARCHIVO_UNICO = path.join(RAIZ, 'dist-unico', 'index.html');
 const INICIO = Date.now();
-// Avance en consola con los segundos transcurridos.
-const avisar = (texto) => console.log(`[${((Date.now() - INICIO) / 1000).toFixed(0)} s] ${texto}`);
-const CONTENIDO = ['territorio', 'escalas', 'paradas', 'escenarios', 'condiciones', 'actores', 'fincas', 'eap', 'lote', 'fuentes'];
+const avisar = (texto) => console.log(`[${((Date.now() - INICIO) / 1000).toFixed(0)} s] ${texto}`); // avance con los segundos transcurridos
 
 async function compilar() {
   avisar('Compilando dist/ y dist-unico/ ...');
@@ -95,10 +94,9 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, luz, rendimiento, calidad, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, flujos, luz, rendimiento, calidad, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
   return [
-    '# Informe de verificación',
-    '',
+    '# Informe de verificación\n',
     `- Fecha: ${fecha}`,
     `- Navegador: Chromium ${version}`,
     `- Resultado: ${fallas.length ? 'con fallas' : 'correcto'}`,
@@ -112,6 +110,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, coberturas
     ...seccionCoberturas(coberturas.extra, principal.estadisticas),
     ...seccionFincas(fincas.extra),
     ...seccionLote(lote.extra),
+    ...seccionProcesos(flujos.extra),
     ...seccionLuz(luz.extra),
     ...seccionRendimiento(rendimiento.extra),
     ...seccionCalidad(calidad),
@@ -121,8 +120,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, coberturas
     ...seccionVista('Ventana de 1280×720 (vista compilada)', recorrido.vistas.legibilidad),
     ...seccionRecorrido(recorrido),
     ...seccionPresentador(presentador, respaldo),
-    '## Contenido',
-    '',
+    '## Contenido\n',
     `- JSON válidos: ${contenido.validos} de ${CONTENIDO.length}`,
     contenido.resumen
       ? `- Paradas: ${contenido.resumen.paradas}; minutos: ${contenido.resumen.total}; saltables: ${contenido.resumen.saltables.join(', ') || 'ninguna'}`
@@ -236,6 +234,8 @@ async function principal() {
       ventana: VENTANA_GRANDE,
       extra: (p) => revisarLote(p, { navegador, dirCapturas: DIR_CAPTURAS, raiz: RAIZ }),
     });
+    avisar('Revisando los flujos de los procesos supraprediales ...');
+    const flujos = await revisarPagina(navegador, `${url}#p=P09&captura=1`, { origen, extra: (p) => revisarProcesos(p, { dirCapturas: DIR_CAPTURAS }) });
     avisar('Revisando luz, posproceso y textos a 1920×1080 ...');
     const luz = await revisarPagina(navegador, `${url}#p=P01&captura=1`, {
       origen,
@@ -251,7 +251,7 @@ async function principal() {
     const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
     avisar('Revisando el respaldo en imágenes ...');
     const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, luz, rendimiento, calidad, recorrido, presentador, respaldo, version: navegador.version() };
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, flujos, luz, rendimiento, calidad, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
@@ -267,6 +267,7 @@ async function principal() {
     ...fallasFincas(resultado.fincas.extra),
     ...fallasDe('Vista lote', resultado.lote),
     ...fallasLote(resultado.lote.extra),
+    ...fallasDe('Vista flujos', resultado.flujos), ...fallasProcesos(resultado.flujos.extra),
     ...fallasDe('Vista 1920×1080', resultado.luz),
     ...fallasLuz(resultado.luz.extra),
     ...fallasDe('Vista rendimiento', resultado.rendimiento),

@@ -9,7 +9,7 @@ import { obtener, suscribir } from '../estado.js';
 import { huella } from '../util/azar.js';
 import { suave } from '../util/interpolar.js';
 import { crearUnidades } from './unidades.js';
-import { asignarEscenarios, asignarCana } from './asignacion.js';
+import { asignarEscenarios, asignarCana, tipoDe } from './asignacion.js';
 import { crearTeselas } from './teselas.js';
 import { crearVegetacion } from './vegetacion.js';
 import { crearMosaico } from './mosaico.js';
@@ -17,7 +17,7 @@ import { crearCanaCerca } from './cana.js';
 import { crearDetalle, crearEncuadre } from './detalle.js';
 import { medirAsignacion, extensionCana } from './metricas.js';
 import { crearContornoEep } from './eep.js';
-import { rejillaTeselas, LADO } from './rejilla.js';
+import { rejillaTeselas, teselaDe, LADO } from './rejilla.js';
 import { crearTrazo } from '../escena/lineas.js';
 import { pedirSombra } from '../escena/pedidos.js';
 import { ESTILO, activa } from '../fincas/estilo.js';
@@ -192,6 +192,12 @@ export function crearCoberturas({ altura, camara, instantanea = false }) {
       eep: { visible: eep.grupo.visible, segmentos: eep.cantidad(), conexion: conexion.cantidad() },
     }),
     huella: () => huella(arreglos()),
+    // Tipo de cobertura de un punto en un escenario, o null sin unidad (vías, solares, cauces). Uso de los flujos.
+    tipoEn: (x, z, id) => {
+      const t = teselaDe(datos.centros, x, z);
+      const u = t < 0 ? -1 : datos.unidadDe[t];
+      return u < 0 ? null : tipoDe((asignaciones.get(id) ?? asignaciones.get('S0'))[u]);
+    },
     medir: (id) => asignaciones.has(id) && medirAsignacion(datos, asignaciones.get(id)),
     // Largo del lindero de cada finca en conexión con la EEP (unidades de escena) en un escenario.
     conexionEep: (id) =>

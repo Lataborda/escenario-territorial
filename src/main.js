@@ -12,6 +12,8 @@ import { crearRotulosFinca } from './fincas/rotulos.js';
 import { crearLote } from './lote/lote.js';
 import { crearCorte } from './lote/suelo.js';
 import { crearRotulosLote } from './lote/rotulos.js';
+import { crearFlujos } from './flujos/flujos.js';
+import { crearRotulosFlujos } from './flujos/rotulos.js';
 import { leerParametros } from './parametros.js';
 import { obtener, cambiar, suscribir } from './estado.js';
 import { crearCamaraNavegacion } from './navegacion/camara.js';
@@ -179,6 +181,20 @@ async function iniciar() {
       alCuadro: escena.alCuadro,
     }),
   );
+  // Flujos de los procesos supraprediales (P09 a P11), con sus rótulos.
+  const flujos = coberturas && montar('flujos', () => crearFlujos({ altura, superficie, ancla, coberturas, instantanea: parametros.captura }));
+  if (flujos) {
+    escena.superponer(flujos.grupo);
+    escena.alCuadro(flujos.cuadro);
+  }
+  const rotulosFlujos = flujos && montar('rótulos de flujos', () =>
+    crearRotulosFlujos({
+      contenedor: document.getElementById('interfaz'),
+      capas: flujos.capas,
+      proyectar: (x, y, z) => proyectar(escena, new THREE.Vector3(x, y, z)),
+      alCuadro: escena.alCuadro,
+    }),
+  );
   // Vista del presentador (npm run presentar): publica el estado y recibe órdenes.
   montar('presentador', crearSincronia);
   // Detección de calidad: sin #calidad= en el hash; en la verificación y con #captura=1, solo con #deteccion=.
@@ -203,6 +219,8 @@ async function iniciar() {
     asentamientos: () => asentamientos,
     fincas: () => fincas && { ...fincas.datos(), rotulos: rotulos?.visibles() ?? 0 },
     lote: () => lote && { ...lote.datos(), corte: corte?.datos() ?? null, rotulos: rotulosLote?.visibles() ?? null },
+    flujos: () => flujos && { ...flujos.datos(), rotulos: rotulosFlujos?.visibles() ?? 0 },
+    fijarRelojFlujos: (t) => flujos?.fijarReloj(t),
     cambiarEscenario: (id) => cambiar({ escenario: id }),
     capas: (lista) => cambiar({ capas: lista }),
     revisarAnclas: revisarAnclasTerreno,

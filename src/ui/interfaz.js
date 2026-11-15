@@ -12,6 +12,7 @@ import { crearCapas } from './capas.js';
 import { crearEap } from './eap.js';
 import { crearMateria } from './materia.js';
 import { crearInteracciones } from './interacciones.js';
+import { crearLeyendaFlujos } from './flujos.js';
 
 const DURACION_AVISO_MS = 8000;
 
@@ -68,6 +69,7 @@ export function crearInterfaz(raiz) {
   };
   montar('leyenda', crearLeyenda, enColumna('leyenda'));
   montar('capas', crearCapas, columna);
+  montar('leyenda de flujos', crearLeyendaFlujos, columna);
   montar('índice EAP', crearEap, columna);
   montar('interacciones', crearInteracciones, columna);
   montar('materia orgánica', crearMateria, columna);

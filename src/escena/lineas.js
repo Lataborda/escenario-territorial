@@ -49,7 +49,9 @@ export function crearTrazo(nombre, altura, estilo) {
   let cantidad = 0;
   function fijar(segmentos) {
     cantidad = segmentos.length;
-    const arreglo = posiciones(segmentos, altura, estilo.alto ?? 0.6);
+    aplicar(posiciones(segmentos, altura, estilo.alto ?? 0.6));
+  }
+  function aplicar(arreglo) {
     for (const p of partes) {
       p.geometry.dispose();
       p.geometry = new LineSegmentsGeometry();
@@ -57,5 +59,10 @@ export function crearTrazo(nombre, altura, estilo) {
     }
     grupo.userData.vacio = !arreglo.length;
   }
-  return { grupo, fijar, cantidad: () => cantidad };
+  // Segmentos ya colocados en la escena: [x1, y1, z1, x2, y2, z2, …] (arcos de los flujos, etapa 8).
+  function fijarPuntos(puntos) {
+    cantidad = puntos.length / 6;
+    aplicar(puntos instanceof Float32Array ? puntos : new Float32Array(puntos));
+  }
+  return { grupo, fijar, fijarPuntos, cantidad: () => cantidad };
 }

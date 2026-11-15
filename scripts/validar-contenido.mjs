@@ -3,12 +3,15 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { leerContenido } from './lib/contenido.mjs';
+import { leerContenido, ARCHIVOS } from './lib/contenido.mjs';
 import { revisarTextos } from './lib/revisar-textos.mjs';
 import { revisarReferencias } from './lib/revisar-referencias.mjs';
 import { revisarProporciones } from './lib/revisar-proporciones.mjs';
 import { revisarFincas, revisarEap } from './lib/revisar-fincas-contenido.mjs';
 import { revisarLote } from './lib/revisar-lote-contenido.mjs';
+import { revisarProcesos } from './lib/revisar-procesos-contenido.mjs';
+
+export { ARCHIVOS };
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ARCHIVO_PENDIENTES = path.join('verificacion', 'pendientes-de-fuente.md');
@@ -22,10 +25,11 @@ export async function validarContenido(raiz = RAIZ) {
   const fincas = revisarFincas(datos);
   const eap = revisarEap(datos);
   const lote = revisarLote(datos);
+  const procesos = revisarProcesos(datos);
   return {
     datos,
-    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...eap.errores, ...lote.errores, ...textos.errores],
-    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...eap.avisos, ...lote.avisos, ...textos.avisos],
+    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...eap.errores, ...lote.errores, ...procesos.errores, ...textos.errores],
+    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...eap.avisos, ...lote.avisos, ...procesos.avisos, ...textos.avisos],
     pendientes: textos.pendientes,
     resumen: referencias.resumen,
   };
