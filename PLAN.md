@@ -577,10 +577,30 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Polígono del territorio de la red, trazado por sus actores, que cruza el límite departamental.
   - Actores institucionales: alcaldía (recursos y capacitaciones), autoridad ambiental, MADR y ADR, universidad, ONG, colegios con compras públicas, ingenio.
 - Criterios de aceptación:
-  - [ ] Siete mercados aislados en S0 y en red en S2.
-  - [ ] El polígono de la red cruza el límite departamental.
-  - [ ] Rótulos legibles con siete visibles como máximo.
-- Prompt de arranque: `Etapa 9 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+  - [x] Siete mercados aislados en S0 y en red en S2.
+  - [x] El polígono de la red cruza el límite departamental.
+  - [ ] Rótulos legibles con siete visibles como máximo (cumplido en P18 y P20; faltan P13 y P21, en la 9.b).
+- División (2026-11-15, aprobada por Alejandro): la etapa se cierra en dos sesiones.
+  - 9.a (cerrada el 2026-11-15): sistema de la red de actores (`src/actores/`), mercados en las cabeceras, enlaces de comercio y de garantía, polígono del territorio de la red y límites administrativos (departamental resaltado y municipales esquemáticos). Paradas P18 y P20, y la base de P19. Contenido en `contenido/actores.json` (bloque `red`).
+  - 9.b: lo que sigue en «Etapa 9.b».
+- Prompt de arranque: `Etapa 9.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+
+## Etapa 9.b. Actores, figuras territoriales y sujeto plural
+
+- Tamaño: mediana a grande. Fuentes: sí, puntuales (carpeta «TC» de Google Drive: Ley 2046 de 2020, Res. 331 de 2024, Calle et al. 2022).
+- Lecturas: `contenido/actores.json` (lista de actores y bloque `red`); `GUION.md`, secciones 2 y 10; entrada de la etapa 9.a en `BITACORA.md`.
+- Objetivo: cerrar la etapa 9 con las paradas P13 y P21.
+- Trabajo:
+  - Marcadores simbólicos de los 18 actores con rótulo, por escala, con siete rótulos visibles como máximo. Sin figuras humanas estereotipadas.
+  - Actores institucionales: alcaldía, autoridad ambiental, MADR y ADR, universidad, ONG técnica, colegios con compras públicas, ingenio.
+  - Figuras territoriales (capa `figuras_territoriales`): resguardo, consejo comunitario y reserva natural de la sociedad civil, con contorno y rótulo. Figuras genéricas (decisión D3; `GUION.md`, precaución 7).
+  - Enlaces de conocimiento, semillas y gobernanza: las tres relaciones declaradas como pendientes en `contenido/actores.json` (`red.relaciones`). Reutilizar `src/actores/enlaces.js` y su estilo.
+  - P13: lindero de la propiedad frente al territorio definido por los actores (capas `lindero_territorio` y `actores`).
+  - P21: proximidades entre productores y consumidores y compras públicas de colegios (capas `proximidades`, `compras_publicas` y `actores`).
+  - Cotejo de fuentes: Ley 2046 de 2020 (mínimo de 30 % y definición de circuitos cortos de comercialización), Res. 331 de 2024 (líneas 1.2 y 1.10, lineamiento 2) y, si se usa, la condición de reserva natural de la finca faro en Calle et al. (2022).
+  - Decisiones de la 9.a que Alejandro deje anotadas (familias y enlaces, límites municipales, capas de P18 a P20).
+- Criterios de aceptación: los tres de la etapa 9 en P13, P18, P20 y P21, más el presupuesto gráfico de cada capa nueva (50.000 triángulos como máximo).
+- Prompt de arranque: `Etapa 9.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 10. Escenarios y teoría de cambio
 
