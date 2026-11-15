@@ -18,7 +18,7 @@ Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe c
 | ley2294 | Ley 2294 de 2023, art. 32 | falta | Verificar el texto del artículo (GUION, precaución 4). |
 | al012023 | Acto Legislativo 01 de 2023 | falta | Verificar el texto sobre el campesinado como sujeto de derechos. |
 
-## Localizadores por verificar (66 referencias en 22 fuentes)
+## Localizadores por verificar (67 referencias en 22 fuentes)
 
 Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar «verificar» por la página o la sección.
 
@@ -36,7 +36,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `mieryteran` (Mier y Terán et al. (2018)): condiciones (origen)
 - `mottet` (Mottet et al. (2020)): paradas (P23)
 - `nehring` (Nehring et al. (2026)): escalas (region)
-- `padro` (Padró et al.): escalas (region); paradas (P10); escenarios (S3, L2)
+- `padro` (Padró et al.): escalas (region); paradas (P10); escenarios (S3, L2); procesos (nutrientes)
 - `redmac` (REDMAC): paradas (P18, P20); escenarios (S2); condiciones (H2); actores (red_mercados)
 - `res331` (Res. 331 de 2024): escalas (region); paradas (P02, P24); escenarios (S0); condiciones (C8); actores (madr_adr)
 - `romero` (Romero et al. (2023)): territorio (ladera); paradas (P23); fincas (F2)
@@ -45,7 +45,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (17)
+## Datos por verificar (18)
 
 - escalas.json · cuenca: Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos.
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
@@ -64,3 +64,4 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - condiciones.json · situacion_partida: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - condiciones.json · C9: Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal.
 - condiciones.json · C10: Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial.
+- procesos.json · escorrentia: Pasajes de Gliessman (caps. 8 y 18) sobre la relación entre cobertura arbórea, escorrentía y sedimentos (cotejo en la etapa 8.b).

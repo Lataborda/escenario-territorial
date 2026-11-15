@@ -4,11 +4,11 @@
 
 Resumen para abrir sesión. El detalle de cada etapa está en su entrada del registro; no repetirlo aquí.
 
-- Etapa siguiente: Etapa 8. Procesos supraprediales (`PLAN.md`).
-- Última sesión: etapa 7.d del 2026-11-14 (mata de caña de 236 y 30 triángulos, material mate y nivel cercano del lote a menos de 180 unidades), aprobada por Alejandro sobre láminas de antes y después, con `npm run verificar` correcto. Las etapas 7.c y 7.d quedan cerradas salvo las cifras de Alejandro.
+- Etapa siguiente: Etapa 8.b. Radios, prácticas de conservación y síntesis (`PLAN.md`).
+- Última sesión: etapa 8.a del 2026-11-15 (sistema de flujos, agua y sedimentos en P09, nutrientes en P10 y semillas en P11), con `npm run verificar` correcto. La etapa 8 quedó dividida en 8.a y 8.b con aprobación de Alejandro. Las etapas 7.c y 7.d siguen cerradas salvo las cifras de Alejandro.
 - Fecha y ritmo: la prueba oral será en enero de 2027 (dato de Alejandro, 2026-11-10; falta la notificación con fecha y plataforma). Ritmo pausado para cuidar el cupo: una etapa por sesión, sin modo continuo salvo indicación, y revisión de Alejandro entre etapas.
-- Avance: etapas 0 a 7 cerradas (hito A completo en lo técnico; hito B sin la etapa 8). Dibujo propio en 6 de 26 paradas (P03 a P07 y P22). Las otras 20 (30,5 de 40 minutos; M0, M2 desde P08, M3, M4, M5 salvo P22 y M6) muestran solo la ficha sobre la maqueta: 28 de 42 capas de `territorio.json` sin módulo, y `lente`, `anio` y `condiciones` del estado sin consumidor. Es el riesgo principal; lo cubren las etapas 8 a 12, que son líneas, flujos y paneles (baratos en gráfica).
-- Rendimiento (tabla en `verificacion/informe.md`, sección «Rendimiento»): con la cámara quieta, 1,25 M de triángulos por cuadro en la vista general (antes de la 7.c, 1,93 M) y 1,2 a 1,8 M de cerca tras la 7.d (antes de la 7.c, 3,7 a 5,4 M); 30 cuadros por segundo con la cámara quieta y 60 en movimiento. Calidad (tecla V; sección «Calidad» del informe): la media baja P06 a 0,69 M y P07 a 1,62 M; la liviana queda entre 0,57 y 0,89 M. Alejandro (antes de la 7.c.a): en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Cifra de Alejandro del 2026-11-14 (versión anterior a la 7.c.b): vista general a 60 cuadros por segundo, 16,7 ms por cuadro y 17,7 ms el peor, con todos los efectos y relación de píxeles 1,5; 60 es el refresco de la pantalla, así que no mide el margen. Falta su cifra (tecla R, que mide sin tope) en P06, P03 y P07, y probar la detección en el equipo antiguo (abrir sin `#calidad=` en la dirección).
+- Avance: etapas 0 a 7 cerradas (hito A completo en lo técnico; hito B sin la etapa 8). Dibujo propio en 9 de 26 paradas (P03 a P07, P09 a P11 y P22). Las otras 17 (27 de 40 minutos; M0, P08 y P12 de M2, M3, M4, M5 salvo P22 y M6) muestran solo la ficha sobre la maqueta: 25 de 42 capas de `territorio.json` sin módulo, y `lente`, `anio` y `condiciones` del estado sin consumidor. Es el riesgo principal; lo cubren las etapas 8.b a 12, que son líneas, flujos y paneles (baratos en gráfica).
+- Rendimiento (tabla en `verificacion/informe.md`, sección «Rendimiento»): con la cámara quieta, 1,25 M de triángulos por cuadro en la vista general (antes de la 7.c, 1,93 M) y 1,2 a 1,8 M de cerca tras la 7.d (antes de la 7.c, 3,7 a 5,4 M); 30 cuadros por segundo con la cámara quieta y 60 en movimiento. Calidad (tecla V; sección «Calidad» del informe): la media baja P06 a 0,69 M y P07 a 1,62 M; la liviana queda entre 0,57 y 0,89 M. Alejandro (antes de la 7.c.a): en el MacBook Air M1 corre bien, «tal vez un poco lento»; en un equipo antiguo no corre bien. Cifra de Alejandro del 2026-11-14 (versión anterior a la 7.c.b): vista general a 60 cuadros por segundo, 16,7 ms por cuadro y 17,7 ms el peor, con todos los efectos y relación de píxeles 1,5; 60 es el refresco de la pantalla, así que no mide el margen. Falta su cifra (tecla R, que mide sin tope) en P06, P03 y P07, y probar la detección en el equipo antiguo (abrir sin `#calidad=` en la dirección). Flujos de la 8.a (sección «Procesos supraprediales» del informe): cada capa suma entre 3,7 y 11,8 mil triángulos y de 4 a 6 llamadas de dibujo; mientras hay un flujo visible la escena se dibuja de continuo (hasta 60 cuadros por segundo en la calidad alta y 30 en las demás). Falta la cifra de Alejandro con la tecla R en P09, P10 y P11.
 - Qué hay construido (módulo y etapa de referencia):
   - Terreno, ríos, bloque y 33 anclas, con `alto` opcional (`src/terreno/`; etapas 2 y 7.a).
   - Coberturas por escenario S0 a S3, vegetación en dos niveles de detalle, caña con matas cercanas, mosaico de ladera (`src/coberturas/`; 5.a a 5.c.b). Vías, ciudad y cabeceras (`src/vias/`, `src/asentamientos/`; 5.b).
@@ -16,8 +16,9 @@ Resumen para abrir sesión. El detalle de cada etapa está en su entrada del reg
   - Rendimiento: sombra a pedido (`src/escena/pedidos.js`), ritmo del dibujo y `#cps=` (`src/escena/ritmo.js`), vegetación y caña limitadas al encuadre (`src/coberturas/instancias.js`, `cana.js`, `detalle.js`); 7.c.a. Calidad `alta`, `media` y `liviana` en el estado (`src/calidad.js`), tecla V, `#calidad=` y `#deteccion=` en el hash, detección al arrancar (`src/escena/deteccion.js`) y aviso «Cargando…» (`index.html`); 7.c.b. Mata de caña en cinta (`src/coberturas/mata.js`) y material mate con interruptor (`src/escena/material.js`); 7.d.
   - Fincas tipo F1 a F4, lindero, conectores, EEP y resaltado menor y mayor (`src/fincas/`, `contenido/fincas.json`; 6.a). Índice EAP con sus dos grupos, cotejado con León-Sicard (2021) (`src/ui/eap.js`, `contenido/eap.json`; 6.b).
   - Finca de piedemonte con policultivo y monocultivo, niveles de la fig. 3.1 en cuatro pasos con cámara propia, interacciones, corte de suelo en la finca faro y panel de materia orgánica, cotejados (`src/lote/`, `contenido/lote.json`; 7.a y 7.b).
+  - Flujos de los procesos supraprediales: partículas sobre curvas en la superposición, con reloj propio, leyenda y rótulos; agua y sedimentos (P09), nutrientes con retorno en S3 (P10) y semillas entre custodios (P11) (`src/flujos/`, `src/ui/flujos.js`, `contenido/procesos.json`; 8.a).
   - Navegación: 26 paradas (37 estados), pasos con cámara opcional, botonera de siete escalas, modo libre (`src/navegacion/`; 3, 3.b y 7.a). Vista del presentador, respaldo en imágenes (37) y archivo único (`npm run presentar`, `respaldo`, `build:unico`; etapa 4).
-- Contenido: 26 fichas, recetas de finca, EAP y lote en `borrador`; 66 localizadores y 17 datos por verificar (`verificacion/pendientes-de-fuente.md`).
+- Contenido: 26 fichas, recetas de finca, EAP, lote y procesos en `borrador`; 67 localizadores y 18 datos por verificar (`verificacion/pendientes-de-fuente.md`).
 - Fuentes en la nube: carpeta «TC» de Google Drive (id `1ksyETkFQb1pTaylPqOXMm3lowFrFGWnt`): `Prueba Oral/Transition`, `Prueba Oral/Agroecologia_Grafo` (Gliessman et al. 2023 por capítulos) y `Prueba Oral/Normative`. Leer con el conector (el resultado queda guardado como archivo en el contenedor), convertir a texto en el directorio temporal y buscar con `rg`; en Gliessman, las líneas «NNN Título» marcan la página impresa. No están: los libros completos, Cleves-Leguízamo et al. (2017) y Sánchez de Prager (2018).
 - Entorno en la nube: entorno personal «escenario-territorial» (red limitada). Verificación completa: unos 20 minutos, sin tarjeta gráfica (los cuadros por segundo no son representativos).
 - Decisiones pendientes de Alejandro (acumuladas; la lista completa por etapa está en el registro):
@@ -27,6 +28,7 @@ Resumen para abrir sesión. El detalle de cada etapa está en su entrada del reg
   - Composición del policultivo, finca del lote sin casa ni familia, valores ilustrativos de la EAP.
   - Suavizado de la 7.c.a: relación de píxeles máxima de 1,5 (antes 2) y MSAA ×2 en pantallas densas. Ampliada, la imagen queda algo más suave; confirmar en el MacBook Air o volver a 2 (`RELACION_PIXELES_MAX` en `src/escena/escena.js`).
   - Calidad media de la 7.c.b: con la mitad del radio de la caña cercana, en la vista de finca (P06) los lotes de caña se ven como bloques rayados, sin matas; confirmar o pedir otro reparto (por ejemplo, radio completo y la mitad del cupo). Umbral de la detección: 30 cuadros por segundo y un solo nivel de bajada.
+  - Flujos de la 8.a (`contenido/procesos.json`): las dos clases de escorrentía por cobertura (con cobertura arbórea y sin ella), las ocho familias custodias y sus once enlaces (posiciones propuestas), los ocho orígenes propuestos de los arcos de nutrientes y el retorno solo en S3. Cámara de P10: a 3.100 unidades la maqueta ocupa un tercio de la pantalla y los arcos se ven pequeños; valorar acercarla en `contenido/paradas.json`.
   - Publicación en GitHub Pages (opción O4): repositorio público o no, y antes o después de la prueba.
   - Capturas versionadas: el repositorio pesa 159 MB porque cada etapa guarda capturas nuevas; decidir si `verificacion/capturas/` y `respaldo/capturas/` salen del control de versiones.
   - Prueba manual en videoconferencia (criterio de la etapa 4), aún sin hacer.
@@ -686,6 +688,37 @@ Sesión nueva. Sigue el protocolo de CLAUDE.md con la etapa indicada en BITACORA
   - Calidad media de la 7.c.b: sigue pendiente la decisión sobre el reparto de la caña cercana.
 - Consumo aproximado (/cost): no disponible en la sesión en la nube.
 - Siguiente: Etapa 8.
+
+### 2026-11-15 · Etapa 8.a. Sistema de flujos, agua y sedimentos, nutrientes y semillas
+
+- Estado: cerrada. La etapa 8 se dividió en 8.a y 8.b por su tamaño, con aprobación de Alejandro al inicio de la sesión (reparto en `PLAN.md`).
+- Hecho:
+  - Sistema de flujos (`src/flujos/`): rutas sobre el relieve, en arco y por la pendiente (`curvas.js`); nubes de partículas en `THREE.Points` con sombreador propio, forma y halo por flujo (`particulas.js`, `estilo.js`); reloj propio, capas encendidas por el estado y media cantidad de partículas en la calidad liviana (`flujos.js`); rótulos en escena (`rotulos.js`). Los trazos reutilizan `crearTrazo`, con `fijarPuntos()` para arcos en 3D (`src/escena/lineas.js`).
+  - P09, agua y sedimentos (`agua.js`): agua por los seis cauces hasta el río Cauca y 40 rutas de escorrentía desde la ladera y el piedemonte hasta el cauce más cercano. Cada ruta toma la clase de la cobertura de su origen en el escenario actual; el sedimento sigue por el cauce, que carga más aguas abajo. Rutas con sedimento: S0 28, S1 28, S2 23 y S3 9.
+  - P10, nutrientes (`nutrientes.js`): 12 arcos de las fincas tipo y de ocho parcelas propuestas hacia la ciudad, con el rótulo «Sin retorno». En S3, 12 arcos de retorno, su entrada en la leyenda y el rótulo «Flujos de nutrientes con retorno».
+  - P11, semillas (`semillas.js`): ocho familias custodias (F2, F3, cuatro de vereda y dos del resguardo) y once enlaces con partículas en ambos sentidos. Dos enlaces cruzan el límite departamental y tres unen la ladera con el resguardo.
+  - Leyenda de flujos en la columna derecha (`src/ui/flujos.js`), con color, forma y rótulo de cada flujo activo.
+  - Contenido: `contenido/procesos.json` (nuevo, `borrador`), validado por `scripts/lib/revisar-procesos-contenido.mjs`. Lectura de la cobertura de un punto por escenario en `src/coberturas/coberturas.js` (`tipoEn`).
+  - Verificación: `scripts/lib/revisar-procesos.mjs` y sección «Procesos supraprediales» del informe, con cuatro capturas (`flujos-P09`, `flujos-P10`, `flujos-P10-S3` y `flujos-P11`).
+- Presupuesto gráfico (triángulos y llamadas de dibujo que suma cada capa al cuadro, 1600×900): P09 11.832 y 6, con 1.058 partículas; P10 4.032 y 4, con 82 partículas (164 en S3); P11 3.696 y 4, con 56 partículas. Tope por capa: 50.000 triángulos.
+- Decisiones:
+  - Partículas calculadas en CPU y dibujadas como puntos, sin triángulos; los trazos bajo ellas son los únicos triángulos de cada capa.
+  - La escorrentía combina la pendiente con el rumbo al cauce más cercano, porque el descenso puro se detenía en los resaltos del relieve (26 de 48 rutas llegaban a un cauce).
+  - El agua clara de la escorrentía termina en el cauce; solo el sedimento continúa aguas abajo, para que la carga del río se lea sin saturar la imagen.
+  - Reloj quieto en la verificación automática y con `#captura=1` (capturas idénticas en cada carga). Fuera de la calidad alta los flujos piden cuadro a 30 por segundo.
+  - Rótulos de nutrientes y del resguardo debajo de su punto (`lado: abajo`), para no tapar los arcos ni los nodos.
+- Criterios de aceptación (los de la etapa 8 se cierran en la 8.b):
+  - Paradas P09, P10 y P11 con dibujo propio: cumplido. P07 ya estaba completa (etapa 7). P08, el paso de ladera de P09 y P12: pendientes para la 8.b.
+  - La biota del suelo aparece como proceso que cierra en la finca: cumplido desde la etapa 7 (rótulo «Cierra en la finca» en P07); falta su fila en el panel de P12.
+  - 50 cuadros por segundo o más con los flujos activos: pendiente de la medida de Alejandro (la nube no tiene tarjeta gráfica). Las capas quedan muy por debajo del presupuesto.
+- Verificación: `npm run verificar` correcto dos veces (base sobre `d2c4993` y cierre). Cero errores de consola y cero solicitudes externas. Cambian las capturas de P09, P10 y P11 y sus tres imágenes del respaldo (`npm run respaldo`). Prueba aparte, sin modo de automatización: el reloj avanza en P09, queda quieto en P01 y la calidad liviana deja 526 partículas de 1.058.
+- Pendientes:
+  - Alejandro: revisar las decisiones de contenido de `contenido/procesos.json` (clases de escorrentía, custodios y enlaces, orígenes de nutrientes, retorno solo en S3) y la cámara de P10.
+  - Alejandro: cuadros por segundo con la tecla R en P09, P10 y P11.
+  - Cotejo de fuentes de P09 y P10 (Gliessman, caps. 8 y 18; López-García y González de Molina 2021, §4): etapa 8.b. Queda un dato por verificar nuevo (pasajes sobre cobertura arbórea, escorrentía y sedimentos).
+  - Algunas rutas de escorrentía del piedemonte recorren un tramo largo del plano antes de llegar al cauce; valorar limitarlas a la ladera.
+- Consumo aproximado (/cost): no disponible en la sesión en la nube.
+- Siguiente: Etapa 8.b.
 
 ## Plantilla de entrada
 
