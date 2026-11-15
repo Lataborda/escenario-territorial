@@ -31,6 +31,8 @@ export function leer() {
     flujos: window.escenario.flujos(),
     leyenda: visibles('.flujos .capas-entrada').map((x) => x.dataset.flujo),
     notaLeyenda: visibles('.flujos .leyenda-nota')[0]?.textContent ?? '',
+    // Paneles de la columna derecha que cruzan la ficha.
+    columnaSobreFicha: visibles('.columna-derecha > *').map(caja).filter((r) => visibles('.ficha').map(caja).some((i) => cruzan(r, i))).length,
     rotulos: rotulos.map((x) => x.dataset.rotulo),
     enEscena: visibles('.rotulos-finca > *').length,
     sobreInterfaz: cajas.filter((r) => interfaz.some((i) => cruzan(r, i))).length,

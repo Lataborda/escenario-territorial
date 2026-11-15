@@ -40,6 +40,7 @@ async function medir(pagina, capa) {
     enEscena: con.enEscena,
     sobreInterfaz: con.sobreInterfaz,
     fuera: con.fuera,
+    columnaSobreFicha: con.columnaSobreFicha,
     triangulos: con.triangulos - sin.triangulos,
     llamadas: con.llamadas - sin.llamadas,
   };
@@ -127,6 +128,7 @@ export function fallasSintesis(r, procesos = PROCESOS) {
     if (m.triangulos > TOPE_TRIANGULOS) f.push(`${nombre}: la capa suma ${m.triangulos} triángulos (tope ${TOPE_TRIANGULOS})`);
     if (m.enEscena > MAXIMO_ROTULOS) f.push(`${nombre}: ${m.enEscena} rótulos en escena (máximo ${MAXIMO_ROTULOS})`);
     if (m.sobreInterfaz || m.fuera) f.push(`${nombre}: rótulos sobre la interfaz (${m.sobreInterfaz}) o fuera de la ventana (${m.fuera})`);
+    if (m.columnaSobreFicha) f.push(`${nombre}: ${m.columnaSobreFicha} paneles de la columna derecha cruzan la ficha`);
     if (!/ilustrativ/.test(m.nota)) f.push(`${nombre}: la leyenda no lleva la nota de esquema ilustrativo («${m.nota}»)`);
   };
   const { enemigos: e, polinizadores: p, practicas: c, panel } = r;

@@ -62,7 +62,7 @@
       "titulo": "Coberturas",
       "nota": "Proporciones ilustrativas",
       "escalas": ["vereda", "cuenca", "territorio", "region"],
-      "ocultar_con_capas": ["escala_minima"]
+      "ocultar_con_capas": ["escala_minima", "practicas_conservacion"]
     },
     "tipos": [
       { "id": "cana", "nombre": "Caña en manejo convencional", "rotulo": "Caña convencional" },

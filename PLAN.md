@@ -541,12 +541,12 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Semillas entre custodios.
   - Parada de síntesis con la tabla de escala mínima. Leyenda de flujos.
 - Criterios de aceptación:
-  - [ ] Paradas P07 a P12 completas.
-  - [ ] La biota del suelo aparece como proceso que cierra en la finca.
-  - [ ] 50 cuadros por segundo o más con los flujos activos.
+  - [x] Paradas P07 a P12 completas.
+  - [x] La biota del suelo aparece como proceso que cierra en la finca.
+  - [ ] 50 cuadros por segundo o más con los flujos activos (falta la medida de Alejandro con la tecla R; la nube no tiene tarjeta gráfica).
 - División (2026-11-15, aprobada por Alejandro): la etapa se cierra en dos sesiones.
   - 8.a (cerrada): sistema de flujos (`src/flujos/`), leyenda de flujos, agua y sedimentos en la cuenca (P09), nutrientes de las fincas a la ciudad (P10) y semillas entre custodios (P11). Contenido en `contenido/procesos.json`.
-  - 8.b: lo que sigue en «Etapa 8.b».
+  - 8.b (cerrada el 2026-11-15): lo que sigue en «Etapa 8.b».
 - Prompt de arranque: `Etapa 8.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 8.b. Radios, prácticas de conservación y síntesis
@@ -561,6 +561,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Cotejo de fuentes de P08 a P10: Gliessman (caps. 8, 14 y 18) y López-García y González de Molina (2021, §4).
   - Decisiones de la 8.a que Alejandro deje anotadas (clases de escorrentía, custodios, retorno de nutrientes).
 - Criterios de aceptación: los tres de la etapa 8, más el presupuesto gráfico de cada capa nueva (50.000 triángulos como máximo).
+- Estado: cerrada el 2026-11-15. Módulos: `src/flujos/radios.js`, `parches.js` y `practicas.js`, `src/ui/escala-minima.js`. Las decisiones de la 8.a siguen sin anotar y pasan a la lista de pendientes de Alejandro.
 - Prompt de arranque: `Etapa 8.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 9. Actores, redes y figuras territoriales
