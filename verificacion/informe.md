@@ -1,13 +1,13 @@
 # Informe de verificación
 
-- Fecha: 2026-11-15T17:12:27.415Z
+- Fecha: 2026-11-15T19:45:01.507Z
 - Navegador: Chromium 153.0.8010.12
 - Resultado: correcto
 
 ## Vista compilada (servidor de vista previa)
 
 - Dirección: `http://localhost:4317/`
-- Carga: sí, 6532 ms hasta `escenario:listo`
+- Carga: sí, 2944 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Cuadros por segundo en la vista general: 0.7 (navegador sin pantalla; referencia, no equivale al equipo de la prueba)
@@ -16,16 +16,16 @@
 - Tipografías cargadas (caras): IBM Plex Sans 3/3; Fraunces 2/2
 - Captura: `capturas/general.png` (1600×900)
 - Avisos de consola (no bloquean):
-  - [.WebGL-0x20c400188800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x20c400188800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x20c400188800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
-  - [.WebGL-0x20c400188800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+  - [.WebGL-0x18140019c800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x18140019c800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x18140019c800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+  - [.WebGL-0x18140019c800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
 
 ## Archivo único (file://, sin servidor y sin red)
 
 - Dirección: `file:///home/user/escenario-territorial/dist-unico/index.html`
-- Carga: sí, 8540 ms hasta `escenario:listo`
-- Tamaño: 1089 kB
+- Carga: sí, 8109 ms hasta `escenario:listo`
+- Tamaño: 1102 kB
 - Errores de consola: ninguno
 - Solicitudes: 1 en total; externas: ninguna
 - Llamadas de dibujo: 39; triángulos: 1253518; relación de píxeles: 1
@@ -48,7 +48,7 @@
 
 ## Coberturas
 
-- Unidades: parcelas 863, orillas 178, celdas 290, reservas 12, lotes 25; teselas dibujadas: 1056 unidades, 299880 vértices; generación en 693 ms (unidades y vías 245, asignación 17, teselas 178, vegetación 77, mosaico 85, caña cercana 7)
+- Unidades: parcelas 863, orillas 178, celdas 290, reservas 12, lotes 25; teselas dibujadas: 1056 unidades, 299880 vértices; generación en 655 ms (unidades y vías 230, asignación 17, teselas 180, vegetación 65, mosaico 70, caña cercana 12)
 - Instancias: saman 890 (170 en S0); seco 2682 (734 en S0); ceiba 254 (70 en S0); ribereno 1901 (498 en S0); guadua 563 (147 en S0); andino 1879 (1879 en S0); helecho 420 (420 en S0); frailejon 1308 (1308 en S0); junco 1066 (250 en S0); guamo 519 (449 en S0); cafeto 8944 (7111 en S0); platano 2531 (1473 en S0); citrico 552 (174 en S0); mango 548 (169 en S0); era 1605 (522 en S0); maiz 2271 (733 en S0); leucaena 10412 (551 en S0)
 - S0: caña en el 85 % del plano (mínimo 60 %); relictos 8, aislados 7 (separación de 60 unidades o más), contiguos 0; separación mínima 53.1, mediana 97.2
 - Plano en S0: cana 0.845, ripario 0.018, bosque_seco 0.038, pastura 0.08, humedal 0.019
@@ -57,9 +57,9 @@
 - Plano en S3: cana_organica 0.328, ripario 0.101, bosque_seco 0.129, silvopastoril 0.208, cana 0.112, pastura 0.041, humedal 0.082
 - S1 conserva la extensión de la caña de S0: sí
 - Salto máximo de un elemento por cuadro a 60 cuadros por segundo: 0.0227 (máximo 0.05)
-- Transición a S1 (calidad liviana): 76 elementos; en curso sí; 4 cuadros (intervalo máximo 1.02 s); máximo de elementos a medio camino en un cuadro: 76; 2.94 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
-- Transición a S3 (calidad liviana): 23797 elementos; en curso sí; 2 cuadros (intervalo máximo 1.55 s); máximo de elementos a medio camino en un cuadro: 15995; 3.04 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
-- Transición a S2 (calidad liviana): 19355 elementos; en curso sí; 3 cuadros (intervalo máximo 1.44 s); máximo de elementos a medio camino en un cuadro: 13905; 2.88 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
+- Transición a S1 (calidad liviana): 76 elementos; en curso sí; 3 cuadros (intervalo máximo 1.05 s); máximo de elementos a medio camino en un cuadro: 76; 2.08 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
+- Transición a S3 (calidad liviana): 23797 elementos; en curso sí; 3 cuadros (intervalo máximo 1.41 s); máximo de elementos a medio camino en un cuadro: 19151; 2.8 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
+- Transición a S2 (calidad liviana): 19355 elementos; en curso sí; 3 cuadros (intervalo máximo 1.48 s); máximo de elementos a medio camino en un cuadro: 14349; 2.91 s (declarada 2 s); final igual a la carga directa: sí; leyenda: 13 tipos
 - Leyenda en S0: cana, cana_organica, pastura, silvopastoril, bosque_seco, humedal, ripario, bosque_altoandino, paramo, cafe, platano, frutales, huerta
 - Calidad liviana: 17180 instancias dibujadas en la alta, 8594 en la liviana; restaurado sí
 - Llamadas de dibujo en la vista general: 39 (máximo 200); triángulos 1253518
@@ -71,7 +71,7 @@
 - Ladera en S1: pastura 0.416, frutales 0.06, cafe 0.269, platano 0.088, ninguna 0.098, huerta 0.034, ripario 0.036
 - Ladera en S2: cafe 0.277, pastura 0.261, platano 0.111, huerta 0.098, ninguna 0.099, frutales 0.119, ripario 0.036
 - Ladera en S3: cafe 0.314, platano 0.105, huerta 0.112, pastura 0.05, ninguna 0.06, frutales 0.177, silvopastoril 0.106, ripario 0.076
-- Niveles de detalle por vista (general, finca, cerca, liviano, ciudad): general: 39 llamadas, 1253518 triángulos, 0 instancias cerca; finca: 41 llamadas, 932360 triángulos, 1438 instancias cerca; cerca: 34 llamadas, 928295 triángulos, 7079 instancias cerca; liviano: 29 llamadas, 552304 triángulos, 0 instancias cerca; ciudad: 33 llamadas, 1143182 triángulos, 190 instancias cerca
+- Niveles de detalle por vista (general, finca, cerca, liviano, ciudad): general: 59 llamadas, 1267370 triángulos, 0 instancias cerca; finca: 61 llamadas, 946212 triángulos, 1438 instancias cerca; cerca: 54 llamadas, 942147 triángulos, 7079 instancias cerca; liviano: 49 llamadas, 566156 triángulos, 0 instancias cerca; ciudad: 53 llamadas, 1157034 triángulos, 190 instancias cerca
 - Instancias cerca a escala de planta: saman 81, seco 26, ceiba 22, ribereno 194, guadua 58, andino 450, helecho 62, frailejon 0, junco 0, guamo 427, cafeto 3179, platano 1239, citrico 174, mango 169, era 329, maiz 460, leucaena 209
 - Vías: 23 tramos (troncal 10, secundaria 5, veredal 8); 5019 unidades de largo; 7 puentes; 1478 teselas de corredor sin parcela; 9852 vértices
 - Asentamientos: ciudad 45 manzanas y 481 edificaciones; CAB1 9 manzanas y 69 edificaciones; CAB2 9 manzanas y 68 edificaciones; CAB3 9 manzanas y 66 edificaciones; CAB4 9 manzanas y 67 edificaciones; CAB5 9 manzanas y 66 edificaciones; CAB6 9 manzanas y 69 edificaciones; CAB7 9 manzanas y 67 edificaciones; CAB8 9 manzanas y 66 edificaciones; CAB9 9 manzanas y 68 edificaciones; instancias cajas 1339, tejados 1040, arboles 136
@@ -84,13 +84,13 @@
 - Lotes con caña por edad en S0: cortado 61, crecimiento 101, maduro 157; alturas del bloque 0.3, 1.55, 2.7
 - Lotes con caña por edad en S1: cortado 61, crecimiento 101, maduro 157; alturas del bloque 0.3, 1.55, 2.7
 - Lotes con caña por edad en S3: cortado 30, crecimiento 48, maduro 72; alturas del bloque 0.3, 1.55, 2.7
-- Vista general: 39 llamadas, 1253518 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
-- Vista finca: 44 llamadas, 1185116 triángulos; matas de caña 15134 de dosel y 5054 de borde (0 detalladas) en 31 celdas; tapa hundida hasta 460 unidades
-- Vista planta: 50 llamadas, 1393328 triángulos; matas de caña 4299 de dosel y 1382 de borde (2202 detalladas) en 19 celdas; tapa hundida hasta 460 unidades
-- Vista liviano: 35 llamadas, 586380 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
-- Vista cana: 45 llamadas, 1514415 triángulos; matas de caña 13612 de dosel y 4053 de borde (1764 detalladas) en 38 celdas; tapa hundida hasta 460 unidades
-- Vista suelo: 52 llamadas, 1285542 triángulos; matas de caña 2603 de dosel y 814 de borde (1345 detalladas) en 14 celdas; tapa hundida hasta 460 unidades
-- Vista ribera: 43 llamadas, 1295220 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
+- Vista general: 59 llamadas, 1267370 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
+- Vista finca: 64 llamadas, 1198968 triángulos; matas de caña 15134 de dosel y 5054 de borde (0 detalladas) en 31 celdas; tapa hundida hasta 460 unidades
+- Vista planta: 70 llamadas, 1407180 triángulos; matas de caña 4299 de dosel y 1382 de borde (2202 detalladas) en 19 celdas; tapa hundida hasta 460 unidades
+- Vista liviano: 55 llamadas, 600232 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
+- Vista cana: 65 llamadas, 1528267 triángulos; matas de caña 13612 de dosel y 4053 de borde (1764 detalladas) en 38 celdas; tapa hundida hasta 460 unidades
+- Vista suelo: 72 llamadas, 1299394 triángulos; matas de caña 2603 de dosel y 814 de borde (1345 detalladas) en 14 celdas; tapa hundida hasta 460 unidades
+- Vista ribera: 63 llamadas, 1309072 triángulos; matas de caña 0 de dosel y 0 de borde (0 detalladas) en 0 celdas; tapa hundida hasta 0 unidades
 - Especies en nivel «cerca» a escala de finca: ceiba 3, guamo 71; a escala de planta: saman 77, seco 208, ceiba 34, ribereno 136, guadua 40, guamo 434, cafeto 1416, platano 1322, citrico 121, mango 102, era 40, maiz 57, leucaena 170
 - Capturas: `capturas/cana-cerca.jpg`, `capturas/cana-suelo.jpg`, `capturas/vegetacion-ribera.jpg`
 
@@ -149,14 +149,17 @@
 ## Actores y red
 
 - Capas de la red apagadas en P01: sí
-- P18 (S0): 7 mercados (CAB1, CAB2, CAB3, CAB4, CAB5, CAB6, CAB7), sin capas de enlaces; con las capas de la red forzadas en S0: 0 enlaces de comercio, 0 de garantía y 0 vértices de polígono
+- P13 (S0): lindero resaltado de F1, F2, F3, F4; figuras territoriales resguardo, consejo, reserva (sobre la finca F1); 15 marcadores de 14 actores (familia 3, aliado 2, regimen 2, comunitario 4, institucional 3, consumo 1); enlaces visibles: 0
+- P18 (S0): 7 mercados (CAB1, CAB2, CAB3, CAB4, CAB5, CAB6, CAB7), sin capas de enlaces; con todas las capas de la red forzadas en S0: 0 enlaces y 0 vértices de polígono
 - P20 (S2): 9 mercados; comercio: 23 enlaces entre 22 nodos, 9 mercados en 1 red, 2 enlaces cruzan el límite departamental; garantía: 9 enlaces entre 13 nodos
 - Polígono de la red: 22 nodos (16 al norte y 6 al sur del límite departamental), 287 vértices (179 al norte y 108 al sur) y 2 cruces con el límite
 - Límites administrativos: 10 municipios esquemáticos (8 al norte y 2 al sur) y 16 lados de límite municipal
-- Rótulos: P18 valle, cauca, mercado_aislado (3 en escena); P20 valle, cauca, territorio_red, universidad, mercados_sur (5 en escena); máximo 7
-- Leyenda: P18 mercado, limite_departamental, limite_municipal; P20 mercado, comercio, familia, garantia, aliado, poligono, limite_departamental, limite_municipal («Disposición ilustrativa»)
-- Presupuesto gráfico por capa (tope 50000 triángulos): P18: limites_administrativos 14280 triángulos y 4 llamadas; mercados 0 triángulos y 1 llamadas. P20: limites_administrativos 14280 triángulos y 4 llamadas; poligono_red 18942 triángulos y 4 llamadas; red_mercados 7728 triángulos y 4 llamadas; spg 3024 triángulos y 5 llamadas; mercados 0 triángulos y 1 llamadas
-- Capturas: `capturas/actores-P18.jpg`, `capturas/actores-P20.jpg`
+- P21, sujeto plural (S2): enlaces por tipo de relación: comercio 23, garantia 9, conocimiento 6, semillas 6, gobernanza 9; 15 marcadores de actores
+- P21, circuitos cortos: enlaces de proximidad 8, compras 4; mercados enlazados por proximidad: 3
+- Rótulos (máximo 7): P13 resguardo, consejo, reserva, lindero, ingenio, acueducto (6 en escena); P18 valle, cauca, mercado_aislado (3 en escena); P20 valle, cauca, territorio_red, mercados_sur, universidad (5 en escena); P21 universidad, escuela, consumidores (3 en escena) y proximidad, compras, consumidores (3 en escena)
+- Leyenda («Disposición ilustrativa»): P13 familia, comunitario, institucional, aliado, regimen, consumo, lindero, figura_territorial, reserva_natural; P18 mercado, limite_departamental, limite_municipal; P20 mercado, comercio, garantia, familia, aliado, poligono, limite_departamental, limite_municipal; P21 mercado, comercio, garantia, conocimiento, semillas, gobernanza, familia, comunitario, institucional, aliado, regimen, consumo y mercado, proximidad, compras, familia, comunitario, institucional, aliado, regimen, consumo
+- Presupuesto gráfico por capa, triángulos y llamadas (tope 50000 triángulos): P13: lindero_territorio 5712 y 2; figuras_territoriales 8140 y 12; actores 0 y 6. P18: mercados 0 y 1; limites_administrativos 14280 y 4. P20: mercados 0 y 1; red_mercados 7728 y 4; poligono_red 18942 y 4; spg 3024 y 5; limites_administrativos 14280 y 4. P21: mercados 0 y 1; red_mercados 7728 y 4; spg 3024 y 5; actores 0 y 6; vinculos_actores 7056 y 9; segundo paso: mercados 0 y 1; actores 0 y 6; proximidades 2688 y 5; compras_publicas 1344 y 5
+- Capturas: `capturas/actores-P13.jpg`, `capturas/actores-P18.jpg`, `capturas/actores-P20.jpg`, `capturas/actores-P21-1.jpg`, `capturas/actores-P21-2.jpg`
 
 ## Luz de diorama y legibilidad (1920×1080)
 
@@ -168,7 +171,7 @@
 - Captura igual tras seis cuadros más: sí; viento visible con el reloj en 1,3 s: sí; vuelve con el reloj en 0: sí
 - Tecla M: miniatura no tras pulsarla, la imagen cambia sí, vuelve igual sí
 - Calidad liviana: oclusión no, miniatura no, viento no, sombra no, matas de caña 0; 36 llamadas; al salir, igual a la referencia: sí
-- Textos revisados: 366 en P01, P03 paso 2, P04 paso 1, P06, P07, P13, P14 paso 2, P22; letra mínima 24.0 px (mínimo 24); contraste mínimo 6.48 (mínimo 4.5); sin fondo propio: 0
+- Textos revisados: 374 en P01, P03 paso 2, P04 paso 1, P06, P07, P13, P14 paso 2, P22; letra mínima 24.0 px (mínimo 24); contraste mínimo 6.48 (mínimo 4.5); sin fondo propio: 0
 - Excepciones (marca de borrador): «borrador» 16.8 px
 - Filtros sobre la interfaz: 0; lienzo fuera de la interfaz: sí
 - Captura: `capturas/luz-finca.jpg`
@@ -184,7 +187,7 @@ Triángulos por cuadro con la cámara quieta (todas las pasadas; la sombra no se
 | Lote (P03, comunidad) | 5,3 M | 1,22 M (23 %) | 3 M | 39 | 1074 | 1222 (3516) | sí |
 | Suelo (P07) | 5,42 M | 1,84 M (34 %) | 3,5 M | 63 | 7359 | 6001 (10699) | sí |
 
-- Ritmo del dibujo: tope de 60 cuadros por segundo en movimiento y 30 con la cámara quieta y viento; con la cámara quieta y el viento detenido, 2 cuadros dibujados en 3,9 s (3 cuadros del navegador)
+- Ritmo del dibujo: tope de 60 cuadros por segundo en movimiento y 30 con la cámara quieta y viento; con la cámara quieta y el viento detenido, 2 cuadros dibujados en 4,1 s (3 cuadros del navegador)
 - Los cuadros por segundo reales se miden en el equipo de la prueba con la tecla R (sin tope mientras el medidor está visible).
 
 ## Calidad
@@ -204,7 +207,7 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
 - Tecla V: recorre los tres niveles sí; al volver a la alta, imagen igual a la inicial: sí
 - Pantalla densa (dos píxeles por punto): relación de píxeles 1,5 (alta), 1 (media), 1 (liviana)
 - Hash: `#p=P07&captura=1&calidad=media`; tras la recarga, calidad media y detección inactiva; cambio manual de `#calidad=` aplicado: sí; carga directa con `#calidad=liviana`: liviana
-- Detección con umbral forzado (`#deteccion=100000`): hecha, 0,5 cuadros por segundo en 3 cuadros (umbral 100000); calidad media; aviso «Calidad media. Tecla V para cambiarla»; tras la recarga, calidad media y detección inactiva
+- Detección con umbral forzado (`#deteccion=100000`): hecha, 0,5 cuadros por segundo en 2 cuadros (umbral 100000); calidad media; aviso «Calidad media. Tecla V para cambiarla»; tras la recarga, calidad media y detección inactiva
 - Detección con umbral mínimo (`#deteccion=0.001`): hecha, 0,5 cuadros por segundo en 2 cuadros (umbral 0.001); calidad alta; aviso: ninguno
 - Detección con la tecla V durante la medida: cancelada; calidad media
 - En la verificación automática, sin `#deteccion=`: detección inactiva. Los cuadros por segundo de la detección corresponden a un equipo sin tarjeta gráfica.
@@ -215,7 +218,7 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
 ## Ventana de 1920×1080 (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P01&captura=1`
-- Carga: sí, 3013 ms hasta `escenario:listo`
+- Carga: sí, 3034 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 55; triángulos: 1925730; relación de píxeles: 1
@@ -226,7 +229,7 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
 ## Recorrido de paradas (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P01&captura=1`
-- Carga: sí, 7480 ms hasta `escenario:listo`
+- Carga: sí, 7779 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 39; triángulos: 1253518; relación de píxeles: 1
@@ -237,7 +240,7 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
 ## Transiciones (vista compilada, sin #captura)
 
 - Dirección: `http://localhost:4317/#p=P05&paso=2`
-- Carga: sí, 3076 ms hasta `escenario:listo`
+- Carga: sí, 2738 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 74; triángulos: 2792858; relación de píxeles: 1
@@ -248,7 +251,7 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
 ## Ventana de 1280×720 (vista compilada)
 
 - Dirección: `http://localhost:4317/#p=P14&paso=2&captura=1`
-- Carga: sí, 7513 ms hasta `escenario:listo`
+- Carga: sí, 8006 ms hasta `escenario:listo`
 - Errores de consola: ninguno
 - Solicitudes: 9 en total; externas: ninguna
 - Llamadas de dibujo: 39; triángulos: 1253518; relación de píxeles: 1
@@ -260,11 +263,11 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
 
 - Paradas por hash (`#p=ID&captura=1`): cargan 26 de 26; ficha correcta 26; con fuente 26; cámara en su lugar 26; escala 26
 - Capturas: `capturas/paradas/P01.jpg` a `P26.jpg`
-- Flechas, espacio y Av Pág/Re Pág (39 estados con pasos): adelante sí; atrás sí
+- Flechas, espacio y Av Pág/Re Pág (40 estados con pasos): adelante sí; atrás sí
 - Teclas: 0 a 6 sí; O sí; H sí; V sí
 - Tecla C: sí, `"camara": { "ancla": "F2", "distancia": 640, "azimut": -47, "elevacion": 33, "duracion": 2.5 }`; desvío al aplicarlo 0
 - Botonera: sí; clic en una finca: sí
-- Transiciones en la calidad liviana: entre paradas declarada 2.5 s, medida 3 s (intervalo máximo entre cuadros 0.68 s); botonera declarada 2 s, medida 2.02 s (intervalo máximo entre cuadros 0.9 s); doble clic en modo libre declarada 1.6 s, medida 1.9 s (intervalo máximo entre cuadros 1.1 s); correctas sí
+- Transiciones en la calidad liviana: entre paradas declarada 2.5 s, medida 2.9 s (intervalo máximo entre cuadros 0.65 s); botonera declarada 2 s, medida 2.2 s (intervalo máximo entre cuadros 1.03 s); doble clic en modo libre declarada 1.6 s, medida 2.2 s (intervalo máximo entre cuadros 1.22 s); correctas sí
 - Modo libre: correcto sí; captura `capturas/libre.jpg`
   - Doble clic: en el recorrido sin efecto sí; fuera de la maqueta sin efecto sí; vuelo al punto sí (error 1.1, distancias 2500 → 1250 → 625, duración 1.5 s)
   - Marcha con W: 328.1 unidades, dirección 1, salto 0.26, detenida sí, cámara a 389.1 o más sobre el relieve, dentro sí
@@ -272,14 +275,14 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
   - Borde (Mayús + A, 30 s): dentro sí; holgura final 0; salto 0.27; cámara a 382.3 o más sobre el relieve
   - Cámara bajo el relieve: -42.9 → 6 en el primer cuadro → 14 (sí)
   - Botonera desde el objetivo actual sí; tecla O de vuelta a la parada sí
-- Trayectorias muestreadas: 38 tramos (25 con movimiento); razón máxima entre paso mayor y paso medio 2.59 (límite 4); extremos exactos sí
+- Trayectorias muestreadas: 39 tramos (25 con movimiento); razón máxima entre paso mayor y paso medio 2.59 (límite 4); extremos exactos sí
 - Hash directo `#p=P14&paso=2`: sí
 - Fichas a 1280×720: legibles 26 de 26 (sin desborde, dentro de la ventana, sin superposición, letra ≥ 16 px); letra mínima 16 px; ficha más alta P14 (488 px de 720); captura `capturas/ficha-1280.png`
 
 ## Vista del presentador (dos pestañas del mismo navegador)
 
 - Dirección: `http://localhost:4317/presentador.html`
-- Conexión con la vista principal: sí, 111 ms
+- Conexión con la vista principal: sí, 100 ms
 - Pruebas de sincronía y cronómetro: 23 de 23 correctas
   - sí: estado inicial P01 en las dos vistas
   - sí: botón Siguiente del presentador mueve la principal a P02
@@ -313,8 +316,8 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
 ## Respaldo en imágenes (file://, sin servidor y sin red)
 
 - Dirección: `respaldo/index.html`
-- Carga: sí, 60 ms
-- Imágenes: 39 de 39 cargan (1920×1080); estados del recorrido: 39
+- Carga: sí, 102 ms
+- Imágenes: 40 de 40 cargan (1920×1080); estados del recorrido: 40
 - Teclado (flechas, Fin, tecla 3, hash): sí
 - Contenido igual al de la generación: sí
 - Errores de consola: ninguno
@@ -339,4 +342,4 @@ Triángulos por cuadro con la cámara quieta, llamadas de dibujo y matas de cañ
   - redmac (falta)
   - ley2294 (falta)
   - al012023 (falta)
-- Pendientes de fuente: 68 localizadores y 21 datos (`pendientes-de-fuente.md`)
+- Pendientes de fuente: 66 localizadores y 23 datos (`pendientes-de-fuente.md`)

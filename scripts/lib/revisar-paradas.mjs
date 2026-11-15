@@ -71,7 +71,8 @@ async function recorrerParadas(pagina, paradas, dirCapturas) {
       await pagina.screenshot({ path: path.join(dirCapturas, CARPETA_PARADAS, `${p.id}.jpg`), type: 'jpeg', quality: CALIDAD_JPEG });
       const f = await leerFicha(pagina);
       const e = await estado(pagina);
-      const desvio = await pagina.evaluate((c) => window.escenario.desvioBloque(c), p.camara);
+      // La cámara del primer paso (si la tiene) se superpone a la de la parada, como en el recorrido.
+      const desvio = await pagina.evaluate((c) => window.escenario.desvioBloque(c), { ...p.camara, ...(p.pasos?.[0]?.camara ?? {}) });
       Object.assign(fila, {
         carga: true,
         ficha: f.parada === p.id && f.titulo === p.titulo && f.texto === p.ficha,
