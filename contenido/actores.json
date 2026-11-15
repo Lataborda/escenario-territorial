@@ -1,6 +1,14 @@
 {
   "version": 1,
-  "nota": "«escala_texto» reproduce el guion; «escalas» remite a la botonera (municipio se asigna a territorio y nación a región).",
+  "nota": "«escala_texto» reproduce el guion; «escalas» remite a la botonera (municipio se asigna a territorio y nación a región). «categoria» agrupa a los actores para su marcador (propuesta de la etapa 9.b).",
+  "categorias": [
+    { "id": "familia", "nombre": "Familia productora" },
+    { "id": "comunitario", "nombre": "Organización comunitaria" },
+    { "id": "institucional", "nombre": "Institución pública" },
+    { "id": "aliado", "nombre": "Aliado externo" },
+    { "id": "regimen", "nombre": "Actor del régimen" },
+    { "id": "consumo", "nombre": "Consumidores" }
+  ],
   "actores": [
     {
       "id": "familias_ladera",
@@ -8,6 +16,7 @@
       "escala_texto": "finca, vereda",
       "escalas": ["finca", "vereda"],
       "papel": "Prácticas, semillas y mercados",
+      "categoria": "familia",
       "anclas": ["F2", "F3"]
     },
     {
@@ -16,6 +25,7 @@
       "escala_texto": "finca",
       "escalas": ["finca"],
       "papel": "Excelencia predial y difusión vertical",
+      "categoria": "familia",
       "anclas": ["F1"],
       "referencia": "El Hatico",
       "fuentes": ["calle:§11.1"]
@@ -26,6 +36,7 @@
       "escala_texto": "matriz",
       "escalas": ["vereda"],
       "papel": "Régimen",
+      "categoria": "regimen",
       "anclas": ["F4"]
     },
     {
@@ -34,6 +45,7 @@
       "escala_texto": "región",
       "escalas": ["region"],
       "papel": "Régimen sociotécnico y bloqueo",
+      "categoria": "regimen",
       "anclas": ["ingenio"],
       "fuentes": ["magrini:verificar"]
     },
@@ -43,6 +55,7 @@
       "escala_texto": "territorio",
       "escalas": ["territorio"],
       "papel": "Gobierno propio, semillas y agua",
+      "categoria": "comunitario",
       "anclas": ["resguardo"]
     },
     {
@@ -51,6 +64,7 @@
       "escala_texto": "territorio",
       "escalas": ["territorio"],
       "papel": "Gobierno propio y tierra",
+      "categoria": "comunitario",
       "anclas": ["consejo"]
     },
     {
@@ -59,6 +73,7 @@
       "escala_texto": "vereda, cuenca",
       "escalas": ["vereda", "cuenca"],
       "papel": "Gobernanza del agua",
+      "categoria": "comunitario",
       "anclas": ["acueducto"]
     },
     {
@@ -67,6 +82,7 @@
       "escala_texto": "territorio",
       "escalas": ["territorio"],
       "papel": "Circuitos cortos de comercialización",
+      "categoria": "comunitario",
       "anclas": ["CAB1", "CAB2", "CAB3", "CAB4", "CAB5", "CAB6", "CAB7"]
     },
     {
@@ -75,6 +91,7 @@
       "escala_texto": "territorio",
       "escalas": ["territorio"],
       "papel": "Articulación y territorio propio",
+      "categoria": "comunitario",
       "anclas": ["CAB1", "CAB2", "CAB3", "CAB4", "CAB5", "CAB6", "CAB7", "CAB8", "CAB9"],
       "referencia": "REDMAC",
       "fuentes": ["redmac:verificar"]
@@ -85,7 +102,9 @@
       "escala_texto": "territorio",
       "escalas": ["territorio"],
       "papel": "Garantía de confianza (sello)",
-      "anclas": []
+      "categoria": "comunitario",
+      "anclas": [],
+      "fuentes": ["ley2046:art. 4"]
     },
     {
       "id": "escuelas",
@@ -93,6 +112,7 @@
       "escala_texto": "vereda, territorio",
       "escalas": ["vereda", "territorio"],
       "papel": "Aprendizaje de campesino a campesino",
+      "categoria": "comunitario",
       "anclas": ["escuela"],
       "fuentes": ["res331:línea 1.2"]
     },
@@ -102,6 +122,7 @@
       "escala_texto": "territorio",
       "escalas": ["territorio"],
       "papel": "Aliado externo",
+      "categoria": "aliado",
       "anclas": ["ciudad"],
       "referencia": "UNAL Palmira, GIA"
     },
@@ -111,6 +132,7 @@
       "escala_texto": "región",
       "escalas": ["region"],
       "papel": "Aliado externo de la finca faro",
+      "categoria": "aliado",
       "anclas": ["F1"],
       "referencia": "CIPAV"
     },
@@ -120,6 +142,7 @@
       "escala_texto": "municipio",
       "escalas": ["territorio"],
       "papel": "Recursos, capacitaciones y plan municipal",
+      "categoria": "institucional",
       "anclas": ["ciudad"],
       "fuentes": ["res331:línea 1.10", "res331:lineamiento 2"]
     },
@@ -129,6 +152,7 @@
       "escala_texto": "cuenca",
       "escalas": ["cuenca"],
       "papel": "Conservación y agua",
+      "categoria": "institucional",
       "anclas": ["rio_tributario"]
     },
     {
@@ -137,6 +161,7 @@
       "escala_texto": "nación",
       "escalas": ["region"],
       "papel": "Política Pública de Agroecología e IPPTA",
+      "categoria": "institucional",
       "anclas": [],
       "fuentes": ["res331:verificar"]
     },
@@ -146,8 +171,9 @@
       "escala_texto": "municipio",
       "escalas": ["territorio"],
       "papel": "Demanda institucional",
+      "categoria": "institucional",
       "anclas": ["ciudad"],
-      "fuentes": ["ley2046:verificar"]
+      "fuentes": ["ley2046:art. 7, literal a"]
     },
     {
       "id": "consumidores",
@@ -155,20 +181,33 @@
       "escala_texto": "región",
       "escalas": ["region"],
       "papel": "Demanda y brecha metabólica",
+      "categoria": "consumo",
       "anclas": ["ciudad"]
     }
   ],
   "red": {
-    "nota": "Red de mercados, enlaces por tipo de relación, polígono del territorio de la red y límites administrativos (PLAN, etapa 9.a). Esquema sin escala. Las familias productoras tienen posición propuesta y los enlaces son ilustrativos. Los límites municipales son esquemáticos, uno por cabecera. Color, forma y ancho de cada elemento: src/actores/estilo.js.",
+    "nota": "Red de mercados, enlaces por tipo de relación, polígono del territorio de la red y límites administrativos (PLAN, etapa 9.a); marcadores de los actores, figuras territoriales, lindero de las fincas, proximidades y compras públicas (etapa 9.b). Esquema sin escala. Las familias productoras tienen posición propuesta y los enlaces son ilustrativos. Los límites municipales son esquemáticos, uno por cabecera. Color, forma y ancho de cada elemento: src/actores/estilo.js.",
     "leyenda": {
       "titulo": "Red",
       "nota": "Disposición ilustrativa",
       "entradas": [
         { "id": "mercado", "capa": "mercados", "rotulo": "Mercado agroecológico" },
         { "id": "comercio", "capa": "red_mercados", "rotulo": "Circuitos cortos de comercialización" },
-        { "id": "familia", "capa": "red_mercados", "rotulo": "Familia productora" },
         { "id": "garantia", "capa": "spg", "rotulo": "Garantía de confianza (SPG)" },
-        { "id": "aliado", "capa": "spg", "rotulo": "Aliado externo" },
+        { "id": "conocimiento", "capa": "vinculos_actores", "rotulo": "Conocimiento" },
+        { "id": "semillas", "capa": "vinculos_actores", "rotulo": "Semillas" },
+        { "id": "gobernanza", "capa": "vinculos_actores", "rotulo": "Gobernanza" },
+        { "id": "proximidad", "capa": "proximidades", "rotulo": "Proximidad geográfica y relacional" },
+        { "id": "compras", "capa": "compras_publicas", "rotulo": "Compras públicas de alimentos" },
+        { "id": "familia", "capas": ["red_mercados", "proximidades", "compras_publicas", "actores"], "rotulo": "Familia productora" },
+        { "id": "comunitario", "capa": "actores", "rotulo": "Organización comunitaria" },
+        { "id": "institucional", "capa": "actores", "rotulo": "Institución pública" },
+        { "id": "aliado", "capas": ["spg", "actores"], "rotulo": "Aliado externo" },
+        { "id": "regimen", "capa": "actores", "rotulo": "Actor del régimen" },
+        { "id": "consumo", "capa": "actores", "rotulo": "Consumidores" },
+        { "id": "lindero", "capa": "lindero_territorio", "rotulo": "Lindero de propiedad" },
+        { "id": "figura_territorial", "capa": "figuras_territoriales", "rotulo": "Figura territorial" },
+        { "id": "reserva_natural", "capa": "figuras_territoriales", "rotulo": "Reserva natural" },
         { "id": "poligono", "capa": "poligono_red", "rotulo": "Territorio de la red" },
         { "id": "limite_departamental", "capa": "limites_administrativos", "rotulo": "Límite departamental" },
         { "id": "limite_municipal", "capa": "limites_administrativos", "rotulo": "Límite municipal" }
@@ -184,7 +223,7 @@
       { "id": "CAB7", "tipo": "mercado", "ancla": "CAB7" },
       { "id": "CAB8", "tipo": "mercado", "ancla": "CAB8", "escenarios": ["S2", "S3"] },
       { "id": "CAB9", "tipo": "mercado", "ancla": "CAB9", "escenarios": ["S2", "S3"] },
-      { "id": "F3", "tipo": "familia", "ancla": "F3" },
+      { "id": "F3", "tipo": "familia", "ancla": "F3", "actor": "familias_ladera" },
       { "id": "FA1", "tipo": "familia", "x": 0.67, "z": 0.12, "posicion": "propuesta" },
       { "id": "FA2", "tipo": "familia", "x": 0.74, "z": 0.47, "posicion": "propuesta" },
       { "id": "FA3", "tipo": "familia", "x": 0.69, "z": 0.6, "posicion": "propuesta" },
@@ -197,13 +236,68 @@
       { "id": "FA10", "tipo": "familia", "x": 0.6, "z": 0.88, "posicion": "propuesta" },
       { "id": "FA11", "tipo": "familia", "x": 0.22, "z": 0.88, "posicion": "propuesta" },
       { "id": "FA12", "tipo": "familia", "x": 0.4, "z": 0.74, "posicion": "propuesta" },
-      { "id": "universidad", "tipo": "aliado", "ancla": "ciudad" }
+      { "id": "universidad", "tipo": "aliado", "ancla": "ciudad", "actor": "universidad" },
+      { "id": "F2", "tipo": "familia", "ancla": "F2", "actor": "familias_ladera" },
+      { "id": "faro", "tipo": "familia", "ancla": "F1", "actor": "familia_faro" },
+      { "id": "canicultor", "tipo": "regimen", "ancla": "F4", "actor": "canicultores" },
+      { "id": "ingenio", "tipo": "regimen", "ancla": "ingenio", "actor": "ingenio" },
+      { "id": "cabildo", "tipo": "comunitario", "ancla": "resguardo", "actor": "cabildo" },
+      { "id": "consejo", "tipo": "comunitario", "ancla": "consejo", "actor": "consejo_comunitario" },
+      { "id": "acueducto", "tipo": "comunitario", "ancla": "acueducto", "actor": "jac_acueducto" },
+      { "id": "escuela", "tipo": "comunitario", "ancla": "escuela", "actor": "escuelas" },
+      { "id": "ong", "tipo": "aliado", "x": 0.365, "z": 0.432, "posicion": "propuesta", "actor": "ong_tecnica" },
+      { "id": "alcaldia", "tipo": "institucional", "x": 0.2, "z": 0.275, "posicion": "propuesta", "actor": "alcaldia" },
+      { "id": "ambiental", "tipo": "institucional", "ancla": "rio_tributario", "actor": "autoridad_ambiental" },
+      { "id": "colegios", "tipo": "institucional", "x": 0.25, "z": 0.318, "posicion": "propuesta", "actor": "colegios" },
+      { "id": "consumidores", "tipo": "consumo", "x": 0.195, "z": 0.332, "posicion": "propuesta", "actor": "consumidores" }
     ],
+    "sin_marcador": {
+      "nota": "Actores de la lista sin nodo propio en la capa «actores».",
+      "mercados": "Capa propia (mercados)",
+      "red_mercados": "Capa propia (enlaces de comercio y polígono de la red)",
+      "spg": "Capa propia (enlaces de garantía)",
+      "madr_adr": "Escala nacional, sin ancla en el bloque"
+    },
+    "marcadores": {
+      "capa": "actores",
+      "nota": "Un marcador por actor, con color y forma según su categoría. Rótulos por escenario, tres como máximo en cada uno.",
+      "rotulos": [
+        { "id": "ingenio", "titulo": "Ingenio azucarero", "texto": "Régimen sociotécnico", "en": "ingenio", "escenarios": ["S0", "S1"] },
+        { "id": "acueducto", "titulo": "Acueducto comunitario", "texto": "Gobernanza del agua", "en": "acueducto", "escenarios": ["S0", "S1"] },
+        { "id": "consumidores", "titulo": "Consumidores urbanos", "texto": "Demanda", "en": "consumidores", "lado": "abajo", "escenarios": ["S2", "S3"] }
+      ]
+    },
+    "figuras": {
+      "capa": "figuras_territoriales",
+      "nota": "Figuras genéricas (decisión D3), de extensión propuesta: radio medio en unidades de escena alrededor de su ancla. La reserva natural toma el lindero de la finca indicada.",
+      "figuras": [
+        { "id": "resguardo", "nombre": "Resguardo indígena", "estilo": "figura_territorial", "ancla": "resguardo", "radio": 90, "posicion": "propuesta" },
+        { "id": "consejo", "nombre": "Consejo comunitario", "estilo": "figura_territorial", "ancla": "consejo", "radio": 90, "posicion": "propuesta" },
+        { "id": "reserva", "nombre": "Reserva natural", "estilo": "reserva_natural", "finca": "F1" }
+      ],
+      "rotulos": [
+        { "id": "resguardo", "titulo": "Resguardo indígena", "texto": "Cabildo, gobierno propio", "en": "resguardo" },
+        { "id": "consejo", "titulo": "Consejo comunitario", "texto": "Gobierno propio y tierra", "en": "consejo" },
+        { "id": "reserva", "titulo": "Reserva natural", "texto": "Finca faro (referencia El Hatico)", "en": "reserva", "lado": "abajo" }
+      ],
+      "fuentes": ["calle:§11.7.3"],
+      "verificar": [
+        "Reserva natural de la sociedad civil: Calle et al. (2022) nombran la finca «El Hatico Nature Reserve» y, en §11.7.3, miembro fundador de Resnatur, «the Colombian Network of Private Nature Reserves». La expresión «de la sociedad civil» no figura de forma literal; el rótulo dice «Reserva natural»."
+      ]
+    },
+    "lindero": {
+      "capa": "lindero_territorio",
+      "nota": "Lindero resaltado de las fincas tipo, frente a las figuras territoriales.",
+      "fincas": ["F1", "F2", "F3", "F4"],
+      "rotulos": [
+        { "id": "lindero", "titulo": "Lindero de propiedad", "texto": "Una familia decide", "en": "F1" }
+      ],
+      "fuentes": ["leonsicard:p. 24"]
+    },
     "mercados": {
       "capa": "mercados",
       "rotulos": [
-        { "id": "mercado_aislado", "titulo": "Mercado agroecológico", "texto": "Sin vínculos con los demás", "en": "CAB2", "escenarios": ["S0", "S1"] },
-        { "id": "mercados_sur", "titulo": "Cabeceras del sur", "texto": "Se suman a la red", "en": "CAB9", "lado": "abajo", "escenarios": ["S2", "S3"] }
+        { "id": "mercado_aislado", "titulo": "Mercado agroecológico", "texto": "Sin vínculos con los demás", "en": "CAB2", "escenarios": ["S0", "S1"] }
       ]
     },
     "relaciones": [
@@ -233,18 +327,70 @@
           { "id": "universidad", "titulo": "Universidad", "texto": "Aliado externo", "en": "universidad" }
         ]
       },
-      { "id": "conocimiento", "nombre": "Conocimiento", "capa": "actores", "pendiente": "Etapa 9.b" },
-      { "id": "semillas", "nombre": "Semillas", "capa": "actores", "pendiente": "Etapa 9.b" },
-      { "id": "gobernanza", "nombre": "Gobernanza", "capa": "actores", "pendiente": "Etapa 9.b" }
+      {
+        "id": "conocimiento",
+        "nombre": "Conocimiento",
+        "capa": "vinculos_actores",
+        "escenarios": ["S2", "S3"],
+        "pares": [["escuela", "F3"], ["escuela", "F2"], ["escuela", "FA1"], ["escuela", "FA4"], ["universidad", "escuela"], ["ong", "faro"]],
+        "rotulos": [
+          { "id": "escuela", "titulo": "Escuela agroecológica", "texto": "De campesino a campesino", "en": "escuela" }
+        ]
+      },
+      {
+        "id": "semillas",
+        "nombre": "Semillas",
+        "capa": "vinculos_actores",
+        "escenarios": ["S2", "S3"],
+        "pares": [["cabildo", "FA9"], ["FA9", "FA3"], ["FA3", "FA2"], ["FA2", "F2"], ["F2", "F3"], ["F3", "FA1"]]
+      },
+      {
+        "id": "gobernanza",
+        "nombre": "Gobernanza",
+        "capa": "vinculos_actores",
+        "escenarios": ["S2", "S3"],
+        "pares": [
+          ["acueducto", "F2"], ["acueducto", "F3"], ["acueducto", "FA2"], ["acueducto", "ambiental"], ["cabildo", "ambiental"],
+          ["alcaldia", "escuela"], ["alcaldia", "CAB1"], ["consejo", "FA11"], ["consejo", "CAB8"]
+        ]
+      },
+      {
+        "id": "proximidad",
+        "tipo": "comercio",
+        "nombre": "Proximidad entre productores y consumidores",
+        "capa": "proximidades",
+        "escenarios": ["S2", "S3"],
+        "pares": [
+          ["consumidores", "CAB1"], ["consumidores", "CAB7"], ["consumidores", "CAB2"], ["consumidores", "FA8"], ["consumidores", "FA7"],
+          ["FA8", "CAB1"], ["FA7", "CAB7"], ["FA6", "CAB2"]
+        ],
+        "rotulos": [
+          { "id": "proximidad", "titulo": "Proximidad", "texto": "Geográfica y relacional", "en": "CAB2", "lado": "abajo" }
+        ],
+        "fuentes": ["levidow:§2.2"]
+      },
+      {
+        "id": "compras",
+        "tipo": "comercio",
+        "nombre": "Compras públicas",
+        "capa": "compras_publicas",
+        "escenarios": ["S2", "S3"],
+        "pares": [["FA8", "colegios"], ["FA7", "colegios"], ["FA6", "colegios"], ["FA5", "colegios"]],
+        "rotulos": [
+          { "id": "compras", "titulo": "Compras públicas de alimentos", "texto": "Mínimo de 30 % a productores locales", "en": "colegios" }
+        ],
+        "fuentes": ["ley2046:art. 7, literal a"]
+      }
     ],
     "poligono": {
       "capa": "poligono_red",
-      "nota": "Envolvente de los mercados y las familias de la red en el escenario actual, con un margen en unidades de escena. Sin coordenadas fijas.",
+      "nota": "Envolvente de los nodos enlazados por las relaciones indicadas (mercados y familias de la red) en el escenario actual, con un margen en unidades de escena. Sin coordenadas fijas.",
       "escenarios": ["S2", "S3"],
-      "tipos": ["mercado", "familia"],
+      "relaciones": ["comercio"],
       "margen": 30,
       "rotulos": [
-        { "id": "territorio_red", "titulo": "Territorio de la red", "texto": "Cruza el límite departamental", "en": "cruce", "extremo": "occidente", "lado": "abajo" }
+        { "id": "territorio_red", "titulo": "Territorio de la red", "texto": "Cruza el límite departamental", "en": "cruce", "extremo": "occidente", "lado": "abajo" },
+        { "id": "mercados_sur", "titulo": "Cabeceras del sur", "texto": "Se suman a la red", "en": "CAB9", "lado": "abajo" }
       ]
     },
     "limites": {
@@ -257,7 +403,8 @@
     },
     "fuentes": ["redmac:verificar"],
     "verificar": [
-      "Familias productoras, enlaces de comercio y enlaces de garantía: posiciones y pares ilustrativos, propuestos para el dibujo. Debe confirmarlos Alejandro.",
+      "Familias productoras y enlaces de todos los tipos (comercio, garantía, conocimiento, semillas, gobernanza, proximidad y compras públicas): posiciones y pares ilustrativos, propuestos para el dibujo. Debe confirmarlos Alejandro.",
+      "Categoría de cada actor y posición de los marcadores que comparten ancla (ciudad y finca faro): propuesta de la etapa 9.b.",
       "Límites municipales: esquema derivado de las cabeceras, sin correspondencia con la cartografía."
     ],
     "estado_texto": "borrador"

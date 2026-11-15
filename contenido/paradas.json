@@ -252,7 +252,7 @@
       "titulo": "Límite y sujeto de decisión",
       "escala": "territorio",
       "camara": { "ancla": "general", "distancia": 2500, "azimut": -30, "elevacion": 45, "duracion": 2.5 },
-      "estado": { "escenario": "S0", "capas": ["lindero_territorio", "actores"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
+      "estado": { "escenario": "S0", "capas": ["lindero_territorio", "figuras_territoriales", "actores"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
       "ficha": "La finca y el territorio se distinguen por el límite y el sujeto de decisión. El agroecosistema mayor tiene un lindero de propiedad y una familia que decide. El territorio tiene un límite definido por los actores y un sujeto plural. Ambos contienen relaciones de poder, mercado y política pública.",
       "notas": "El agroecosistema mayor ya contiene poder, mercado y política pública (GUION, precaución 1). El contraste se plantea solo por el límite y el sujeto.",
       "fuentes": ["leonsicard:p. 24", "resumenes:ESTRATEGIA §5"],
@@ -377,12 +377,15 @@
       "saltable": false,
       "titulo": "Sujeto plural y circuitos cortos",
       "escala": "territorio",
-      "camara": { "ancla": "ciudad", "distancia": 1800, "azimut": -30, "elevacion": 38, "duracion": 2.5 },
-      "estado": { "escenario": "S2", "capas": ["proximidades", "compras_publicas", "actores"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
+      "camara": { "ancla": "ciudad", "distancia": 1050, "azimut": -30, "elevacion": 46, "duracion": 2.5 },
+      "estado": { "escenario": "S2", "capas": ["mercados", "red_mercados", "spg", "actores", "vinculos_actores"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
+      "pasos": [
+        { "id": "sujeto", "rotulo": "Sujeto plural", "camara": { "ancla": "general", "distancia": 2500, "azimut": -30, "elevacion": 40 } },
+        { "id": "circuitos", "rotulo": "Circuitos cortos y compras públicas", "estado": { "capas": ["mercados", "actores", "proximidades", "compras_publicas"] } }
+      ],
       "ficha": "La red agrega familias productoras, consumidores, escuelas y aliados en un sujeto plural. Las proximidades entre productores y consumidores sostienen los circuitos cortos de comercialización. La Ley 2046 de 2020 establece un mínimo de 30 % en las compras públicas de alimentos.",
-      "notas": "Vincular la ciudad, los colegios y los mercados. Definición de circuitos cortos según la Ley 2046 de 2020.",
-      "fuentes": ["lopezgdm:§6", "levidow:§2.2", "ley2046:verificar"],
-      "verificar": ["Artículo de la Ley 2046 de 2020 que fija el mínimo de 30 % y su alcance (productores y entidades obligadas)."],
+      "notas": "Dos pasos con la flecha. Primero el sujeto plural: los actores y sus enlaces de comercio, garantía, conocimiento, semillas y gobernanza. Después los circuitos cortos: vincular la ciudad, los colegios y los mercados. La Ley 2046 de 2020 define los circuitos cortos de comercialización (art. 4) y obliga a las entidades que compran alimentos con recursos públicos a adquirir a productores locales un mínimo de 30 % del presupuesto destinado a alimentos (art. 7, literal a). Levidow et al. (2023, §2.2): los circuitos cortos dependen de una proximidad geográfica y relacional entre productores y consumidores.",
+      "fuentes": ["lopezgdm:§6", "levidow:§2.2", "ley2046:art. 4", "ley2046:art. 7, literal a"],
       "estado_texto": "borrador"
     },
     {

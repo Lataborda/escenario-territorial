@@ -18,7 +18,7 @@ Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe c
 | ley2294 | Ley 2294 de 2023, art. 32 | falta | Verificar el texto del artículo (GUION, precaución 4). |
 | al012023 | Acto Legislativo 01 de 2023 | falta | Verificar el texto sobre el campesinado como sujeto de derechos. |
 
-## Localizadores por verificar (68 referencias en 22 fuentes)
+## Localizadores por verificar (66 referencias en 22 fuentes)
 
 Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar «verificar» por la página o la sección.
 
@@ -29,7 +29,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `lamine` (Lamine et al. (2023)): escenarios (L1, L2)
 - `leonsicard` (León-Sicard (2021)): condiciones (H3)
 - `levidow` (Levidow et al. (2023)): escalas (territorio); paradas (P14); escenarios (L4)
-- `ley2046` (Ley 2046 de 2020): escalas (region); paradas (P21); condiciones (C8, H4); actores (colegios)
+- `ley2046` (Ley 2046 de 2020): escalas (region); condiciones (C8, H4)
 - `lopez2025` (López-García et al. (2025)): escalas (territorio); escenarios (advertencia, S3, L3); condiciones (C10, H7)
 - `lopezgdm` (López-García y González de Molina (2021)): escalas (territorio); paradas (P14); escenarios (L3)
 - `magrini` (Magrini et al.): escalas (region); paradas (P14, P15); escenarios (L1, contraste_lentes); condiciones (situacion_partida); actores (ingenio)
@@ -45,7 +45,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (21)
+## Datos por verificar (22)
 
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
 - paradas.json · P02: Página de la Res. 331 de 2024 con el área en producción alternativa (61.435,70 ha de 4.617.116 ha) y el conteo de escuelas agroecológicas por departamento.
@@ -57,7 +57,6 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - paradas.json · P15: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - paradas.json · P18: Fuente citable para los siete mercados anteriores a 2009 (REDMAC).
 - paradas.json · P20: Cifras de REDMAC (cerca de 500 familias, 330 productoras, 23 municipios) consultadas en línea en septiembre de 2026; citar antes de la prueba (GUION, precaución 9).
-- paradas.json · P21: Artículo de la Ley 2046 de 2020 que fija el mínimo de 30 % y su alcance (productores y entidades obligadas).
 - paradas.json · P23: Aplicación de MESMIS en Ayacucho y altitudes de 1.400 a 1.800 m (Romero et al. 2023, falta en la carpeta).
 - paradas.json · P24: Página de la cita textual en la Res. 331 de 2024 y contenido de las líneas 1.1 y 1.6.
 - escenarios.json · capa_historica: Cobertura del plano en 1957 para la representación (humedales y bosque seco): localizar el dato en Calle et al. (2022, §11.2) o en sus fuentes (CVC 1990; Arcila et al. 2012; Rivera et al. 2007).
@@ -65,6 +64,8 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - condiciones.json · situacion_partida: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - condiciones.json · C9: Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal.
 - condiciones.json · C10: Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial.
-- actores.json · red: Familias productoras, enlaces de comercio y enlaces de garantía: posiciones y pares ilustrativos, propuestos para el dibujo. Debe confirmarlos Alejandro.
+- actores.json · red: Reserva natural de la sociedad civil: Calle et al. (2022) nombran la finca «El Hatico Nature Reserve» y, en §11.7.3, miembro fundador de Resnatur, «the Colombian Network of Private Nature Reserves». La expresión «de la sociedad civil» no figura de forma literal; el rótulo dice «Reserva natural».
+- actores.json · red: Familias productoras y enlaces de todos los tipos (comercio, garantía, conocimiento, semillas, gobernanza, proximidad y compras públicas): posiciones y pares ilustrativos, propuestos para el dibujo. Debe confirmarlos Alejandro.
+- actores.json · red: Categoría de cada actor y posición de los marcadores que comparten ancla (ciudad y finca faro): propuesta de la etapa 9.b.
 - actores.json · red: Límites municipales: esquema derivado de las cabeceras, sin correspondencia con la cartografía.
 - procesos.json · escorrentia: Reparto de las coberturas en dos clases (con cobertura arbórea y sin ella): Gliessman relaciona la cobertura vegetal, viva o como hojarasca, con la infiltración y con la protección frente a la erosión (cap. 8, pp. 114, 115 y 123), sin distinguir la cobertura arbórea. El reparto es una decisión de dibujo que debe confirmar Alejandro.

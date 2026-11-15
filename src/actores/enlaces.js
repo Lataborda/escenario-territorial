@@ -1,6 +1,7 @@
-// Enlaces de la red por tipo de relación (etapa 9.a): comercio (capa «red_mercados») y garantía (capa «spg»). Cada
-// tipo lleva un trazo grueso en arco, cuentas fijas de forma propia y los nodos que no son mercados (familias y
-// aliados). Un enlace existe en los escenarios de su relación y si sus dos nodos existen en el escenario: en S0 la
+// Enlaces de la red por tipo de relación (etapas 9.a y 9.b): comercio (capa «red_mercados»), garantía (capa «spg»),
+// conocimiento, semillas y gobernanza (capa «vinculos_actores»), proximidades y compras públicas (sus capas). Cada
+// relación lleva un trazo grueso en arco y cuentas fijas de forma propia; con «nodos: true» en su estilo dibuja
+// también los nodos que no son mercados (familias y aliados). Un enlace existe en los escenarios de su relación y si sus dos nodos existen en el escenario: en S0 la
 // capa no dibuja nada. Relaciones y pares en contenido/actores.json (red.relaciones).
 import * as THREE from 'three';
 import contenido from '../../contenido/actores.json';
@@ -17,7 +18,7 @@ export function crearEnlaces({ nodos, superficie, altura }) {
   return contenido.red.relaciones.filter((r) => r.pares?.length).map((relacion) => {
     const estilo = ESTILO[relacion.id];
     const pares = relacion.pares.map(([a, b]) => [nodos.de(a), nodos.de(b)]);
-    const tipos = [...new Set(pares.flat().map((n) => n.tipo))].filter((t) => t !== 'mercado');
+    const tipos = estilo.nodos ? [...new Set(pares.flat().map((n) => n.tipo))].filter((t) => t !== 'mercado') : [];
     const trazo = crearTrazo(`enlaces-${relacion.id}`, altura, estilo.linea);
     const cuentas = crearNube(relacion.id, estilo);
     const extremos = new Map(tipos.map((t) => [t, crearNube(`${relacion.id}-${t}`, ESTILO[t])]));
@@ -51,6 +52,7 @@ export function crearEnlaces({ nodos, superficie, altura }) {
     };
     return {
       capa: relacion.capa,
+      clave: `enlaces_${relacion.id}`,
       grupo,
       nubes: [cuentas, ...extremos.values()],
       rotulos: (relacion.rotulos ?? []).map((r) => {

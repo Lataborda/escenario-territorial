@@ -18,6 +18,8 @@ export function crearNodos({ superficie, ancla }) {
   return {
     de: (id) => mapa.get(id),
     en,
+    /** Nodos que representan a un actor de la lista (campo «actor»): los dibuja marcadores.js. */
+    actores: () => [...mapa.values()].filter((n) => n.actor),
     /** Nodos presentes en el escenario, de los tipos indicados (todos si se omite). */
     lista: (escenario, tipos) => [...mapa.values()].filter((n) => en(n, escenario) && (!tipos || tipos.includes(n.tipo))),
     // Límite departamental en la escena (z), para la verificación y el polígono.

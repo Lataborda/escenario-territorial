@@ -37,7 +37,8 @@
     { "id": "red_semillas", "descripcion": "Intercambios de semillas entre custodios" },
     { "id": "escala_minima", "descripcion": "Síntesis de la escala mínima de cada proceso" },
     { "id": "lindero_territorio", "descripcion": "Lindero de la propiedad frente al límite del territorio" },
-    { "id": "actores", "descripcion": "Actores del territorio y sus vínculos" },
+    { "id": "actores", "descripcion": "Marcadores de los actores del territorio" },
+    { "id": "vinculos_actores", "descripcion": "Enlaces de conocimiento, semillas y gobernanza entre actores" },
     { "id": "mecanismos_bloqueo", "descripcion": "Cinco mecanismos de retornos crecientes sobre el ingenio y la matriz" },
     { "id": "capa_historica", "descripcion": "Cobertura del plano en 1957, 1986 y hoy" },
     { "id": "flujos_conocimiento", "descripcion": "Flujos de conocimiento que salen del territorio desde la finca faro" },
@@ -63,7 +64,7 @@
       "titulo": "Coberturas",
       "nota": "Proporciones ilustrativas",
       "escalas": ["vereda", "cuenca", "territorio", "region"],
-      "ocultar_con_capas": ["escala_minima", "practicas_conservacion", "red_mercados"]
+      "ocultar_con_capas": ["escala_minima", "practicas_conservacion", "red_mercados", "actores"]
     },
     "tipos": [
       { "id": "cana", "nombre": "Caña en manejo convencional", "rotulo": "Caña convencional" },

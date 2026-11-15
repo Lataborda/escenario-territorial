@@ -60,7 +60,8 @@ export function crearLeyendaFlujos(columna, { leyenda = contenido.leyenda, estil
   function pintar({ capas, escenario }) {
     let alguna = false;
     for (const f of entradas) {
-      f.li.hidden = !capas.includes(f.capa) || (f.escenarios != null && !f.escenarios.includes(escenario));
+      // Una entrada vale para una capa («capa») o para cualquiera de varias («capas»).
+      f.li.hidden = !(f.capas ?? [f.capa]).some((c) => capas.includes(c)) || (f.escenarios != null && !f.escenarios.includes(escenario));
       alguna ||= !f.li.hidden;
     }
     panel.hidden = !alguna;

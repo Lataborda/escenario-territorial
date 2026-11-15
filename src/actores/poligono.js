@@ -1,5 +1,5 @@
-// Polígono del territorio de la red (capa «poligono_red», P20): envolvente convexa de los mercados y las familias
-// de la red en el escenario actual, con un margen. Contorno grueso y relleno translúcido sobre el relieve. El
+// Polígono del territorio de la red (capa «poligono_red», P20): envolvente convexa de los nodos enlazados por las
+// relaciones de la red (mercados y familias con enlaces de comercio) en el escenario actual, con un margen. Contorno grueso y relleno translúcido sobre el relieve. El
 // territorio lo trazan sus actores: sin coordenadas fijas. Existe en los escenarios de contenido/actores.json
 // (red.poligono); en S0 la capa no dibuja nada.
 import * as THREE from 'three';
@@ -7,12 +7,14 @@ import contenido from '../../contenido/actores.json';
 import { BORDE } from '../terreno/plano.js';
 import { crearTrazo } from '../escena/lineas.js';
 import { ESTILO } from './estilo.js';
+import { crearRelleno, abanico } from './relleno.js';
 
 const PASO = 10; // separación de los puntos del contorno
 const ANILLOS = 14; // coronas del relleno, para que siga el relieve
 const ALTO = 2; // sobre la superficie
 const ESQUINA = 12; // puntos del margen alrededor de cada nodo
 const HOLGURA = 3; // el contorno no llega al borde del bloque
+const ALTO_ROTULO = 22;
 
 const datos = contenido.red.poligono;
 const estilo = ESTILO.poligono;
@@ -52,50 +54,19 @@ function contorno(nodos, margen) {
   return puntos;
 }
 
-// Relleno: abanico desde el centro con coronas, sobre el relieve.
-function geometria(puntos, centro, superficie) {
-  const n = puntos.length;
-  const posiciones = [centro[0], superficie(...centro) + ALTO, centro[1]];
-  for (let c = 1; c <= ANILLOS; c++) {
-    for (const [x, z] of puntos) {
-      const px = centro[0] + ((x - centro[0]) * c) / ANILLOS;
-      const pz = centro[1] + ((z - centro[1]) * c) / ANILLOS;
-      posiciones.push(px, superficie(px, pz) + ALTO, pz);
-    }
-  }
-  const indices = [];
-  for (let s = 0; s < n; s++) {
-    const t = (s + 1) % n;
-    indices.push(0, 1 + t, 1 + s);
-    for (let c = 1; c < ANILLOS; c++) {
-      const a = 1 + (c - 1) * n;
-      const b = a + n;
-      indices.push(a + s, a + t, b + s, a + t, b + t, b + s);
-    }
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(posiciones, 3));
-  g.setIndex(indices);
-  g.computeBoundingSphere();
-  return g;
-}
-
 /** nodos: crearNodos(); superficie y altura: consultas del terreno. */
 export function crearPoligono({ nodos, superficie, altura }) {
-  const relleno = new THREE.Mesh(
-    new THREE.BufferGeometry(),
-    new THREE.MeshBasicMaterial({ color: estilo.color, transparent: true, opacity: estilo.relleno, depthTest: false, depthWrite: false, side: THREE.DoubleSide }),
-  );
-  relleno.name = 'poligono-red-relleno';
-  relleno.renderOrder = estilo.linea.orden - 8;
+  const relleno = crearRelleno('poligono-red-relleno', estilo);
   const trazo = crearTrazo('poligono-red', altura, estilo.linea);
   const grupo = new THREE.Group();
   grupo.name = 'actores-poligono';
   grupo.add(relleno, trazo.grupo);
 
   const vigente = (escenario) => !datos.escenarios || datos.escenarios.includes(escenario);
+  // Nodos de la red: los que aparecen en los pares de las relaciones indicadas.
+  const deLaRed = [...new Set(contenido.red.relaciones.filter((r) => datos.relaciones.includes(r.id)).flatMap((r) => r.pares ?? []).flat())].map((id) => nodos.de(id));
   const trazar = (escenario) => {
-    const lista = vigente(escenario) ? nodos.lista(escenario, datos.tipos) : [];
+    const lista = vigente(escenario) ? deLaRed.filter((n) => nodos.en(n, escenario)) : [];
     return { lista, puntos: lista.length >= 3 ? contorno(lista, datos.margen) : [] };
   };
   let actual = { lista: [], puntos: [] };
@@ -104,7 +75,7 @@ export function crearPoligono({ nodos, superficie, altura }) {
     const { puntos } = actual;
     relleno.geometry.dispose();
     const centro = puntos.length ? [0, 1].map((k) => puntos.reduce((s, p) => s + p[k], 0) / puntos.length) : null;
-    relleno.geometry = centro ? geometria(puntos, centro, superficie) : new THREE.BufferGeometry();
+    relleno.geometry = centro ? abanico(puntos, centro, superficie, { alto: ALTO, anillos: ANILLOS }) : new THREE.BufferGeometry();
     relleno.visible = Boolean(centro);
     const lados = [];
     puntos.forEach(([x, z], k) => {
@@ -119,10 +90,12 @@ export function crearPoligono({ nodos, superficie, altura }) {
     puntos
       .filter(([, z], k) => (z - nodos.zLimite) * (puntos[(k + 1) % puntos.length][1] - nodos.zLimite) < 0)
       .sort((a, b) => a[0] - b[0]);
-  // Lugar de un rótulo, sobre el polígono del primer escenario en que existe: el cruce con el límite departamental
-  // del «extremo» indicado.
+  // Lugar de un rótulo: un nodo de la red («en» con su id) o, con «en: cruce», el cruce del polígono del primer
+  // escenario en que existe con el límite departamental, en el «extremo» indicado.
   const base = trazar(datos.escenarios?.[0] ?? 'S2').puntos;
   const lugar = (r) => {
+    const n = nodos.de(r.en);
+    if (n) return [n.x, n.y + (r.lado === 'abajo' ? 0 : ALTO_ROTULO), n.z];
     const c = cruces(base);
     if (!c.length) return null;
     const [x, z] = r.extremo === 'occidente' ? c[0] : c[c.length - 1];
