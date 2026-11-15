@@ -69,8 +69,7 @@
       "principios": [12],
       "escala_wezel": [],
       "vista": { "distancia": 1400, "elevacion": 35, "ancla": "rio_tributario" },
-      "fuentes": ["gliessman:cap. 8", "gliessman:cap. 18", "res331:línea 2.1"],
-      "verificar": ["Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos."]
+      "fuentes": ["gliessman:cap. 8, pp. 114, 115 y 123", "gliessman:cap. 18, pp. 277 y 279", "res331:línea 2.1"]
     },
     {
       "id": "territorio",
@@ -126,6 +125,10 @@
       { "numero": 12, "nombre": "Gobernanza de la tierra y los recursos naturales" },
       { "numero": 13, "nombre": "Participación" }
     ]
+  },
+  "sintesis": {
+    "titulo": "Procesos y escala mínima",
+    "nota": "Número de la botonera de escalas"
   },
   "procesos": [
     {

@@ -8,7 +8,7 @@ import { ESTILO, css } from '../flujos/estilo.js';
 const SVG = 'http://www.w3.org/2000/svg';
 const { leyenda } = contenido;
 
-// Muestra de 32 × 22: el trazo del flujo (si lo tiene) y su partícula encima, con el halo.
+// Muestra de 32 × 22: el trazo del flujo (si lo tiene) y su partícula encima (si la tiene), con el halo.
 function muestra(id) {
   const e = ESTILO[id];
   const svg = document.createElementNS(SVG, 'svg');
@@ -19,13 +19,13 @@ function muestra(id) {
     ? (e.linea.halo != null ? `<line x1="2" y1="11" x2="30" y2="11" stroke="${css(e.linea.halo)}" stroke-width="5" stroke-linecap="round"/>` : '') +
       `<line x1="2" y1="11" x2="30" y2="11" stroke="${css(e.linea.color)}" stroke-width="2.6" stroke-linecap="round"/>`
     : '';
-  const relleno = `fill="${css(e.color)}" stroke="${css(e.halo)}" stroke-width="2.2"`;
+  const relleno = e.forma ? `fill="${css(e.color)}" stroke="${css(e.halo)}" stroke-width="2.2"` : '';
   const formas = {
     circulo: `<circle cx="16" cy="11" r="5.6" ${relleno}/>`,
     cuadrado: `<rect x="10.6" y="5.6" width="10.8" height="10.8" ${relleno}/>`,
     rombo: `<path d="M16 3.6 L23.4 11 L16 18.4 L8.6 11 Z" ${relleno}/>`,
   };
-  svg.innerHTML = trazo + formas[e.forma];
+  svg.innerHTML = trazo + (e.forma ? formas[e.forma] : '');
   return svg;
 }
 
@@ -64,6 +64,9 @@ export function crearLeyendaFlujos(columna) {
       alguna ||= !f.li.hidden;
     }
     panel.hidden = !alguna;
+    // Nota de la cabecera: la de la primera capa encendida que declare una propia, o la general.
+    const propia = capas.map((c) => leyenda.notas?.[c]).find(Boolean);
+    nota.textContent = propia ?? leyenda.nota ?? '';
   }
   suscribir(['capas', 'escenario'], pintar);
   pintar(obtener());

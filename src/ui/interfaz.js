@@ -13,6 +13,7 @@ import { crearEap } from './eap.js';
 import { crearMateria } from './materia.js';
 import { crearInteracciones } from './interacciones.js';
 import { crearLeyendaFlujos } from './flujos.js';
+import { crearEscalaMinima } from './escala-minima.js';
 
 const DURACION_AVISO_MS = 8000;
 
@@ -58,8 +59,8 @@ export function crearInterfaz(raiz) {
   const ficha = parte('ficha', 'aside');
   ficha.setAttribute('aria-live', 'polite');
   montar('ficha', crearFicha, ficha);
-  // Columna derecha: leyenda de coberturas, leyenda de capas, usos de la finca, índice EAP, interacciones del lote y
-  // materia orgánica.
+  // Columna derecha: leyenda de coberturas, leyenda de capas, leyenda de flujos, escala mínima de cada proceso,
+  // índice EAP, interacciones del lote y materia orgánica.
   const columna = parte('columna-derecha');
   const enColumna = (clase) => {
     const e = document.createElement('aside');
@@ -70,6 +71,7 @@ export function crearInterfaz(raiz) {
   montar('leyenda', crearLeyenda, enColumna('leyenda'));
   montar('capas', crearCapas, columna);
   montar('leyenda de flujos', crearLeyendaFlujos, columna);
+  montar('escala mínima', crearEscalaMinima, columna);
   montar('índice EAP', crearEap, columna);
   montar('interacciones', crearInteracciones, columna);
   montar('materia orgánica', crearMateria, columna);

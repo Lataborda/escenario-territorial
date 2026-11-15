@@ -13,10 +13,10 @@ const PARADAS = [
   { id: 'P11', capa: 'red_semillas', leyenda: ['semillas', 'custodio'] },
 ];
 
-const ir = (pagina, id) => pagina.evaluate((id) => window.escenario.irA(id, { instantanea: true }), id);
+export const ir = (pagina, id, paso = 0) => pagina.evaluate(([id, paso]) => window.escenario.irA(id, { paso, instantanea: true }), [id, paso]);
 
 // Cifras del cuadro, capas de flujo, leyenda y rótulos visibles.
-function leer() {
+export function leer() {
   for (let k = 0; k < 2; k++) window.escenario.dibujarCuadro();
   const e = window.escenario.estadisticas();
   const caja = (x) => x.getBoundingClientRect();
@@ -30,6 +30,7 @@ function leer() {
     llamadas: e.llamadas,
     flujos: window.escenario.flujos(),
     leyenda: visibles('.flujos .capas-entrada').map((x) => x.dataset.flujo),
+    notaLeyenda: visibles('.flujos .leyenda-nota')[0]?.textContent ?? '',
     rotulos: rotulos.map((x) => x.dataset.rotulo),
     enEscena: visibles('.rotulos-finca > *').length,
     sobreInterfaz: cajas.filter((r) => interfaz.some((i) => cruzan(r, i))).length,

@@ -1,4 +1,5 @@
-// Revisión de contenido/procesos.json (etapa 8.a): leyenda con flujo de estilo conocido y capa existente; clases de
+// Revisión de contenido/procesos.json (etapas 8.a y 8.b): leyenda con flujo de estilo conocido y capa existente; radios
+// desde parches de hábitat y prácticas de conservación en una finca de ladera; clases de
 // escorrentía que reparten todos los tipos de cobertura; orígenes de nutrientes, custodios y enlaces de semillas con
 // ancla existente o posición propuesta dentro del plano; rótulos cortos (tres por capa como máximo) y capas usadas
 // por alguna parada.
@@ -34,6 +35,56 @@ function rotulos(lista, donde, escenarios, errores, existe) {
   }
 }
 
+// Radios (etapa 8.b): ancla del centro, coberturas de hábitat conocidas y una clase por capa, con radio positivo,
+// estilo, entrada en la leyenda, nota de radios ilustrativos y rótulos en un lugar conocido.
+const LUGARES_RADIO = ['parche', 'radio', 'superposicion', 'corredor'];
+function revisarRadios(p, { capas, entidades, escenarios, tipos, enParadas }, errores, avisos) {
+  const r = p.radios;
+  const donde = 'procesos.json · radios';
+  if (!r) return errores.push(`${donde}: falta la sección`);
+  if (!entidades.has(r.centro)) errores.push(`${donde}: centro desconocido «${r.centro}»`);
+  for (const t of r.coberturas ?? []) if (!tipos.includes(t)) errores.push(`${donde}: tipo de cobertura desconocido «${t}»`);
+  if (!(r.coberturas ?? []).length) errores.push(`${donde}: sin coberturas de hábitat`);
+  for (const n of ['alcance', 'minimo_teselas', 'maximo']) if (!(r[n] > 0)) errores.push(`${donde}: «${n}» debe ser positivo`);
+  if (!r.fuentes?.length) errores.push(`${donde}: sin fuentes`);
+  for (const c of r.clases ?? []) {
+    const aqui = `${donde} · ${c.id}`;
+    if (!ESTILO[c.id]?.linea || ESTILO[c.id]?.relleno == null) errores.push(`${aqui}: clase sin estilo de trazo y relleno`);
+    if (!capas.has(c.capa)) errores.push(`${aqui}: capa desconocida «${c.capa}»`);
+    else if (!enParadas.has(c.capa)) avisos.push(`${aqui}: ninguna parada enciende la capa «${c.capa}»`);
+    if (!(c.radio > 0)) errores.push(`${aqui}: «radio» debe ser positivo`);
+    if (!['rayos', 'lazos'].includes(c.forma)) errores.push(`${aqui}: forma «${c.forma}» (usar «rayos» o «lazos»)`);
+    if (!(p.leyenda?.entradas ?? []).some((f) => f.capa === c.capa)) errores.push(`${aqui}: capa sin entrada en la leyenda`);
+    if (!/ilustrativ/.test(p.leyenda?.notas?.[c.capa] ?? '')) errores.push(`${aqui}: falta la nota de radios ilustrativos en la leyenda`);
+    rotulos(c.rotulos, aqui, escenarios, errores, (x) => LUGARES_RADIO.includes(x.en) && (x.en !== 'corredor' || c.corredor));
+  }
+  if ((r.clases ?? []).length < 2) errores.push(`${donde}: se esperan dos clases (enemigos naturales y polinizadores)`);
+}
+
+// Prácticas de conservación (etapa 8.b): finca tipo existente, usos presentes en sus lotes, estilo de cada práctica
+// y rótulos sobre una práctica conocida.
+function revisarPracticas(p, { escenarios, fincas }, errores) {
+  const c = p.practicas;
+  const donde = 'procesos.json · practicas';
+  if (!c) return;
+  const finca = fincas.find((f) => f.id === c.finca);
+  if (!finca) return errores.push(`${donde}: finca desconocida «${c.finca}»`);
+  if (!(c.intervalo > 0)) errores.push(`${donde}: «intervalo» debe ser positivo`);
+  const usos = new Set(finca.lotes.map((l) => l.uso));
+  const ids = new Set();
+  for (const x of c.practicas ?? []) {
+    ids.add(x.id);
+    if (!ESTILO[x.id]?.linea) errores.push(`${donde} · ${x.id}: práctica sin estilo de trazo`);
+    for (const u of x.usos ?? []) if (!usos.has(u)) errores.push(`${donde} · ${x.id}: la finca ${c.finca} no tiene lotes de «${u}»`);
+    if (!(x.usos ?? []).length) errores.push(`${donde} · ${x.id}: sin usos`);
+    if (x.cada != null && !(Number.isInteger(x.cada) && x.cada > 1)) errores.push(`${donde} · ${x.id}: «cada» debe ser un entero mayor que 1`);
+    if (!(p.leyenda?.entradas ?? []).some((f) => f.id === x.id)) errores.push(`${donde} · ${x.id}: práctica sin entrada en la leyenda`);
+  }
+  if (!ids.has(c.infiltracion?.en) || !ESTILO[c.infiltracion.en]?.forma) errores.push(`${donde}: la infiltración debe apoyarse en una práctica con puntos`);
+  if (!/ilustrativ/.test(p.leyenda?.notas?.[c.capa] ?? '')) errores.push(`${donde}: falta la nota de disposición ilustrativa en la leyenda`);
+  rotulos(c.rotulos, donde, escenarios, errores, (x) => ids.has(x.en) && (x.extremo == null || ['norte', 'sur', 'oriente', 'occidente'].includes(x.extremo)));
+}
+
 export function revisarProcesos(datos) {
   const errores = [];
   const avisos = [];
@@ -54,7 +105,7 @@ export function revisarProcesos(datos) {
     corto(f.rotulo, donde, errores);
     for (const e of f.escenarios ?? []) if (!escenarios.has(e)) errores.push(`${donde}: escenario desconocido «${e}»`);
   }
-  for (const seccion of ['escorrentia', 'nutrientes', 'semillas']) {
+  for (const seccion of ['escorrentia', 'practicas', 'nutrientes', 'semillas']) {
     const s = p[seccion];
     const donde = `procesos.json · ${seccion}`;
     if (!s) {
@@ -108,6 +159,8 @@ export function revisarProcesos(datos) {
     vistos.add(clave);
   }
   rotulos(s.rotulos, 'procesos.json · semillas', escenarios, errores, (r) => custodios.has(r.en));
+  revisarRadios(p, { capas, entidades, escenarios, tipos, enParadas }, errores, avisos);
+  revisarPracticas(p, { escenarios, usos: new Set(datos.fincas.fincas.flatMap((f) => f.lotes.map((l) => l.uso))), fincas: datos.fincas.fincas }, errores);
   if (!p.estado_texto) errores.push('procesos.json: falta estado_texto');
   return { errores, avisos };
 }

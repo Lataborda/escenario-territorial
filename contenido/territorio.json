@@ -32,6 +32,7 @@
     { "id": "radios_enemigos_naturales", "descripcion": "Radios de acción de enemigos naturales desde parches de hábitat" },
     { "id": "radios_polinizadores", "descripcion": "Radios de forrajeo de polinizadores y corredores" },
     { "id": "escorrentia_sedimentos", "descripcion": "Escorrentía y sedimentos según la cobertura de la ladera" },
+    { "id": "practicas_conservacion", "descripcion": "Curvas a nivel, barreras vivas y terrazas en una finca de ladera" },
     { "id": "flujos_nutrientes", "descripcion": "Arcos de nutrientes de las fincas a la ciudad" },
     { "id": "red_semillas", "descripcion": "Intercambios de semillas entre custodios" },
     { "id": "escala_minima", "descripcion": "Síntesis de la escala mínima de cada proceso" },
@@ -60,7 +61,8 @@
     "leyenda": {
       "titulo": "Coberturas",
       "nota": "Proporciones ilustrativas",
-      "escalas": ["vereda", "cuenca", "territorio", "region"]
+      "escalas": ["vereda", "cuenca", "territorio", "region"],
+      "ocultar_con_capas": ["escala_minima"]
     },
     "tipos": [
       { "id": "cana", "nombre": "Caña en manejo convencional", "rotulo": "Caña convencional" },

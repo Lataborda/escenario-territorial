@@ -166,10 +166,15 @@
       "titulo": "Control biológico y polinización",
       "escala": "vereda",
       "camara": { "ancla": "F1", "distancia": 900, "azimut": -30, "elevacion": 40, "duracion": 2.5 },
-      "estado": { "escenario": "S0", "capas": ["radios_enemigos_naturales", "radios_polinizadores"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
+      "estado": { "escenario": "S0", "capas": ["radios_enemigos_naturales"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
+      "pasos": [
+        { "id": "control", "rotulo": "Control biológico" },
+        { "id": "polinizacion", "rotulo": "Polinización", "estado": { "capas": ["radios_enemigos_naturales", "radios_polinizadores"] } }
+      ],
       "ficha": "Los enemigos naturales requieren hábitat, refugio y presa alternativa fuera del lote. Los polinizadores forrajean y anidan en rangos que exceden el predio. Los radios de acción desde los parches de hábitat se superponen entre fincas vecinas. En la finca faro se documentan enemigos naturales.",
-      "notas": "Mostrar los radios que salen del lindero. La escala mínima de ambos procesos es la matriz y el paisaje.",
-      "fuentes": ["gliessman:cap. 14", "gliessman:cap. 18", "calle:§11.6"],
+      "notas": "Dos pasos con la flecha: primero los radios de acción de enemigos naturales y después los radios de forrajeo de polinizadores. Mostrar los radios que salen del lindero de la finca faro y alcanzan el predio vecino, la superposición entre parches y el corredor ripario. Los radios son ilustrativos. La escala mínima de ambos procesos es la matriz y el paisaje. Gliessman et al. (2023, pp. 209 y 210): el control biológico por conservación maneja el hábitat no cultivado cercano, que da presa alternativa y refugio.",
+      "fuentes": ["gliessman:cap. 14, pp. 209 y 210", "gliessman:cap. 18, pp. 278 a 280", "calle:§11.6"],
+      "verificar": ["Rangos de forrajeo y anidación de los polinizadores que exceden el predio: Gliessman (caps. 14 y 18) solo nombra la polinización como servicio ecosistémico y el hábitat de polinizadores. Falta un pasaje que sostenga la frase."],
       "estado_texto": "borrador"
     },
     {
@@ -181,10 +186,19 @@
       "escala": "cuenca",
       "camara": { "ancla": "rio_tributario", "distancia": 1400, "azimut": -65, "elevacion": 35, "duracion": 2.5 },
       "estado": { "escenario": "S0", "capas": ["escorrentia_sedimentos"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
+      "pasos": [
+        { "id": "cuenca", "rotulo": "Cuenca" },
+        {
+          "id": "ladera",
+          "rotulo": "Prácticas de conservación",
+          "estado": { "capas": ["escorrentia_sedimentos", "practicas_conservacion"] },
+          "camara": { "ancla": "F3", "distancia": 185, "azimut": -55, "elevacion": 50 }
+        }
+      ],
       "ficha": "La unidad hidrológica es la cuenca. La escorrentía de la ladera arrastra sedimentos al río según la cobertura del suelo. Las curvas a nivel, las barreras vivas, las terrazas y la infiltración retienen agua y suelo en la finca. El efecto sobre el río depende del conjunto de fincas de la cuenca.",
-      "notas": "Seguir el agua desde el páramo hasta el río Cauca. Señalar el acueducto comunitario.",
-      "fuentes": ["gliessman:cap. 8", "gliessman:cap. 18"],
-      "verificar": ["Pasajes de Gliessman (caps. 8 y 18) sobre escorrentía, sedimentos y prácticas de conservación de suelos."],
+      "notas": "Paso 1, cuenca: seguir el agua desde el páramo hasta el río Cauca y señalar el acueducto comunitario. Paso 2, finca de ladera: curvas a nivel, barreras vivas y terrazas; el agua baja por la pendiente y se detiene en cada barrera. La disposición es ilustrativa. Gliessman et al. (2023, p. 115): en terrenos inclinados la infiltración mejora con terrazas, zanjas o bermas en contorno.",
+      "fuentes": ["gliessman:cap. 8, pp. 114, 115 y 123", "gliessman:cap. 18, pp. 277 y 279"],
+      "verificar": ["La cuenca como unidad hidrológica y las barreras vivas no aparecen de forma literal en Gliessman (caps. 8 y 18). Sí aparecen la cobertura vegetal y la infiltración, las terrazas y las bermas en contorno (pp. 114 y 115), la protección frente a la erosión (p. 123), las terrazas de ladera que retienen escorrentía y sedimentos (p. 277) y las franjas de vegetación que retienen sedimentos (p. 279)."],
       "estado_texto": "borrador"
     },
     {
@@ -198,7 +212,8 @@
       "estado": { "escenario": "S0", "capas": ["flujos_nutrientes"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "recorrido" },
       "ficha": "Los ciclos de nitrógeno y fósforo no cierran cuando el sistema exporta alimento a la ciudad. Los nutrientes salen de las fincas hacia la ciudad y no regresan al suelo. Esta ruptura entre campo y ciudad recibe el nombre de brecha metabólica.",
       "notas": "Mostrar los arcos de nutrientes sin retorno. En S3 los arcos tienen retorno.",
-      "fuentes": ["lopezgdm:§4", "padro:verificar"],
+      "fuentes": ["lopezgdm:§4", "resumenes:ESTRATEGIA §5", "padro:verificar"],
+      "verificar": ["Mención del nitrógeno y el fósforo: López-García y González de Molina (2021, §4) describen la brecha metabólica entre producción y consumo y la sustitución de los flujos de materia orgánica del consumo urbano por insumos comerciales, sin nombrar esos dos nutrientes. Cotejar con Padró et al."],
       "estado_texto": "borrador"
     },
     {

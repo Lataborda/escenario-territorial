@@ -45,14 +45,15 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (18)
+## Datos por verificar (19)
 
-- escalas.json · cuenca: Pasajes de Gliessman (caps. 8 y 18) sobre agua, sedimentos y conservación de suelos.
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
 - paradas.json · P02: Página de la Res. 331 de 2024 con el área en producción alternativa (61.435,70 ha de 4.617.116 ha) y el conteo de escuelas agroecológicas por departamento.
 - paradas.json · P04: Criterio de frontera del agroecosistema en Gliessman (p. 37), para redactar el contraste con León-Sicard.
 - paradas.json · P06: Los usos listados suman 287 ha de 288 ha; confirmar en Calle et al. (2022, §11.1) el uso restante.
-- paradas.json · P09: Pasajes de Gliessman (caps. 8 y 18) sobre escorrentía, sedimentos y prácticas de conservación de suelos.
+- paradas.json · P08: Rangos de forrajeo y anidación de los polinizadores que exceden el predio: Gliessman (caps. 14 y 18) solo nombra la polinización como servicio ecosistémico y el hábitat de polinizadores. Falta un pasaje que sostenga la frase.
+- paradas.json · P09: La cuenca como unidad hidrológica y las barreras vivas no aparecen de forma literal en Gliessman (caps. 8 y 18). Sí aparecen la cobertura vegetal y la infiltración, las terrazas y las bermas en contorno (pp. 114 y 115), la protección frente a la erosión (p. 123), las terrazas de ladera que retienen escorrentía y sedimentos (p. 277) y las franjas de vegetación que retienen sedimentos (p. 279).
+- paradas.json · P10: Mención del nitrógeno y el fósforo: López-García y González de Molina (2021, §4) describen la brecha metabólica entre producción y consumo y la sustitución de los flujos de materia orgánica del consumo urbano por insumos comerciales, sin nombrar esos dos nutrientes. Cotejar con Padró et al.
 - paradas.json · P15: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - paradas.json · P18: Fuente citable para los siete mercados anteriores a 2009 (REDMAC).
 - paradas.json · P20: Cifras de REDMAC (cerca de 500 familias, 330 productoras, 23 municipios) consultadas en línea en septiembre de 2026; citar antes de la prueba (GUION, precaución 9).
@@ -64,4 +65,4 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - condiciones.json · situacion_partida: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - condiciones.json · C9: Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal.
 - condiciones.json · C10: Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial.
-- procesos.json · escorrentia: Pasajes de Gliessman (caps. 8 y 18) sobre la relación entre cobertura arbórea, escorrentía y sedimentos (cotejo en la etapa 8.b).
+- procesos.json · escorrentia: Reparto de las coberturas en dos clases (con cobertura arbórea y sin ella): Gliessman relaciona la cobertura vegetal, viva o como hojarasca, con la infiltración y con la protección frente a la erosión (cap. 8, pp. 114, 115 y 123), sin distinguir la cobertura arbórea. El reparto es una decisión de dibujo que debe confirmar Alejandro.

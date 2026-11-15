@@ -1,17 +1,57 @@
 {
   "version": 1,
-  "nota": "Flujos de los procesos supraprediales (PLAN, etapa 8.a): agua y sedimentos (P09), nutrientes de las fincas a la ciudad (P10) y semillas entre custodios (P11). Esquema sin escala. Las posiciones «propuesta» y las clases de escorrentía son ilustrativas. Color, forma y tamaño de cada flujo: src/flujos/estilo.js.",
+  "nota": "Flujos de los procesos supraprediales (PLAN, etapas 8.a y 8.b): radios de control biológico y polinización (P08), agua y sedimentos y prácticas de conservación en la ladera (P09), nutrientes de las fincas a la ciudad (P10) y semillas entre custodios (P11). Esquema sin escala. Las posiciones «propuesta» y las clases de escorrentía son ilustrativas. Color, forma y tamaño de cada flujo: src/flujos/estilo.js.",
   "leyenda": {
     "titulo": "Flujos",
     "nota": "Esquema ilustrativo",
+    "notas": { "radios_enemigos_naturales": "Radios ilustrativos", "radios_polinizadores": "Radios ilustrativos", "practicas_conservacion": "Disposición ilustrativa" },
     "entradas": [
+      { "id": "enemigos", "capa": "radios_enemigos_naturales", "rotulo": "Radio de acción de enemigos naturales" },
+      { "id": "polinizadores", "capa": "radios_polinizadores", "rotulo": "Radio de forrajeo de polinizadores" },
       { "id": "agua", "capa": "escorrentia_sedimentos", "rotulo": "Agua" },
       { "id": "sedimento", "capa": "escorrentia_sedimentos", "rotulo": "Agua con sedimentos" },
+      { "id": "curvas_nivel", "capa": "practicas_conservacion", "rotulo": "Curvas a nivel" },
+      { "id": "barreras_vivas", "capa": "practicas_conservacion", "rotulo": "Barreras vivas" },
+      { "id": "terrazas", "capa": "practicas_conservacion", "rotulo": "Terrazas" },
+      { "id": "infiltracion", "capa": "practicas_conservacion", "rotulo": "Agua que se infiltra" },
       { "id": "nutrientes", "capa": "flujos_nutrientes", "rotulo": "Nutrientes en los alimentos" },
       { "id": "retorno", "capa": "flujos_nutrientes", "rotulo": "Retorno de nutrientes al suelo", "escenarios": ["S3"] },
       { "id": "semillas", "capa": "red_semillas", "rotulo": "Intercambio de semillas" },
       { "id": "custodio", "capa": "red_semillas", "rotulo": "Familia custodia" }
     ]
+  },
+  "radios": {
+    "nota": "Radios ilustrativos, sin escala, en unidades de escena. Los parches de hábitat son los grupos de teselas contiguas de las coberturas indicadas en el escenario actual, alrededor del ancla «centro». El radio se mide desde el borde del círculo de igual área que el parche.",
+    "centro": "F1",
+    "alcance": 330,
+    "coberturas": ["bosque_seco"],
+    "minimo_teselas": 6,
+    "maximo": 8,
+    "clases": [
+      {
+        "id": "enemigos",
+        "capa": "radios_enemigos_naturales",
+        "radio": 70,
+        "forma": "rayos",
+        "rotulos": [
+          { "id": "parche", "titulo": "Parche de hábitat", "texto": "Bosque de la finca faro", "en": "parche" },
+          { "id": "radio_enemigos", "titulo": "Radio de acción", "texto": "Sale del lindero", "en": "radio", "rumbo": 120, "lado": "abajo" },
+          { "id": "superposicion", "titulo": "Superposición de radios", "texto": "Entre fincas vecinas", "en": "superposicion", "lado": "abajo" }
+        ]
+      },
+      {
+        "id": "polinizadores",
+        "capa": "radios_polinizadores",
+        "radio": 125,
+        "forma": "lazos",
+        "corredor": true,
+        "rotulos": [
+          { "id": "radio_polinizadores", "titulo": "Radio de forrajeo", "texto": "Excede el predio", "en": "radio", "rumbo": 195 },
+          { "id": "corredor", "titulo": "Corredor ripario", "en": "corredor", "tramo": 0.8, "lado": "abajo" }
+        ]
+      }
+    ],
+    "fuentes": ["gliessman:cap. 14, pp. 209 y 210", "gliessman:cap. 18, pp. 278 a 280", "calle:§11.6"]
   },
   "escorrentia": {
     "capa": "escorrentia_sedimentos",
@@ -31,8 +71,26 @@
       }
     ],
     "sin_origen": ["paramo", "humedal"],
-    "fuentes": ["gliessman:cap. 8", "gliessman:cap. 18"],
-    "verificar": ["Pasajes de Gliessman (caps. 8 y 18) sobre la relación entre cobertura arbórea, escorrentía y sedimentos (cotejo en la etapa 8.b)."]
+    "fuentes": ["gliessman:cap. 8, pp. 114, 115 y 123", "gliessman:cap. 18, pp. 277 y 279"],
+    "verificar": ["Reparto de las coberturas en dos clases (con cobertura arbórea y sin ella): Gliessman relaciona la cobertura vegetal, viva o como hojarasca, con la infiltración y con la protección frente a la erosión (cap. 8, pp. 114, 115 y 123), sin distinguir la cobertura arbórea. El reparto es una decisión de dibujo que debe confirmar Alejandro."]
+  },
+  "practicas": {
+    "capa": "practicas_conservacion",
+    "nota": "Disposición ilustrativa en una finca de ladera. Las curvas a nivel se calculan sobre el relieve de la finca, cada «intervalo» de altura en unidades de escena. Cada práctica se dibuja en los lotes con los usos indicados; «cada» deja una de cada tantas curvas.",
+    "finca": "F3",
+    "intervalo": 2,
+    "practicas": [
+      { "id": "curvas_nivel", "usos": ["cafe", "platano"] },
+      { "id": "barreras_vivas", "usos": ["cafe", "platano"], "cada": 3 },
+      { "id": "terrazas", "usos": ["huerta"] }
+    ],
+    "infiltracion": { "en": "barreras_vivas" },
+    "rotulos": [
+      { "id": "curvas_nivel", "titulo": "Curvas a nivel", "en": "curvas_nivel", "extremo": "occidente", "lado": "abajo" },
+      { "id": "barreras_vivas", "titulo": "Barreras vivas", "texto": "Infiltración del agua", "en": "barreras_vivas" },
+      { "id": "terrazas", "titulo": "Terrazas", "en": "terrazas" }
+    ],
+    "fuentes": ["gliessman:cap. 8, pp. 114 y 115", "gliessman:cap. 18, p. 277"]
   },
   "nutrientes": {
     "capa": "flujos_nutrientes",

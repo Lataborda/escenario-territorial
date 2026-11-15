@@ -209,3 +209,87 @@
   color: var(--texto-suave);
   font-style: italic;
 }
+
+/* Panel de síntesis de la escala mínima (src/ui/escala-minima.js): seis filas iguales */
+.minima {
+  box-sizing: border-box;
+  padding: 0.45rem 0.7rem 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.minima[hidden] {
+  display: none;
+}
+
+.minima-titulo {
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.minima-fila {
+  padding: 0.28rem 0;
+  border-top: 1px solid var(--borde);
+}
+
+.minima-nombre {
+  font-weight: 500;
+}
+
+.minima-escala {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.12rem;
+  color: var(--texto-suave);
+}
+
+.minima-regleta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.14rem;
+  flex: none;
+}
+
+.minima-paso {
+  box-sizing: border-box;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.15rem;
+  border: 1px solid var(--texto-suave);
+  opacity: 0.55;
+}
+
+.minima-paso.es-mayor {
+  background: var(--acento-suave);
+  border-color: var(--acento);
+  opacity: 1;
+}
+
+/* La escala mínima lleva su número de la botonera, con el tamaño del texto */
+.minima-paso.es-minima {
+  display: inline-grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 50%;
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #fff;
+  font-weight: 600;
+  opacity: 1;
+}
+
+.minima-pie {
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--borde);
+  color: var(--texto-suave);
+}
+
+.minima-nota {
+  font-style: italic;
+}

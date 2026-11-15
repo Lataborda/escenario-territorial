@@ -1,5 +1,5 @@
 // Sistema de flujos (etapa 8): partículas sobre curvas en la superposición. Cada capa de flujo (agua.js,
-// nutrientes.js, semillas.js) se enciende con su capa del estado y se arma para el escenario y la calidad actuales
+// nutrientes.js, semillas.js, practicas.js y las dos de radios.js) se enciende con su capa del estado y se arma para el escenario y la calidad actuales
 // (la liviana deja la mitad de las partículas). Un reloj propio mueve las partículas y pide cuadro mientras haya un
 // flujo visible (hasta 60 por segundo en la calidad alta y 30 en las demás); queda quieto en la verificación automática y con #captura=1, para que las capturas sean idénticas
 // en cada carga. Reacciona a «capas», «escenario» y «calidad».
@@ -9,6 +9,8 @@ import { pedirCuadro } from '../escena/pedidos.js';
 import { crearAgua } from './agua.js';
 import { crearNutrientes } from './nutrientes.js';
 import { crearSemillas } from './semillas.js';
+import { crearRadios } from './radios.js';
+import { crearPracticas } from './practicas.js';
 
 const DT_MAXIMO = 0.1; // s: un cuadro lento no hace saltar las partículas
 const FACTOR_LIVIANA = 0.5;
@@ -30,7 +32,11 @@ export function crearFlujos({ altura, superficie, ancla, coberturas, instantanea
     montar('agua y sedimentos', () => crearAgua({ altura, superficie, coberturas })),
     montar('nutrientes', () => crearNutrientes({ altura, superficie, ancla })),
     montar('semillas', () => crearSemillas({ altura, superficie, ancla })),
-  ].filter(Boolean);
+    montar('radios', () => crearRadios({ altura, superficie, ancla, coberturas })),
+    montar('prácticas de conservación', () => crearPracticas({ altura, superficie })),
+  ]
+    .flat()
+    .filter(Boolean);
   const grupo = new THREE.Group();
   grupo.name = 'flujos';
   for (const c of capas) {

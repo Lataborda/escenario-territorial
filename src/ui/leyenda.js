@@ -1,5 +1,6 @@
 // Leyenda de coberturas: color, forma y rótulo de los tipos presentes en el escenario actual.
-// Visible en las escalas de contenido/territorio.json (coberturas.leyenda.escalas).
+// Visible en las escalas de contenido/territorio.json (coberturas.leyenda.escalas), salvo con una capa de
+// «ocultar_con_capas» encendida (el panel de esa capa ocupa su lugar en la columna).
 import territorio from '../../contenido/territorio.json';
 import contenido from '../../contenido/escenarios.json';
 import fincas from '../../contenido/fincas.json';
@@ -85,11 +86,11 @@ export function crearLeyenda(contenedor) {
   }
   contenedor.append(cabeza, lista);
 
-  function pintar({ escenario, escala }) {
-    contenedor.hidden = !leyenda.escalas.includes(escala);
+  function pintar({ escenario, escala, capas }) {
+    contenedor.hidden = !leyenda.escalas.includes(escala) || (leyenda.ocultar_con_capas ?? []).some((c) => capas.includes(c));
     const presentes = tiposPresentes(contenido.escenarios.find((s) => s.id === escenario), USOS_FINCAS);
     for (const [id, li] of entradas) li.hidden = !presentes.has(id);
   }
-  suscribir(['escenario', 'escala'], pintar);
+  suscribir(['escenario', 'escala', 'capas'], pintar);
   pintar(obtener());
 }

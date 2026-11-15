@@ -20,7 +20,8 @@ import { revisarFincas, fallasFincas, seccionFincas } from './lib/revisar-fincas
 import { revisarLote, fallasLote, seccionLote } from './lib/revisar-lote.mjs';
 import { revisarRendimiento, fallasRendimiento, seccionRendimiento } from './lib/revisar-rendimiento.mjs';
 import { revisarCalidad, fallasCalidad, seccionCalidad } from './lib/revisar-calidad.mjs';
-import { revisarProcesos, fallasProcesos, seccionProcesos } from './lib/revisar-procesos.mjs';
+import { fallasProcesos, seccionProcesos } from './lib/revisar-procesos.mjs';
+import { revisarFlujos, fallasSintesis, seccionSintesis } from './lib/revisar-sintesis.mjs';
 import { validarContenido, escribirPendientes, ARCHIVOS as CONTENIDO } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -110,7 +111,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, coberturas
     ...seccionCoberturas(coberturas.extra, principal.estadisticas),
     ...seccionFincas(fincas.extra),
     ...seccionLote(lote.extra),
-    ...seccionProcesos(flujos.extra),
+    ...seccionProcesos(flujos.extra), ...seccionSintesis(flujos.extra?.sintesis),
     ...seccionLuz(luz.extra),
     ...seccionRendimiento(rendimiento.extra),
     ...seccionCalidad(calidad),
@@ -235,7 +236,7 @@ async function principal() {
       extra: (p) => revisarLote(p, { navegador, dirCapturas: DIR_CAPTURAS, raiz: RAIZ }),
     });
     avisar('Revisando los flujos de los procesos supraprediales ...');
-    const flujos = await revisarPagina(navegador, `${url}#p=P09&captura=1`, { origen, extra: (p) => revisarProcesos(p, { dirCapturas: DIR_CAPTURAS }) });
+    const flujos = await revisarPagina(navegador, `${url}#p=P09&captura=1`, { origen, extra: (p) => revisarFlujos(p, { dirCapturas: DIR_CAPTURAS }) });
     avisar('Revisando luz, posproceso y textos a 1920×1080 ...');
     const luz = await revisarPagina(navegador, `${url}#p=P01&captura=1`, {
       origen,
@@ -267,7 +268,7 @@ async function principal() {
     ...fallasFincas(resultado.fincas.extra),
     ...fallasDe('Vista lote', resultado.lote),
     ...fallasLote(resultado.lote.extra),
-    ...fallasDe('Vista flujos', resultado.flujos), ...fallasProcesos(resultado.flujos.extra),
+    ...fallasDe('Vista flujos', resultado.flujos), ...fallasProcesos(resultado.flujos.extra), ...fallasSintesis(resultado.flujos.extra?.sintesis),
     ...fallasDe('Vista 1920×1080', resultado.luz),
     ...fallasLuz(resultado.luz.extra),
     ...fallasDe('Vista rendimiento', resultado.rendimiento),
