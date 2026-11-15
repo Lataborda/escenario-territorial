@@ -579,10 +579,10 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - Criterios de aceptación:
   - [x] Siete mercados aislados en S0 y en red en S2.
   - [x] El polígono de la red cruza el límite departamental.
-  - [ ] Rótulos legibles con siete visibles como máximo (cumplido en P18 y P20; faltan P13 y P21, en la 9.b).
+  - [x] Rótulos legibles con siete visibles como máximo (P13, P18, P20 y los dos pasos de P21).
 - División (2026-11-15, aprobada por Alejandro): la etapa se cierra en dos sesiones.
   - 9.a (cerrada el 2026-11-15): sistema de la red de actores (`src/actores/`), mercados en las cabeceras, enlaces de comercio y de garantía, polígono del territorio de la red y límites administrativos (departamental resaltado y municipales esquemáticos). Paradas P18 y P20, y la base de P19. Contenido en `contenido/actores.json` (bloque `red`).
-  - 9.b: lo que sigue en «Etapa 9.b».
+  - 9.b (cerrada el 2026-11-15): lo que sigue en «Etapa 9.b».
 - Prompt de arranque: `Etapa 9.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 9.b. Actores, figuras territoriales y sujeto plural
@@ -600,6 +600,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Cotejo de fuentes: Ley 2046 de 2020 (mínimo de 30 % y definición de circuitos cortos de comercialización), Res. 331 de 2024 (líneas 1.2 y 1.10, lineamiento 2) y, si se usa, la condición de reserva natural de la finca faro en Calle et al. (2022).
   - Decisiones de la 9.a que Alejandro deje anotadas (familias y enlaces, límites municipales, capas de P18 a P20).
 - Criterios de aceptación: los tres de la etapa 9 en P13, P18, P20 y P21, más el presupuesto gráfico de cada capa nueva (50.000 triángulos como máximo).
+- Estado: cerrada el 2026-11-15. Módulos: `src/actores/marcadores.js`, `figuras.js`, `lindero.js` y `relleno.js`; relaciones nuevas en `contenido/actores.json`. P21 quedó en dos pasos (40 estados en el recorrido). MADR y ADR no tienen marcador (escala nacional, sin ancla en el bloque).
 - Prompt de arranque: `Etapa 9.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 10. Escenarios y teoría de cambio

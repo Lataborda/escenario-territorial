@@ -144,7 +144,10 @@
       "papel": "Recursos, capacitaciones y plan municipal",
       "categoria": "institucional",
       "anclas": ["ciudad"],
-      "fuentes": ["res331:línea 1.10", "res331:lineamiento 2"]
+      "fuentes": ["res331:línea 1.10", "res331:gobernanza, instancias municipales"],
+      "verificar": [
+        "Recursos y capacitaciones de la alcaldía: la Res. 331 de 2024 sostiene los equipos de agroecología en las entidades territoriales (línea 1.10) y los planes, programas y proyectos municipales de agroecología (gobernanza, instancias municipales). No nombra recursos ni capacitaciones, y el lineamiento 2 no trata el papel de la alcaldía."
+      ]
     },
     {
       "id": "autoridad_ambiental",
@@ -280,9 +283,9 @@
         { "id": "consejo", "titulo": "Consejo comunitario", "texto": "Gobierno propio y tierra", "en": "consejo" },
         { "id": "reserva", "titulo": "Reserva natural", "texto": "Finca faro (referencia El Hatico)", "en": "reserva", "lado": "abajo" }
       ],
-      "fuentes": ["calle:§11.7.3"],
+      "fuentes": ["calle:§11.7.3", "res331:línea 2.1"],
       "verificar": [
-        "Reserva natural de la sociedad civil: Calle et al. (2022) nombran la finca «El Hatico Nature Reserve» y, en §11.7.3, miembro fundador de Resnatur, «the Colombian Network of Private Nature Reserves». La expresión «de la sociedad civil» no figura de forma literal; el rótulo dice «Reserva natural»."
+        "Reserva natural de la sociedad civil: la Res. 331 de 2024 (línea 2.1) nombra las Reservas Naturales de la Sociedad Civil entre las figuras de áreas protegidas privadas. Calle et al. (2022) nombran la finca «El Hatico Nature Reserve» y, en §11.7.3, miembro fundador de Resnatur, «the Colombian Network of Private Nature Reserves»; la expresión «de la sociedad civil» no figura de forma literal para la finca. El rótulo dice «Reserva natural»."
       ]
     },
     "lindero": {
