@@ -14,6 +14,8 @@ import { crearMateria } from './materia.js';
 import { crearInteracciones } from './interacciones.js';
 import { crearLeyendaFlujos } from './flujos.js';
 import { crearEscalaMinima } from './escala-minima.js';
+import actores from '../../contenido/actores.json';
+import { ESTILO as ESTILO_RED } from '../actores/estilo.js';
 
 const DURACION_AVISO_MS = 8000;
 
@@ -59,7 +61,7 @@ export function crearInterfaz(raiz) {
   const ficha = parte('ficha', 'aside');
   ficha.setAttribute('aria-live', 'polite');
   montar('ficha', crearFicha, ficha);
-  // Columna derecha: leyenda de coberturas, leyenda de capas, leyenda de flujos, escala mínima de cada proceso,
+  // Columna derecha: leyenda de coberturas, leyenda de capas, leyenda de flujos, leyenda de la red de actores, escala mínima de cada proceso,
   // índice EAP, interacciones del lote y materia orgánica.
   const columna = parte('columna-derecha');
   const enColumna = (clase) => {
@@ -71,6 +73,7 @@ export function crearInterfaz(raiz) {
   montar('leyenda', crearLeyenda, enColumna('leyenda'));
   montar('capas', crearCapas, columna);
   montar('leyenda de flujos', crearLeyendaFlujos, columna);
+  montar('leyenda de la red', (c) => crearLeyendaFlujos(c, { leyenda: actores.red.leyenda, estilo: ESTILO_RED, clase: 'red' }), columna);
   montar('escala mínima', crearEscalaMinima, columna);
   montar('índice EAP', crearEap, columna);
   montar('interacciones', crearInteracciones, columna);

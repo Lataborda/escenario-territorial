@@ -46,6 +46,7 @@
     { "id": "poligono_red", "descripcion": "Polígono del territorio de la red" },
     { "id": "spg", "descripcion": "Sistema participativo de garantías" },
     { "id": "figuras_territoriales", "descripcion": "Resguardo indígena y consejo comunitario" },
+    { "id": "limites_administrativos", "descripcion": "Límite departamental resaltado y límites municipales esquemáticos" },
     { "id": "teoria_cambio", "descripcion": "Panel de la teoría de cambio sincronizado con las condiciones" },
     { "id": "proximidades", "descripcion": "Proximidades entre productores y consumidores" },
     { "id": "compras_publicas", "descripcion": "Compras públicas de colegios" },
@@ -62,7 +63,7 @@
       "titulo": "Coberturas",
       "nota": "Proporciones ilustrativas",
       "escalas": ["vereda", "cuenca", "territorio", "region"],
-      "ocultar_con_capas": ["escala_minima", "practicas_conservacion"]
+      "ocultar_con_capas": ["escala_minima", "practicas_conservacion", "red_mercados"]
     },
     "tipos": [
       { "id": "cana", "nombre": "Caña en manejo convencional", "rotulo": "Caña convencional" },

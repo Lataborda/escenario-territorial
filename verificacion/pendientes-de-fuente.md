@@ -18,7 +18,7 @@ Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe c
 | ley2294 | Ley 2294 de 2023, art. 32 | falta | Verificar el texto del artículo (GUION, precaución 4). |
 | al012023 | Acto Legislativo 01 de 2023 | falta | Verificar el texto sobre el campesinado como sujeto de derechos. |
 
-## Localizadores por verificar (67 referencias en 22 fuentes)
+## Localizadores por verificar (68 referencias en 22 fuentes)
 
 Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar «verificar» por la página o la sección.
 
@@ -37,7 +37,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `mottet` (Mottet et al. (2020)): paradas (P23)
 - `nehring` (Nehring et al. (2026)): escalas (region)
 - `padro` (Padró et al.): escalas (region); paradas (P10); escenarios (S3, L2); procesos (nutrientes)
-- `redmac` (REDMAC): paradas (P18, P20); escenarios (S2); condiciones (H2); actores (red_mercados)
+- `redmac` (REDMAC): paradas (P18, P20); escenarios (S2); condiciones (H2); actores (red_mercados, red)
 - `res331` (Res. 331 de 2024): escalas (region); paradas (P02, P24); escenarios (S0); condiciones (C8); actores (madr_adr)
 - `romero` (Romero et al. (2023)): territorio (ladera); paradas (P23); fincas (F2)
 - `sanchezprager` (Sánchez de Prager (2018)): paradas (P07); lote (suelo)
@@ -45,7 +45,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (19)
+## Datos por verificar (21)
 
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
 - paradas.json · P02: Página de la Res. 331 de 2024 con el área en producción alternativa (61.435,70 ha de 4.617.116 ha) y el conteo de escuelas agroecológicas por departamento.
@@ -65,4 +65,6 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - condiciones.json · situacion_partida: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - condiciones.json · C9: Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal.
 - condiciones.json · C10: Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial.
+- actores.json · red: Familias productoras, enlaces de comercio y enlaces de garantía: posiciones y pares ilustrativos, propuestos para el dibujo. Debe confirmarlos Alejandro.
+- actores.json · red: Límites municipales: esquema derivado de las cabeceras, sin correspondencia con la cartografía.
 - procesos.json · escorrentia: Reparto de las coberturas en dos clases (con cobertura arbórea y sin ella): Gliessman relaciona la cobertura vegetal, viva o como hojarasca, con la infiltración y con la protección frente a la erosión (cap. 8, pp. 114, 115 y 123), sin distinguir la cobertura arbórea. El reparto es una decisión de dibujo que debe confirmar Alejandro.

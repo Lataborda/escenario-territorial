@@ -4,6 +4,7 @@
 import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import { ir, leer, revisarProcesos, TOPE_TRIANGULOS } from './revisar-procesos.mjs';
+import { revisarActores } from './revisar-actores.mjs';
 
 const PROCESOS = JSON.parse(readFileSync(new URL('../../contenido/escalas.json', import.meta.url), 'utf8')).procesos;
 
@@ -112,10 +113,11 @@ export async function revisarSintesis(pagina, { dirCapturas }) {
   return r;
 }
 
-// Revisión de los flujos de la 8.a y, en la misma página, la de la 8.b (en «sintesis»).
+// Revisión de los flujos de la 8.a y, en la misma página, la de la 8.b (en «sintesis») y la red de actores de la
+// 9.a (en «actores»).
 export async function revisarFlujos(pagina, opciones) {
   const procesos = await revisarProcesos(pagina, opciones);
-  return { ...procesos, sintesis: await revisarSintesis(pagina, opciones) };
+  return { ...procesos, sintesis: await revisarSintesis(pagina, opciones), actores: await revisarActores(pagina, opciones) };
 }
 
 export function fallasSintesis(r, procesos = PROCESOS) {

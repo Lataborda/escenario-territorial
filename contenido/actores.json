@@ -157,5 +157,109 @@
       "papel": "Demanda y brecha metabólica",
       "anclas": ["ciudad"]
     }
-  ]
+  ],
+  "red": {
+    "nota": "Red de mercados, enlaces por tipo de relación, polígono del territorio de la red y límites administrativos (PLAN, etapa 9.a). Esquema sin escala. Las familias productoras tienen posición propuesta y los enlaces son ilustrativos. Los límites municipales son esquemáticos, uno por cabecera. Color, forma y ancho de cada elemento: src/actores/estilo.js.",
+    "leyenda": {
+      "titulo": "Red",
+      "nota": "Disposición ilustrativa",
+      "entradas": [
+        { "id": "mercado", "capa": "mercados", "rotulo": "Mercado agroecológico" },
+        { "id": "comercio", "capa": "red_mercados", "rotulo": "Circuitos cortos de comercialización" },
+        { "id": "familia", "capa": "red_mercados", "rotulo": "Familia productora" },
+        { "id": "garantia", "capa": "spg", "rotulo": "Garantía de confianza (SPG)" },
+        { "id": "aliado", "capa": "spg", "rotulo": "Aliado externo" },
+        { "id": "poligono", "capa": "poligono_red", "rotulo": "Territorio de la red" },
+        { "id": "limite_departamental", "capa": "limites_administrativos", "rotulo": "Límite departamental" },
+        { "id": "limite_municipal", "capa": "limites_administrativos", "rotulo": "Límite municipal" }
+      ]
+    },
+    "nodos": [
+      { "id": "CAB1", "tipo": "mercado", "ancla": "CAB1" },
+      { "id": "CAB2", "tipo": "mercado", "ancla": "CAB2" },
+      { "id": "CAB3", "tipo": "mercado", "ancla": "CAB3" },
+      { "id": "CAB4", "tipo": "mercado", "ancla": "CAB4" },
+      { "id": "CAB5", "tipo": "mercado", "ancla": "CAB5" },
+      { "id": "CAB6", "tipo": "mercado", "ancla": "CAB6" },
+      { "id": "CAB7", "tipo": "mercado", "ancla": "CAB7" },
+      { "id": "CAB8", "tipo": "mercado", "ancla": "CAB8", "escenarios": ["S2", "S3"] },
+      { "id": "CAB9", "tipo": "mercado", "ancla": "CAB9", "escenarios": ["S2", "S3"] },
+      { "id": "F3", "tipo": "familia", "ancla": "F3" },
+      { "id": "FA1", "tipo": "familia", "x": 0.67, "z": 0.12, "posicion": "propuesta" },
+      { "id": "FA2", "tipo": "familia", "x": 0.74, "z": 0.47, "posicion": "propuesta" },
+      { "id": "FA3", "tipo": "familia", "x": 0.69, "z": 0.6, "posicion": "propuesta" },
+      { "id": "FA4", "tipo": "familia", "x": 0.58, "z": 0.4, "posicion": "propuesta" },
+      { "id": "FA5", "tipo": "familia", "x": 0.52, "z": 0.14, "posicion": "propuesta" },
+      { "id": "FA6", "tipo": "familia", "x": 0.4, "z": 0.56, "posicion": "propuesta" },
+      { "id": "FA7", "tipo": "familia", "x": 0.17, "z": 0.5, "posicion": "propuesta" },
+      { "id": "FA8", "tipo": "familia", "x": 0.2, "z": 0.16, "posicion": "propuesta" },
+      { "id": "FA9", "tipo": "familia", "x": 0.7, "z": 0.76, "posicion": "propuesta" },
+      { "id": "FA10", "tipo": "familia", "x": 0.6, "z": 0.88, "posicion": "propuesta" },
+      { "id": "FA11", "tipo": "familia", "x": 0.22, "z": 0.88, "posicion": "propuesta" },
+      { "id": "FA12", "tipo": "familia", "x": 0.4, "z": 0.74, "posicion": "propuesta" },
+      { "id": "universidad", "tipo": "aliado", "ancla": "ciudad" }
+    ],
+    "mercados": {
+      "capa": "mercados",
+      "rotulos": [
+        { "id": "mercado_aislado", "titulo": "Mercado agroecológico", "texto": "Sin vínculos con los demás", "en": "CAB2", "escenarios": ["S0", "S1"] },
+        { "id": "mercados_sur", "titulo": "Cabeceras del sur", "texto": "Se suman a la red", "en": "CAB9", "lado": "abajo", "escenarios": ["S2", "S3"] }
+      ]
+    },
+    "relaciones": [
+      {
+        "id": "comercio",
+        "nombre": "Comercio",
+        "capa": "red_mercados",
+        "escenarios": ["S2", "S3"],
+        "pares": [
+          ["F3", "CAB4"], ["FA1", "CAB5"], ["FA2", "CAB6"], ["FA3", "CAB6"], ["FA4", "CAB4"], ["FA5", "CAB3"], ["FA6", "CAB2"],
+          ["FA7", "CAB7"], ["FA8", "CAB1"], ["FA9", "CAB9"], ["FA10", "CAB9"], ["FA11", "CAB8"], ["FA12", "CAB8"],
+          ["CAB1", "CAB3"], ["CAB3", "CAB5"], ["CAB3", "CAB4"], ["CAB1", "CAB7"], ["CAB7", "CAB2"], ["CAB2", "CAB6"],
+          ["CAB4", "CAB6"], ["CAB2", "CAB8"], ["CAB6", "CAB9"], ["CAB8", "CAB9"]
+        ],
+        "rotulos": []
+      },
+      {
+        "id": "garantia",
+        "nombre": "Garantía",
+        "capa": "spg",
+        "escenarios": ["S2", "S3"],
+        "pares": [
+          ["F3", "FA1"], ["F3", "FA4"], ["FA2", "FA3"], ["FA3", "FA9"], ["FA9", "FA10"], ["FA6", "FA12"], ["FA7", "FA11"],
+          ["universidad", "FA8"], ["universidad", "FA6"]
+        ],
+        "rotulos": [
+          { "id": "universidad", "titulo": "Universidad", "texto": "Aliado externo", "en": "universidad" }
+        ]
+      },
+      { "id": "conocimiento", "nombre": "Conocimiento", "capa": "actores", "pendiente": "Etapa 9.b" },
+      { "id": "semillas", "nombre": "Semillas", "capa": "actores", "pendiente": "Etapa 9.b" },
+      { "id": "gobernanza", "nombre": "Gobernanza", "capa": "actores", "pendiente": "Etapa 9.b" }
+    ],
+    "poligono": {
+      "capa": "poligono_red",
+      "nota": "Envolvente de los mercados y las familias de la red en el escenario actual, con un margen en unidades de escena. Sin coordenadas fijas.",
+      "escenarios": ["S2", "S3"],
+      "tipos": ["mercado", "familia"],
+      "margen": 30,
+      "rotulos": [
+        { "id": "territorio_red", "titulo": "Territorio de la red", "texto": "Cruza el límite departamental", "en": "cruce", "extremo": "occidente", "lado": "abajo" }
+      ]
+    },
+    "limites": {
+      "capa": "limites_administrativos",
+      "nota": "Un municipio esquemático por asentamiento de territorio.json, a cada lado del límite departamental.",
+      "rotulos": [
+        { "id": "valle", "titulo": "Valle del Cauca", "x": 0.9, "z": 0.59, "posicion": "propuesta" },
+        { "id": "cauca", "titulo": "Cauca", "x": 0.9, "z": 0.72, "posicion": "propuesta", "lado": "abajo" }
+      ]
+    },
+    "fuentes": ["redmac:verificar"],
+    "verificar": [
+      "Familias productoras, enlaces de comercio y enlaces de garantía: posiciones y pares ilustrativos, propuestos para el dibujo. Debe confirmarlos Alejandro.",
+      "Límites municipales: esquema derivado de las cabeceras, sin correspondencia con la cartografía."
+    ],
+    "estado_texto": "borrador"
+  }
 }

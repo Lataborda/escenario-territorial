@@ -10,6 +10,7 @@ import { revisarProporciones } from './lib/revisar-proporciones.mjs';
 import { revisarFincas, revisarEap } from './lib/revisar-fincas-contenido.mjs';
 import { revisarLote } from './lib/revisar-lote-contenido.mjs';
 import { revisarProcesos } from './lib/revisar-procesos-contenido.mjs';
+import { revisarActoresRed } from './lib/revisar-actores-contenido.mjs';
 
 export { ARCHIVOS };
 
@@ -26,10 +27,11 @@ export async function validarContenido(raiz = RAIZ) {
   const eap = revisarEap(datos);
   const lote = revisarLote(datos);
   const procesos = revisarProcesos(datos);
+  const red = revisarActoresRed(datos);
   return {
     datos,
-    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...eap.errores, ...lote.errores, ...procesos.errores, ...textos.errores],
-    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...eap.avisos, ...lote.avisos, ...procesos.avisos, ...textos.avisos],
+    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...eap.errores, ...lote.errores, ...procesos.errores, ...red.errores, ...textos.errores],
+    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...eap.avisos, ...lote.avisos, ...procesos.avisos, ...red.avisos, ...textos.avisos],
     pendientes: textos.pendientes,
     resumen: referencias.resumen,
   };

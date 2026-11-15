@@ -8,13 +8,18 @@ const COLOR = 0x55514b;
 const SOBRE_SUPERFICIE = 1.5;
 const PASO = 2;
 
-// Trazo levemente irregular a lo largo de z = v (de occidente a oriente).
+// Posición del límite en el plano (v) a la altura u: trazo levemente irregular en torno a z = v. Lo usa también la
+// capa de límites administrativos (src/actores/limites.js).
+export const vLimite = (entidad) => (typeof entidad.z === 'number' ? entidad.z : (entidad.z[0] + entidad.z[1]) / 2);
+export const ondaLimite = (v, u) => v + 0.006 * Math.sin(u * 2 * Math.PI * 3.2 + 0.4) + 0.003 * Math.sin(u * 2 * Math.PI * 9.1);
+
+// Trazo a lo largo de z = v (de occidente a oriente).
 export function crearLimite(entidad, superficie) {
-  const v = typeof entidad.z === 'number' ? entidad.z : (entidad.z[0] + entidad.z[1]) / 2;
+  const v = vLimite(entidad);
   const puntos = [];
   for (let x = -BORDE.x; x <= BORDE.x + 1e-6; x += PASO) {
     const u = aPlanoU(x);
-    const z = aMundoZ(v + 0.006 * Math.sin(u * 2 * Math.PI * 3.2 + 0.4) + 0.003 * Math.sin(u * 2 * Math.PI * 9.1));
+    const z = aMundoZ(ondaLimite(v, u));
     puntos.push(x, superficie(x, z) + SOBRE_SUPERFICIE, z);
   }
   const geometria = new LineGeometry();

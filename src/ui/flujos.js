@@ -1,16 +1,15 @@
 // Leyenda de flujos (etapa 8), en la columna derecha: color, forma y rótulo de cada flujo de las capas encendidas.
-// Rótulos en contenido/procesos.json (leyenda); color y forma en src/flujos/estilo.js.
+// Rótulos en contenido/procesos.json (leyenda); color y forma en src/flujos/estilo.js. La leyenda de la red de
+// actores (etapa 9.a) usa el mismo panel con su leyenda (contenido/actores.json), su estilo y su clase.
 import './capas.css';
 import contenido from '../../contenido/procesos.json';
 import { obtener, suscribir } from '../estado.js';
 import { ESTILO, css } from '../flujos/estilo.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
-const { leyenda } = contenido;
 
 // Muestra de 32 × 22: el trazo del flujo (si lo tiene) y su partícula encima (si la tiene), con el halo.
-function muestra(id) {
-  const e = ESTILO[id];
+function muestra(e) {
   const svg = document.createElementNS(SVG, 'svg');
   svg.setAttribute('viewBox', '0 0 32 22');
   svg.setAttribute('aria-hidden', 'true');
@@ -29,9 +28,10 @@ function muestra(id) {
   return svg;
 }
 
-export function crearLeyendaFlujos(columna) {
+/** leyenda: { titulo, nota, notas, entradas }; estilo: tabla de estilos por id de entrada; clase: clase del panel. */
+export function crearLeyendaFlujos(columna, { leyenda = contenido.leyenda, estilo = ESTILO, clase = 'flujos' } = {}) {
   const panel = document.createElement('aside');
-  panel.className = 'capas flujos';
+  panel.className = `capas ${clase}`;
   panel.setAttribute('aria-label', leyenda.titulo);
   const cabeza = document.createElement('div');
   cabeza.className = 'leyenda-cabeza';
@@ -50,7 +50,7 @@ export function crearLeyendaFlujos(columna) {
     li.dataset.flujo = f.id;
     const texto = document.createElement('span');
     texto.textContent = f.rotulo;
-    li.append(muestra(f.id), texto);
+    li.append(muestra(estilo[f.id]), texto);
     lista.append(li);
     return { li, ...f };
   });

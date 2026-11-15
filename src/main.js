@@ -14,6 +14,7 @@ import { crearCorte } from './lote/suelo.js';
 import { crearRotulosLote } from './lote/rotulos.js';
 import { crearFlujos } from './flujos/flujos.js';
 import { crearRotulosFlujos } from './flujos/rotulos.js';
+import { crearActores } from './actores/actores.js';
 import { leerParametros } from './parametros.js';
 import { obtener, cambiar, suscribir } from './estado.js';
 import { crearCamaraNavegacion } from './navegacion/camara.js';
@@ -195,6 +196,17 @@ async function iniciar() {
       alCuadro: escena.alCuadro,
     }),
   );
+  // Red de actores (P18 a P20): mercados, enlaces, polígono de la red y límites, con sus rótulos.
+  const actores = montar('actores', () => crearActores({ altura, superficie, ancla }));
+  if (actores) escena.superponer(actores.grupo);
+  const rotulosActores = actores && montar('rótulos de actores', () =>
+    crearRotulosFlujos({
+      contenedor: document.getElementById('interfaz'),
+      capas: actores.capas,
+      proyectar: (x, y, z) => proyectar(escena, new THREE.Vector3(x, y, z)),
+      alCuadro: escena.alCuadro,
+    }),
+  );
   // Vista del presentador (npm run presentar): publica el estado y recibe órdenes.
   montar('presentador', crearSincronia);
   // Detección de calidad: sin #calidad= en el hash; en la verificación y con #captura=1, solo con #deteccion=.
@@ -221,6 +233,7 @@ async function iniciar() {
     lote: () => lote && { ...lote.datos(), corte: corte?.datos() ?? null, rotulos: rotulosLote?.visibles() ?? null },
     flujos: () => flujos && { ...flujos.datos(), rotulos: rotulosFlujos?.visibles() ?? 0 },
     fijarRelojFlujos: (t) => flujos?.fijarReloj(t),
+    actores: () => actores && { ...actores.datos(), rotulos: rotulosActores?.visibles() ?? 0 },
     cambiarEscenario: (id) => cambiar({ escenario: id }),
     capas: (lista) => cambiar({ capas: lista }),
     revisarAnclas: revisarAnclasTerreno,
