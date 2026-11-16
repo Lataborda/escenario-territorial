@@ -2,7 +2,7 @@
 // #viento regulan la oclusión ambiental, la miniatura y el viento (0 apaga; 1 por defecto). #cps= fija el tope de
 // cuadros por segundo con la cámara quieta (30 por defecto; ritmo.js). #calidad=alta, media o liviana fija la calidad
 // (sin ella, la detección de src/escena/deteccion.js puede bajarla un nivel); #deteccion= cambia el umbral de esa
-// detección en cuadros por segundo (0 la apaga).
+// detección en cuadros por segundo (0 la apaga). #c=C5,C7 abre el panel de condiciones con esas condiciones activas.
 import { limitar } from './util/interpolar.js';
 import { CPS } from './escena/ritmo.js';
 import { esNivel } from './calidad.js';
@@ -37,6 +37,8 @@ export function leerParametros(hash = window.location.hash) {
     calidad: esNivel(p.get('calidad')) ? p.get('calidad') : null,
     // null: umbral por defecto, y sin detección en la verificación automática ni con #captura=1.
     deteccion: Number.isFinite(deteccion) && deteccion >= 0 ? deteccion : null,
+    // null: sin condiciones en el hash; una lista (aun vacía) abre el panel de condiciones.
+    condiciones: p.has('c') ? p.get('c').split(',').filter(Boolean) : null,
   };
 }
 
@@ -47,11 +49,15 @@ function escribir(valores) {
     if (valor == null) p.delete(clave);
     else p.set(clave, String(valor));
   }
-  const nuevo = `#${p.toString()}`;
+  // Las comas de la lista de condiciones (#c=C5,C7) quedan legibles.
+  const nuevo = `#${p.toString().replaceAll('%2C', ',')}`;
   if (nuevo !== window.location.hash) history.replaceState(null, '', nuevo);
 }
 
 export const escribirParada = (parada, paso) => escribir({ p: parada, paso: paso > 0 ? paso : null });
+
+// Condiciones activas del panel de la teoría de cambio (null borra la clave).
+export const escribirCondiciones = (condiciones) => escribir({ c: condiciones ? condiciones.join(',') : null });
 
 // La calidad elegida (tecla V, presentador o detección) queda en el hash y sobrevive a la recarga.
 export const escribirCalidad = (calidad) => escribir({ calidad });

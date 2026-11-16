@@ -45,7 +45,7 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - `wezel2020` (Wezel et al. (2020)): escenarios (L2)
 - `zollet` (Zollet (2022)): condiciones (H2)
 
-## Datos por verificar (22)
+## Datos por verificar (23)
 
 - paradas.json · ficha_sesion: Curso hipotético y prerrequisitos redactados sin Alejandro en la sesión en la nube (decisión D4).
 - paradas.json · P02: Página de la Res. 331 de 2024 con el área en producción alternativa (61.435,70 ha de 4.617.116 ha) y el conteo de escuelas agroecológicas por departamento.
@@ -64,7 +64,8 @@ Referencias con la forma `clave:verificar`. Al localizar el pasaje, reemplazar �
 - condiciones.json · situacion_partida: Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989).
 - condiciones.json · C9: Pasaje de León-Sicard (2021) sobre la conexión de la finca con la estructura ecológica principal.
 - condiciones.json · C10: Artículos del Decreto 1406 de 2023 sobre los subsistemas de zonas de reserva campesina y de ordenamiento territorial.
-- actores.json · red: Reserva natural de la sociedad civil: Calle et al. (2022) nombran la finca «El Hatico Nature Reserve» y, en §11.7.3, miembro fundador de Resnatur, «the Colombian Network of Private Nature Reserves». La expresión «de la sociedad civil» no figura de forma literal; el rótulo dice «Reserva natural».
+- actores.json · alcaldia: Recursos y capacitaciones de la alcaldía: la Res. 331 de 2024 sostiene los equipos de agroecología en las entidades territoriales (línea 1.10) y los planes, programas y proyectos municipales de agroecología (gobernanza, instancias municipales). No nombra recursos ni capacitaciones, y el lineamiento 2 no trata el papel de la alcaldía.
+- actores.json · red: Reserva natural de la sociedad civil: la Res. 331 de 2024 (línea 2.1) nombra las Reservas Naturales de la Sociedad Civil entre las figuras de áreas protegidas privadas. Calle et al. (2022) nombran la finca «El Hatico Nature Reserve» y, en §11.7.3, miembro fundador de Resnatur, «the Colombian Network of Private Nature Reserves»; la expresión «de la sociedad civil» no figura de forma literal para la finca. El rótulo dice «Reserva natural».
 - actores.json · red: Familias productoras y enlaces de todos los tipos (comercio, garantía, conocimiento, semillas, gobernanza, proximidad y compras públicas): posiciones y pares ilustrativos, propuestos para el dibujo. Debe confirmarlos Alejandro.
 - actores.json · red: Categoría de cada actor y posición de los marcadores que comparten ancla (ciudad y finca faro): propuesta de la etapa 9.b.
 - actores.json · red: Límites municipales: esquema derivado de las cabeceras, sin correspondencia con la cartografía.

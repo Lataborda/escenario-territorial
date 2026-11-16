@@ -327,7 +327,7 @@
           ["universidad", "FA8"], ["universidad", "FA6"]
         ],
         "rotulos": [
-          { "id": "universidad", "titulo": "Universidad", "texto": "Aliado externo", "en": "universidad" }
+          { "id": "universidad", "titulo": "Universidad", "texto": "Aliado externo", "en": "universidad", "escenarios": ["S2"] }
         ]
       },
       {

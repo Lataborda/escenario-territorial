@@ -23,6 +23,7 @@ import { revisarCalidad, fallasCalidad, seccionCalidad } from './lib/revisar-cal
 import { fallasProcesos, seccionProcesos } from './lib/revisar-procesos.mjs';
 import { revisarFlujos, fallasSintesis, seccionSintesis } from './lib/revisar-sintesis.mjs';
 import { fallasActores, seccionActores } from './lib/revisar-actores.mjs';
+import { revisarReglas, fallasReglas, seccionReglas, hashDeReglas } from './lib/revisar-reglas.mjs';
 import { validarContenido, escribirPendientes, ARCHIVOS as CONTENIDO } from './validar-contenido.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -49,6 +50,7 @@ async function revisarContenido() {
     errores: v.errores,
     avisos: v.avisos,
     resumen: v.resumen,
+    reglas: v.reglas,
     localizadores: v.pendientes?.localizadores.length ?? 0,
     datosPendientes: v.pendientes?.datos.length ?? 0,
     borradores: [],
@@ -96,7 +98,7 @@ function seccionVista(titulo, v, extra = []) {
   ].filter((l) => l !== null);
 }
 
-function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, flujos, luz, rendimiento, calidad, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
+function escribirInforme({ fecha, version, principal, unico, terreno, coberturas, fincas, lote, flujos, reglas, luz, rendimiento, calidad, recorrido, presentador, respaldo, tamanoUnico, contenido, fallas }) {
   return [
     '# Informe de verificación\n',
     `- Fecha: ${fecha}`,
@@ -112,7 +114,7 @@ function escribirInforme({ fecha, version, principal, unico, terreno, coberturas
     ...seccionCoberturas(coberturas.extra, principal.estadisticas),
     ...seccionFincas(fincas.extra),
     ...seccionLote(lote.extra),
-    ...seccionProcesos(flujos.extra), ...seccionSintesis(flujos.extra?.sintesis), ...seccionActores(flujos.extra?.actores),
+    ...seccionProcesos(flujos.extra), ...seccionSintesis(flujos.extra?.sintesis), ...seccionActores(flujos.extra?.actores), ...seccionReglas(reglas.extra, contenido.reglas),
     ...seccionLuz(luz.extra),
     ...seccionRendimiento(rendimiento.extra),
     ...seccionCalidad(calidad),
@@ -238,6 +240,8 @@ async function principal() {
     });
     avisar('Revisando los flujos de los procesos supraprediales y la red de actores ...');
     const flujos = await revisarPagina(navegador, `${url}#p=P09&captura=1`, { origen, extra: (p) => revisarFlujos(p, { dirCapturas: DIR_CAPTURAS }) });
+    avisar('Revisando la teoría de cambio ...');
+    const reglas = await revisarPagina(navegador, `${url}${hashDeReglas(contenido.datos)}`, { origen, extra: (p) => revisarReglas(p, { dirCapturas: DIR_CAPTURAS, datos: contenido.datos, raiz: RAIZ }) });
     avisar('Revisando luz, posproceso y textos a 1920×1080 ...');
     const luz = await revisarPagina(navegador, `${url}#p=P01&captura=1`, {
       origen,
@@ -253,22 +257,18 @@ async function principal() {
     const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
     avisar('Revisando el respaldo en imágenes ...');
     const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
-    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, flujos, luz, rendimiento, calidad, recorrido, presentador, respaldo, version: navegador.version() };
+    resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, flujos, reglas, luz, rendimiento, calidad, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();
     await servidor.close();
   }
 
   const fallas = [
-    ...fallasDe('Vista compilada', resultado.principal),
-    ...fallasDe('Archivo único', resultado.unico),
-    ...fallasTerreno(resultado.terreno),
-    ...fallasDe('Vista coberturas', resultado.coberturas),
-    ...fallasCoberturas(resultado.coberturas.extra, resultado.principal.estadisticas),
-    ...fallasDe('Vista fincas', resultado.fincas),
-    ...fallasFincas(resultado.fincas.extra),
+    ...fallasDe('Vista compilada', resultado.principal), ...fallasDe('Archivo único', resultado.unico), ...fallasTerreno(resultado.terreno),
+    ...fallasDe('Vista coberturas', resultado.coberturas), ...fallasCoberturas(resultado.coberturas.extra, resultado.principal.estadisticas),
+    ...fallasDe('Vista fincas', resultado.fincas), ...fallasFincas(resultado.fincas.extra),
     ...fallasDe('Vista lote', resultado.lote), ...fallasLote(resultado.lote.extra),
-    ...fallasDe('Vista flujos', resultado.flujos), ...fallasProcesos(resultado.flujos.extra), ...fallasSintesis(resultado.flujos.extra?.sintesis), ...fallasActores(resultado.flujos.extra?.actores),
+    ...fallasDe('Vista flujos', resultado.flujos), ...fallasProcesos(resultado.flujos.extra), ...fallasSintesis(resultado.flujos.extra?.sintesis), ...fallasActores(resultado.flujos.extra?.actores), ...fallasDe('Vista teoría de cambio', resultado.reglas), ...fallasReglas(resultado.reglas.extra),
     ...fallasDe('Vista 1920×1080', resultado.luz),
     ...fallasLuz(resultado.luz.extra),
     ...fallasDe('Vista rendimiento', resultado.rendimiento),

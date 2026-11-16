@@ -15,6 +15,7 @@ import { crearRotulosLote } from './lote/rotulos.js';
 import { crearFlujos } from './flujos/flujos.js';
 import { crearRotulosFlujos } from './flujos/rotulos.js';
 import { crearActores } from './actores/actores.js';
+import { crearReglas, abrirCon } from './reglas/reglas.js';
 import { leerParametros } from './parametros.js';
 import { obtener, cambiar, suscribir } from './estado.js';
 import { crearCamaraNavegacion } from './navegacion/camara.js';
@@ -137,6 +138,9 @@ async function iniciar() {
   if (!irA(parametros.parada ?? PARADAS[0].id, { paso: parametros.paso, instantanea: true })) {
     irA(PARADAS[0].id, { instantanea: true });
   }
+  // Teoría de cambio: el escenario y las capas derivados de las condiciones (panel de P19, tecla T y hash #c=).
+  const reglas = montar('reglas', crearReglas);
+  if (reglas && parametros.condiciones) abrirCon(parametros.condiciones);
   // Coberturas después de la primera parada: su escenario se aplica sin transición.
   const coberturas = montar('coberturas', () => crearCoberturas({ altura, camara: escena.camara, instantanea: parametros.captura }));
   if (coberturas) {
@@ -234,6 +238,8 @@ async function iniciar() {
     flujos: () => flujos && { ...flujos.datos(), rotulos: rotulosFlujos?.visibles() ?? 0 },
     fijarRelojFlujos: (t) => flujos?.fijarReloj(t),
     actores: () => actores && { ...actores.datos(), rotulos: rotulosActores?.visibles() ?? 0 },
+    reglas: () => reglas?.datos() ?? null,
+    evaluarReglas: (ids) => reglas?.evaluar(ids) ?? null,
     cambiarEscenario: (id) => cambiar({ escenario: id }),
     capas: (lista) => cambiar({ capas: lista }),
     revisarAnclas: revisarAnclasTerreno,

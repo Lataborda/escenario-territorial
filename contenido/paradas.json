@@ -348,7 +348,7 @@
       "saltable": false,
       "titulo": "Actividad de condiciones de territorialización",
       "escala": "territorio",
-      "camara": { "ancla": "general", "distancia": 2500, "azimut": -30, "elevacion": 38, "duracion": 2.5 },
+      "camara": { "ancla": "general", "distancia": 3100, "azimut": -30, "elevacion": 38, "duracion": 2.5 },
       "estado": { "escenario": "S0", "capas": ["mercados", "limites_administrativos", "teoria_cambio"], "lente": null, "anio": "hoy", "condiciones": [], "modo": "actividad" },
       "ficha": "¿Qué tuvo que ocurrir para que siete mercados que no se hablaban se volvieran una red? Activen las condiciones una por una y observen el efecto en la maqueta. Cuando una condición activa no produce efecto territorial, la maqueta indica qué condición falta.",
       "notas": "Los estudiantes proponen condiciones y el presentador las activa. Las reglas son didácticas y carecen de calibración empírica; decirlo al jurado.",

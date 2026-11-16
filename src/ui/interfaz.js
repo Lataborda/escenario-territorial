@@ -1,4 +1,4 @@
-// Interfaz sobre la escena: botonera, ficha, indicador de momento, leyendas, usos de la finca, rótulo del esquema
+// Interfaz sobre la escena: botonera, panel de condiciones, ficha, indicador de momento, leyendas, usos de la finca, rótulo del esquema
 // y avisos.
 // Tecla H: oculta o muestra todo.
 import './interfaz.css';
@@ -14,6 +14,7 @@ import { crearMateria } from './materia.js';
 import { crearInteracciones } from './interacciones.js';
 import { crearLeyendaFlujos } from './flujos.js';
 import { crearEscalaMinima } from './escala-minima.js';
+import { crearCondiciones } from './condiciones.js';
 import actores from '../../contenido/actores.json';
 import { ESTILO as ESTILO_RED } from '../actores/estilo.js';
 
@@ -58,6 +59,8 @@ export function crearInterfaz(raiz) {
   const botonera = parte('botonera', 'nav');
   botonera.setAttribute('aria-label', 'Escalas');
   montar('botonera', crearBotonera, botonera);
+  // Panel de condiciones de la teoría de cambio: ocupa el lugar de la botonera mientras está abierto.
+  montar('condiciones', crearCondiciones, parte('condiciones', 'aside'));
   const ficha = parte('ficha', 'aside');
   ficha.setAttribute('aria-live', 'polite');
   montar('ficha', crearFicha, ficha);

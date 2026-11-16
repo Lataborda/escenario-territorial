@@ -1,0 +1,175 @@
+/* Panel de condiciones de la teoría de cambio (src/ui/condiciones.js). A la izquierda, bajo el indicador de momento,
+   en el lugar de la botonera, que se oculta mientras el panel está abierto. Unidades en rem: 1 rem = 24 px a
+   1920×1080. El ancho (19 rem) fija el corrimiento de la vista en src/escena/escena.js. */
+
+.condiciones {
+  position: absolute;
+  top: 6rem;
+  left: var(--margen);
+  width: 19rem;
+  max-height: calc(100% - 8.9rem);
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0.5rem 0.7rem 0.55rem;
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.25;
+}
+
+.condiciones[hidden],
+.condiciones [hidden] {
+  display: none;
+}
+
+.interfaz:has(> .condiciones:not([hidden])) > .botonera {
+  display: none;
+}
+
+.cond-preajustes {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.cond-preajustes-rotulo {
+  flex: 1;
+  color: var(--texto-suave);
+}
+
+.cond-preajuste {
+  min-width: 2.3rem;
+  padding: 0.12rem 0.3rem;
+  font: 600 1rem/1.2 var(--tipo-texto);
+  color: var(--texto);
+  background: transparent;
+  border: 1px solid var(--borde);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.cond-preajuste[aria-pressed='true'] {
+  color: #fff;
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+.cond-lista {
+  display: grid;
+  gap: 0.12rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cond-interruptor {
+  display: grid;
+  grid-template-columns: 2rem 2.1rem 1fr 1rem;
+  align-items: start;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.12rem 0.15rem;
+  font: 400 1rem/1.2 var(--tipo-texto);
+  color: var(--texto-suave);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.cond-interruptor:hover,
+.cond-preajuste:hover {
+  background: var(--acento-suave);
+}
+
+.cond-preajuste[aria-pressed='true']:hover {
+  background: var(--acento);
+}
+
+.cond-interruptor:focus-visible,
+.cond-preajuste:focus-visible {
+  outline: 0.15rem solid var(--acento);
+  outline-offset: 0.05rem;
+}
+
+.cond-interruptor[aria-pressed='true'] {
+  color: var(--texto);
+}
+
+/* Palanca: a la izquierda y hueca, inactiva; a la derecha y llena, activa. */
+.cond-palanca {
+  position: relative;
+  width: 1.9rem;
+  height: 1.05rem;
+  margin-top: 0.08rem;
+  box-sizing: border-box;
+  border: 0.1rem solid var(--texto-suave);
+  border-radius: 0.6rem;
+}
+
+.cond-palanca::after {
+  content: '';
+  position: absolute;
+  top: 0.1rem;
+  left: 0.1rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: var(--texto-suave);
+}
+
+.cond-interruptor[aria-pressed='true'] .cond-palanca {
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+.cond-interruptor[aria-pressed='true'] .cond-palanca::after {
+  left: auto;
+  right: 0.1rem;
+  background: #fff;
+}
+
+.cond-interruptor.sin-efecto .cond-palanca {
+  background: var(--pendiente);
+  border-color: var(--pendiente);
+}
+
+.cond-clave {
+  font-weight: 600;
+}
+
+.cond-marca {
+  color: var(--pendiente);
+}
+
+.cond-estado {
+  margin-top: 0.4rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--borde);
+}
+
+.cond-escenario {
+  font-weight: 600;
+}
+
+.cond-efectos,
+.cond-mensaje {
+  margin: 0.2rem 0 0;
+}
+
+.cond-avisos {
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--borde);
+}
+
+.cond-aviso .cond-marca {
+  margin-right: 0.3rem;
+}
+
+.cond-aviso-resto {
+  color: var(--texto-suave);
+}

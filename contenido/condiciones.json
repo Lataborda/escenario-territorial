@@ -29,11 +29,13 @@
     "poligono_red": "Polígono del territorio de la red",
     "corredores_continuos": "Corredores continuos",
     "nutrientes_con_retorno": "Flujos de nutrientes con retorno",
-    "compras_publicas_activas": "Compras públicas activas"
+    "compras_publicas_activas": "Compras públicas activas",
+    "escalamiento_vertical": "Difusión vertical de prácticas; la geometría de la matriz permanece"
   },
   "condiciones": [
     {
       "id": "C1",
+      "rotulo": "Crisis",
       "nombre": "Crisis que motiva la búsqueda de alternativas",
       "fuentes": ["zollet:§4 (1)"],
       "efectos": ["rotulo_detonante"],
@@ -43,6 +45,7 @@
     },
     {
       "id": "C2",
+      "rotulo": "Discurso y liderazgo",
       "nombre": "Discurso movilizador y liderazgo",
       "fuentes": ["zollet:§4 (1)"],
       "efectos": ["rotulo_detonante"],
@@ -52,6 +55,7 @@
     },
     {
       "id": "C3",
+      "rotulo": "Prácticas eficaces",
       "nombre": "Prácticas agroecológicas eficaces",
       "fuentes": ["zollet:§4 (2)"],
       "efectos": ["fincas_diversificadas"],
@@ -61,6 +65,7 @@
     },
     {
       "id": "C4",
+      "rotulo": "Campesino a campesino",
       "nombre": "Procesos de enseñanza y aprendizaje constructivistas, de campesino a campesino",
       "fuentes": ["zollet:§4 (2)", "res331:línea 1.2"],
       "efectos": ["escuelas_activas"],
@@ -70,6 +75,7 @@
     },
     {
       "id": "C5",
+      "rotulo": "Organización social",
       "nombre": "Organización social",
       "nota": "Señalada como uno de los elementos más vitales del escalamiento territorial.",
       "fuentes": ["zollet:§4 (3)"],
@@ -80,6 +86,7 @@
     },
     {
       "id": "C6",
+      "rotulo": "Alianzas externas",
       "nombre": "Alianzas con actores externos",
       "fuentes": ["zollet:§4 (3)"],
       "efectos": ["aliados_activos"],
@@ -89,6 +96,7 @@
     },
     {
       "id": "C7",
+      "rotulo": "Mercados favorables",
       "nombre": "Mercados favorables y circuitos cortos",
       "fuentes": ["zollet:§4 (3)", "levidow:§2.2", "res331:lineamiento 3"],
       "efectos": ["mercados_activos"],
@@ -98,6 +106,7 @@
     },
     {
       "id": "C8",
+      "rotulo": "Políticas públicas",
       "nombre": "Políticas públicas favorables, con compras públicas",
       "fuentes": ["zollet:§4 (3)", "ley2046:verificar", "res331:verificar"],
       "efectos": ["politica_activa"],
@@ -107,6 +116,7 @@
     },
     {
       "id": "C9",
+      "rotulo": "Conectividad ecológica",
       "nombre": "Conectividad ecológica entre fincas",
       "fuentes": ["leonsicard:cap. 2", "res331:línea 2.8"],
       "efectos": ["corredor"],
@@ -117,6 +127,7 @@
     },
     {
       "id": "C10",
+      "rotulo": "Gobernanza territorial",
       "nombre": "Gobernanza territorial de tierra, agua y semillas",
       "fuentes": ["wezel2020:principio 12", "dec1406:verificar", "lopez2025:verificar"],
       "efectos": ["gobernanza_activa"],
@@ -137,7 +148,8 @@
       "id": "V2",
       "configuracion": "C7 sin C5",
       "si": { "todas": ["C7"], "ninguna": ["C5"] },
-      "efectos": ["mercados_aislados"]
+      "efectos": ["mercados_aislados"],
+      "reemplaza": ["mercados_activos"]
     },
     {
       "id": "V3",
@@ -156,13 +168,15 @@
       "id": "V5",
       "configuracion": "C9 sin fincas contiguas con C3",
       "si": { "todas": ["C9"], "ninguna": ["C3"] },
-      "efectos": ["corredor_incompleto"]
+      "efectos": ["corredor_incompleto"],
+      "reemplaza": ["corredor"]
     },
     {
       "id": "V6",
       "configuracion": "S2 + C8 + C9 + C10",
       "si": { "todas": ["C5", "C7", "C8", "C9", "C10"], "alguna": ["C4", "C6"] },
       "efectos": ["corredores_continuos", "nutrientes_con_retorno", "compras_publicas_activas"],
+      "reemplaza": ["corredor"],
       "escenario": "S3"
     },
     {
@@ -170,8 +184,50 @@
       "configuracion": "C1 o C2",
       "si": { "alguna": ["C1", "C2"] },
       "efectos": ["rotulo_detonante"]
+    },
+    {
+      "id": "V8",
+      "configuracion": "C3 + C6 sin C5",
+      "si": { "todas": ["C3", "C6"], "ninguna": ["C5"] },
+      "efectos": ["escalamiento_vertical"],
+      "escenario": "S1",
+      "nota": "Regla añadida en la etapa 10.a para derivar S1 (lectura del supuesto H1). No figura en la tabla de GUION.md, sección 6.5.",
+      "fuentes": ["calle:§11.7", "calle:§11.8"],
+      "estado_texto": "borrador"
     }
   ],
+  "derivacion": {
+    "nota": "Escenario y capas de la maqueta que se derivan de las condiciones activas. El escenario es el primero de «orden_escenarios» con una regla cumplida; sin ninguna, el de base. Cada efecto presente enciende sus capas (capas ya construidas de territorio.json). Los efectos sin capa se muestran como texto en el panel. Una regla cumplida retira los efectos que declara en «reemplaza». En «presupone», toda combinación que cumple una regla del primer escenario cumple también una del segundo.",
+    "escenario_base": "S0",
+    "orden_escenarios": ["S3", "S2", "S1"],
+    "presupone": { "S3": ["S2"] },
+    "capas_por_efecto": {
+      "escalamiento_vertical": ["flujos_conocimiento"],
+      "enlaces_red": ["red_mercados", "spg"],
+      "poligono_red": ["poligono_red"],
+      "corredores_continuos": ["eep"],
+      "nutrientes_con_retorno": ["flujos_nutrientes"],
+      "compras_publicas_activas": ["compras_publicas"]
+    }
+  },
+  "preajustes": [
+    { "id": "S0", "escenario": "S0", "condiciones": [] },
+    { "id": "S1", "escenario": "S1", "condiciones": ["C3", "C6"] },
+    { "id": "S2", "escenario": "S2", "condiciones": ["C3", "C4", "C5", "C6", "C7"] },
+    { "id": "S3", "escenario": "S3", "condiciones": ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10"] }
+  ],
+  "panel": {
+    "titulo": "Condiciones",
+    "preajustes": "Preajustes",
+    "sin_efecto": "Sin efecto territorial",
+    "falta": "Falta",
+    "faltan": "Faltan",
+    "alguna": "o",
+    "todas": "y",
+    "otras": "Otras sin efecto territorial",
+    "nota": "Reglas didácticas",
+    "estado_texto": "borrador"
+  },
   "supuestos": [
     {
       "id": "H1",

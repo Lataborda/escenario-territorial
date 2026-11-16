@@ -2,6 +2,7 @@
 // sombra suave, cielo claro, viento (viento.js) y posproceso con oclusión ambiental y miniatura (posproceso.js).
 // Etapa 7.c: la sombra se recalcula solo a pedido (pedidos.js) y el dibujo sigue el ritmo de ritmo.js.
 import * as THREE from 'three';
+import gsap from 'gsap';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { obtener, suscribir } from '../estado.js';
 import { crearPosproceso } from './posproceso.js';
@@ -14,6 +15,11 @@ const RELACION_PIXELES_MAX = 1.5;
 // Con la interfaz visible, el centro de la vista se corre a la izquierda para quedar
 // entre la botonera y la ficha (medidas de src/ui/interfaz.css, en rem).
 const DESPLAZAMIENTO_REM = 8;
+// Con el panel de condiciones abierto (capa «teoria_cambio», 19 rem a la izquierda en lugar de la botonera; src/ui/condiciones.css),
+// el centro queda entre el panel y la ficha.
+const DESPLAZAMIENTO_PANEL_REM = 2.5;
+const CAPA_PANEL = 'teoria_cambio';
+const DURACION_CORRIMIENTO = 0.8; // s
 
 // Vista general inicial: ángulos en grados respecto del centro de la maqueta.
 // Desde el suroccidente: la ladera, orientada al occidente, mira a la cámara.
@@ -97,26 +103,41 @@ export function crearEscena(contenedor, opciones = {}) {
   controles.target.set(0, 0, 0);
   controles.enabled = false;
 
-  function desplazar() {
+  // Corrimiento de la vista en rem. Al abrir o cerrar el panel de condiciones cambia de forma gradual (sin
+  // #captura=1); al ocultar la interfaz (tecla H) y al cambiar el tamaño de la ventana, de inmediato.
+  const corrimiento = { rem: null };
+  let ajuste = null;
+  function aplicarDesplazamiento() {
     const ancho = contenedor.clientWidth;
     const alto = contenedor.clientHeight;
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    const dx = obtener().interfaz ? Math.round(DESPLAZAMIENTO_REM * rem) : 0;
+    const dx = obtener().interfaz ? Math.round(corrimiento.rem * rem) : 0;
     if (dx) camara.setViewOffset(ancho, alto, dx, 0, ancho, alto);
     else camara.clearViewOffset();
+  }
+  function desplazar() {
+    const objetivo = obtener().capas.includes(CAPA_PANEL) ? DESPLAZAMIENTO_PANEL_REM : DESPLAZAMIENTO_REM;
+    ajuste?.kill();
+    ajuste = null;
+    if (corrimiento.rem == null || opciones.captura || !obtener().interfaz) corrimiento.rem = objetivo;
+    else if (corrimiento.rem !== objetivo) {
+      ajuste = gsap.to(corrimiento, { rem: objetivo, duration: DURACION_CORRIMIENTO, ease: 'power2.inOut', onUpdate: aplicarDesplazamiento });
+      return;
+    }
+    aplicarDesplazamiento();
   }
 
   function ajustarTamano() {
     const ancho = contenedor.clientWidth;
     const alto = contenedor.clientHeight;
     camara.aspect = ancho / alto;
-    desplazar();
+    aplicarDesplazamiento();
     camara.updateProjectionMatrix();
     renderizador.setSize(ancho, alto);
     pedirCuadro();
   }
   window.addEventListener('resize', ajustarTamano);
-  suscribir('interfaz', desplazar);
+  suscribir(['interfaz', 'capas'], desplazar);
   desplazar();
 
   // Calidad (tecla V): relación de píxeles 1 por debajo de la alta; sin sombras en la liviana.

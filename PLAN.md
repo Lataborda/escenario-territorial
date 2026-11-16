@@ -161,12 +161,13 @@ Flujo: `irA(parada)` anima la cámara con GSAP, aplica el estado de la parada y 
 | V | calidad: alta, media y liviana, en ese orden (etapa 7.c.b) |
 | M | desenfoque de miniatura (etapa 5.c.c) |
 | R | medidor de rendimiento: cuadros por segundo y llamadas de dibujo (etapa 5.c.c) |
+| T | panel de condiciones de la teoría de cambio sobre la parada actual; otra vez T lo cierra y restituye la parada (etapa 10.a) |
 | C | modo autor: copia la cámara actual en formato de parada |
 | A | modo autor: muestra las anclas (en modo libre, A mueve la cámara) |
 
 Modo libre (etapa 3.b): órbita y zoom con el ratón; doble clic en un punto del relieve para volar hasta él (la distancia se reduce a la mitad, hasta 90); flechas o WASD para avanzar sobre el paisaje, con Mayús para ir más rápido. La cámara no baja del relieve y el objetivo no sale de la maqueta. Av Pág, Re Pág y espacio siguen avanzando el recorrido, de modo que el presentador inalámbrico funciona igual. La botonera, en modo libre, toma como punto de interés el objetivo actual de la cámara.
 
-El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar. La calidad elegida también queda en el hash (`#calidad=media`).
+El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recargar en plena exposición sin perder el lugar. La calidad elegida también queda en el hash (`#calidad=media`), y las condiciones activas del panel de la teoría de cambio (`#c=C5,C7`, etapa 10.a).
 
 ### 3.5 Vista del presentador
 
@@ -615,10 +616,13 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Diagrama 2D de la teoría de cambio (condiciones, supuestos, resultados) sincronizado con los interruptores.
   - Aviso cuando una condición activa carece de efecto territorial por falta de otra.
 - Criterios de aceptación:
-  - [ ] Los cuatro preajustes producen paisajes distinguibles en captura.
-  - [ ] Ninguna condición sola produce S2.
-  - [ ] Todas las reglas están en `contenido/`, sin reglas escritas en el código.
-- Prompt de arranque: `Etapa 10 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+  - [x] Los cuatro preajustes producen paisajes distinguibles en captura (10.a; el par S0 y S1 es el más débil: solo cambia la caña a manejo orgánico, como define el escenario).
+  - [x] Ninguna condición sola produce S2 (10.a; validación sobre las 1.024 combinaciones).
+  - [x] Todas las reglas están en `contenido/`, sin reglas escritas en el código (10.a).
+- División (2026-11-15): la etapa se cierra en dos sesiones.
+  - 10.a (cerrada): reglas completas en `contenido/condiciones.json` (regla V8 para S1, derivación de escenario y capas, preajustes, textos del panel), motor (`src/reglas/motor.js`), derivación en el estado (`src/reglas/reglas.js`), panel de condiciones con preajustes y avisos (`src/ui/condiciones.js`), tecla T, hash `#c=`, validación y verificación.
+  - 10.b (siguiente): diagrama 2D de la teoría de cambio sincronizado con los interruptores (condiciones, supuestos, resultados); aparición gradual de las capas superpuestas al cambiar de estado; dibujo propio de los efectos sin capa (rótulos de detonante, fincas diversificadas como islas, corredor incompleto, actores según el efecto); condiciones en la vista del presentador; capturas de los preajustes en el respaldo.
+- Prompt de arranque: `Etapa 10.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 11. Lentes, capa histórica y cierre
 

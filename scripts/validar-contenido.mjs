@@ -11,6 +11,7 @@ import { revisarFincas, revisarEap } from './lib/revisar-fincas-contenido.mjs';
 import { revisarLote } from './lib/revisar-lote-contenido.mjs';
 import { revisarProcesos } from './lib/revisar-procesos-contenido.mjs';
 import { revisarActoresRed } from './lib/revisar-actores-contenido.mjs';
+import { revisarReglas } from './lib/revisar-reglas-contenido.mjs';
 
 export { ARCHIVOS };
 
@@ -28,12 +29,14 @@ export async function validarContenido(raiz = RAIZ) {
   const lote = revisarLote(datos);
   const procesos = revisarProcesos(datos);
   const red = revisarActoresRed(datos);
+  const reglas = revisarReglas(datos);
   return {
     datos,
-    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...eap.errores, ...lote.errores, ...procesos.errores, ...red.errores, ...textos.errores],
-    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...eap.avisos, ...lote.avisos, ...procesos.avisos, ...red.avisos, ...textos.avisos],
+    errores: [...referencias.errores, ...proporciones.errores, ...fincas.errores, ...eap.errores, ...lote.errores, ...procesos.errores, ...red.errores, ...reglas.errores, ...textos.errores],
+    avisos: [...referencias.avisos, ...proporciones.avisos, ...fincas.avisos, ...eap.avisos, ...lote.avisos, ...procesos.avisos, ...red.avisos, ...reglas.avisos, ...textos.avisos],
     pendientes: textos.pendientes,
     resumen: referencias.resumen,
+    reglas: reglas.resumen,
   };
 }
 
@@ -87,13 +90,17 @@ export async function escribirPendientes(raiz, resultado) {
   return destino;
 }
 
-function imprimir({ errores, avisos, resumen, pendientes }) {
+function imprimir({ errores, avisos, resumen, pendientes, reglas }) {
   if (resumen) {
     const porMomento = Object.entries(resumen.minutos).map(([m, n]) => `${m} ${n}`).join(', ');
     console.log(`Paradas: ${resumen.paradas}. Minutos: ${resumen.total} (${porMomento}). Saltables: ${resumen.saltables.join(', ') || 'ninguna'}.`);
   }
   if (pendientes) {
     console.log(`Pendientes: ${pendientes.localizadores.length} localizadores y ${pendientes.datos.length} datos por verificar (${ARCHIVO_PENDIENTES}).`);
+  }
+  if (reglas) {
+    const porEscenario = Object.entries(reglas.cuenta).map(([e, n]) => `${e} ${n}`).join(', ');
+    console.log(`Reglas: ${reglas.combinaciones} combinaciones de condiciones (${porEscenario}); ninguna condición sola cambia el escenario.`);
   }
   for (const a of avisos) console.log(`Aviso: ${a}`);
   for (const e of errores) console.error(`Error: ${e}`);
