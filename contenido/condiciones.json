@@ -193,7 +193,7 @@
       "escenario": "S1",
       "nota": "Regla añadida en la etapa 10.a para derivar S1 (lectura del supuesto H1). No figura en la tabla de GUION.md, sección 6.5.",
       "fuentes": ["calle:§11.7", "calle:§11.8"],
-      "estado_texto": "borrador"
+      "estado_texto": "revisado"
     }
   ],
   "derivacion": {
@@ -226,7 +226,7 @@
     "todas": "y",
     "otras": "Otras sin efecto territorial",
     "nota": "Reglas didácticas",
-    "estado_texto": "borrador"
+    "estado_texto": "revisado"
   },
   "supuestos": [
     {
