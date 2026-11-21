@@ -142,15 +142,18 @@
       "nota": "Localizador con prefijo ESTRATEGIA o PRUEBA según el archivo. Documento de trabajo; en pantalla se cita la fuente primaria."
     },
     "mieryteran": {
-      "referencia": "Mier y Terán et al. (2018)",
+      "referencia": "Mier y Terán Giménez Cacho et al. (2018), Bringing agroecology to scale: key drivers and emblematic cases, Agroecology and Sustainable Food Systems 42(6): 637-665",
       "corta": "Mier y Terán et al. (2018)",
-      "estado": "falta",
-      "nota": "Se usa vía Zollet (2022, §4)."
+      "archivo": "../Transition/Bringing agroecology to scale.md",
+      "estado": "en carpeta",
+      "nota": "Ocho impulsores de la masificación (drivers 1 a 8, pp. 645 a 654) y cinco casos emblemáticos. Texto completo, pp. 637 a 665; el archivo pesa exactamente 90.000 bytes y la bibliografía termina en Wittman y Blesh (2017): podrían faltar sus últimas entradas."
     },
     "giraldorosset": {
-      "referencia": "Giraldo y Rosset (2018), Agroecology as a territory in dispute: between institutionality and social movements",
+      "referencia": "Giraldo y Rosset (2018), Agroecology as a territory in dispute: between institutionality and social movements, The Journal of Peasant Studies",
       "corta": "Giraldo y Rosset (2018)",
-      "estado": "falta"
+      "archivo": "../Transition/Agroecology as a territory in dispute.md",
+      "estado": "en carpeta",
+      "nota": "Archivo: versión en línea del 30 de agosto de 2017 (DOI 10.1080/03066150.2017.1353496), pp. 1 a 20, completa. Los localizadores usan la sección o esa paginación; la paginación impresa de 2018 queda por verificar. Tabla 1: «conform versus transform»."
     },
     "anderson": {
       "referencia": "Anderson et al. (2019), dominios de transformación",

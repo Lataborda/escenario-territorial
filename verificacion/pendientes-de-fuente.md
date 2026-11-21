@@ -2,14 +2,12 @@
 
 Archivo generado por `npm run validar`; no se edita a mano. Reúne lo que debe cerrarse en una sesión local con acceso a las fuentes (etapa 14 a más tardar).
 
-## Fuentes en falta o por verificar (11)
+## Fuentes en falta o por verificar (9)
 
 | Clave | Referencia | Estado | Nota |
 |---|---|---|---|
 | magrini | Magrini et al., Agroecological transition from farms to territorialised agri-food systems | verificar | En carpeta. Año por verificar. |
 | padro | Padró et al., modelo SAFRA | verificar | En carpeta. Año por verificar. |
-| mieryteran | Mier y Terán et al. (2018) | falta | Se usa vía Zollet (2022, §4). |
-| giraldorosset | Giraldo y Rosset (2018), Agroecology as a territory in dispute: between institutionality and social movements | falta |  |
 | anderson | Anderson et al. (2019), dominios de transformación | falta |  |
 | leonsicard2015 | León-Sicard et al. (2015), historia de la agroecología en Colombia | falta |  |
 | sanchezprager | Sánchez de Prager (2018), Aportes de la biología del suelo a la agroecología | falta |  |
