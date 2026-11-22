@@ -12,7 +12,7 @@ Base de este guion: `../RESUMEN-prueba-oral.md` y `../RESUMEN-ESTRATEGIA-PRUEBA-
 - La resolución permite usar herramientas didácticas y pedagógicas en la prueba (Res. 356 de 2026, art. 11, parágrafo 3).
 - Nivel declarado: posgrado (maestría y doctorado).
 - Arquitectura de la clase: columna vertebral biofísica (arquitectura B), casos del Valle en M1 y M4 (arquitectura C) y lectura de las cuatro tradiciones al cierre de M3 (arquitectura A). Fuente: RESUMEN-ESTRATEGIA, §11.
-- Pregunta orientadora: ¿por qué la excelencia agroecológica en la finca no produce por sí sola transición territorial?
+- Pregunta orientadora: ¿por qué la excelencia predial no produce por sí sola transición territorial? (ajuste del 2026-11-22; antes «la excelencia agroecológica en la finca»)
 - Resultado de aprendizaje (borrador, decisión D4): al finalizar la sesión, el estudiante explica qué procesos de la transición exigen escalas supraprediales, distingue agroecosistema mayor y territorio por el límite y el sujeto de decisión, e identifica en un territorio concreto las condiciones de territorialización ausentes.
 
 ### Momentos y tiempos
@@ -77,6 +77,7 @@ Coordenadas normalizadas: x de occidente (0) a oriente (1); z de norte (0) a sur
 | Escuela agroecológica | institución | 0,66 | 0,22 | Res. 331, línea 1.2 |
 | Resguardo indígena | figura territorial | 0,72 | 0,82 | genérico (decisión D3) |
 | Consejo comunitario | figura territorial | 0,18 | 0,85 | genérico (decisión D3) |
+| Zona de reserva campesina | figura territorial | 0,62 a 0,80 | 0,10 a 0,45 | ladera norte, con F2 y F3; genérica (decisión D3); Decreto 1406 de 2023; Res. 331, art. 6 (ajuste del 2026-11-22) |
 | Siete cabeceras con mercado | asentamiento | varias | 0 a 0,65 | al norte del límite; en S2 la red suma cabeceras del sur (referencia: 18 municipios del Valle y 5 del norte del Cauca) |
 
 ### Actores
@@ -84,6 +85,7 @@ Coordenadas normalizadas: x de occidente (0) a oriente (1); z de norte (0) a sur
 | Actor | Escala | Papel en el escenario |
 |---|---|---|
 | Familias campesinas de ladera | finca, vereda | prácticas, semillas, mercados |
+| Organización de familias de la ladera | vereda, territorio | transformación y venta de sus productos (economía propia); Res. 331, art. 3, num. 3, y lineamiento 3 (ajuste del 2026-11-22) |
 | Familia propietaria de la finca faro | finca | excelencia predial, difusión vertical |
 | Propietarios cañeros y proveedores del ingenio | matriz | régimen |
 | Ingenio azucarero | región | régimen sociotécnico y bloqueo |
@@ -152,18 +154,18 @@ S0. El aislamiento de la finca agroecológica es estructural. El régimen se aut
 
 ### 6.2 Condiciones
 
-C1 a C8 proceden de los factores de Mier y Terán et al. (2018), según la síntesis de Zollet (2022, §4), que está en la carpeta. C9 y C10 incorporan la dimensión biofísica y de gobernanza de recursos.
+C1 a C8 corresponden a los ocho impulsores (drivers) de la masificación de Mier y Terán et al. (2018, pp. 645 a 654), sintetizados por Zollet (2022, §4); los dos textos están en la carpeta (ajuste del 2026-11-22). C9 y C10 incorporan la dimensión biofísica y de gobernanza de recursos.
 
 | Clave | Condición | Fuente |
 |---|---|---|
-| C1 | Crisis que motiva la búsqueda de alternativas | Zollet 2022, §4 (1) |
-| C2 | Discurso movilizador y liderazgo | Zollet 2022, §4 (1) |
-| C3 | Prácticas agroecológicas eficaces | Zollet 2022, §4 (2) |
-| C4 | Procesos de enseñanza y aprendizaje constructivistas, de campesino a campesino | Zollet 2022, §4 (2); Res. 331, línea 1.2 |
-| C5 | Organización social | Zollet 2022, §4 (3), señalada como uno de los elementos más vitales del escalamiento territorial |
-| C6 | Alianzas con actores externos | Zollet 2022, §4 (3) |
-| C7 | Mercados favorables y circuitos cortos | Zollet 2022, §4 (3); Levidow et al. 2023, §2.2; Res. 331, lineamiento 3 |
-| C8 | Políticas públicas favorables, con compras públicas | Zollet 2022, §4 (3); Ley 2046 de 2020; Res. 331 |
+| C1 | Crisis que motiva la búsqueda de alternativas | Mier y Terán et al. 2018, driver 1, p. 645; Zollet 2022, §4 (1) |
+| C2 | Discurso movilizador y liderazgo | Mier y Terán et al. 2018, driver 5, p. 649; Zollet 2022, §4 (1) |
+| C3 | Prácticas agroecológicas eficaces | Mier y Terán et al. 2018, driver 3, p. 646; Zollet 2022, §4 (2) |
+| C4 | Procesos de enseñanza y aprendizaje constructivistas, de campesino a campesino | Mier y Terán et al. 2018, driver 4, p. 647; Zollet 2022, §4 (2); Res. 331, línea 1.2 |
+| C5 | Organización social | Mier y Terán et al. 2018, driver 2, p. 645; Zollet 2022, §4 (3), señalada como uno de los elementos más vitales del escalamiento territorial |
+| C6 | Alianzas con actores externos | Mier y Terán et al. 2018, driver 6, p. 650; Zollet 2022, §4 (3) |
+| C7 | Mercados favorables y circuitos cortos | Mier y Terán et al. 2018, driver 7, p. 652; Zollet 2022, §4 (3); Levidow et al. 2023, §2.2; Res. 331, lineamiento 3 |
+| C8 | Políticas públicas favorables, con compras públicas | Mier y Terán et al. 2018, driver 8, p. 653; Zollet 2022, §4 (3); Ley 2046 de 2020; Res. 331 |
 | C9 | Conectividad ecológica entre fincas | León-Sicard 2021 (conexión con la estructura ecológica principal); Res. 331, línea 2.8 |
 | C10 | Gobernanza territorial de tierra, agua y semillas | Wezel et al. 2020, principio 12; Decreto 1406 de 2023 (subsistemas de zonas de reserva campesina y de ordenamiento territorial); López-García et al. 2025 |
 
@@ -178,11 +180,12 @@ C1 a C8 proceden de los factores de Mier y Terán et al. (2018), según la sínt
 | H5 | Un instrumento de planificación predial resulta insuficiente para un objetivo territorial | Res. 331, objetivo general y línea 2.2; argumento de la clase |
 | H6 | La biota del suelo cierra en la finca | RESUMEN-ESTRATEGIA, §5; Gliessman cap. 8 |
 | H7 | Las configuraciones del territorio siguen trayectorias no lineales | López-García et al. 2025; Gliessman et al. 2023, cap. 20 |
+| H8 | La reconversión del plano supone el acceso del campesinado a la tierra | Res. 331, anexo, p. 29 (art. 64 de la Constitución, modificado por el Acto Legislativo 01 de 2023: acceso progresivo a la propiedad de la tierra del campesinado); Giraldo y Rosset 2018, p. 14; argumento de la clase (ajuste del 2026-11-22) |
 
 ### 6.4 Resultados
 
 - Intermedios: R1 red de mercados articulada; R2 garantía participativa en funcionamiento; R3 matriz conectada por corredores; R4 semillas en red de custodios; R5 gobernanza multiactor del sistema alimentario.
-- Final: sistema alimentario territorial agroecológico, en los términos del objetivo general de la Res. 331 de 2024 y de los tres dominios con actores de Wezel et al. (2016).
+- Final: sistema alimentario territorial agroecológico que contribuye a la soberanía alimentaria, en los términos del objetivo general de la Res. 331 de 2024 (art. 4 y anexo, p. 47) y de los tres dominios con actores de Wezel et al. (2016) (ajuste del 2026-11-22).
 
 ### 6.5 Reglas visuales
 
@@ -197,6 +200,9 @@ Reglas didácticas, editables en `contenido/condiciones.json`. Resumen proposici
 | C9 sin fincas contiguas con C3 | corredor incompleto; los radios de polinizadores no se conectan |
 | S2 + C8 + C9 + C10 | S3: corredores continuos, flujos de nutrientes con retorno, compras públicas activas |
 | C1 o C2 | rótulos de detonante, sin cambio del paisaje |
+| C3 + C6 sin C5 | S1: difusión vertical de prácticas; la geometría de la matriz permanece (regla V8, etapa 10.a, aprobada el 2026-11-16) |
+
+Preajustes del panel (etapa 10.a): S0 sin condiciones; S1, C3 y C6; S2, C3 a C7; S3, las diez. Desde S3, al apagar C8 el territorio vuelve a S2 y la red permanece: la regla de S3 exige C8 y la de S2 no. Es la demostración final de la actividad de P19 (ajuste del 2026-11-22).
 
 Un panel muestra el diagrama de la teoría de cambio (condiciones, supuestos, resultados) sincronizado con los interruptores. Cuando una condición activa no produce efecto territorial, la maqueta indica qué condición falta.
 
@@ -209,7 +215,7 @@ Misma maqueta, cuatro lecturas (RESUMEN-ESTRATEGIA, §4). Se usan al cierre de M
 | ① Sociotécnica francesa | escala de coordinación de actores en torno a un régimen sociotécnico | régimen (ingenio, insumos), nichos (fincas y mercados agroecológicos), arenas de transición | Magrini et al.; Lamine et al. 2023 |
 | ② Agronómico-territorial europea | área delimitada con transición en marcha: tres dominios más actores | polígono delimitado y tres dominios | Wezel et al. 2016 y 2020; Lamine et al. 2023; Padró et al. |
 | ③ Agroecología política española | esfera de agregación de fuerzas sociales en un sujeto plural | sujeto plural, vínculos urbano y rural, brecha metabólica | López-García y González de Molina 2021; López-García et al. 2025 |
-| ④ Territorial latinoamericana | espacio socialmente construido y en disputa | expansión de la matriz frente a territorios campesinos y étnicos; desterritorialización y reterritorialización | Levidow et al. 2023 y autores que cita; Giraldo y Rosset 2018 (falta en carpeta) |
+| ④ Territorial latinoamericana | espacio socialmente construido y en disputa | expansión de la matriz frente a territorios campesinos y étnicos; desterritorialización y reterritorialización | Levidow et al. 2023 y autores que cita; Giraldo y Rosset 2018 (en carpeta; tabla 1, «conform versus transform») |
 
 Contraste citado en pantalla: Magrini et al. («es una transición y no una revolución, porque no implica explícitamente la necesidad de otros cambios relativos a los fundamentos capitalistas») frente al título de Giraldo y Rosset (2018), «Agroecology as a territory in dispute: between institutionality and social movements». Verificar la cita textual de Magrini y su página antes de mostrarla.
 
@@ -231,22 +237,22 @@ Borrador. Los minutos suman 40. Las paradas marcadas con (s) son saltables si el
 | P10 | M2 | 1 | región | S0 | Nutrientes de las fincas a la ciudad sin retorno: brecha metabólica | López-García y González de Molina 2021, §4; Padró et al. |
 | P11 | M2 | 1 | territorio | S0 | Semillas en red de custodios | Gliessman cap. 11; Res. 331, lineamiento 4 |
 | P12 | M2 | 0,5 (s) | territorio | S0 | Síntesis: escala mínima de cada proceso (sección 4) | RESUMEN-ESTRATEGIA, §5 |
-| P13 | M3 | 1,5 | territorio | S0 | Límite y sujeto: lindero de la propiedad frente a territorio definido por actores | León-Sicard 2021, p. 24; RESUMEN-ESTRATEGIA, §5 |
+| P13 | M3 | 1,5 | territorio | S0 | Límite y sujeto: lindero de la propiedad frente a territorio definido por actores; cuatro figuras territoriales, con la zona de reserva campesina; campesinado como sujeto de derechos (ajuste del 2026-11-22) | León-Sicard 2021, p. 24; RESUMEN-ESTRATEGIA, §5; Decreto 1406 de 2023; Res. 331, considerandos y art. 6 |
 | P14 | M3 | 2,5 | territorio | S0 | Cuatro lecturas del territorio (sección 7) | ver sección 7 |
 | P15 | M3 | 1 (s) | región | S0 | Bloqueo del régimen: cinco mecanismos sobre el ingenio y la matriz | Magrini et al. |
 | P16 | M3 | 1,5 | matriz | capa histórica | El paisaje como registro: 1957, 1986, hoy | Calle et al. 2022, §11.2; León-Sicard 2021, presentación del libro |
 | P17 | M3 | 1,5 | territorio | S1 | Escalamiento sin territorialización: 13.732 visitantes de 815 instituciones y 59 países (2005 a 2016); más de 20.000 ha de caña en producción orgánica en el Valle; más del 20 % de la caña de la cuenca baja del Amaime en manejo orgánico | Calle et al. 2022, §11.7 (con base en Murgueitio 2019) |
 | P18 | M4 | 1 | territorio | S0 | Siete mercados desarticulados antes de 2009 | REDMAC (verificar fuentes) |
-| P19 | M4 | 4 | territorio | actividad | Actividad: ¿qué tuvo que ocurrir para que siete mercados que no se hablaban se volvieran una red? Activación progresiva de condiciones | Zollet 2022; sección 6 |
+| P19 | M4 | 4 | territorio | actividad | Actividad: ¿qué tuvo que ocurrir para que siete mercados que no se hablaban se volvieran una red? Activación progresiva de condiciones; cierre con la demostración sin C8 (sección 6.5) (ajuste del 2026-11-22) | Zollet 2022; sección 6 |
 | P20 | M4 | 1,5 | territorio | S2 | La red desde 2009: cerca de 500 familias, 330 productoras, 23 municipios (18 del Valle y 5 del norte del Cauca); territorio que cruza el límite departamental; SPG con el GIA (proyecto QUIPU 31401001406, 2015) | REDMAC (verificar fuentes); RESUMEN-ESTRATEGIA, §8 y §9 |
-| P21 | M4 | 1,5 | territorio | S2 | Sujeto plural y proximidades; circuitos cortos y compras públicas (30 % mínimo) | López-García y González de Molina 2021, §6; Levidow et al. 2023, §2.2; Ley 2046 de 2020 |
+| P21 | M4 | 1,5 | territorio | S2 | Sujeto plural y proximidades; circuitos cortos y compras públicas (30 % mínimo); la organización de familias transforma y vende (economía propia) (ajuste del 2026-11-22) | López-García y González de Molina 2021, §6; Levidow et al. 2023, §2.2; Ley 2046 de 2020; Res. 331, art. 3, num. 3, y lineamiento 3 |
 | P22 | M5 | 2 | finca | S2 | EAP de tres fincas tipo (valores ilustrativos salvo medición) | León-Sicard 2021, cap. 3 |
-| P23 | M5 | 1,5 (s) | finca | S2 | MESMIS en Ayacucho y TAPE (CAET, diez elementos) | Romero et al. 2023 (falta en carpeta); Mottet et al. 2020 |
+| P23 | M5 | 1,5 (s) | finca | S2 | MESMIS en Ayacucho y TAPE (CAET, diez elementos), con el elemento «economía circular y solidaria» y la dimensión económica (ajuste del 2026-11-22) | Romero et al. 2023 (falta en carpeta); Mottet et al. 2020; Wezel et al. 2020, principio 7 |
 | P24 | M5 | 1,5 | territorio | S2 | Quién mide: el registro de iniciativas implicaba acceso a internet; en Amazonas, Guainía, San Andrés y Providencia y Vaupés no se registraron procesos, «debido, posiblemente, a la carencia de conectividad a internet y/o información, y no por falta de procesos agroecológicos»; líneas 1.1 y 1.6 de la política | Res. 331 de 2024 (con base en MADR-FAO 2024a) |
-| P25 | M6 | 1,5 | territorio y finca | S3 | Objetivo territorial, instrumento predial: horizonte territorial de la política y, sobre él, el IPPTA iluminando una sola finca | Res. 331, objetivo general y línea 2.2 |
+| P25 | M6 | 1,5 | territorio y finca | S3 | Objetivo territorial, instrumento predial: la política fija un objetivo territorial, prevé instancias territoriales y recoge propuestas de las organizaciones sociales; sobre ese horizonte, el IPPTA ilumina una sola finca (ajuste del 2026-11-22) | Res. 331, objetivo general, línea 2.2, art. 3 (num. 3), art. 6 y art. 7 |
 | P26 | M6 | 1,5 | territorio | S3 | Tarea auténtica y retorno a la pregunta detonante | RESUMEN-ESTRATEGIA, §11 |
 
-Texto de la tarea auténtica (RESUMEN-ESTRATEGIA, §11): «Elijan un territorio. Diagnostiquen en qué nivel está su sistema productivo dominante, identifiquen qué mecanismo de territorialización está ausente, y propongan un instrumento de la Política 0331 que lo active. Dos páginas + defensa oral de 5 minutos.»
+Texto de la tarea auténtica (RESUMEN-ESTRATEGIA, §11): «Elijan un territorio. Diagnostiquen en qué nivel está su sistema productivo dominante, identifiquen qué mecanismo de territorialización está ausente, y propongan un instrumento de la Política 0331 que lo active. Dos páginas + defensa oral de 5 minutos.» Ajuste del 2026-11-22: la consigna añade «y con qué actores del territorio lo construirían».
 
 ## 9. Términos fijos
 
@@ -263,7 +269,13 @@ Texto de la tarea auténtica (RESUMEN-ESTRATEGIA, §11): «Elijan un territorio.
 | territorialización | arraigo y disputa de la transición en un territorio |
 | sistema agroalimentario, redes | términos de la clase; nunca «cadena de valor» |
 | actores | término general; nunca «stakeholders» |
-| campesinado | sujeto de derechos (Acto Legislativo 01 de 2023, verificar texto) |
+| campesinado | sujeto de derechos y de especial protección, con un particular relacionamiento con la tierra (Constitución, art. 64, modificado por el Acto Legislativo 01 de 2023; texto citado en la Res. 331, considerandos, p. 1, y anexo, p. 29) |
+| excelencia predial | desempeño productivo y ecológico sobresaliente de una finca; la pregunta orientadora la distingue de la transición territorial |
+| soberanía alimentaria | Res. 331, art. 3, num. 12 |
+| economía propia; economía popular y solidaria | Res. 331, art. 3, num. 3 y num. 6 |
+| agregación de valor en el territorio; transformación de base agroecológica | transformación de los productos por las organizaciones, con el valor agregado en el territorio |
+| viabilidad económica | término para los ingresos de la transición; nunca «rentabilidad» como fin |
+| términos a evitar | «agronegocio»; «empresario rural» o «empresario agropecuario» para el campesinado (PLAN.md, sección 6.3) |
 | circuitos cortos de comercialización | definición de la Ley 2046 de 2020 |
 | sistema participativo de garantías (SPG) | garantía de confianza; equivale al «sello» de la idea inicial |
 | figuras territoriales | resguardo indígena, consejo comunitario, zona de reserva campesina, reserva natural de la sociedad civil |
@@ -280,6 +292,8 @@ Texto de la tarea auténtica (RESUMEN-ESTRATEGIA, §11): «Elijan un territorio.
 8. Los valores de índices llevan fuente o el rótulo «valores ilustrativos».
 9. Los datos de REDMAC provienen de fuentes en línea consultadas en septiembre de 2026 (RESUMEN-prueba-oral, nota final). Deben quedar citados antes de la prueba.
 10. Biología del suelo en la tradición de Palmira: citar Sánchez de Prager (2018), *Aportes de la biología del suelo a la agroecología* (RESUMEN-prueba-oral, §8).
+11. La transformación y la economía propia se presentan ligadas a la organización y al territorio: quién transforma y dónde queda el valor agregado. La literatura advierte la captura del valor agregado y la incorporación del campesinado a economías empresariales (Giraldo y Rosset 2018, pp. 7 y 9) (ajuste del 2026-11-22).
+12. El campesinado aparece como sujeto con figura territorial propia (zona de reserva campesina) y con la pregunta por la tierra (H8) (ajuste del 2026-11-22).
 
 ## 11. Fuentes
 
@@ -307,8 +321,8 @@ Texto de la tarea auténtica (RESUMEN-ESTRATEGIA, §11): «Elijan un territorio.
 | lamine | Lamine et al. (2023) | `../Transition/Italian_biodistricts_and_French_territorial_food_p.md` | en carpeta |
 | stone | Stone et al. (2025), *Agroecology Living Labs* | `../Transition/Agroecology_Living_Labs_review.md` | en carpeta |
 | resumenes | Resúmenes de estrategia de la prueba oral | `../RESUMEN-prueba-oral.md`; `../RESUMEN-ESTRATEGIA-PRUEBA-ORAL.md` | en carpeta |
-| mieryteran | Mier y Terán et al. (2018) | se usa vía Zollet (2022) | falta |
-| giraldorosset | Giraldo y Rosset (2018) | | falta |
+| mieryteran | Mier y Terán et al. (2018), *Agroecology and Sustainable Food Systems* 42(6) | `../Transition/Bringing agroecology to scale.md` | en carpeta |
+| giraldorosset | Giraldo y Rosset (2018), *The Journal of Peasant Studies* | `../Transition/Agroecology as a territory in dispute.md` | en carpeta |
 | anderson | Anderson et al. (2019), dominios de transformación | | falta |
 | leonsicard2015 | León-Sicard et al. (2015), historia de la agroecología en Colombia | | falta |
 | sanchezprager | Sánchez de Prager (2018) | | falta |

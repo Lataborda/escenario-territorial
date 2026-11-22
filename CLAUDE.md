@@ -63,6 +63,7 @@ Las fuentes están fuera de esta carpeta. En una sesión local, ejecutar al inic
 - Sin rayas (—) como puntuación incidental. Usar comas o paréntesis.
 - Sin construcciones de contraste del tipo «no es X, es Y», «no solo… sino», «más que», «antes que».
 - Vocabulario fijo del glosario de `GUION.md`, sección 9. Nunca «cadena de valor» ni «stakeholders».
+- Economía de la transición (`PLAN.md`, sección 6.3): «economía propia», «economía popular y solidaria», «agregación de valor en el territorio», «viabilidad económica». Nunca «agronegocio», «empresario» para el campesinado ni «rentabilidad» como fin. Toda mención de la transformación dice quién transforma y dónde queda el valor agregado.
 - Fichas de pantalla de 60 palabras como máximo.
 
 ## Reglas de código

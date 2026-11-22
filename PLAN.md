@@ -1,6 +1,6 @@
 # Plan de construcción del escenario territorial
 
-Versión 1, 1 de noviembre de 2026. Plan para Claude Code, ejecutado por etapas en sesiones separadas. Cada etapa deja el proyecto funcionando, verificado y registrado. El contenido conceptual está en `GUION.md`; el protocolo de cada sesión, en `CLAUDE.md`.
+Versión 1, 1 de noviembre de 2026, con el ajuste del 22 de noviembre (sección 6). Plan para Claude Code, ejecutado por etapas en sesiones separadas. Cada etapa deja el proyecto funcionando, verificado y registrado. El contenido conceptual está en `GUION.md`; el protocolo de cada sesión, en `CLAUDE.md`.
 
 ## 1. Propósito
 
@@ -198,6 +198,51 @@ El hash `#p=P06` abre una parada directamente; sirve para pruebas y para recarga
 | D. Clase completa | 12 a 14 | ensayo cronometrado, prueba en videoconferencia, versión congelada |
 
 Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar dos (N.a y N.b). Estimación total entre 15 y 20 sesiones.
+
+## 6. Ajuste del 22 de noviembre de 2026
+
+### 6.1 Motivo
+
+Revisión del plan frente a dos insumos aportados por Alejandro: una conferencia pública sobre la agroecología en el contexto político colombiano (septiembre de 2026) y una conversación sobre transformación y economía solidaria con un profesional de la educación campesina. La revisión encontró tres vacíos. El campesinado aparece sin figura territorial propia y sin pregunta por la tierra. La transformación de alimentos solo aparece como régimen (el ingenio). La política pública se presenta sin sus instancias territoriales ni su origen en las organizaciones sociales. Los ajustes no suman minutos ni tocan la columna biofísica. Aprobados por Alejandro el 2026-11-22.
+
+### 6.2 Ajustes y etapa en que se ejecutan
+
+| N.º | Ajuste | Dónde | Etapa |
+|---|---|---|---|
+| A1 | Supuesto H8: la reconversión del plano supone el acceso del campesinado a la tierra | `GUION.md` §6.3; `condiciones.json`; diagrama | 10.b |
+| A2 | Resultado final con soberanía alimentaria (Res. 331, art. 4 y objetivo general) | `GUION.md` §6.4; diagrama | 10.b |
+| A3 | Mier y Terán et al. (2018) como fuente de C1 a C8, con impulsor y página | `GUION.md` §6.2; `condiciones.json`; panel | 10.b |
+| A4 | Aviso de vocabulario en la validación (sección 6.3) | `scripts/lib/revisar-textos.mjs` | 10.b |
+| A5 | Zona de reserva campesina como cuarta figura territorial, en la ladera | P13; `actores.json` | 11 |
+| A6 | Campesinado como sujeto de derechos (Constitución, art. 64), citado desde la Res. 331 | ficha de P13 o P21; glosario | 11 |
+| A7 | Transformación en manos de la organización (economía propia) en el segundo paso de P21 | P21; `actores.json` | 11 |
+| A8 | Elemento «economía circular y solidaria» y dimensión económica de TAPE | P23 | 11 |
+| A9 | Cierre de P25: la política fija un objetivo territorial y prevé instancias territoriales; el instrumento predial solo no lo alcanza | P25 | 11 |
+| A10 | Lente ④ con Giraldo y Rosset (2018), ahora en carpeta | P14 | 11 |
+| A11 | Pregunta orientadora con «excelencia predial» | `GUION.md` §1; P02; ficha de sesión | 12 |
+| A12 | Demostración en la actividad: desde S3, sin C8 el territorio vuelve a S2 y la red permanece | notas de P19 | 12 |
+| A13 | Tarea auténtica con «y con qué actores del territorio lo construirían» | P26 | 12 |
+| A14 | Banco de respuestas para el jurado | notas del presentador; `respaldo/notas.md` | 14 |
+| O7 | Planta comunitaria o trapiche en la ladera frente al ingenio, en S2 y S3 | maqueta | opcional, solo con fuente |
+
+### 6.3 Vocabulario de la economía de la transición
+
+- Usar: economía propia; economía popular y solidaria (Res. 331, art. 3, num. 6); agregación de valor en el territorio; transformación de base agroecológica; viabilidad económica; campesinado.
+- Evitar: «agronegocio»; «empresario rural» o «empresario agropecuario» para referirse al campesinado; «rentabilidad» como fin. Se suman a «cadena de valor» y «stakeholders».
+- Criterio: toda mención de la transformación dice quién transforma (la organización) y dónde queda el valor agregado (en el territorio). Mier y Terán et al. (2018, p. 652) presentan los mercados como arena sociopolítica de la masificación; Giraldo y Rosset (2018, pp. 7 y 9) advierten la incorporación del campesinado a economías empresariales y la captura del valor agregado. La clase se sitúa entre ambas lecturas.
+
+### 6.4 Fuera de la pantalla
+
+- La tierra no entra como condición C11: cambiaría reglas, panel y guion, sin respaldo en la fuente de las condiciones. Queda como supuesto H8 y como respuesta preparada.
+- Territorios campesinos agroalimentarios y áreas de protección para la producción de alimentos: respuesta preparada, con sus normas verificadas en fuente primaria.
+- Historia agraria del plano en P16: sin fuente en la carpeta; no va en pantalla.
+- Ética del cuidado, extractivismo y coyuntura política: de viva voz, sin rótulo.
+
+### 6.5 Fuentes del ajuste
+
+- En carpeta desde el 2026-11-21: Mier y Terán et al. (2018) y Giraldo y Rosset (2018).
+- Cotejos hechos (bitácora, 2026-11-21): Res. 331, art. 3 (num. 3, 6 y 12), art. 4, art. 6, lineamiento 3 y estrategias 3.1, 3.2, 3.4 y 3.5, anexo (pp. 29, 47 y 51); Wezel et al. (2020), principio 7; TAPE, elemento «economía circular y solidaria» y paso 2.
+- Por conseguir, solo si se usan en pantalla: van der Ploeg et al. (2019) y D'Annolfo et al. (2017), citados en TAPE; Hebinck, Schneider y van der Ploeg (2014), citado en Mier y Terán et al.; sistemas agroalimentarios localizados y agroindustria rural (CIRAD, IICA); DiMaggio y Powell (1983); Ley 454 de 1998; norma de los territorios campesinos agroalimentarios; Ley 2294 de 2023, art. 32 (ya registrada como `ley2294`).
 
 ## Etapa 0. Entorno y repositorio
 
@@ -622,20 +667,38 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - División (2026-11-15): la etapa se cierra en dos sesiones.
   - 10.a (cerrada): reglas completas en `contenido/condiciones.json` (regla V8 para S1, derivación de escenario y capas, preajustes, textos del panel), motor (`src/reglas/motor.js`), derivación en el estado (`src/reglas/reglas.js`), panel de condiciones con preajustes y avisos (`src/ui/condiciones.js`), tecla T, hash `#c=`, validación y verificación.
   - 10.b (siguiente): diagrama 2D de la teoría de cambio sincronizado con los interruptores (condiciones, supuestos, resultados); aparición gradual de las capas superpuestas al cambiar de estado; dibujo propio de los efectos sin capa (rótulos de detonante, fincas diversificadas como islas, corredor incompleto, actores según el efecto); condiciones en la vista del presentador; capturas de los preajustes en el respaldo.
-- Prompt de arranque: `Etapa 10.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+  - 10.b, ajuste del 2026-11-22 (sección 6, A1 a A4). Fuentes: sí, en carpeta (Mier y Terán et al. 2018; Res. 331).
+    - Supuesto H8 en `condiciones.json` y en el diagrama, con su fuente (`GUION.md`, §6.3).
+    - Resultado final con soberanía alimentaria (`GUION.md`, §6.4).
+    - Fuente de C1 a C8: impulsor y página de Mier y Terán et al. (2018) en lugar de `mieryteran:verificar`; texto de `origen` en el panel.
+    - Aviso de la validación (sin bloquear) por los términos a evitar de la sección 6.3, fuera de las citas entre comillas latinas.
+  - Criterios añadidos para la 10.b:
+    - [ ] H8 y el resultado final con soberanía alimentaria visibles en el diagrama, con fuente.
+    - [ ] C1 a C8 con localizador de Mier y Terán et al. (2018); cero `mieryteran:verificar`.
+- Prompt de arranque: `Etapa 10.b de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
 
 ## Etapa 11. Lentes, capa histórica y cierre
 
-- Tamaño: mediana. Fuentes: sí, puntuales (Calle et al. 2022, §11.2 y §11.7; Res. 331).
+- Tamaño: grande tras el ajuste del 2026-11-22; previsible división en 11.a (lentes, capa histórica y vista S1) y 11.b (ajustes de P13, P21, P23 y P25). Fuentes: sí, puntuales (Calle et al. 2022, §11.2 y §11.7; Res. 331; Decreto 1406 de 2023; Giraldo y Rosset 2018; Mottet et al. 2020; Wezel et al. 2020).
 - Objetivo: M3 a M6 recorribles (hito C).
 - Trabajo:
   - Lentes ① a ④ sobre la misma maqueta (resaltados, rótulos y polígonos propios), según `GUION.md`, sección 7.
   - Línea de tiempo 1957, 1986, hoy y escenario, con coberturas según Calle et al. (2022, §11.2) y la fuente en pantalla.
   - Vista S1 de El Hatico: flujos que salen del territorio y caña en manejo orgánico sin cambio de la geometría de la matriz.
   - Cierre «objetivo territorial, instrumento predial»: horizonte S3 y, sobre él, el IPPTA en una sola finca.
+  - Ajuste del 2026-11-22 (sección 6, A5 a A10):
+    - P13: zona de reserva campesina como cuarta figura territorial, genérica (decisión D3), en la ladera norte con F2 y F3 (posición propuesta en `GUION.md`, sección 2), con el Decreto 1406 de 2023 y la Res. 331, art. 6.
+    - P13 o P21: campesinado como sujeto de derechos y de especial protección, con su relación con la tierra (art. 64, modificado por el Acto Legislativo 01 de 2023), citado desde la Res. 331 (considerandos, p. 1; anexo, p. 29).
+    - P21, segundo paso: la organización de familias transforma y vende (economía propia), junto a proximidades y compras públicas; fuente: Res. 331, art. 3, num. 3, lineamiento 3 y estrategias 3.2 y 3.5. Un rótulo más (cuatro en el paso).
+    - P23: elemento «economía circular y solidaria» del CAET y dimensión económica del paso 2 de TAPE (Mottet et al. 2020); Wezel et al. (2020), principio 7.
+    - P25: la política fija un objetivo territorial y prevé instancias territoriales (art. 6, territorialización con zonas de reserva campesina y territorios campesinos agroalimentarios; art. 7, Mesa Nacional de Agroecología) y recoge propuestas de las organizaciones sociales (art. 3, num. 3); el instrumento predial solo no alcanza el objetivo. Cotejar cada artículo antes de redactar.
+    - Lente ④: Giraldo y Rosset (2018), tabla 1 («conform versus transform»), y cotejo de la cita de contraste de `GUION.md`, sección 7.
+    - Vocabulario de la sección 6.3 en todas las fichas y notas nuevas.
 - Criterios de aceptación:
   - [ ] Cambio de lente en un segundo o menos.
   - [ ] Paradas P13 a P26 completas.
+  - [ ] P13 con cuatro figuras territoriales y siete rótulos como máximo.
+  - [ ] Cero avisos de vocabulario de la sección 6.3 en `contenido/`.
 - Prompt de arranque: `Etapa 11 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 12. Ficha de sesión, actividad y tarea
@@ -647,9 +710,14 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - Modo actividad para P19: pregunta en pantalla, activación progresiva de condiciones desde la vista del presentador, respuesta esperada en las notas.
   - Panel de tarea auténtica (M6).
   - Paradas saltables y alertas del cronómetro por momento.
+  - Ajuste del 2026-11-22 (sección 6, A11 a A13):
+    - Pregunta orientadora con «excelencia predial» en P02, en la ficha de sesión y en P26 (`GUION.md`, sección 1).
+    - Notas de P19: demostración final de la actividad; desde el preajuste S3, al apagar C8 el territorio vuelve a S2 y la red permanece (la regla de S3 exige C8; la de S2, no).
+    - Tarea auténtica de P26 con «y con qué actores del territorio lo construirían» (`GUION.md`, sección 8).
 - Criterios de aceptación:
   - [ ] Recorrido M0 a M6 completo en un ensayo de 36 a 40 minutos.
   - [ ] La actividad funciona solo desde la vista del presentador, sin tocar la vista compartida.
+  - [ ] Desde S3, apagar C8 deja S2 con la red visible (comprobación automática).
 - Prompt de arranque: `Etapa 12 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 13. Rendimiento y prueba en videoconferencia
@@ -674,6 +742,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
 - Objetivo: versión final de la prueba (hito D).
 - Trabajo:
   - Ensayo cronometrado completo y ajuste de tiempos y textos.
+  - Banco de respuestas para el jurado (sección 6, A14), en las notas del presentador y en `respaldo/notas.md`, una respuesta breve con fuente por pregunta: dónde están los movimientos sociales en la teoría de cambio; por qué el caso de excelencia predial es una hacienda; qué pasa con la tarea si se deroga la Política 331 (demostración sin C8); en qué se diferencia S3 de una bioeconomía; de quién es la tierra en S3 (H8); territorios campesinos agroalimentarios y áreas de protección para la producción de alimentos; si la agroecología debe ser rentable (economía propia, sección 6.3); si la agroindustria no es el régimen (quién transforma y quién retiene el valor agregado).
   - Cierre de pendientes de fuente: cada dato en `verificar` o `falta` se resuelve o se retira de la pantalla.
   - Fichas en estado `revisado`.
   - Etiqueta git `version-prueba-oral` y copia del archivo único y del respaldo fuera del proyecto.
@@ -682,6 +751,7 @@ Cada etapa ocupa una sesión, salvo las marcadas como grandes, que pueden ocupar
   - [ ] Cero fuentes `verificar` o `falta` en pantalla.
   - [ ] Cero fichas en `borrador`.
   - [ ] Ensayo entre 36 y 40 minutos.
+  - [ ] Banco de respuestas con fuente en cada respuesta.
 - Prompt de arranque: `Etapa 14 de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
 
 ## Ruta corta
@@ -705,6 +775,7 @@ El prototipo Hyperframes cubre M1 y el respaldo de imágenes cubre cualquier fal
 | O3 | Grafo de conocimiento | requiere construir el grafo de `../Agroecologia_Grafo/` con una clave de API; enlaza paradas con conceptos |
 | O4 | Versión para docencia en la web | Alejandro quiere usar el escenario en sus clases desde ya (2026-11-10) y publicarlo en GitHub Pages. Requisitos: etapa 7.c cerrada (calidad adaptable: el WebGL corre en el equipo de cada estudiante); publicar la carpeta `dist/` (rutas relativas, ya abre desde cualquier carpeta) con un flujo de GitHub Actions o una rama `gh-pages`; sin la vista del presentador ni las notas; rótulo de versión en borrador mientras las fichas no estén revisadas. Decisiones de Alejandro antes de publicar: repositorio público o plan de pago (Pages en repositorio privado exige plan de pago; confirmar en la documentación de GitHub) y si se publica antes de la prueba oral de enero, porque la clase quedaría a la vista. Enlace al respaldo en imágenes para equipos sin WebGL |
 | O5 | Modo exploración | vuelo de un ave o una abeja sobre la cuenca; puntos de interés que abren fichas de `contenido/`; misiones cortas. Nuevo valor `exploracion` en el campo `modo` del estado |
+| O7 | Transformación en la ladera | planta comunitaria o trapiche de la organización en la ladera, en S2 y S3, frente al ingenio del plano: muestra quién transforma la caña y dónde queda el valor agregado (sección 6). Condición: una fuente sobre la agroindustria rural campesina en la ladera del Valle del Cauca o el norte del Cauca. Sin fuente, no entra |
 | O6 | Juego de encargos para estudiantes (proyecto futuro) | idea de Alejandro (2026-11-10): usar esta maqueta como base de un juego donde estudiantes de ingeniería agroecológica reciben encargos y aprenden haciendo (diagnosticar una finca, medir la EAP, conectar con la EEP, activar condiciones de la teoría de cambio). Lo que ya sirve: contenido en `contenido/*.json`, almacén de estado, escena con semilla fija, fincas por receta y O5 como primer paso (misiones de un jugador). Lo que falta para un juego en línea tipo Roblox: servidor y cuentas (GitHub Pages solo sirve archivos; alcanza para un jugador con progreso guardado en el navegador), avatar y controles, edición del territorio por el jugador y evaluación de encargos. Proyecto aparte, después de la prueba oral; no condiciona las etapas 8 a 14 |
 
 ## Riesgos y respaldo
@@ -716,7 +787,8 @@ El prototipo Hyperframes cubre M1 y el respaldo de imágenes cubre cualquier fal
 | Texto ilegible por compresión | tipografía grande, siete rótulos como máximo, transiciones lentas |
 | Error de contenido ante el jurado | fuentes con localizador, validación automática, precauciones de la sección 10 del guion |
 | Exceso de tiempo | cronómetro por momento y paradas saltables |
-| Pregunta del jurado fuera del guion | modo libre y salto por hash a cualquier parada |
+| Pregunta del jurado fuera del guion | modo libre y salto por hash a cualquier parada; banco de respuestas de la etapa 14 |
+| Lectura de la clase como agroecología sin sujeto campesino o como discurso de agronegocio | campesinado, tierra y figura territorial en P13 y en el diagrama; transformación ligada a la organización y al territorio; vocabulario de la sección 6.3 |
 | Crecimiento del alcance | una etapa por sesión, lista de fuera de alcance, pendientes en la bitácora |
 | Agotamiento del cupo de uso | etapas pequeñas, `/clear` entre etapas, ruta corta |
 
