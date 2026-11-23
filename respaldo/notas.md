@@ -4,8 +4,8 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 - Guion: 40 min; ensayo objetivo: 36 min; tolerancia: 1 min.
 - Paradas saltables (decisión D6): P12, P15, P23.
-- Respaldo: 40 imágenes (una por parada y por paso). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash `#p=P14&paso=1` abre una diapositiva.
-- Generado: 2026-11-15; huella del contenido: `118d50110eb0`.
+- Respaldo: 44 imágenes (una por parada y por paso, y en la actividad una por preajuste y otra con el diagrama, `#p=P19&v=S2`). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash `#p=P14&paso=1` abre una diapositiva.
+- Generado: 2026-11-23; huella del contenido: `7f970761f596`.
 
 ## M0 · Encuadre (3 min, 0:00 a 3:00)
 
@@ -206,7 +206,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P19 · Actividad de condiciones de territorialización
 
-- inicio previsto 25:00 · 4 min · escala territorio · diapositiva 32 · texto en borrador
+- inicio previsto 25:00 · 4 min · escala territorio · diapositivas 32 a 36 · texto en borrador
 
 **Notas.** Los estudiantes proponen condiciones y el presentador las activa. Las reglas son didácticas y carecen de calibración empírica; decirlo al jurado.
 
@@ -216,7 +216,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P20 · Red de mercados desde 2009
 
-- inicio previsto 29:00 · 1,5 min · escala territorio · diapositiva 33 · texto en borrador
+- inicio previsto 29:00 · 1,5 min · escala territorio · diapositiva 37 · texto en borrador
 
 **Notas.** Mostrar el polígono de la red sobre el límite departamental. El SPG con el GIA se cita como antecedente (GUION, precaución 5).
 
@@ -226,7 +226,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P21 · Sujeto plural y circuitos cortos
 
-- inicio previsto 30:30 · 1,5 min · escala territorio · diapositivas 34 a 35 · texto en borrador
+- inicio previsto 30:30 · 1,5 min · escala territorio · diapositivas 38 a 39 · texto en borrador
 - Pasos: Sujeto plural · Circuitos cortos y compras públicas
 
 **Notas.** Dos pasos con la flecha. Primero el sujeto plural: los actores y sus enlaces de comercio, garantía, conocimiento, semillas y gobernanza. Después los circuitos cortos: vincular la ciudad, los colegios y los mercados. La Ley 2046 de 2020 define los circuitos cortos de comercialización (art. 4) y obliga a las entidades que compran alimentos con recursos públicos a adquirir a productores locales un mínimo de 30 % del presupuesto destinado a alimentos (art. 7, literal a). Levidow et al. (2023, §2.2): los circuitos cortos dependen de una proximidad geográfica y relacional entre productores y consumidores.
@@ -239,7 +239,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P22 · Índice EAP de tres fincas tipo
 
-- inicio previsto 32:00 · 2 min · escala finca · diapositiva 36 · texto en borrador
+- inicio previsto 32:00 · 2 min · escala finca · diapositiva 40 · texto en borrador
 
 **Notas.** Las tres fincas tipo son F1, F2 y F3. Los valores son ilustrativos salvo medición (GUION, precaución 8).
 
@@ -249,7 +249,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P23 · MESMIS y TAPE
 
-- inicio previsto 34:00 · 1,5 min · escala finca · diapositiva 37 · **saltable** · texto en borrador
+- inicio previsto 34:00 · 1,5 min · escala finca · diapositiva 41 · **saltable** · texto en borrador
 
 **Notas.** Romero et al. (2023) falta en la carpeta. Mottet et al. (2020) presentan TAPE.
 
@@ -259,7 +259,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P24 · Soberanía de los datos
 
-- inicio previsto 35:30 · 1,5 min · escala territorio · diapositiva 38 · texto en borrador
+- inicio previsto 35:30 · 1,5 min · escala territorio · diapositiva 42 · texto en borrador
 
 **Notas.** Pregunta para el grupo: quién mide y con qué medios. La Res. 331 de 2024 se apoya en MADR-FAO (2024a).
 
@@ -271,7 +271,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P25 · Objetivo territorial e instrumento predial
 
-- inicio previsto 37:00 · 1,5 min · escala territorio · diapositiva 39 · texto en borrador
+- inicio previsto 37:00 · 1,5 min · escala territorio · diapositiva 43 · texto en borrador
 
 **Notas.** Mostrar el horizonte territorial y, sobre él, el IPPTA en una sola finca. El argumento corresponde al supuesto H5.
 
@@ -281,7 +281,7 @@ Archivo generado por `npm run respaldo` a partir de `contenido/paradas.json`; no
 
 ### P26 · Tarea auténtica y retorno a la pregunta
 
-- inicio previsto 38:30 · 1,5 min · escala territorio · diapositiva 40 · texto en borrador
+- inicio previsto 38:30 · 1,5 min · escala territorio · diapositiva 44 · texto en borrador
 
 **Notas.** Volver a la pregunta detonante con la maqueta en S3 y cerrar con la tarea.
 
