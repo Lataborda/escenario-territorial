@@ -39,6 +39,8 @@ export function leerParametros(hash = window.location.hash) {
     deteccion: Number.isFinite(deteccion) && deteccion >= 0 ? deteccion : null,
     // null: sin condiciones en el hash; una lista (aun vacía) abre el panel de condiciones.
     condiciones: p.has('c') ? p.get('c').split(',').filter(Boolean) : null,
+    // #diagrama=1 abre el diagrama de la teoría de cambio con el panel (etapa 10.b.b; respaldo).
+    diagrama: p.get('diagrama') === '1',
   };
 }
 
@@ -58,6 +60,9 @@ export const escribirParada = (parada, paso) => escribir({ p: parada, paso: paso
 
 // Condiciones activas del panel de la teoría de cambio (null borra la clave).
 export const escribirCondiciones = (condiciones) => escribir({ c: condiciones ? condiciones.join(',') : null });
+
+// Diagrama de la teoría de cambio abierto (etapa 10.b.b).
+export const escribirDiagrama = (abierto) => escribir({ diagrama: abierto ? 1 : null });
 
 // La calidad elegida (tecla V, presentador o detección) queda en el hash y sobrevive a la recarga.
 export const escribirCalidad = (calidad) => escribir({ calidad });

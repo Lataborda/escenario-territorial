@@ -12,6 +12,7 @@ const reloj = (min) => {
 export function notasPresentador({ contenido, fuentes, diapositivas, huella, fecha }) {
   const { paradas, momentos } = contenido;
   const numero = (id, paso = 0) => diapositivas.findIndex((d) => d.parada === id && d.paso === paso) + 1;
+  const ultima = (id) => diapositivas.findLastIndex((d) => d.parada === id) + 1;
   const saltables = paradas.filter((p) => p.saltable).map((p) => p.id);
   const l = [
     '# Notas del presentador',
@@ -20,7 +21,7 @@ export function notasPresentador({ contenido, fuentes, diapositivas, huella, fec
     '',
     `- Guion: ${minutos(contenido.duracion_total)}; ensayo objetivo: ${minutos(contenido.ensayo_objetivo)}; tolerancia: ${minutos(contenido.tolerancia_minutos)}.`,
     `- Paradas saltables (decisión D6): ${saltables.join(', ') || 'ninguna'}.`,
-    `- Respaldo: ${diapositivas.length} imágenes (una por parada y por paso). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash \`#p=P14&paso=1\` abre una diapositiva.`,
+    `- Respaldo: ${diapositivas.length} imágenes (una por parada y por paso, y en la actividad una por preajuste y otra con el diagrama, \`#p=P19&v=S2\`). Teclas: flechas, espacio, Av Pág y Re Pág; 0 a 6 para los momentos; Inicio y Fin; F para pantalla completa. El hash \`#p=P14&paso=1\` abre una diapositiva.`,
     `- Generado: ${fecha}; huella del contenido: \`${huella}\`.`,
     '',
   ];
@@ -35,7 +36,7 @@ export function notasPresentador({ contenido, fuentes, diapositivas, huella, fec
         `inicio previsto ${reloj(inicio)}`,
         minutos(p.minutos),
         `escala ${p.escala}`,
-        n > 1 ? `diapositivas ${numero(p.id)} a ${numero(p.id, n - 1)}` : `diapositiva ${numero(p.id)}`,
+        ultima(p.id) > numero(p.id) ? `diapositivas ${numero(p.id)} a ${ultima(p.id)}` : `diapositiva ${numero(p.id)}`,
       ];
       if (p.saltable) datos.push('**saltable**');
       if (p.estado_texto !== 'revisado') datos.push(`texto en ${p.estado_texto}`);

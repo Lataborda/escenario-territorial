@@ -17,6 +17,7 @@
       "escalas": ["finca", "vereda"],
       "papel": "Prácticas, semillas y mercados",
       "categoria": "familia",
+      "efectos": ["organizacion_activa"],
       "anclas": ["F2", "F3"]
     },
     {
@@ -56,6 +57,7 @@
       "escalas": ["territorio"],
       "papel": "Gobierno propio, semillas y agua",
       "categoria": "comunitario",
+      "efectos": ["gobernanza_activa"],
       "anclas": ["resguardo"]
     },
     {
@@ -65,6 +67,7 @@
       "escalas": ["territorio"],
       "papel": "Gobierno propio y tierra",
       "categoria": "comunitario",
+      "efectos": ["gobernanza_activa"],
       "anclas": ["consejo"]
     },
     {
@@ -74,6 +77,7 @@
       "escalas": ["vereda", "cuenca"],
       "papel": "Gobernanza del agua",
       "categoria": "comunitario",
+      "efectos": ["gobernanza_activa"],
       "anclas": ["acueducto"]
     },
     {
@@ -113,6 +117,7 @@
       "escalas": ["vereda", "territorio"],
       "papel": "Aprendizaje de campesino a campesino",
       "categoria": "comunitario",
+      "efectos": ["escuelas_activas"],
       "anclas": ["escuela"],
       "fuentes": ["res331:línea 1.2"]
     },
@@ -123,6 +128,7 @@
       "escalas": ["territorio"],
       "papel": "Aliado externo",
       "categoria": "aliado",
+      "efectos": ["aliados_activos"],
       "anclas": ["ciudad"],
       "referencia": "UNAL Palmira, GIA"
     },
@@ -133,6 +139,7 @@
       "escalas": ["region"],
       "papel": "Aliado externo de la finca faro",
       "categoria": "aliado",
+      "efectos": ["aliados_activos"],
       "anclas": ["F1"],
       "referencia": "CIPAV"
     },
@@ -202,13 +209,15 @@
         { "id": "gobernanza", "capa": "vinculos_actores", "rotulo": "Gobernanza" },
         { "id": "proximidad", "capa": "proximidades", "rotulo": "Proximidad geográfica y relacional" },
         { "id": "compras", "capa": "compras_publicas", "rotulo": "Compras públicas de alimentos" },
-        { "id": "familia", "capas": ["red_mercados", "proximidades", "compras_publicas", "actores"], "rotulo": "Familia productora" },
-        { "id": "comunitario", "capa": "actores", "rotulo": "Organización comunitaria" },
+        { "id": "familia", "capas": ["red_mercados", "proximidades", "compras_publicas", "actores", "actores_efecto"], "rotulo": "Familia productora" },
+        { "id": "comunitario", "capas": ["actores", "actores_efecto"], "rotulo": "Organización comunitaria" },
         { "id": "institucional", "capa": "actores", "rotulo": "Institución pública" },
-        { "id": "aliado", "capas": ["spg", "actores"], "rotulo": "Aliado externo" },
+        { "id": "aliado", "capas": ["spg", "actores", "actores_efecto"], "rotulo": "Aliado externo" },
         { "id": "regimen", "capa": "actores", "rotulo": "Actor del régimen" },
         { "id": "consumo", "capa": "actores", "rotulo": "Consumidores" },
         { "id": "lindero", "capa": "lindero_territorio", "rotulo": "Lindero de propiedad" },
+        { "id": "islas", "capa": "fincas_islas", "rotulo": "Finca diversificada" },
+        { "id": "corredor_incompleto", "capa": "corredor_incompleto", "rotulo": "Corredor incompleto" },
         { "id": "figura_territorial", "capa": "figuras_territoriales", "rotulo": "Figura territorial" },
         { "id": "reserva_natural", "capa": "figuras_territoriales", "rotulo": "Reserva natural" },
         { "id": "poligono", "capa": "poligono_red", "rotulo": "Territorio de la red" },
@@ -297,10 +306,47 @@
       ],
       "fuentes": ["leonsicard:p. 24"]
     },
+    "efectos": {
+      "nota": "Dibujo de los efectos de las reglas de la teoría de cambio que no tenían capa (etapa 10.b.b). Se encienden con el panel de condiciones (contenido/condiciones.json, derivacion.capas_por_efecto). Posiciones y textos propuestos.",
+      "detonantes": {
+        "capa": "detonantes",
+        "nota": "Un solo rótulo, con el título según las condiciones activas: el de la entrada cuyas condiciones coinciden con las activas entre las listadas. «alto»: altura del punto del rótulo sobre el nodo, en unidades de escena, para que no se encime con los rótulos de S3.",
+        "en": "CAB3",
+        "alto": 100,
+        "texto": "Detonante sin cambio del paisaje",
+        "titulos": [
+          { "condiciones": ["C1"], "titulo": "Crisis" },
+          { "condiciones": ["C2"], "titulo": "Discurso movilizador" },
+          { "condiciones": ["C1", "C2"], "titulo": "Crisis y discurso movilizador" }
+        ]
+      },
+      "islas": {
+        "capa": "fincas_islas",
+        "nota": "Lindero resaltado de las fincas que cambian a mosaico diversificado; el predio cañero queda fuera. Un rótulo con «entre» va en el punto medio de las dos fincas.",
+        "fincas": ["F1", "F2", "F3"],
+        "rotulos": [
+          { "id": "islas", "titulo": "Islas en la matriz", "texto": "Fincas diversificadas aisladas", "entre": ["F1", "F2"] }
+        ]
+      },
+      "corredor_incompleto": {
+        "capa": "corredor_incompleto",
+        "nota": "Tramos de corredor entre fincas vecinas, con un hueco en el medio de cada tramo (fracción del largo).",
+        "tramos": [["F1", "F2"], ["F2", "F3"]],
+        "hueco": 0.35,
+        "rotulos": [
+          { "id": "corredor_incompleto", "titulo": "Corredor incompleto", "texto": "Fincas contiguas sin prácticas", "entre": ["F1", "F2"] }
+        ]
+      },
+      "actores_efecto": {
+        "capa": "actores_efecto",
+        "nota": "Marcadores de los actores cuyo campo «efectos» incluye un efecto presente, sin rótulos. La organización de familias de la ladera se muestra con las familias de ladera hasta la etapa 11 (ajuste A7)."
+      },
+      "estado_texto": "borrador"
+    },
     "mercados": {
       "capa": "mercados",
       "rotulos": [
-        { "id": "mercado_aislado", "titulo": "Mercado agroecológico", "texto": "Sin vínculos con los demás", "en": "CAB2", "escenarios": ["S0", "S1"] }
+        { "id": "mercado_aislado", "titulo": "Mercado agroecológico", "texto": "Sin vínculos con los demás", "en": "CAB2", "lado": "abajo", "escenarios": ["S0", "S1"] }
       ]
     },
     "relaciones": [

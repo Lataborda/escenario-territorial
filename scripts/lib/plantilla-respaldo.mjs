@@ -14,7 +14,8 @@ function codigo() {
     const p = new URLSearchParams(location.hash.replace(/^#/, ''));
     const id = p.get('p');
     const k = parseInt(p.get('paso'), 10) || 0;
-    const j = D.findIndex((d) => d.parada === id && d.paso === k);
+    const v = p.get('v'); // variante de la actividad (P19-S2, P19-diagrama)
+    const j = D.findIndex((d) => d.parada === id && d.paso === k && (d.variante ?? null) === v);
     return j >= 0 ? j : Math.max(0, D.findIndex((d) => d.parada === id));
   }
 
@@ -25,7 +26,7 @@ function codigo() {
     img.alt = `${d.parada} · ${d.titulo}`;
     document.title = `${d.parada} · Respaldo del escenario territorial`;
     try {
-      history.replaceState(null, '', `#p=${d.parada}${d.paso ? `&paso=${d.paso}` : ''}`);
+      history.replaceState(null, '', `#p=${d.parada}${d.paso ? `&paso=${d.paso}` : ''}${d.variante ? `&v=${d.variante}` : ''}`);
     } catch {
       // En algunos navegadores file:// no admite replaceState; la navegación sigue.
     }

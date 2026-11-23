@@ -668,7 +668,7 @@ Revisión del plan frente a dos insumos aportados por Alejandro: una conferencia
   - 10.a (cerrada): reglas completas en `contenido/condiciones.json` (regla V8 para S1, derivación de escenario y capas, preajustes, textos del panel), motor (`src/reglas/motor.js`), derivación en el estado (`src/reglas/reglas.js`), panel de condiciones con preajustes y avisos (`src/ui/condiciones.js`), tecla T, hash `#c=`, validación y verificación.
   - 10.b: diagrama 2D de la teoría de cambio sincronizado con los interruptores (condiciones, supuestos, resultados); aparición gradual de las capas superpuestas al cambiar de estado; dibujo propio de los efectos sin capa (rótulos de detonante, fincas diversificadas como islas, corredor incompleto, actores según el efecto); condiciones en la vista del presentador; capturas de los preajustes en el respaldo. Dividida el 2026-11-23 en dos sesiones:
     - 10.b.a (cerrada): contenido y HTML. Ajustes A1 a A4; diagrama 2D en superposición a la derecha del panel (`src/ui/diagrama.js`, tecla D y botón del panel), sincronizado con el motor (resultados intermedios, final y supuestos en juego); condiciones en la vista del presentador, de solo lectura; regla V6 con C3 (decisión de Alejandro); validación y verificación del diagrama.
-    - 10.b.b (siguiente): escena 3D. Aparición gradual de las capas superpuestas; dibujo propio de los efectos sin capa (rótulos de detonante, fincas diversificadas como islas, corredor incompleto, actores según el efecto); capturas de los preajustes y del diagrama en el respaldo.
+    - 10.b.b (cerrada): escena 3D. Fundido de las capas superpuestas al aparecer y al ocultarse (`src/escena/aparicion.js`; inmediato con `#captura=1`); capas nuevas para los efectos sin capa (`detonantes`, `fincas_islas`, `corredor_incompleto`, `actores_efecto`) y correspondencia de `corredor`, `mercados_activos`, `mercados_aislados` e `ippta_una_finca` con capas existentes; efectos solo del panel declarados en `sin_capa`; `#diagrama=1`; respaldo con los preajustes S1 a S3 y el diagrama de P19 (44 imágenes).
   - 10.b, ajuste del 2026-11-22 (sección 6, A1 a A4). Fuentes: sí, en carpeta (Mier y Terán et al. 2018; Res. 331).
     - Supuesto H8 en `condiciones.json` y en el diagrama, con su fuente (`GUION.md`, §6.3).
     - Resultado final con soberanía alimentaria (`GUION.md`, §6.4).
@@ -677,7 +677,13 @@ Revisión del plan frente a dos insumos aportados por Alejandro: una conferencia
   - Criterios añadidos para la 10.b:
     - [x] H8 y el resultado final con soberanía alimentaria visibles en el diagrama, con fuente (10.b.a).
     - [x] C1 a C8 con localizador de Mier y Terán et al. (2018); cero `mieryteran:verificar` (10.b.a).
-- Prompt de arranque: `Etapa 10.b.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
+  - Criterios añadidos para la 10.b.b:
+    - [x] Las capas superpuestas aparecen y desaparecen de forma gradual, sin cambio en las capturas con `#captura=1`.
+    - [x] Cada efecto con dibujo previsto tiene capa y se ve con su condición sola en P19.
+    - [x] Siete rótulos como máximo en P19 con cada preajuste y cada condición sola.
+    - [x] Respaldo con los preajustes S1 a S3 y el diagrama de P19 (44 imágenes).
+- Estado: etapa 10 cerrada con la 10.b.b (2026-11-23).
+- Prompt de arranque de la etapa siguiente: `Etapa 11 de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 11. Lentes, capa histórica y cierre
 

@@ -51,6 +51,11 @@ export function alternarPanel() {
   cambiar({ ...propio, condiciones: motor.ordenar(propio.condiciones) });
 }
 
+/** Abre el diagrama (hash #diagrama=1); con el panel cerrado, abre antes el panel como la tecla T. */
+export function abrirDiagrama() {
+  if (!obtener().diagrama) alternarDiagrama();
+}
+
 /** Abre o cierra el diagrama; con el panel cerrado, abre antes el panel como la tecla T. */
 export function alternarDiagrama() {
   const e = obtener();

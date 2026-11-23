@@ -15,7 +15,7 @@ import { crearRotulosLote } from './lote/rotulos.js';
 import { crearFlujos } from './flujos/flujos.js';
 import { crearRotulosFlujos } from './flujos/rotulos.js';
 import { crearActores } from './actores/actores.js';
-import { crearReglas, abrirCon } from './reglas/reglas.js';
+import { crearReglas, abrirCon, abrirDiagrama } from './reglas/reglas.js';
 import { leerParametros } from './parametros.js';
 import { obtener, cambiar, suscribir } from './estado.js';
 import { crearCamaraNavegacion } from './navegacion/camara.js';
@@ -106,6 +106,8 @@ async function iniciar() {
   await cargarTipografias();
   await cederCuadro();
   const parametros = leerParametros();
+  // Con #captura=1, sin fundidos de rótulos (src/ui/capas.css): capturas idénticas en cada carga.
+  if (parametros.captura) document.documentElement.dataset.captura = '1';
   // Calidad del hash antes de montar la escena: los módulos arrancan ya en ese nivel.
   if (parametros.calidad) cambiar({ calidad: parametros.calidad });
   let escena;
@@ -141,6 +143,7 @@ async function iniciar() {
   // Teoría de cambio: el escenario y las capas derivados de las condiciones (panel de P19, tecla T y hash #c=).
   const reglas = montar('reglas', crearReglas);
   if (reglas && parametros.condiciones) abrirCon(parametros.condiciones);
+  if (reglas && parametros.diagrama) abrirDiagrama();
   // Coberturas después de la primera parada: su escenario se aplica sin transición.
   const coberturas = montar('coberturas', () => crearCoberturas({ altura, camara: escena.camara, instantanea: parametros.captura }));
   if (coberturas) {

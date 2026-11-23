@@ -25,7 +25,12 @@ export function revisarActoresRed(datos) {
   const capas = new Set(t.capas.map((c) => c.id));
   const entidades = new Map(t.entidades.map((e) => [e.id, e]));
   const escenarios = new Set(datos.escenarios.escenarios.map((e) => e.id));
-  const enParadas = new Set(datos.paradas.paradas.flatMap((p) => [...(p.estado?.capas ?? []), ...(p.pasos ?? []).flatMap((s) => s.estado?.capas ?? [])]));
+  // Capas que enciende una parada o, con el panel de condiciones, un efecto de las reglas (etapa 10.b.b).
+  const derivadas = Object.values(datos.condiciones?.derivacion?.capas_por_efecto ?? {}).flat();
+  const enParadas = new Set([
+    ...datos.paradas.paradas.flatMap((p) => [...(p.estado?.capas ?? []), ...(p.pasos ?? []).flatMap((s) => s.estado?.capas ?? [])]),
+    ...derivadas,
+  ]);
   const zLimite = centro(t.entidades.find((e) => e.tipo === 'limite')?.z);
   const corto = (texto, donde) => {
     if (!texto?.trim()) return errores.push(`${donde}: texto vacío`);

@@ -21,8 +21,23 @@ const INICIO = Date.now();
 const avisar = (texto) => console.log(`[${((Date.now() - INICIO) / 1000).toFixed(0)} s] ${texto}`);
 const leerJson = async (nombre) => JSON.parse(await readFile(path.join(RAIZ, 'contenido', `${nombre}.json`), 'utf8'));
 
-// Nombre de archivo: P01.jpg; con pasos, P03-1.jpg a P03-4.jpg.
-const nombreDe = (p, paso) => `${p.id}${(p.pasos?.length ?? 0) > 1 ? `-${paso + 1}` : ''}.jpg`;
+// Nombre de archivo: P01.jpg; con pasos, P03-1.jpg a P03-4.jpg; variantes de la actividad, P19-S2.jpg y P19-diagrama.jpg.
+const nombreDe = (p, paso, variante) => `${p.id}${variante ? `-${variante}` : (p.pasos?.length ?? 0) > 1 ? `-${paso + 1}` : ''}.jpg`;
+
+// Variante de la parada con el panel: condiciones del preajuste y, si se pide, el diagrama (hash #c= y #diagrama=1).
+async function irAVariante(pagina, { parada, condiciones, diagrama }) {
+  await pagina.evaluate(([i, c, d]) => {
+    location.hash = `p=${i}&c=${c.join(',')}${d ? '&diagrama=1' : ''}&captura=1`;
+  }, [parada, condiciones, Boolean(diagrama)]);
+  await pagina.waitForFunction(
+    ([c, d]) => {
+      const e = window.escenario.estado();
+      return e.condiciones.join() === c.join() && e.diagrama === d && !document.documentElement.dataset.transicion;
+    },
+    [condiciones, Boolean(diagrama)],
+    { timeout: 15000 },
+  );
+}
 
 async function limpiar() {
   await mkdir(DIR_IMAGENES, { recursive: true });
@@ -31,7 +46,7 @@ async function limpiar() {
   }
 }
 
-async function capturar(navegador, url, origen, paradas) {
+async function capturar(navegador, url, origen, paradas, condiciones) {
   const contexto = await navegador.newContext({ viewport: VENTANA, deviceScaleFactor: 1 });
   await bloquearExternas(contexto, origen);
   const pagina = await contexto.newPage();
@@ -41,13 +56,16 @@ async function capturar(navegador, url, origen, paradas) {
   await pagina.waitForFunction(() => document.documentElement.dataset.listo === '1', null, { timeout: 30000 });
   await pausarDibujo(pagina);
   const diapositivas = [];
-  for (const { parada, paso } of estadosDe(paradas)) {
+  for (const estado of estadosDe(paradas, condiciones)) {
+    const { parada, paso, variante } = estado;
     const p = paradas.find((x) => x.id === parada);
-    await irPorHash(pagina, parada, paso);
+    if (variante) await irAVariante(pagina, estado);
+    else await irPorHash(pagina, parada, paso);
     await dibujarCuadro(pagina);
-    const archivo = nombreDe(p, paso);
+    const archivo = nombreDe(p, paso, variante);
     await pagina.screenshot({ path: path.join(DIR_IMAGENES, archivo), type: 'jpeg', quality: CALIDAD_JPEG });
-    diapositivas.push({ src: `capturas/${archivo}`, parada, paso, momento: p.momento, titulo: p.titulo });
+    const titulo = variante ? `${p.titulo} (${variante === 'diagrama' ? condiciones.diagrama.titulo : variante})` : p.titulo;
+    diapositivas.push({ src: `capturas/${archivo}`, parada, paso, variante: variante ?? null, momento: p.momento, titulo });
     if (diapositivas.length % 10 === 0) avisar(`${diapositivas.length} capturas`);
   }
   await contexto.close();
@@ -57,6 +75,7 @@ async function capturar(navegador, url, origen, paradas) {
 async function principal() {
   const contenido = await leerJson('paradas');
   const fuentes = (await leerJson('fuentes')).fuentes;
+  const condiciones = await leerJson('condiciones');
   const huella = await huellaContenido(RAIZ);
   const fecha = new Date().toISOString().slice(0, 10);
 
@@ -69,13 +88,13 @@ async function principal() {
   let captura;
   let revision;
   try {
-    avisar(`Capturando ${estadosDe(contenido.paradas).length} estados a ${VENTANA.width}×${VENTANA.height} ...`);
-    captura = await capturar(navegador, url, new URL(url).origin, contenido.paradas);
+    avisar(`Capturando ${estadosDe(contenido.paradas, condiciones).length} estados a ${VENTANA.width}×${VENTANA.height} ...`);
+    captura = await capturar(navegador, url, new URL(url).origin, contenido.paradas, condiciones);
     const { diapositivas } = captura;
     await writeFile(path.join(DIR, 'index.html'), paginaRespaldo({ diapositivas, huella, fecha }));
     await writeFile(path.join(DIR, 'notas.md'), notasPresentador({ contenido, fuentes, diapositivas, huella, fecha }));
     avisar('Revisando respaldo/index.html sin servidor ...');
-    revision = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.paradas });
+    revision = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.paradas, condiciones });
   } finally {
     await navegador.close();
     await servidor.close();

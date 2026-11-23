@@ -25,6 +25,7 @@ const FRAGMENTOS = /* glsl */ `
 uniform vec3 uColor;
 uniform vec3 uHalo;
 uniform float uForma;
+uniform float uOpacidad; // fundido de la capa (src/escena/aparicion.js)
 varying float vOpacidad;
 void main() {
   vec2 c = gl_PointCoord * 2.0 - 1.0;
@@ -34,8 +35,8 @@ void main() {
   float borde = fwidth( d );
   float cuerpo = 1.0 - smoothstep( 0.62 - borde, 0.62 + borde, d );
   float contorno = 1.0 - smoothstep( 0.96 - borde, 0.96 + borde, d );
-  if ( contorno * vOpacidad < 0.01 ) discard;
-  gl_FragColor = vec4( mix( uHalo, uColor, cuerpo ), contorno * vOpacidad );
+  if ( contorno * vOpacidad * uOpacidad < 0.01 ) discard;
+  gl_FragColor = vec4( mix( uHalo, uColor, cuerpo ), contorno * vOpacidad * uOpacidad );
   #include <colorspace_fragment>
 }
 `;
@@ -48,6 +49,7 @@ export function crearNube(nombre, estilo) {
       uHalo: { value: new THREE.Color(estilo.halo) },
       uForma: { value: FORMAS[estilo.forma] ?? 0 },
       uTamano: { value: estilo.tamano },
+      uOpacidad: { value: 1 },
     },
     vertexShader: VERTICES,
     fragmentShader: FRAGMENTOS,

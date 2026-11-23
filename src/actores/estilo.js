@@ -59,6 +59,9 @@ export const ESTILO = {
   figura_territorial: { color: 0xf7b6e0, relleno: 0.3, linea: { color: 0xf7a8d8, ancho: 3.6, halo: 0x4a1038, borde: 2.6, encima: true, orden: 28 } },
   reserva_natural: { color: 0x9be27a, relleno: 0.3, linea: { color: 0x7fd65c, ancho: 7, halo: 0x12360c, borde: 2.6, encima: true, orden: 28 } },
   lindero: { linea: { color: 0xfff7e0, ancho: 3, halo: 0x2b2118, borde: 2.4, encima: true, orden: 32 } },
+  // Efectos de la teoría de cambio (etapa 10.b.b): fincas como islas y corredor interrumpido.
+  islas: { linea: { color: 0xffd36e, ancho: 4.6, halo: 0x3a2806, borde: 3, encima: true, orden: 33 } },
+  corredor_incompleto: { linea: { color: 0xe4ffb8, ancho: 4.6, halo: 0x1d3a0c, borde: 3, encima: true, orden: 31 } },
   // Límites administrativos: trazo discontinuo («guion» y «hueco» en unidades de escena).
   limite_departamental: { guion: 16, hueco: 9, linea: { color: 0xffffff, ancho: 3.4, halo: 0x2e2a25, borde: 2.6, encima: true, orden: 22 } },
   limite_municipal: { guion: 7, hueco: 6, linea: { color: 0xece7dd, ancho: 1.6, halo: 0x2e2a25, borde: 1.6, encima: true, orden: 20 } },

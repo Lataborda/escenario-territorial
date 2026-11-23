@@ -1,6 +1,7 @@
 // Rótulos de los flujos sobre la escena (etapa 8): los de cada capa de flujo (contenido/procesos.json, rotulos),
 // visibles con su capa y en sus escenarios. Mismo estilo de los rótulos de finca (src/ui/capas.css), con la punta en
 // el punto («lado» del rótulo: encima o debajo). Solo escriben la posición: sin lecturas de medida por cuadro.
+// Un rótulo con «tituloDe(estado)» (etapa 10.b.b, detonantes) toma de ahí su título y no se ve si devuelve null.
 import { obtener, suscribir } from '../estado.js';
 
 /** capas: capas de flujos.js (con «rotulos»); proyectar(x, y, z) → { x, y } en píxeles o null. */
@@ -24,7 +25,7 @@ export function crearRotulosFlujos({ contenedor, capas, proyectar, alCuadro }) {
         e.append(texto);
       }
       capa.append(e);
-      return { e, capa: c.capa, escenarios: r.escenarios ?? null, punto: r.punto, abajo: r.lado === 'abajo' };
+      return { e, titulo, tituloDe: r.tituloDe ?? null, capa: c.capa, escenarios: r.escenarios ?? null, punto: r.punto, abajo: r.lado === 'abajo' };
     }),
   );
 
@@ -39,12 +40,19 @@ export function crearRotulosFlujos({ contenedor, capas, proyectar, alCuadro }) {
       if (!fuera) a.e.style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px) translate(-50%, ${dy})`;
     }
   }
-  function pintar({ capas: encendidas, escenario }) {
-    activos = todos.filter((r) => encendidas.includes(r.capa) && (!r.escenarios || r.escenarios.includes(escenario)));
+  function pintar(estado) {
+    const { capas: encendidas, escenario } = estado;
+    activos = todos.filter((r) => {
+      if (!encendidas.includes(r.capa) || (r.escenarios && !r.escenarios.includes(escenario))) return false;
+      if (!r.tituloDe) return true;
+      const titulo = r.tituloDe(estado);
+      if (titulo) r.titulo.textContent = titulo;
+      return Boolean(titulo);
+    });
     for (const r of todos) if (!activos.includes(r)) r.e.hidden = true;
     colocar();
   }
-  suscribir(['capas', 'escenario'], pintar);
+  suscribir(['capas', 'escenario', 'condiciones'], pintar);
   pintar(obtener());
   alCuadro(colocar);
   return { visibles: () => activos.filter((a) => !a.e.hidden).length };

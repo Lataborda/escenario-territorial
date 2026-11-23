@@ -76,6 +76,15 @@ export function revisarReglas(datos) {
     if (!efectos.has(efecto)) falla(`derivacion · capas_por_efecto: efecto desconocido «${efecto}»`);
     for (const c of lista) if (!capas.has(c)) falla(`derivacion · capas_por_efecto · ${efecto}: capa desconocida «${c}»`);
   }
+  // Todo efecto tiene capa o se declara solo del panel (etapa 10.b.b); los efectos de los actores existen.
+  const sinCapa = new Set(derivacion.sin_capa ?? []);
+  for (const e of efectos) {
+    const conCapa = Boolean(derivacion.capas_por_efecto?.[e]?.length);
+    if (conCapa === sinCapa.has(e)) falla(`derivacion: el efecto «${e}» debe tener capa o estar en «sin_capa», no ambas`);
+  }
+  for (const a of datos.actores?.actores ?? []) {
+    for (const e of a.efectos ?? []) if (!efectos.has(e)) falla(`actores.json · ${a.id}: efecto desconocido «${e}»`);
+  }
   for (const r of d.reglas ?? []) {
     for (const e of r.reemplaza ?? []) if (!efectos.has(e)) falla(`${r.id} · reemplaza: efecto desconocido «${e}»`);
     if (r.escenario && !orden.includes(r.escenario)) falla(`${r.id}: su escenario «${r.escenario}» no está en el orden de precedencia`);

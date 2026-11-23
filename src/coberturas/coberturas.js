@@ -19,6 +19,7 @@ import { medirAsignacion, extensionCana } from './metricas.js';
 import { crearContornoEep } from './eep.js';
 import { rejillaTeselas, teselaDe, LADO } from './rejilla.js';
 import { crearTrazo } from '../escena/lineas.js';
+import { mostrar } from '../escena/aparicion.js';
 import { pedirSombra } from '../escena/pedidos.js';
 import { ESTILO, activa } from '../fincas/estilo.js';
 import { obtenerFincas } from '../fincas/trazado.js';
@@ -152,8 +153,8 @@ export function crearCoberturas({ altura, camara, instantanea = false }) {
       conexion.fijar(Object.values(contornoEep.conexiones(id, asignaciones.get(id), fincas)).flat());
       eepDe = id;
     }
-    eep.grupo.visible = encendida && !eep.grupo.userData.vacio;
-    conexion.grupo.visible = activa('conexion_eep', capas) && !conexion.grupo.userData.vacio;
+    mostrar(eep.grupo, encendida && !eep.grupo.userData.vacio);
+    mostrar(conexion.grupo, activa('conexion_eep', capas) && !conexion.grupo.userData.vacio);
   };
   suscribir(['capas', 'escenario'], pintarEep);
   pintarEep(obtener());

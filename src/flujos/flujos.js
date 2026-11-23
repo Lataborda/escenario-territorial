@@ -6,6 +6,7 @@
 import * as THREE from 'three';
 import { obtener, suscribir } from '../estado.js';
 import { pedirCuadro } from '../escena/pedidos.js';
+import { mostrar } from '../escena/aparicion.js';
 import { crearAgua } from './agua.js';
 import { crearNutrientes } from './nutrientes.js';
 import { crearSemillas } from './semillas.js';
@@ -63,7 +64,7 @@ export function crearFlujos({ altura, superficie, ancla, coberturas, instantanea
         }
         mover(c);
       }
-      c.grupo.visible = visible;
+      mostrar(c.grupo, visible); // fundido de entrada y de salida
     }
   }
   suscribir(['capas', 'escenario', 'calidad'], pintar);

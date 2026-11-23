@@ -8,6 +8,7 @@ import { obtenerFincas } from './trazado.js';
 import { VECINOS } from './region.js';
 import { crearCasas } from './casa.js';
 import { crearTrazo } from '../escena/lineas.js';
+import { mostrar } from '../escena/aparicion.js';
 import { ESTILO, activa } from './estilo.js';
 import { LADO } from '../coberturas/rejilla.js';
 
@@ -104,7 +105,7 @@ export function crearFincas({ altura }) {
       trazos.agroecosistema_menor.fijar(contornos.agroecosistema_menor);
       trazos.agroecosistema_mayor.fijar(contornos.agroecosistema_mayor);
     }
-    for (const [nombre, t] of Object.entries(trazos)) t.grupo.visible = activa(nombre, capas) && !t.grupo.userData.vacio;
+    for (const [nombre, t] of Object.entries(trazos)) mostrar(t.grupo, activa(nombre, capas) && !t.grupo.userData.vacio);
   }
   suscribir(['capas', 'foco', 'escala'], pintar);
   pintar(obtener());

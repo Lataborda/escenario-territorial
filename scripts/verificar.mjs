@@ -256,7 +256,7 @@ async function principal() {
     avisar('Revisando la vista del presentador ...');
     const presentador = await revisarPresentador(navegador, url, { origen, dirCapturas: DIR_CAPTURAS });
     avisar('Revisando el respaldo en imágenes ...');
-    const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas });
+    const respaldo = await revisarRespaldo(navegador, RAIZ, { paradas: contenido.datos.paradas.paradas, condiciones: contenido.datos.condiciones });
     resultado = { principal: vistaPrincipal, unico: vistaUnica, terreno, coberturas, fincas, lote, flujos, reglas, luz, rendimiento, calidad, recorrido, presentador, respaldo, version: navegador.version() };
   } finally {
     await navegador.close();

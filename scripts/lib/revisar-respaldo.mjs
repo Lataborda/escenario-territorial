@@ -8,19 +8,32 @@ import { bloquearExternas, vigilar } from './revisar-pagina.mjs';
 
 export const CARPETA_RESPALDO = 'respaldo';
 const ESPERA_MS = 30000;
+const CAPA_PANEL = 'teoria_cambio'; // capa del panel de condiciones (src/reglas/reglas.js)
 
-// Huella de paradas.json y fuentes.json: indica si el respaldo corresponde al contenido actual.
+// Huella de paradas.json, fuentes.json y condiciones.json: indica si el respaldo corresponde al contenido actual.
 export async function huellaContenido(raiz) {
   const h = createHash('sha256');
-  for (const nombre of ['paradas', 'fuentes']) h.update(await readFile(path.join(raiz, 'contenido', `${nombre}.json`)));
+  for (const nombre of ['paradas', 'fuentes', 'condiciones']) h.update(await readFile(path.join(raiz, 'contenido', `${nombre}.json`)));
   return h.digest('hex').slice(0, 12);
 }
 
-// Estados esperados del recorrido: uno por parada y uno por paso.
-export const estadosDe = (paradas) =>
-  paradas.flatMap((p) => Array.from({ length: Math.max(1, p.pasos?.length ?? 0) }, (_, k) => ({ parada: p.id, paso: k })));
+// Estados esperados del recorrido: uno por parada y uno por paso. Con condiciones (contenido/condiciones.json), en la
+// parada que trae el panel de condiciones, además, una variante por preajuste con condiciones y una con el diagrama
+// del último (etapa 10.b.b).
+export const estadosDe = (paradas, condiciones = null) =>
+  paradas.flatMap((p) => {
+    const pasos = Array.from({ length: Math.max(1, p.pasos?.length ?? 0) }, (_, k) => ({ parada: p.id, paso: k }));
+    if (!condiciones || !(p.estado?.capas ?? []).includes(CAPA_PANEL)) return pasos;
+    const preajustes = condiciones.preajustes.filter((x) => x.condiciones.length);
+    const ultimo = preajustes.at(-1);
+    return [
+      ...pasos,
+      ...preajustes.map((x) => ({ parada: p.id, paso: 0, variante: x.id, condiciones: x.condiciones })),
+      ...(ultimo ? [{ parada: p.id, paso: 0, variante: 'diagrama', condiciones: ultimo.condiciones, diagrama: true }] : []),
+    ];
+  });
 
-export async function revisarRespaldo(navegador, raiz, { paradas, ventana = { width: 1600, height: 900 } }) {
+export async function revisarRespaldo(navegador, raiz, { paradas, condiciones = null, ventana = { width: 1600, height: 900 } }) {
   const archivo = path.join(raiz, CARPETA_RESPALDO, 'index.html');
   const r = { url: pathToFileURL(archivo).href, existe: true, cargo: false, ms: null, errores: [], avisos: [], solicitudes: 0, externas: [] };
   try {
@@ -57,7 +70,7 @@ export async function revisarRespaldo(navegador, raiz, { paradas, ventana = { wi
     );
     r.cargadas = medidas.filter(Boolean).length;
     r.medidas = [...new Set(medidas.filter(Boolean))];
-    const esperados = estadosDe(paradas);
+    const esperados = estadosDe(paradas, condiciones);
     r.esperados = esperados.length;
     // Teclado: avance, retroceso, fin, momento 3 e hash directo.
     const leer = () => pagina.evaluate(() => window.respaldo.info());

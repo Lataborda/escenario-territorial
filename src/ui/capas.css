@@ -88,6 +88,24 @@
   display: none;
 }
 
+/* Rótulos de las capas superpuestas: fundido de entrada al aparecer (etapa 10.b.b), sin animación con #captura=1. */
+.rotulos-flujos > .rotulo-flujo {
+  animation: rotulo-aparece 0.8s ease-out both;
+}
+
+html[data-captura='1'] .rotulos-flujos > .rotulo-flujo {
+  animation: none;
+}
+
+@keyframes rotulo-aparece {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .rotulo-finca.marcador {
   border: 2px solid #fbf9f4;
   border-radius: 50%;

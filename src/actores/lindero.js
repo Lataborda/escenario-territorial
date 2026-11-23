@@ -11,22 +11,34 @@ const ALTO = 1.4; // sobre el terreno
 const ALTO_ROTULO = 20;
 const datos = contenido.red.lindero;
 
-/** superficie y altura: consultas del terreno. */
-export function crearLindero({ superficie, altura }) {
-  const fincas = obtenerFincas(altura).fincas.filter((f) => datos.fincas.includes(f.id));
-  const trazo = crearTrazo('lindero-resaltado', altura, { ...ESTILO.lindero.linea, alto: ALTO });
+/** Punto de un rótulo: sobre la finca «en» o en el punto medio de las dos fincas «entre» (etapa 10.b.b). */
+export function puntoRotulo(r, fincas, superficie, alto = ALTO_ROTULO) {
+  const anclas = (r.entre ?? [r.en]).map((id) => fincas.find((f) => f.id === id)?.ancla);
+  if (!anclas.length || anclas.some((a) => !a)) return null;
+  const x = anclas.reduce((s, a) => s + a.x, 0) / anclas.length;
+  const z = anclas.reduce((s, a) => s + a.z, 0) / anclas.length;
+  return [x, superficie(x, z) + (r.lado === 'abajo' ? 0 : alto), z];
+}
+
+/**
+ * superficie y altura: consultas del terreno. bloque, nombre y estilo: otra capa con el mismo dibujo (las fincas
+ * como islas de la etapa 10.b.b, contenido/actores.json, red.efectos.islas).
+ */
+export function crearLindero({ superficie, altura, bloque = datos, nombre = 'lindero', estilo = ESTILO.lindero }) {
+  const fincas = obtenerFincas(altura).fincas.filter((f) => bloque.fincas.includes(f.id));
+  const trazo = crearTrazo(`${nombre}-resaltado`, altura, { ...estilo.linea, alto: ALTO });
   trazo.fijar(fincas.flatMap((f) => f.perimetro));
   const grupo = new THREE.Group();
-  grupo.name = 'actores-lindero';
+  grupo.name = `actores-${nombre}`;
   grupo.add(trazo.grupo);
   return {
-    capa: datos.capa,
+    capa: bloque.capa,
     grupo,
     nubes: [],
-    rotulos: datos.rotulos
+    rotulos: bloque.rotulos
       .map((r) => {
-        const f = fincas.find((x) => x.id === r.en);
-        return f ? { ...r, punto: [f.ancla.x, superficie(f.ancla.x, f.ancla.z) + (r.lado === 'abajo' ? 0 : ALTO_ROTULO), f.ancla.z] } : null;
+        const punto = puntoRotulo(r, fincas, superficie);
+        return punto ? { ...r, punto } : null;
       })
       .filter(Boolean),
     aplicar() {},
