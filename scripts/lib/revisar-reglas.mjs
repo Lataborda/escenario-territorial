@@ -1,16 +1,18 @@
 // Revisión de la teoría de cambio (etapa 10.a): panel de condiciones en P19, preajustes con su escenario y capturas
 // distinguibles, cada condición sola sin cambio de escenario y con su aviso, rótulos de escena, hash #c=, tecla T en
 // otra parada y código sin reglas escritas (criterios de la etapa 10). La página abre en #p=P19&c=…&captura=1.
+// El diagrama (etapa 10.b.a) se revisa en revisar-diagrama.mjs con el panel abierto; sus fallas y su informe van aquí.
 import path from 'node:path';
 import { readFile, readdir } from 'node:fs/promises';
 import { crearMotor } from '../../src/reglas/motor.js';
 import { ir } from './revisar-procesos.mjs';
 import { irPorHash } from './revisar-paradas.mjs';
+import { revisarDiagrama, fallasDiagrama, seccionDiagrama } from './revisar-diagrama.mjs';
 
 const MAXIMO_ROTULOS = 7;
 const PARADA = 'P19';
 const DIFERENCIA_MINIMA = 0.02; // fracción de la maqueta (celdas distintas del fondo) que cambia entre dos preajustes
-const CON_REGLAS = ['src/reglas', 'src/ui/condiciones.js']; // código que no debe nombrar reglas
+const CON_REGLAS = ['src/reglas', 'src/ui/condiciones.js', 'src/ui/diagrama.js']; // código que no debe nombrar reglas
 // La página abre con el primer preajuste distinto del escenario de base: comprueba la carga directa con #c=.
 const abiertaCon = (datos) => datos.condiciones.preajustes.find((p) => p.escenario !== datos.condiciones.derivacion.escenario_base).condiciones;
 export const hashDeReglas = (datos) => `#p=${PARADA}&c=${abiertaCon(datos).join(',')}&captura=1`;
@@ -168,6 +170,12 @@ export async function revisarReglas(pagina, { dirCapturas, datos, raiz }) {
   const apagada = await pagina.evaluate(leer);
   r.apaga = apagada.condiciones.length === 0 && apagada.escenario === base && !/[#&]c=/.test(apagada.hash);
 
+  // Diagrama de la teoría de cambio (termina en la parada siguiente, con el panel cerrado).
+  const diagrama = await revisarDiagrama(pagina, { dirCapturas, datos, motor, parada: PARADA });
+  r.capturas.push(...diagrama.capturas);
+  r.fallasDiagrama = fallasDiagrama(diagrama, datos);
+  r.lineasDiagrama = seccionDiagrama(diagrama, datos);
+
   // Tecla T en una parada con red: abre con el preajuste de su escenario, sin cambiar el escenario, y restituye al cerrar.
   const conRed = d.preajustes.find((p) => motor.evaluar(p.condiciones).capas.length > 0);
   const parada = datos.paradas.paradas.find((p) => p.id !== PARADA && p.estado.escenario === conRed.escenario && !p.pasos);
@@ -226,6 +234,7 @@ export function fallasReglas(r) {
   if (!r.teclaT.abre || !r.teclaT.conserva || !r.teclaT.restituye) falla(`tecla T en ${r.teclaT.parada}: abre ${r.teclaT.abre}, conserva las capas ${r.teclaT.conserva}, restituye ${r.teclaT.restituye}`);
   if (!r.cierraAlAvanzar) falla('el panel sigue abierto al avanzar de parada');
   for (const h of r.codigo.halladas) falla(`regla escrita en el código (${h})`);
+  f.push(...(r.fallasDiagrama ?? ['Diagrama de la teoría de cambio: sin datos']));
   return f;
 }
 
@@ -233,7 +242,7 @@ const si = (v) => (v ? 'sí' : 'no');
 
 export function seccionReglas(r, resumen) {
   if (!r) return ['## Teoría de cambio', '', '- Sin datos', ''];
-  const lineas = ['## Teoría de cambio (etapa 10.a)', ''];
+  const lineas = ['## Teoría de cambio (etapas 10.a y 10.b.a)', ''];
   if (resumen) {
     lineas.push(
       `- Reglas (contenido/condiciones.json, ${resumen.combinaciones} combinaciones de condiciones): ${Object.entries(resumen.cuenta).map(([e, n]) => `${e} ${n}`).join(', ')}; condiciones mínimas por escenario: ${Object.entries(resumen.minimo).map(([e, n]) => `${e} ${n}`).join(', ')}`,
@@ -254,6 +263,7 @@ export function seccionReglas(r, resumen) {
     `- Reglas en el código (${r.codigo.archivos.join(', ')}): ${r.codigo.halladas.length ? r.codigo.halladas.join('; ') : 'ninguna clave de condición, regla, efecto ni escenario'}`,
     `- Presupuesto gráfico: el panel es HTML (cero triángulos); las capas derivadas son las ya medidas en las etapas 6 a 9`,
     `- Capturas: ${r.capturas.map((c) => `\`capturas/${c}\``).join(', ')}`,
+    ...(r.lineasDiagrama ?? []),
     '',
   );
   return lineas;

@@ -4,7 +4,7 @@ import { obtener, cambiar } from '../estado.js';
 import { siguiente, anterior, irAMomento, alternarLibre } from './recorrido.js';
 import { esTeclaDeMovimiento } from './libre.js';
 import { siguienteCalidad } from '../calidad.js';
-import { alternarPanel } from '../reglas/reglas.js';
+import { alternarPanel, alternarDiagrama } from '../reglas/reglas.js';
 
 const alternar = (clave) => () => cambiar({ [clave]: !obtener()[clave] });
 
@@ -44,6 +44,7 @@ export function crearTeclado({ bloqueCamara }) {
     m: alternar('miniatura'),
     r: alternar('medidor'),
     t: alternarPanel, // panel de condiciones de la teoría de cambio
+    d: alternarDiagrama, // diagrama de la teoría de cambio (en modo libre, la D mueve la cámara)
   };
   for (let n = 0; n <= 6; n++) acciones[String(n)] = () => irAMomento(n);
 

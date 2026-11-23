@@ -2,6 +2,8 @@
 // las capas de la maqueta (motor.js, con las reglas de contenido/condiciones.json) y los propone al almacén: las
 // capas de la parada más las de los efectos presentes. Sin la capa, no interviene. El cambio de escenario lo anima
 // src/coberturas/coberturas.js. Ningún temporizador activa condiciones: solo responde al panel, a la tecla T y al hash.
+// El diagrama de la teoría de cambio (clave «diagrama», tecla D) solo existe con el panel abierto y se cierra al
+// cerrar el panel o al cambiar de parada o de paso.
 import datos from '../../contenido/condiciones.json';
 import { obtener, cambiar, suscribir } from '../estado.js';
 import { buscarParada, estadoDe } from '../navegacion/recorrido.js';
@@ -49,6 +51,14 @@ export function alternarPanel() {
   cambiar({ ...propio, condiciones: motor.ordenar(propio.condiciones) });
 }
 
+/** Abre o cierra el diagrama; con el panel cerrado, abre antes el panel como la tecla T. */
+export function alternarDiagrama() {
+  const e = obtener();
+  if (e.diagrama) return cambiar({ diagrama: false });
+  if (!panelAbierto(e)) alternarPanel();
+  cambiar({ diagrama: true });
+}
+
 export function crearReglas() {
   function derivar(e) {
     if (!panelAbierto(e)) return;
@@ -61,6 +71,10 @@ export function crearReglas() {
   }
   suscribir(['condiciones', 'capas', 'parada', 'paso'], derivar);
   derivar(obtener());
+  suscribir(['capas', 'parada', 'paso'], (e, cambiadas) => {
+    const navego = cambiadas?.includes?.('parada') || cambiadas?.includes?.('paso');
+    if (e.diagrama && (navego || !panelAbierto(e))) cambiar({ diagrama: false });
+  });
 
   return {
     // Verificación: derivación de las condiciones actuales y de una lista cualquiera, sin cambiar el estado.

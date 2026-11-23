@@ -198,7 +198,7 @@ Reglas didácticas, editables en `contenido/condiciones.json`. Resumen proposici
 | C5 + C7 + (C4 o C6) | enlaces entre mercados y familias; aparece el polígono del territorio de la red (S2) |
 | C8 sin C5 ni C7 | se ilumina una sola finca (IPPTA) y el resto queda igual |
 | C9 sin fincas contiguas con C3 | corredor incompleto; los radios de polinizadores no se conectan |
-| S2 + C8 + C9 + C10 | S3: corredores continuos, flujos de nutrientes con retorno, compras públicas activas |
+| S2 + C3 + C8 + C9 + C10 | S3: corredores continuos, flujos de nutrientes con retorno, compras públicas activas (C3 añadida en la etapa 10.b.a, decisión del 2026-11-23: sin prácticas eficaces el corredor queda incompleto) |
 | C1 o C2 | rótulos de detonante, sin cambio del paisaje |
 | C3 + C6 sin C5 | S1: difusión vertical de prácticas; la geometría de la matriz permanece (regla V8, etapa 10.a, aprobada el 2026-11-16) |
 

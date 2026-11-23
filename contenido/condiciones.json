@@ -7,8 +7,11 @@
     "verificar": ["Pasaje de Magrini et al. con los cinco mecanismos de retornos crecientes (con base en Arthur 1989)."]
   },
   "origen": {
-    "texto": "C1 a C8 proceden de los factores de Mier y Terán et al. (2018), según la síntesis de Zollet (2022). C9 y C10 incorporan la dimensión biofísica y la gobernanza de recursos.",
-    "fuentes": ["zollet:§4", "mieryteran:verificar"]
+    "rotulo": "C1 a C8",
+    "texto": "C1 a C8 proceden de los ocho impulsores de la masificación de la agroecología de Mier y Terán et al. (2018), sintetizados por Zollet (2022). C9 y C10 incorporan la dimensión biofísica y la gobernanza de recursos.",
+    "fuentes": ["mieryteran:pp. 644 a 654", "zollet:§4"],
+    "nota": "Los localizadores siguen los títulos de sección de los impulsores. La lista de la p. 644 invierte el orden de los impulsores 3 y 4 respecto de esos títulos.",
+    "estado_texto": "borrador"
   },
   "expresiones": "Cada expresión combina «todas» (deben estar activas), «alguna» (al menos una activa) y «ninguna» (ninguna activa).",
   "efectos": {
@@ -37,7 +40,7 @@
       "id": "C1",
       "rotulo": "Crisis",
       "nombre": "Crisis que motiva la búsqueda de alternativas",
-      "fuentes": ["zollet:§4 (1)"],
+      "fuentes": ["mieryteran:impulsor 1, p. 645", "zollet:§4 (1)"],
       "efectos": ["rotulo_detonante"],
       "efecto_territorial_requiere": { "todas": ["C5"] },
       "mensaje_si_falta": "Detonante sin organización social que lo convierta en acción colectiva",
@@ -47,7 +50,7 @@
       "id": "C2",
       "rotulo": "Discurso y liderazgo",
       "nombre": "Discurso movilizador y liderazgo",
-      "fuentes": ["zollet:§4 (1)"],
+      "fuentes": ["mieryteran:impulsor 5, p. 649", "zollet:§4 (1)"],
       "efectos": ["rotulo_detonante"],
       "efecto_territorial_requiere": { "todas": ["C5"] },
       "mensaje_si_falta": "Detonante sin organización social que lo convierta en acción colectiva",
@@ -57,7 +60,7 @@
       "id": "C3",
       "rotulo": "Prácticas eficaces",
       "nombre": "Prácticas agroecológicas eficaces",
-      "fuentes": ["zollet:§4 (2)"],
+      "fuentes": ["mieryteran:impulsor 3, p. 646", "zollet:§4 (2)"],
       "efectos": ["fincas_diversificadas"],
       "efecto_territorial_requiere": { "todas": ["C9"] },
       "mensaje_si_falta": "Fincas diversificadas sin conectividad ecológica entre ellas; el paisaje sigue como matriz con islas",
@@ -67,7 +70,7 @@
       "id": "C4",
       "rotulo": "Campesino a campesino",
       "nombre": "Procesos de enseñanza y aprendizaje constructivistas, de campesino a campesino",
-      "fuentes": ["zollet:§4 (2)", "res331:línea 1.2"],
+      "fuentes": ["mieryteran:impulsor 4, p. 647", "zollet:§4 (2)", "res331:línea 1.2"],
       "efectos": ["escuelas_activas"],
       "efecto_territorial_requiere": { "todas": ["C5", "C7"] },
       "mensaje_si_falta": "Escuelas activas sin organización social ni mercados que articulen la red",
@@ -78,7 +81,7 @@
       "rotulo": "Organización social",
       "nombre": "Organización social",
       "nota": "Señalada como uno de los elementos más vitales del escalamiento territorial.",
-      "fuentes": ["zollet:§4 (3)"],
+      "fuentes": ["mieryteran:impulsor 2, p. 645", "zollet:§4 (3)"],
       "efectos": ["organizacion_activa"],
       "efecto_territorial_requiere": { "todas": ["C7"], "alguna": ["C4", "C6"] },
       "mensaje_si_falta": "Organización social sin mercados ni procesos de aprendizaje o alianzas que la proyecten en el territorio",
@@ -88,7 +91,7 @@
       "id": "C6",
       "rotulo": "Alianzas externas",
       "nombre": "Alianzas con actores externos",
-      "fuentes": ["zollet:§4 (3)"],
+      "fuentes": ["mieryteran:impulsor 6, p. 650", "zollet:§4 (3)"],
       "efectos": ["aliados_activos"],
       "efecto_territorial_requiere": { "todas": ["C5", "C7"] },
       "mensaje_si_falta": "Aliados externos sin organización social ni mercados con los cuales trabajar",
@@ -98,7 +101,7 @@
       "id": "C7",
       "rotulo": "Mercados favorables",
       "nombre": "Mercados favorables y circuitos cortos",
-      "fuentes": ["zollet:§4 (3)", "levidow:§2.2", "res331:lineamiento 3"],
+      "fuentes": ["mieryteran:impulsor 7, p. 652", "zollet:§4 (3)", "levidow:§2.2", "res331:lineamiento 3"],
       "efectos": ["mercados_activos"],
       "efecto_territorial_requiere": { "todas": ["C5"], "alguna": ["C4", "C6"] },
       "mensaje_si_falta": "Mercados activos sin organización social que los articule",
@@ -108,7 +111,7 @@
       "id": "C8",
       "rotulo": "Políticas públicas",
       "nombre": "Políticas públicas favorables, con compras públicas",
-      "fuentes": ["zollet:§4 (3)", "ley2046:verificar", "res331:verificar"],
+      "fuentes": ["mieryteran:impulsor 8, p. 653", "zollet:§4 (3)", "ley2046:verificar", "res331:verificar"],
       "efectos": ["politica_activa"],
       "efecto_territorial_requiere": { "todas": ["C5", "C7"] },
       "mensaje_si_falta": "Política activa sobre una sola finca, sin organización social ni mercados que la territorialicen",
@@ -173,8 +176,9 @@
     },
     {
       "id": "V6",
-      "configuracion": "S2 + C8 + C9 + C10",
-      "si": { "todas": ["C5", "C7", "C8", "C9", "C10"], "alguna": ["C4", "C6"] },
+      "configuracion": "S2 + C3 + C8 + C9 + C10",
+      "si": { "todas": ["C3", "C5", "C7", "C8", "C9", "C10"], "alguna": ["C4", "C6"] },
+      "nota": "C3 añadida en la etapa 10.b.a (decisión de Alejandro del 2026-11-23): sin prácticas eficaces, el corredor queda incompleto y no hay S3.",
       "efectos": ["corredores_continuos", "nutrientes_con_retorno", "compras_publicas_activas"],
       "reemplaza": ["corredor"],
       "escenario": "S3"
@@ -191,7 +195,8 @@
       "si": { "todas": ["C3", "C6"], "ninguna": ["C5"] },
       "efectos": ["escalamiento_vertical"],
       "escenario": "S1",
-      "nota": "Regla añadida en la etapa 10.a para derivar S1 (lectura del supuesto H1). No figura en la tabla de GUION.md, sección 6.5.",
+      "supuestos": ["H1"],
+      "nota": "Regla añadida en la etapa 10.a para derivar S1 (lectura del supuesto H1). Figura en GUION.md, sección 6.5, desde el 2026-11-22.",
       "fuentes": ["calle:§11.7", "calle:§11.8"],
       "estado_texto": "revisado"
     }
@@ -263,6 +268,14 @@
       "id": "H7",
       "texto": "Las configuraciones del territorio siguen trayectorias no lineales.",
       "fuentes": ["lopez2025:verificar", "gliessman:cap. 20"]
+    },
+    {
+      "id": "H8",
+      "texto": "La reconversión del plano supone el acceso del campesinado a la tierra.",
+      "fuentes": ["res331:anexo, p. 29", "giraldorosset:sección «Agroecology and development alternatives»"],
+      "nota": "Res. 331, anexo, p. 29: art. 64 de la Constitución, modificado por el Acto Legislativo 01 de 2023 (acceso progresivo a la propiedad de la tierra del campesinado). Ajuste del 2026-11-22.",
+      "verificar": ["Página de Giraldo y Rosset (2018) con el pasaje «They must struggle for land and defend their territories from land grabbers»: GUION.md cita la p. 14 y el archivo en carpeta no marca páginas."],
+      "estado_texto": "borrador"
     }
   ],
   "resultados": {
@@ -276,9 +289,27 @@
     ],
     "final": {
       "id": "RF",
-      "texto": "Sistema alimentario territorial agroecológico, en los términos del objetivo general de la Res. 331 de 2024 y de los tres dominios con actores de Wezel et al. (2016).",
-      "fuentes": ["res331:objetivo general", "wezel2016:verificar"]
+      "texto": "Sistema alimentario territorial agroecológico que contribuye a la soberanía alimentaria",
+      "detalle": "En los términos del objetivo general de la Res. 331 de 2024 y de los tres dominios con actores de Wezel et al. (2016).",
+      "fuentes": ["res331:art. 4", "res331:anexo, p. 47", "wezel2016:verificar"],
+      "escenario": "S3",
+      "resultados": ["R1", "R2", "R3", "R4", "R5"],
+      "supuestos": ["H8"]
     },
+    "estado_texto": "borrador"
+  },
+  "diagrama": {
+    "titulo": "Teoría de cambio",
+    "partida": "Situación de partida",
+    "condiciones": "Condiciones",
+    "intermedios": "Resultados intermedios",
+    "final": "Resultado final",
+    "supuestos": "Supuestos",
+    "grupos": [
+      { "id": "impulsores", "rotulo": "Impulsores de la masificación", "condiciones": ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8"], "fuentes": ["mieryteran:pp. 644 a 654"] },
+      { "id": "recursos", "rotulo": "Dimensión biofísica y gobernanza de recursos", "condiciones": ["C9", "C10"], "fuentes": ["leonsicard:cap. 2", "wezel2020:principio 12"] }
+    ],
+    "boton": "Diagrama",
     "estado_texto": "borrador"
   }
 }

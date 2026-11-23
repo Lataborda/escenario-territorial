@@ -2,9 +2,52 @@
 // (src/reglas/motor.js): referencias de la derivación y de los preajustes, textos del panel, cada preajuste deriva
 // su escenario y, sobre todas las combinaciones de condiciones, ninguna condición sola cambia el escenario de base
 // (criterio de la etapa: ninguna condición sola produce S2) y los escenarios que presuponen a otro lo cumplen.
+// Diagrama (etapa 10.b.a): supuestos, resultados y grupos con referencias conocidas, cada condición de un grupo cita
+// la fuente del grupo con localizador, y solo el preajuste del escenario del resultado final lo alcanza.
 import { crearMotor, cumple } from '../../src/reglas/motor.js';
+import { separarReferencia } from '../../src/util/fuentes.js';
 
 const TEXTOS_PANEL = ['titulo', 'preajustes', 'sin_efecto', 'falta', 'faltan', 'alguna', 'todas', 'otras', 'nota'];
+const TEXTOS_DIAGRAMA = ['titulo', 'partida', 'condiciones', 'intermedios', 'final', 'supuestos', 'boton'];
+
+function revisarDiagrama(d, motor, falla) {
+  const condiciones = new Set((d.condiciones ?? []).map((c) => c.id));
+  const supuestos = new Set((d.supuestos ?? []).map((h) => h.id));
+  const intermedios = d.resultados?.intermedios ?? [];
+  const final = d.resultados?.final;
+  const conocidos = (lista, conjunto, donde, que) => {
+    for (const x of lista ?? []) if (!conjunto.has(x)) falla(`${donde}: ${que} desconocido «${x}»`);
+  };
+  for (const t of TEXTOS_DIAGRAMA) if (!d.diagrama?.[t]) falla(`diagrama: falta el texto «${t}»`);
+  if (!d.origen?.rotulo) falla('origen: falta el rótulo corto del panel');
+  if (supuestos.size !== (d.supuestos ?? []).length) falla('supuestos: identificadores repetidos');
+  for (const h of d.supuestos ?? []) if (!h.texto || !h.fuentes?.length) falla(`${h.id}: supuesto sin texto o sin fuentes`);
+  for (const r of intermedios) {
+    conocidos(r.condiciones, condiciones, r.id, 'condición');
+    conocidos(r.supuestos, supuestos, r.id, 'supuesto');
+  }
+  for (const r of d.reglas ?? []) conocidos(r.supuestos, supuestos, r.id, 'supuesto');
+  if (!final?.texto || !final?.fuentes?.length) falla('resultado final sin texto o sin fuentes');
+  conocidos(final?.resultados, new Set(intermedios.map((r) => r.id)), 'resultado final', 'resultado');
+  conocidos(final?.supuestos, supuestos, 'resultado final', 'supuesto');
+  // Grupos: cada condición en un solo grupo, citando la fuente del grupo con localizador.
+  const agrupadas = (d.diagrama?.grupos ?? []).flatMap((g) => g.condiciones ?? []);
+  for (const c of condiciones) if (agrupadas.filter((x) => x === c).length !== 1) falla(`diagrama · grupos: ${c} debe estar en un solo grupo`);
+  for (const g of d.diagrama?.grupos ?? []) {
+    conocidos(g.condiciones, condiciones, `diagrama · ${g.id}`, 'condición');
+    const claves = new Set((g.fuentes ?? []).map((f) => separarReferencia(f).clave));
+    for (const c of d.condiciones ?? []) {
+      if (!(g.condiciones ?? []).includes(c.id)) continue;
+      const cita = (c.fuentes ?? []).map(separarReferencia).some((f) => claves.has(f.clave) && f.localizador && f.localizador !== 'verificar');
+      if (!cita) falla(`${c.id}: sin localizador de la fuente de su grupo (${[...claves].join(', ')})`);
+    }
+  }
+  // Solo el preajuste del escenario del resultado final lo alcanza.
+  for (const p of d.preajustes ?? []) {
+    const alcanza = motor.evaluar(p.condiciones).final;
+    if (alcanza !== (p.escenario === final?.escenario)) falla(`preajuste ${p.id}: resultado final ${alcanza ? 'alcanzado' : 'no alcanzado'}`);
+  }
+}
 const ARCHIVO = 'condiciones.json';
 
 export function revisarReglas(datos) {
@@ -52,6 +95,7 @@ export function revisarReglas(datos) {
     if (derivado !== p.escenario) falla(`preajuste ${p.id}: sus condiciones derivan ${derivado} (se espera ${p.escenario})`);
   }
   if (new Set(preajustes.map((p) => p.id)).size !== preajustes.length) falla('preajustes: identificadores repetidos');
+  revisarDiagrama(d, motor, falla);
 
   // Todas las combinaciones de condiciones.
   const reglasDe = (e) => (d.reglas ?? []).filter((r) => r.escenario === e);

@@ -209,10 +209,10 @@ Revisión del plan frente a dos insumos aportados por Alejandro: una conferencia
 
 | N.º | Ajuste | Dónde | Etapa |
 |---|---|---|---|
-| A1 | Supuesto H8: la reconversión del plano supone el acceso del campesinado a la tierra | `GUION.md` §6.3; `condiciones.json`; diagrama | 10.b |
-| A2 | Resultado final con soberanía alimentaria (Res. 331, art. 4 y objetivo general) | `GUION.md` §6.4; diagrama | 10.b |
-| A3 | Mier y Terán et al. (2018) como fuente de C1 a C8, con impulsor y página | `GUION.md` §6.2; `condiciones.json`; panel | 10.b |
-| A4 | Aviso de vocabulario en la validación (sección 6.3) | `scripts/lib/revisar-textos.mjs` | 10.b |
+| A1 | Supuesto H8: la reconversión del plano supone el acceso del campesinado a la tierra | `GUION.md` §6.3; `condiciones.json`; diagrama | 10.b.a (hecho) |
+| A2 | Resultado final con soberanía alimentaria (Res. 331, art. 4 y objetivo general) | `GUION.md` §6.4; diagrama | 10.b.a (hecho) |
+| A3 | Mier y Terán et al. (2018) como fuente de C1 a C8, con impulsor y página | `GUION.md` §6.2; `condiciones.json`; panel | 10.b.a (hecho) |
+| A4 | Aviso de vocabulario en la validación (sección 6.3) | `scripts/lib/revisar-textos.mjs` | 10.b.a (hecho) |
 | A5 | Zona de reserva campesina como cuarta figura territorial, en la ladera | P13; `actores.json` | 11 |
 | A6 | Campesinado como sujeto de derechos (Constitución, art. 64), citado desde la Res. 331 | ficha de P13 o P21; glosario | 11 |
 | A7 | Transformación en manos de la organización (economía propia) en el segundo paso de P21 | P21; `actores.json` | 11 |
@@ -666,16 +666,18 @@ Revisión del plan frente a dos insumos aportados por Alejandro: una conferencia
   - [x] Todas las reglas están en `contenido/`, sin reglas escritas en el código (10.a).
 - División (2026-11-15): la etapa se cierra en dos sesiones.
   - 10.a (cerrada): reglas completas en `contenido/condiciones.json` (regla V8 para S1, derivación de escenario y capas, preajustes, textos del panel), motor (`src/reglas/motor.js`), derivación en el estado (`src/reglas/reglas.js`), panel de condiciones con preajustes y avisos (`src/ui/condiciones.js`), tecla T, hash `#c=`, validación y verificación.
-  - 10.b (siguiente): diagrama 2D de la teoría de cambio sincronizado con los interruptores (condiciones, supuestos, resultados); aparición gradual de las capas superpuestas al cambiar de estado; dibujo propio de los efectos sin capa (rótulos de detonante, fincas diversificadas como islas, corredor incompleto, actores según el efecto); condiciones en la vista del presentador; capturas de los preajustes en el respaldo.
+  - 10.b: diagrama 2D de la teoría de cambio sincronizado con los interruptores (condiciones, supuestos, resultados); aparición gradual de las capas superpuestas al cambiar de estado; dibujo propio de los efectos sin capa (rótulos de detonante, fincas diversificadas como islas, corredor incompleto, actores según el efecto); condiciones en la vista del presentador; capturas de los preajustes en el respaldo. Dividida el 2026-11-23 en dos sesiones:
+    - 10.b.a (cerrada): contenido y HTML. Ajustes A1 a A4; diagrama 2D en superposición a la derecha del panel (`src/ui/diagrama.js`, tecla D y botón del panel), sincronizado con el motor (resultados intermedios, final y supuestos en juego); condiciones en la vista del presentador, de solo lectura; regla V6 con C3 (decisión de Alejandro); validación y verificación del diagrama.
+    - 10.b.b (siguiente): escena 3D. Aparición gradual de las capas superpuestas; dibujo propio de los efectos sin capa (rótulos de detonante, fincas diversificadas como islas, corredor incompleto, actores según el efecto); capturas de los preajustes y del diagrama en el respaldo.
   - 10.b, ajuste del 2026-11-22 (sección 6, A1 a A4). Fuentes: sí, en carpeta (Mier y Terán et al. 2018; Res. 331).
     - Supuesto H8 en `condiciones.json` y en el diagrama, con su fuente (`GUION.md`, §6.3).
     - Resultado final con soberanía alimentaria (`GUION.md`, §6.4).
     - Fuente de C1 a C8: impulsor y página de Mier y Terán et al. (2018) en lugar de `mieryteran:verificar`; texto de `origen` en el panel.
     - Aviso de la validación (sin bloquear) por los términos a evitar de la sección 6.3, fuera de las citas entre comillas latinas.
   - Criterios añadidos para la 10.b:
-    - [ ] H8 y el resultado final con soberanía alimentaria visibles en el diagrama, con fuente.
-    - [ ] C1 a C8 con localizador de Mier y Terán et al. (2018); cero `mieryteran:verificar`.
-- Prompt de arranque: `Etapa 10.b de PLAN.md. Sigue el protocolo de CLAUDE.md. Ejecuta /add-dir ../.. antes de buscar en las fuentes.`
+    - [x] H8 y el resultado final con soberanía alimentaria visibles en el diagrama, con fuente (10.b.a).
+    - [x] C1 a C8 con localizador de Mier y Terán et al. (2018); cero `mieryteran:verificar` (10.b.a).
+- Prompt de arranque: `Etapa 10.b.b de PLAN.md. Sigue el protocolo de CLAUDE.md.`
 
 ## Etapa 11. Lentes, capa histórica y cierre
 

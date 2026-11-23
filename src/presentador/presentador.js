@@ -36,10 +36,10 @@ function seccion(padre, clase, etiqueta = 'section') {
 
 // Solo las claves publicadas y con el tipo esperado pasan al almacén del presentador.
 function filtrar(estado = {}) {
-  const tipos = { parada: 'string', paso: 'number', escala: 'string', modo: 'string', interfaz: 'boolean', calidad: 'string', miniatura: 'boolean' };
-  return Object.fromEntries(
-    CLAVES_PUBLICADAS.filter((k) => typeof estado[k] === tipos[k] && (k !== 'calidad' || esNivel(estado[k]))).map((k) => [k, estado[k]]),
-  );
+  const tipos = { parada: 'string', paso: 'number', escala: 'string', modo: 'string', interfaz: 'boolean', calidad: 'string', miniatura: 'boolean', diagrama: 'boolean', condiciones: 'textos', capas: 'textos' };
+  const valido = (k, v) =>
+    tipos[k] === 'textos' ? Array.isArray(v) && v.every((x) => typeof x === 'string') : typeof v === tipos[k] && (k !== 'calidad' || esNivel(v));
+  return Object.fromEntries(CLAVES_PUBLICADAS.filter((k) => valido(k, estado[k])).map((k) => [k, estado[k]]));
 }
 
 function montar(nombre, crear) {

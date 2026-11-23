@@ -1,0 +1,236 @@
+/* Diagrama de la teoría de cambio (src/ui/diagrama.js). Superposición opaca a la derecha del panel de condiciones
+   (19 rem desde el margen izquierdo, src/ui/condiciones.css), sobre la maqueta, la ficha y las leyendas. Unidades en
+   rem: la pantalla mide 80 × 45 rem. Letra de 1 rem como mínimo. */
+
+.diagrama {
+  position: absolute;
+  top: var(--margen);
+  bottom: var(--margen);
+  left: calc(2 * var(--margen) + 19rem);
+  right: var(--margen);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0.7rem 1rem 0.8rem;
+  overflow: hidden;
+  background: #fbf9f4;
+  border: 1px solid var(--borde);
+  border-radius: 0.4rem;
+  box-shadow: var(--sombra);
+  line-height: 1.25;
+}
+
+.diagrama[hidden] {
+  display: none;
+}
+
+.dg-cabeza {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--borde);
+}
+
+.dg-titulo {
+  margin: 0;
+  font: 600 1.45rem/1.15 var(--tipo-titulo);
+}
+
+.dg-nota {
+  flex: 1;
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.dg-escenario {
+  font-weight: 600;
+  color: var(--acento);
+}
+
+.dg-cuerpo {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  column-gap: 3rem;
+  padding-top: 0.5rem;
+}
+
+.dg-enlaces {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.dg-enlaces path {
+  fill: none;
+  stroke: rgba(43, 42, 39, 0.18);
+  stroke-width: 1.2;
+}
+
+.dg-enlaces path.activo {
+  stroke: rgba(47, 93, 80, 0.45);
+  stroke-width: 1.6;
+}
+
+.dg-enlaces path.completo {
+  stroke: var(--acento);
+  stroke-width: 2.6;
+}
+
+.dg-columna {
+  margin: 0 0 0.3rem;
+  font: 600 1rem/1.2 var(--tipo-texto);
+  color: var(--texto-suave);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.dg-izquierda,
+.dg-derecha {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.dg-partida {
+  margin-bottom: 0.6rem;
+}
+
+.dg-nodo {
+  position: relative;
+  margin: 0;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.3rem;
+  background: #fbf9f4;
+  color: var(--texto-suave);
+}
+
+.dg-nodo-partida {
+  color: var(--texto);
+}
+
+.dg-clave {
+  font-weight: 600;
+  margin-right: 0.45rem;
+}
+
+.dg-grupo {
+  margin-bottom: 0.55rem;
+}
+
+.dg-grupo-rotulo {
+  margin: 0 0 0.2rem;
+  font-weight: 600;
+}
+
+.dg-condiciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dg-condicion {
+  display: flex;
+  align-items: baseline;
+}
+
+.dg-condicion .dg-clave {
+  min-width: 2rem;
+}
+
+.dg-rotulo {
+  flex: 1;
+}
+
+.dg-marca {
+  display: none;
+  color: var(--pendiente);
+}
+
+.dg-nodo.activa {
+  color: var(--texto);
+  background: var(--acento-suave);
+  border-color: var(--acento);
+}
+
+.dg-nodo.sin-efecto {
+  border-color: var(--pendiente);
+}
+
+.dg-nodo.sin-efecto .dg-marca {
+  display: inline;
+}
+
+.dg-fuente {
+  margin: 0.2rem 0 0;
+  color: var(--texto-suave);
+}
+
+.dg-resultados {
+  display: grid;
+  grid-template-columns: 23.5rem 1fr;
+  column-gap: 2.2rem;
+  margin-bottom: 0.55rem;
+}
+
+.dg-intermedios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dg-resultado.alcanzado {
+  color: #fff;
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+.dg-resultado-final {
+  padding: 0.35rem 0.55rem;
+  font-weight: 600;
+}
+
+.dg-supuestos {
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--borde);
+  min-height: 0;
+}
+
+.dg-lista-supuestos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: 1.2rem;
+}
+
+.dg-supuesto {
+  break-inside: avoid;
+  margin-bottom: 0.35rem;
+  padding-left: 0.45rem;
+  border-left: 0.2rem solid transparent;
+  color: var(--texto-suave);
+}
+
+.dg-supuesto-texto {
+  margin: 0;
+}
+
+.dg-supuesto .dg-fuente {
+  margin: 0;
+}
+
+.dg-supuesto.en-juego {
+  color: var(--texto);
+  border-left-color: var(--acento);
+}

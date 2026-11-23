@@ -20,6 +20,13 @@ const CONTRASTES = [
   [/\bno es\b[^.;]*,\s*es\b/i, '«no es X, es Y»'],
 ];
 
+// Vocabulario de la economía de la transición (PLAN.md, sección 6.3): aviso, sin bloquear, fuera de las citas.
+const VOCABULARIO = [
+  [/\bagronegocio/i, '«agronegocio»'],
+  [/\bempresari[oa]s?\b/i, '«empresario» (para el campesinado)'],
+  [/\brentabilidad\b/i, '«rentabilidad» (como fin)'],
+];
+
 function revisarCadena(texto, donde, ruta, r) {
   for (const [patron, nombre] of VETADOS) {
     if (patron.test(texto)) r.errores.push(`${donde}: término vetado ${nombre}`);
@@ -27,6 +34,9 @@ function revisarCadena(texto, donde, ruta, r) {
   const sinCitas = texto.replace(/«[^»]*»/g, '');
   for (const [patron, nombre] of CONTRASTES) {
     if (patron.test(sinCitas)) r.avisos.push(`${donde}: construcción de contraste ${nombre}`);
+  }
+  for (const [patron, nombre] of VOCABULARIO) {
+    if (patron.test(sinCitas)) r.avisos.push(`${donde}: término a evitar ${nombre} (PLAN.md, sección 6.3)`);
   }
   const nombreCampo = campo(ruta);
   if (nombreCampo === 'titulo' && texto.includes(':')) r.errores.push(`${donde}: título con dos puntos`);

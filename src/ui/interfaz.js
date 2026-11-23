@@ -15,6 +15,7 @@ import { crearInteracciones } from './interacciones.js';
 import { crearLeyendaFlujos } from './flujos.js';
 import { crearEscalaMinima } from './escala-minima.js';
 import { crearCondiciones } from './condiciones.js';
+import { crearDiagrama } from './diagrama.js';
 import actores from '../../contenido/actores.json';
 import { ESTILO as ESTILO_RED } from '../actores/estilo.js';
 
@@ -85,6 +86,8 @@ export function crearInterfaz(raiz) {
   const aviso = parte('aviso-autor');
   aviso.hidden = true;
   montar('aviso', crearAviso, aviso);
+  // Diagrama de la teoría de cambio: superposición a la derecha del panel de condiciones (tecla D).
+  montar('diagrama', crearDiagrama, raiz);
 
   const visibilidad = ({ interfaz }) => raiz.classList.toggle('oculta', !interfaz);
   suscribir('interfaz', visibilidad);

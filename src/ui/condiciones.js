@@ -7,7 +7,8 @@ import './condiciones.css';
 import datos from '../../contenido/condiciones.json';
 import escenarios from '../../contenido/escenarios.json';
 import { obtener, suscribir } from '../estado.js';
-import { motor, panelAbierto, alternarCondicion, aplicarPreajuste } from '../reglas/reglas.js';
+import { motor, panelAbierto, alternarCondicion, aplicarPreajuste, alternarDiagrama } from '../reglas/reglas.js';
+import { abreviarFuentes } from './fuentes.js';
 
 const AVISOS_MAXIMOS = 3;
 const TEXTOS = datos.panel;
@@ -43,8 +44,9 @@ export function crearCondiciones(panel) {
   panel.setAttribute('aria-label', TEXTOS.titulo);
   panel.hidden = true;
   const cabeza = elemento('div', 'leyenda-cabeza');
-  cabeza.append(elemento('span', 'leyenda-titulo', TEXTOS.titulo), elemento('span', 'leyenda-nota', TEXTOS.nota));
-  cabeza.title = datos.advertencia;
+  const nota = elemento('span', 'leyenda-nota', TEXTOS.nota);
+  nota.title = datos.advertencia;
+  cabeza.append(elemento('span', 'leyenda-titulo', TEXTOS.titulo), nota);
   panel.append(cabeza);
 
   const filaPreajustes = elemento('div', 'cond-preajustes');
@@ -83,7 +85,17 @@ export function crearCondiciones(panel) {
   estado.append(escenario, efectos);
   const avisos = elemento('div', 'cond-avisos');
   avisos.setAttribute('aria-live', 'polite');
-  panel.append(filaPreajustes, lista, estado, avisos);
+  // Origen de C1 a C8 (Mier y Terán et al. 2018), con el texto completo al pasar el puntero, y botón del diagrama
+  // de la teoría de cambio (también la tecla D).
+  const fuenteOrigen = abreviarFuentes(datos.origen.fuentes)[0];
+  const origen = elemento('div', 'cond-origen');
+  const textoOrigen = elemento('span', 'cond-origen-texto', `${datos.origen.rotulo} · ${fuenteOrigen?.texto ?? ''}`);
+  textoOrigen.title = datos.origen.texto;
+  const diagrama = boton('cond-diagrama', alternarDiagrama);
+  diagrama.textContent = datos.diagrama.boton;
+  diagrama.title = datos.diagrama.titulo;
+  origen.append(textoOrigen, diagrama);
+  panel.append(filaPreajustes, lista, origen, estado, avisos);
 
   function pintarAvisos(sinEfecto) {
     avisos.hidden = !sinEfecto.length;
@@ -112,6 +124,7 @@ export function crearCondiciones(panel) {
     if (!abierto) return;
     const r = motor.evaluar(e.condiciones);
     const vigente = motor.preajusteVigente(e.condiciones);
+    diagrama.setAttribute('aria-pressed', String(Boolean(e.diagrama)));
     for (const p of preajustes) p.b.setAttribute('aria-pressed', String(p.id === vigente));
     const porId = new Map(r.estado.map((c) => [c.id, c]));
     for (const f of filas) {
@@ -129,6 +142,6 @@ export function crearCondiciones(panel) {
     efectos.hidden = !r.efectosDeReglas.length;
     pintarAvisos(r.estado.filter((c) => c.activa && !c.territorial));
   }
-  suscribir(['condiciones', 'capas'], pintar);
+  suscribir(['condiciones', 'capas', 'diagrama'], pintar);
   pintar(obtener());
 }

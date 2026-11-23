@@ -5,6 +5,9 @@ import { obtener, suscribir } from '../estado.js';
 import { PARADAS, MOMENTOS, buscarParada, numeroDe, cantidadPasos } from '../navegacion/recorrido.js';
 import { abreviarFuentes } from '../ui/fuentes.js';
 import { NOMBRE_CALIDAD } from '../calidad.js';
+import condiciones from '../../contenido/condiciones.json';
+import escenarios from '../../contenido/escenarios.json';
+import { motor, panelAbierto } from '../reglas/reglas.js';
 
 const elemento = (etiqueta, clase, texto) => {
   const e = document.createElement(etiqueta);
@@ -23,11 +26,12 @@ export function crearActual(contenedor) {
   cabeza.append(titulo, borrador);
   const datos = elemento('p', 'actual-datos');
   const pasos = elemento('ol', 'actual-pasos');
+  const teoria = elemento('p', 'actual-teoria');
   const notas = elemento('p', 'actual-notas');
   const ficha = elemento('p', 'actual-ficha');
   const fuentes = elemento('ul', 'actual-fuentes');
   contenedor.append(
-    cabeza, datos, pasos,
+    cabeza, datos, pasos, teoria,
     elemento('h2', 'rotulo', 'Notas'), notas,
     elemento('h2', 'rotulo', 'Ficha en pantalla'), ficha,
     elemento('h2', 'rotulo', 'Fuentes'), fuentes,
@@ -69,6 +73,24 @@ export function crearActual(contenedor) {
   }
   suscribir(['parada', 'paso'], pintar);
   pintar(obtener());
+
+  // Teoría de cambio (etapa 10.b.a), de solo lectura: con el panel de condiciones abierto en la vista principal,
+  // condiciones activas, escenario derivado, condiciones sin efecto territorial y diagrama abierto. La etapa 12 las opera.
+  function pintarTeoria(e) {
+    teoria.hidden = !panelAbierto(e);
+    if (teoria.hidden) return;
+    const r = motor.evaluar(e.condiciones);
+    const s = escenarios.escenarios.find((x) => x.id === r.escenario);
+    const sinEfecto = r.estado.filter((c) => c.activa && !c.territorial).map((c) => c.id);
+    const partes = [condiciones.panel.titulo, r.condiciones.join(', ') || 'ninguna', s ? `${s.id} · ${s.rotulo ?? s.nombre}` : ''];
+    if (sinEfecto.length) partes.push(`▲ ${sinEfecto.join(', ')}`);
+    if (e.diagrama) partes.push(condiciones.diagrama.boton);
+    teoria.textContent = partes.filter(Boolean).join(' · ');
+    teoria.dataset.escenario = r.escenario ?? '';
+    teoria.dataset.diagrama = String(Boolean(e.diagrama));
+  }
+  suscribir(['condiciones', 'capas', 'diagrama'], pintarTeoria);
+  pintarTeoria(obtener());
 }
 
 // Paso o parada siguiente; si la parada siguiente es saltable, ofrece omitirla.

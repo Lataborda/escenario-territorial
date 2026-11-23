@@ -90,6 +90,19 @@ async function pruebasSincronia(principal, presentador, prueba) {
     (await esperar(presentador, () => document.querySelector('#calidad')?.textContent === 'Calidad alta')));
   await principal.evaluate(() => (location.hash = 'p=P20&captura=1'));
   await prueba('cambio de hash en la principal llega al presentador (P20)', () => ambas(principal, presentador, ['P20']));
+  // Teoría de cambio (etapa 10.b.a): el presentador muestra, sin operarlas, las condiciones del panel abierto.
+  await principal.keyboard.press('t');
+  await principal.keyboard.press('d');
+  await prueba('tecla T y tecla D en la principal: el presentador muestra condiciones, escenario y diagrama', async () => {
+    const e = await principal.evaluate(() => window.escenario.estado());
+    return esperar(presentador, ([esc, n]) => {
+      const t = document.querySelector('.actual-teoria');
+      return t && !t.hidden && t.dataset.escenario === esc && t.dataset.diagrama === 'true' && t.textContent.split(',').length >= n;
+    }, [e.escenario, e.condiciones.length]);
+  });
+  await principal.keyboard.press('t');
+  await prueba('al cerrar el panel en la principal, el presentador oculta la teoría de cambio', () =>
+    esperar(presentador, () => document.querySelector('.actual-teoria')?.hidden === true));
   await presentador.click('.indice-parada button[data-parada="P11"]');
   await ambas(principal, presentador, ['P11']);
   await prueba('«Omitir» salta la parada saltable P12', async () => {

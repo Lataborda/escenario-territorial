@@ -155,6 +155,18 @@ body {
   color: #fff;
 }
 
+/* Teoría de cambio con el panel de condiciones abierto en la vista principal (etapa 10.b.a). */
+.actual-teoria {
+  margin: 0.6rem 0 0;
+  padding: 0.25rem 0.5rem;
+  border-left: 0.2rem solid var(--acento);
+  background: var(--acento-suave);
+}
+
+.actual-teoria[hidden] {
+  display: none;
+}
+
 .actual-notas {
   margin: 0;
   font-size: 1.3rem;

@@ -1,13 +1,14 @@
 // Canal entre la vista principal y la del presentador (BroadcastChannel, mismo origen).
 // Mensajes:
 //   presentador → principal: { tipo: 'hola' } y { tipo: 'orden', accion, ... }
-//   principal → presentador: { tipo: 'estado', estado: { parada, paso, escala, modo, interfaz, calidad, miniatura } }
+//   principal → presentador: { tipo: 'estado', estado: { parada, paso, escala, modo, interfaz, calidad, miniatura,
+//     condiciones, capas, diagrama } } (condiciones y capas, para mostrar la teoría de cambio con el panel abierto)
 // Sin BroadcastChannel (por ejemplo, el archivo único en file://) el canal queda inactivo.
 
 export const NOMBRE_CANAL = 'escenario-territorial';
 
 // Claves del estado que la vista principal publica.
-export const CLAVES_PUBLICADAS = ['parada', 'paso', 'escala', 'modo', 'interfaz', 'calidad', 'miniatura'];
+export const CLAVES_PUBLICADAS = ['parada', 'paso', 'escala', 'modo', 'interfaz', 'calidad', 'miniatura', 'condiciones', 'capas', 'diagrama'];
 
 // Órdenes que acepta la vista principal.
 export const ACCIONES = ['siguiente', 'anterior', 'irA', 'momento', 'libre', 'alternar', 'calidad'];

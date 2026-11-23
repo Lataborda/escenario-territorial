@@ -54,6 +54,14 @@ export function crearMotor(datos) {
     const presentes = new Set([...propios, ...deReglas].filter((e) => !reemplazados.has(e)));
     const efectos = ordenEfectos.filter((e) => presentes.has(e));
     const capas = [...new Set(efectos.flatMap((e) => lista(derivacion.capas_por_efecto?.[e])))];
+    // Diagrama: intermedias con todas sus condiciones, final con su escenario y sus intermedias, y supuestos en juego.
+    const intermedias = lista(datos.resultados?.intermedios).filter((r) => lista(r.condiciones).every((c) => activas.has(c)));
+    const final = datos.resultados?.final;
+    const alcanzados = new Set(intermedias.map((r) => r.id));
+    const finalAlcanzado = Boolean(
+      final && (!final.escenario || final.escenario === escenario) && lista(final.resultados).every((id) => alcanzados.has(id)),
+    );
+    const enJuego = new Set([...cumplidas, ...intermedias, ...(finalAlcanzado ? [final] : [])].flatMap((x) => lista(x.supuestos)));
     return {
       condiciones: orden,
       escenario,
@@ -74,7 +82,9 @@ export function crearMotor(datos) {
         };
       }),
       // Resultados intermedios cuyas condiciones están todas activas (diagrama de la teoría de cambio).
-      resultados: lista(datos.resultados?.intermedios).filter((r) => lista(r.condiciones).every((c) => activas.has(c))).map((r) => r.id),
+      resultados: intermedias.map((r) => r.id),
+      final: finalAlcanzado,
+      supuestos: lista(datos.supuestos).map((h) => h.id).filter((id) => enJuego.has(id)),
     };
   }
 
